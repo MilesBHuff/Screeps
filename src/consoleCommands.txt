@@ -1,1 +1,1 @@
-Game.spawns["spawn1"].createCreep([MOVE, WORK, CARRY], "harvester1");
+Game.spawns["spawn"].createCreep([MOVE, WORK, CARRY], "creep", {role: "role"});
