@@ -106,59 +106,59 @@ module.exports.loop = function () {
 		for(var i = 0; i < 2; i++) {
 			switch(i) {
 				case 0:
-				if(harvesters.length < 1) {
-					var creepRole = 4;
+				if(harvesters.length < 3) {
+					var creepRole = 0;
 				} else {
-					var creepRole = Math.ceil(Math.random() * totalCreepRoles);
+					var creepRole = Math.floor(Math.random() * totalCreepRoles);
 				}
 				break;
 
 				case 1:
-				var creepRole = 1;
+				var creepRole = 0;
 				break;
 			}
 			switch(creepRole) {
+				case 0:
+				if(harvesters.length < maxHarvesters) {
+					spawn.createCreep([CARRY, MOVE, WORK, CARRY], undefined, {role: "harvester"});
+				}
+				if(i == 0 || spawn.spawning) break;
+
 				case 1:
-				if(brawlers.length < maxBrawlers) {
-					spawn.createCreep([MOVE, ATTACK, TOUGH, ATTACK], undefined, {role: "brawler"});
+				if(upgraders.length < maxUpgraders) {
+					spawn.createCreep([CARRY, MOVE, WORK, CARRY], undefined, {role: "upgrader"});
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 2:
-				if(brawlers.length < maxBuilders) {
-					spawn.createCreep([MOVE, CARRY, WORK,  CARRY], undefined, {role: "builder"});
+				if(builders.length < maxBuilders) {
+					spawn.createCreep([CARRY, MOVE, WORK, CARRY], undefined, {role: "builder"});
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 3:
-				if(brawlers.length < maxClaimers) {
-					spawn.createCreep([MOVE, CLAIM, TOUGH, CLAIM], undefined, {role: "claimer"});
+				if(rangers.length < maxRangers) {
+					spawn.createCreep([RANGED_ATTACK, MOVE, TOUGH, RANGED_ATTACK], undefined, {role: "ranger"});
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 4:
-				if(brawlers.length < maxHarvesters) {
-					spawn.createCreep([MOVE, WORK, CARRY, CARRY], undefined, {role: "harvester"});
+				if(healers.length < maxHealers) {
+					spawn.createCreep([HEAL, MOVE, TOUGH, HEAL], undefined, {role: "healer"});
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 5:
-				if(brawlers.length < maxHealers) {
-					spawn.createCreep([MOVE, HEAL, TOUGH, HEAL], undefined, {role: "healer"});
+				if(claimers.length < maxClaimers) {
+					spawn.createCreep([CLAIM, MOVE, TOUGH, CLAIM], undefined, {role: "claimer"});
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 6:
-				if(brawlers.length < maxRangers) {
-					spawn.createCreep([MOVE, RANGED_ATTACK, TOUGH, RANGED_ATTACK], undefined, {role: "ranger"});
+				if(brawlers.length < maxBrawlers) {
+					spawn.createCreep([ATTACK, MOVE, TOUGH, ATTACK], undefined, {role: "brawler"});
 				}
 				if(i == 0 || spawn.spawning) break;
-
-				case 7:
-				if(brawlers.length < maxUpgraders) {
-					spawn.createCreep([MOVE, CARRY,  WORK,  CARRY], undefined, {role: "upgrader"});
-				}
-				break;
 			}
 			if(spawn.spawning) break;
 		}
@@ -191,8 +191,8 @@ module.exports.loop = function () {
 		// -----------------------------------------------------------------
 		spawn.room.visual.text(
 			"🛠️ " + newCreep.memory.role.charAt(0).toUpperCase() + newCreep.memory.role.slice(1),
-			pos.x,
-			pos.y,
+			spawn.pos.x,
+			spawn.pos.y,
 			{align: 'left', opacity: 0.7}
 		);
 	}
