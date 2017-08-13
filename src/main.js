@@ -22,9 +22,10 @@ const username = "MilesBHuff";
 // Kill off unneeded creeps
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 function killOff(creeps, maxCreeps) {
+    var i = 0;
 	while(creeps.length > maxCreeps) {
-	    creeps[0].suicide();
-	    break;
+	    creeps[i].suicide();
+	    i++;
 	}
 }
 
@@ -77,7 +78,7 @@ module.exports.loop = function () {
 	killOff(harvesters, maxHarvesters);
 	killOff(healers,    maxHealers   );
 	killOff(rangers,    maxRangers   );
-	killOff(upgraders , maxUpgraders );
+	killOff(upgraders,  maxUpgraders );
 
 	// Delete the memories of dead creeps
 	// -------------------------------------------------------------------------
