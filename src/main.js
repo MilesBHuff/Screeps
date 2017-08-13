@@ -158,13 +158,13 @@ module.exports.loop = function () {
 	// Structures
 	// -------------------------------------------------------------------------
 	for(var name in Game.structures) {
-        var structure = Game.structures[name];
-        if(structure.owner.username != username) {
-            continue
-        }
-        /*//*/ if(structure.structureType == "tower") {
-            roleTower.run(structure);
-        }
+		var structure = Game.structures[name];
+		if(structure.owner.username != username) {
+			continue
+		}
+		/*//*/ if(structure.structureType == "tower") {
+			roleTower.run(structure);
+		}
 	}
 
 	// Creeps
