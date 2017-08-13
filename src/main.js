@@ -4,10 +4,20 @@
 // Set variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-// Set constants
+// Constants
 // =============================================================================
 const username = "MilesBHuff";
 const totalCreepRoles = 7;
+
+// Metrics
+// =============================================================================
+var   brawlerCount = 0;
+var   builderCount = 0;
+var   claimerCount = 0;
+var    healerCount = 0;
+var harvesterCount = 0;
+var    rangerCount = 0;
+var  upgraderCount = 0;
 
 // Import roles
 // =============================================================================
@@ -41,10 +51,10 @@ function killOff(creeps, maxCreeps) {
  * @param spawn    The spawner to use
  * @param rawParts This is an array of body parts;  this function reduplicates
  *                 it infinitely.
- * @param unknown  I don't known what this parameter does, yet.
+ * @param name     The name of the new creep.
  * @param role     The role the new creep should have.
 **/
-function spawnCreep(spawn, rawParts, unknown, role) {
+function spawnCreep(spawn, rawParts, name, role) {
 	var bodyParts  = Array();
 	var totalParts = (spawn.energyCapacity - 100) / 50;
 	for(var i = 0, j = 0; i < totalParts; i++) {
@@ -54,7 +64,7 @@ function spawnCreep(spawn, rawParts, unknown, role) {
 			j = 0;
 		}
 	}
-	spawn.createCreep(bodyParts, unknown, {role: role});
+	spawn.createCreep(bodyParts, name, {role: role});
 }
 
 // Main loop
@@ -64,34 +74,40 @@ module.exports.loop = function () {
 	// Important variables
 	// =========================================================================
 
-	// Important metrics
+	// Metrics
 	// -------------------------------------------------------------------------
-	var totalCPU = 30; //TODO:  Determine automatically
-	var usedCPU = Game.creeps.length;
+	var cpuLimit = Game.cpu.limit;
+	var cpuUsed  = Game.cpu.getUsed;
+	if(!cpuLimit) {
+		cpuLimit = 30;
+	}
+	if(cpuUsed == 0) {
+		cpuUsed = creeps.length;
+	}
 
 	// Count creeps, buildings, etc
 	// -------------------------------------------------------------------------
 	// Buildings
-	var towers = _.filter(Game.structures);
+	var     towers = _.filter(Game.structures);
 	// Creeps
-	var brawlers   = _.filter(Game.creeps, (creep) => creep.memory.role == "brawlers" );
-	var builders   = _.filter(Game.creeps, (creep) => creep.memory.role == "builder"  );
-	var claimers   = _.filter(Game.creeps, (creep) => creep.memory.role == "claimer"  );
+	var   brawlers = _.filter(Game.creeps, (creep) => creep.memory.role == "brawlers" );
+	var   builders = _.filter(Game.creeps, (creep) => creep.memory.role == "builder"  );
+	var   claimers = _.filter(Game.creeps, (creep) => creep.memory.role == "claimer"  );
 	var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == "harvester");
-	var healers    = _.filter(Game.creeps, (creep) => creep.memory.role == "healer"   );
-	var rangers    = _.filter(Game.creeps, (creep) => creep.memory.role == "ranger"   );
-	var upgraders  = _.filter(Game.creeps, (creep) => creep.memory.role == "upgrader" );
+	var    healers = _.filter(Game.creeps, (creep) => creep.memory.role == "healer"   );
+	var    rangers = _.filter(Game.creeps, (creep) => creep.memory.role == "ranger"   );
+	var  upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == "upgrader" );
 
 	// Spawn ratios
 	// -------------------------------------------------------------------------
-	var maxBrawlers   = Math.ceil(0.0 * totalCPU);
-	var maxBuilders   = Math.ceil(0.2 * totalCPU);
-	var maxClaimers   = Math.ceil(0.0 * totalCPU);
-	var maxHealers    = Math.ceil(0.0 * totalCPU);
-	var maxRangers    = Math.ceil(0.0 * totalCPU);
-	var maxUpgraders  = Math.ceil(0.2 * totalCPU);
-	var maxHarvesters = totalCPU - (maxBrawlers + maxBuilders + maxClaimers + maxHealers + maxRangers + maxUpgraders);
-	if(maxHarvesters < 0) {
+	var   brawlerLimit = Math.ceil(0.0 * cpuLimit);
+	var   builderLimit = Math.ceil(0.2 * cpuLimit);
+	var   claimerLimit = Math.ceil(0.0 * cpuLimit);
+	var    healerLimit = Math.ceil(0.0 * cpuLimit);
+	var    rangerLimit = Math.ceil(0.0 * cpuLimit);
+	var  upgraderLimit = Math.ceil(0.2 * cpuLimit);
+	var harvesterLimit = cpuLimit - (brawlerLimit + builderLimit + claimerLimit + healerLimit + rangerLimit + upgraderLimit);
+	if(harvesterLimit < 0) {
 		console.log("WARNING:  Invalid role ratios!");
 	}
 
@@ -100,13 +116,13 @@ module.exports.loop = function () {
 
 	// Kill off unneeded creeps
 	// -------------------------------------------------------------------------
-	killOff(brawlers,   maxBrawlers  );
-	killOff(builders,   maxBuilders  );
-	killOff(claimers,   maxClaimers  );
-	killOff(harvesters, maxHarvesters);
-	killOff(healers,    maxHealers   );
-	killOff(rangers,    maxRangers   );
-	killOff(upgraders,  maxUpgraders );
+	killOff(  brawlers,   brawlerLimit);
+	killOff(  builders,   builderLimit);
+	killOff(  claimers,   claimerLimit);
+	killOff(harvesters, harvesterLimit);
+	killOff(   healers,    healerLimit);
+	killOff(   rangers,    rangerLimit);
+	killOff( upgraders,  upgraderLimit);
 
 	// Delete the memories of dead creeps
 	// -------------------------------------------------------------------------
@@ -120,8 +136,8 @@ module.exports.loop = function () {
 	// =========================================================================
 	for(var name in Game.spawns) {
 		var spawn = Game.spawns[name];
-		usedCPU = Game.creeps.length;
-		if(usedCPU >= totalCPU) {
+		cpuUsed = Game.creeps.length;
+		if(cpuUsed >= cpuLimit) {
 			break;
 		}
 		if(spawn.spawning || spawn.energy < spawn.energyCapacity) {
@@ -146,48 +162,59 @@ module.exports.loop = function () {
 			}
 			switch(creepRole) {
 				case 0:
-				if(harvesters.length < maxHarvesters) {
-					spawnCreep(spawn, [CARRY, MOVE, WORK], undefined, "harvester");
+				console.log("i = " + i + " | #" + harvesters.length + "/" + harvesterLimit);
+				if(harvesters.length < harvesterLimit) {
+					spawnCreep(spawn, [CARRY, MOVE, WORK], "Harvester" + harvesterCount, "harvester");
+					harvesterCount++;
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 1:
-				if(upgraders.length < maxUpgraders) {
-					spawnCreep(spawn, [CARRY, MOVE, WORK], undefined, "upgrader");
+				if(upgraders.length < upgraderLimit) {
+					spawnCreep(spawn, [CARRY, MOVE, WORK], "Upgrader" + upgraderCount, "upgrader");
+					upgraderCount++;
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 2:
-				if(builders.length < maxBuilders) {
-					spawnCreep(spawn, [CARRY, MOVE, WORK], undefined, "builder");
+				if(builders.length < builderLimit) {
+					spawnCreep(spawn, [CARRY, MOVE, WORK], "Builder" + builderCount, "builder");
+					builderCount++;
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 3:
-				if(rangers.length < maxRangers) {
-					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], undefined, "ranger");
+				if(rangers.length < rangerLimit) {
+					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Ranger" + rangerCount, "ranger");
+					rangerCount++;
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 4:
-				if(healers.length < maxHealers) {
-					spawnCreep(spawn, [CLAIM, MOVE, TOUGH], undefined, "claimer");
+				if(claimers.length < claimerLimit) {
+					spawnCreep(spawn, [CLAIM, MOVE, TOUGH], "Claimer" + claimerCount, "claimer");
+					claimerCount++;
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 5:
-				if(claimers.length < maxClaimers) {
-					spawnCreep(spawn, [HEAL, MOVE, TOUGH], undefined, "healer");
+				if(healers.length < healerLimit) {
+					spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer" + healerCount, "healer");
+					healerCount++;
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 6:
-				if(brawlers.length < maxBrawlers) {
-					spawnCreep(spawn, [ATTACK, MOVE, TOUGH], undefined, "brawler");
+				if(brawlers.length < brawlerLimit) {
+					spawnCreep(spawn, [ATTACK, MOVE, TOUGH], "Brawler" + brawlerCount, "brawler");
+					brawlerCount++;
 				}
 				if(i == 0 || spawn.spawning) break;
 			}
 			if(spawn.spawning) break;
+		}
+		if(!spawn.spawning) {
+			continue;
 		}
 		var newCreep = Game.creeps[spawn.spawning.name];
 
