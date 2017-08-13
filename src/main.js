@@ -106,7 +106,11 @@ module.exports.loop = function () {
 		for(var i = 0; i < 2; i++) {
 			switch(i) {
 				case 0:
-				var creepRole = Math.ceil(Math.random() * totalCreepRoles);
+				if(harvesters.length < 1) {
+					var creepRole = 4;
+				} else {
+					var creepRole = Math.ceil(Math.random() * totalCreepRoles);
+				}
 				break;
 
 				case 1:
@@ -156,6 +160,7 @@ module.exports.loop = function () {
 				}
 				break;
 			}
+			if(spawn.spawning) break;
 		}
 		var newCreep = Game.creeps[spawn.spawning.name];
 
