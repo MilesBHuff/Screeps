@@ -1,1 +1,0 @@
-Game.spawns["spawn"].createCreep([MOVE, WORK, CARRY], "creep", {role: "role"});
