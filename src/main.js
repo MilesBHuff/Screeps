@@ -1,4 +1,11 @@
+// main.js
+// #############################################################################
+
+// Set variables
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 // Import roles
+// =============================================================================
 var roleBrawler   = require("role.brawler"  );
 var roleBuilder   = require("role.builder"  );
 var roleClaimer   = require("role.claimer"  );
@@ -9,6 +16,7 @@ var roleTower     = require("role.tower"    );
 var roleUpgrader  = require("role.upgrader" );
 
 // Set constants
+// =============================================================================
 const username = "MilesBHuff";
 
 // Kill off unneeded creeps
