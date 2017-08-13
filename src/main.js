@@ -38,13 +38,13 @@ module.exports.loop = function () {
 	// Buildings
 	var towers = _.filter(Game.structures);
 	// Creeps
-    var brawlers   = _.filter(Game.creeps, (creep) => creep.memory.role == "brawlers" );
-    var builders   = _.filter(Game.creeps, (creep) => creep.memory.role == "builder"  );
-    var claimers   = _.filter(Game.creeps, (creep) => creep.memory.role == "claimer"  );
-    var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == "harvester");
+	var brawlers   = _.filter(Game.creeps, (creep) => creep.memory.role == "brawlers" );
+	var builders   = _.filter(Game.creeps, (creep) => creep.memory.role == "builder"  );
+	var claimers   = _.filter(Game.creeps, (creep) => creep.memory.role == "claimer"  );
+	var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == "harvester");
 	var healers    = _.filter(Game.creeps, (creep) => creep.memory.role == "healer"   );
-    var rangers    = _.filter(Game.creeps, (creep) => creep.memory.role == "ranger"   );
-    var upgraders  = _.filter(Game.creeps, (creep) => creep.memory.role == "upgrader" );
+	var rangers    = _.filter(Game.creeps, (creep) => creep.memory.role == "ranger"   );
+	var upgraders  = _.filter(Game.creeps, (creep) => creep.memory.role == "upgrader" );
 
 	// Spawn ratios
 	// -------------------------------------------------------------------------
