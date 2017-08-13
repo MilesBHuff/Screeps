@@ -1,11 +1,11 @@
 // Import roles
-var roleBrawler   = require("role.brawler");
+var roleBrawler   = require("role.brawler"  );
 var roleBuilder   = require("role.builder"  );
-var roleClaimer   = require("role.claimer");
+var roleClaimer   = require("role.claimer"  );
 var roleHarvester = require("role.harvester");
-var roleHealer    = require("role.healer");
-var roleRanger    = require("role.ranger"  );
-var roleTower     = require("role.tower" );
+var roleHealer    = require("role.healer"   );
+var roleRanger    = require("role.ranger"   );
+var roleTower     = require("role.tower"    );
 var roleUpgrader  = require("role.upgrader" );
 
 // Set constants
@@ -16,7 +16,6 @@ const username = "MilesBHuff";
 function killOff(creeps, maxCreeps) {
 	while(creeps.length > maxCreeps) {
 	    creeps[0].suicide();
-	    Game.creeps.
 	    break;
 	}
 }
