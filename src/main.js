@@ -162,54 +162,60 @@ module.exports.loop = function () {
 			}
 			switch(creepRole) {
 				case 0:
-				console.log("i = " + i + " | #" + harvesters.length + "/" + harvesterLimit);
 				if(harvesters.length < harvesterLimit) {
 					spawnCreep(spawn, [CARRY, MOVE, WORK], "Harvester" + harvesterCount, "harvester");
 					harvesterCount++;
+					break;
 				}
-				if(i == 0 || spawn.spawning) break;
+				if(i == 0) break;
 
 				case 1:
 				if(upgraders.length < upgraderLimit) {
 					spawnCreep(spawn, [CARRY, MOVE, WORK], "Upgrader" + upgraderCount, "upgrader");
 					upgraderCount++;
+					break;
 				}
-				if(i == 0 || spawn.spawning) break;
+				if(i == 0) break;
 
 				case 2:
 				if(builders.length < builderLimit) {
 					spawnCreep(spawn, [CARRY, MOVE, WORK], "Builder" + builderCount, "builder");
 					builderCount++;
+					break;
 				}
-				if(i == 0 || spawn.spawning) break;
+				if(i == 0) break;
 
 				case 3:
 				if(rangers.length < rangerLimit) {
 					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Ranger" + rangerCount, "ranger");
 					rangerCount++;
+					break;
 				}
-				if(i == 0 || spawn.spawning) break;
+				if(i == 0) break;
 
 				case 4:
 				if(claimers.length < claimerLimit) {
 					spawnCreep(spawn, [CLAIM, MOVE, TOUGH], "Claimer" + claimerCount, "claimer");
 					claimerCount++;
+					break;
 				}
-				if(i == 0 || spawn.spawning) break;
+				if(i == 0) break;
 
 				case 5:
 				if(healers.length < healerLimit) {
 					spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer" + healerCount, "healer");
 					healerCount++;
+					break;
 				}
-				if(i == 0 || spawn.spawning) break;
+				if(i == 0) break;
 
 				case 6:
 				if(brawlers.length < brawlerLimit) {
 					spawnCreep(spawn, [ATTACK, MOVE, TOUGH], "Brawler" + brawlerCount, "brawler");
 					brawlerCount++;
+					break;
 				}
-				if(i == 0 || spawn.spawning) break;
+				if(i == 0) break;
 			}
 			if(spawn.spawning) break;
 		}
