@@ -4,6 +4,10 @@
 // Set variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+// Set constants
+// =============================================================================
+const username = "MilesBHuff";
+
 // Import roles
 // =============================================================================
 var roleBrawler   = require("role.brawler"  );
@@ -14,10 +18,6 @@ var roleHealer    = require("role.healer"   );
 var roleRanger    = require("role.ranger"   );
 var roleTower     = require("role.tower"    );
 var roleUpgrader  = require("role.upgrader" );
-
-// Set constants
-// =============================================================================
-const username = "MilesBHuff";
 
 // Kill off unneeded creeps
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -62,7 +62,7 @@ module.exports.loop = function () {
 	var maxHealers    = Math.ceil(0.0 * totalCPU);
 	var maxRangers    = Math.ceil(0.0 * totalCPU);
 	var maxUpgraders  = Math.ceil(0.1 * totalCPU);
-	var maxHarvesters = totalCPU - (maxBrawlers + maxBuilders + maxClaimers + maxHealers + maxRangers + maxUpgraders)
+	var maxHarvesters = totalCPU - (maxBrawlers + maxBuilders + maxClaimers + maxHealers + maxRangers + maxUpgraders);
 	if(maxHarvesters < 0) {
 		console.log("WARNING:  Invalid role ratios!");
 	}
@@ -104,17 +104,17 @@ module.exports.loop = function () {
 		// -----------------------------------------------------------------
 		/*//*/ if(harvesters.length < maxHarvesters) {
 			spawn.createCreep([MOVE, WORK,          CARRY, CARRY        ], undefined, {role: "harvester"});
-		} else if(claimers.length < maxClaimers) {
+		} else if(claimers.length   < maxClaimers) {
 			spawn.createCreep([MOVE, CLAIM,         TOUGH, CLAIM        ], undefined, {role: "claimer"  });
-		} else if(rangers.length < maxRangers) {
+		} else if(rangers.length    < maxRangers) {
 			spawn.createCreep([MOVE, RANGED_ATTACK, TOUGH, RANGED_ATTACK], undefined, {role: "ranger"   });
-		} else if(brawlers.length < maxBrawlers) {
+		} else if(brawlers.length   < maxBrawlers) {
 			spawn.createCreep([MOVE, ATTACK,        TOUGH, ATTACK       ], undefined, {role: "brawler" });
-		} else if(healers.length < maxHealers) {
+		} else if(healers.length    < maxHealers) {
 			spawn.createCreep([MOVE, RANGED_ATTACK, TOUGH, RANGED_ATTACK], undefined, {role: "healer"   });
-		} else if(upgraders.length < maxUpgraders) {
+		} else if(upgraders.length  < maxUpgraders) {
 			spawn.createCreep([MOVE, CARRY,         WORK,  CARRY        ], undefined, {role: "builder"  });
-		} else if(builders.length < maxBuilders) {
+		} else if(builders.length   < maxBuilders) {
 			spawn.createCreep([MOVE, CARRY,         WORK,  CARRY        ], undefined, {role: "upgrader" });
 		}
 		var newCreep = Game.creeps[spawn.spawning.name];
