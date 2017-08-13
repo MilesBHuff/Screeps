@@ -22,12 +22,39 @@ var roleUpgrader  = require("role.upgrader" );
 
 // Kill off unneeded creeps
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/** This function kills off excess creeps.
+ * @param creeps    The creeps to use.
+ * @param maxCreeps The number to cull to.
+**/
 function killOff(creeps, maxCreeps) {
 	var i = 0;
 	while(creeps.length > maxCreeps) {
 		creeps[i].suicide();
 		i++;
 	}
+}
+
+// Spawn new creeps
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/** The idea behind this function, is to create each creep with the maximum
+ *  number of parts possible, per the currently energy maximum.
+ * @param spawn    The spawner to use
+ * @param rawParts This is an array of body parts;  this function reduplicates
+ *                 it infinitely.
+ * @param unknown  I don't known what this parameter does, yet.
+ * @param role     The role the new creep should have.
+**/
+function spawnCreep(spawn, rawParts, unknown, role) {
+	var bodyParts  = Array();
+	var totalParts = (spawn.energyCapacity - 100) / 50;
+	for(var i = 0, j = 0; i < totalParts; i++) {
+		bodyParts.push(rawParts[j]);
+		j++;
+		if(j >= rawParts.length) {
+			j = 0;
+		}
+	}
+	spawn.createCreep(bodyParts, unknown, {role: role});
 }
 
 // Main loop
@@ -58,11 +85,11 @@ module.exports.loop = function () {
 	// Spawn ratios
 	// -------------------------------------------------------------------------
 	var maxBrawlers   = Math.ceil(0.0 * totalCPU);
-	var maxBuilders   = Math.ceil(0.1 * totalCPU);
+	var maxBuilders   = Math.ceil(0.2 * totalCPU);
 	var maxClaimers   = Math.ceil(0.0 * totalCPU);
 	var maxHealers    = Math.ceil(0.0 * totalCPU);
 	var maxRangers    = Math.ceil(0.0 * totalCPU);
-	var maxUpgraders  = Math.ceil(0.1 * totalCPU);
+	var maxUpgraders  = Math.ceil(0.2 * totalCPU);
 	var maxHarvesters = totalCPU - (maxBrawlers + maxBuilders + maxClaimers + maxHealers + maxRangers + maxUpgraders);
 	if(maxHarvesters < 0) {
 		console.log("WARNING:  Invalid role ratios!");
@@ -120,43 +147,43 @@ module.exports.loop = function () {
 			switch(creepRole) {
 				case 0:
 				if(harvesters.length < maxHarvesters) {
-					spawn.createCreep([CARRY, MOVE, WORK, CARRY], undefined, {role: "harvester"});
+					spawnCreep(spawn, [CARRY, MOVE, WORK], undefined, "harvester");
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 1:
 				if(upgraders.length < maxUpgraders) {
-					spawn.createCreep([CARRY, MOVE, WORK, CARRY], undefined, {role: "upgrader"});
+					spawnCreep(spawn, [CARRY, MOVE, WORK], undefined, "upgrader");
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 2:
 				if(builders.length < maxBuilders) {
-					spawn.createCreep([CARRY, MOVE, WORK, CARRY], undefined, {role: "builder"});
+					spawnCreep(spawn, [CARRY, MOVE, WORK], undefined, "builder");
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 3:
 				if(rangers.length < maxRangers) {
-					spawn.createCreep([RANGED_ATTACK, MOVE, TOUGH, RANGED_ATTACK], undefined, {role: "ranger"});
+					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], undefined, "ranger");
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 4:
 				if(healers.length < maxHealers) {
-					spawn.createCreep([HEAL, MOVE, TOUGH, HEAL], undefined, {role: "healer"});
+					spawnCreep(spawn, [CLAIM, MOVE, TOUGH], undefined, "claimer");
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 5:
 				if(claimers.length < maxClaimers) {
-					spawn.createCreep([CLAIM, MOVE, TOUGH, CLAIM], undefined, {role: "claimer"});
+					spawnCreep(spawn, [HEAL, MOVE, TOUGH], undefined, "healer");
 				}
 				if(i == 0 || spawn.spawning) break;
 
 				case 6:
 				if(brawlers.length < maxBrawlers) {
-					spawn.createCreep([ATTACK, MOVE, TOUGH, ATTACK], undefined, {role: "brawler"});
+					spawnCreep(spawn, [ATTACK, MOVE, TOUGH], undefined, "brawler");
 				}
 				if(i == 0 || spawn.spawning) break;
 			}
