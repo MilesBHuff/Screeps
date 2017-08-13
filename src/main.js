@@ -7,6 +7,7 @@
 // Set constants
 // =============================================================================
 const username = "MilesBHuff";
+const totalCreepRoles = 7;
 
 // Import roles
 // =============================================================================
@@ -22,10 +23,10 @@ var roleUpgrader  = require("role.upgrader" );
 // Kill off unneeded creeps
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 function killOff(creeps, maxCreeps) {
-    var i = 0;
+	var i = 0;
 	while(creeps.length > maxCreeps) {
-	    creeps[i].suicide();
-	    i++;
+		creeps[i].suicide();
+		i++;
 	}
 }
 
@@ -97,25 +98,64 @@ module.exports.loop = function () {
 			break;
 		}
 		if(spawn.spawning || spawn.energy < spawn.energyCapacity) {
-		    continue;
+			continue;
 		}
 
 		// Determine role
 		// -----------------------------------------------------------------
-		/*//*/ if(harvesters.length < maxHarvesters) {
-			spawn.createCreep([MOVE, WORK,          CARRY, CARRY        ], undefined, {role: "harvester"});
-		} else if(claimers.length   < maxClaimers) {
-			spawn.createCreep([MOVE, CLAIM,         TOUGH, CLAIM        ], undefined, {role: "claimer"  });
-		} else if(rangers.length    < maxRangers) {
-			spawn.createCreep([MOVE, RANGED_ATTACK, TOUGH, RANGED_ATTACK], undefined, {role: "ranger"   });
-		} else if(brawlers.length   < maxBrawlers) {
-			spawn.createCreep([MOVE, ATTACK,        TOUGH, ATTACK       ], undefined, {role: "brawler" });
-		} else if(healers.length    < maxHealers) {
-			spawn.createCreep([MOVE, RANGED_ATTACK, TOUGH, RANGED_ATTACK], undefined, {role: "healer"   });
-		} else if(upgraders.length  < maxUpgraders) {
-			spawn.createCreep([MOVE, CARRY,         WORK,  CARRY        ], undefined, {role: "builder"  });
-		} else if(builders.length   < maxBuilders) {
-			spawn.createCreep([MOVE, CARRY,         WORK,  CARRY        ], undefined, {role: "upgrader" });
+		for(var i = 0; i < 2; i++) {
+			switch(i) {
+				case 0:
+				var creepRole = Math.ceil(Math.random() * totalCreepRoles);
+				break;
+
+				case 1:
+				var creepRole = 1;
+				break;
+			}
+			switch(creepRole) {
+				case 1:
+				if(brawlers.length < maxBrawlers) {
+					spawn.createCreep([MOVE, ATTACK, TOUGH, ATTACK], undefined, {role: "brawler"});
+				}
+				if(i == 0 || spawn.spawning) break;
+
+				case 2:
+				if(brawlers.length < maxBuilders) {
+					spawn.createCreep([MOVE, CARRY, WORK,  CARRY], undefined, {role: "builder"});
+				}
+				if(i == 0 || spawn.spawning) break;
+
+				case 3:
+				if(brawlers.length < maxClaimers) {
+					spawn.createCreep([MOVE, CLAIM, TOUGH, CLAIM], undefined, {role: "claimer"});
+				}
+				if(i == 0 || spawn.spawning) break;
+
+				case 4:
+				if(brawlers.length < maxHarvesters) {
+					spawn.createCreep([MOVE, WORK, CARRY, CARRY], undefined, {role: "harvester"});
+				}
+				if(i == 0 || spawn.spawning) break;
+
+				case 5:
+				if(brawlers.length < maxHealers) {
+					spawn.createCreep([MOVE, HEAL, TOUGH, HEAL], undefined, {role: "healer"});
+				}
+				if(i == 0 || spawn.spawning) break;
+
+				case 6:
+				if(brawlers.length < maxRangers) {
+					spawn.createCreep([MOVE, RANGED_ATTACK, TOUGH, RANGED_ATTACK], undefined, {role: "ranger"});
+				}
+				if(i == 0 || spawn.spawning) break;
+
+				case 7:
+				if(brawlers.length < maxUpgraders) {
+					spawn.createCreep([MOVE, CARRY,  WORK,  CARRY], undefined, {role: "upgrader"});
+				}
+				break;
+			}
 		}
 		var newCreep = Game.creeps[spawn.spawning.name];
 
@@ -154,7 +194,7 @@ module.exports.loop = function () {
 
 	// AIs
 	// =========================================================================
-	
+
 	// Structures
 	// -------------------------------------------------------------------------
 	for(var name in Game.structures) {
@@ -171,9 +211,9 @@ module.exports.loop = function () {
 	// -------------------------------------------------------------------------
 	for(var name in Game.creeps) {
 		var creep = Game.creeps[name];
-        if(creep.owner.username != username) {
-            continue
-        }
+		if(creep.owner.username != username) {
+			continue
+		}
 		/*//*/ if(creep.memory.role == "brawler"  ) {
 			roleBrawler.run(creep);
 		} else if(creep.memory.role == "builder"  ) {
