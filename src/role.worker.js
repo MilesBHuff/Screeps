@@ -91,36 +91,46 @@ var roleWorker = {
 		// ---------------------------------------------------------------------
 		if(creep.memory.harvesting) {
 			if( creep.harvest( Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-				creep.moveTo(  Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#ff0"}});
+				if(creep.moveTo(  Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#ff0"}}) == ERR_NO_PATH) {
+					creep.memory.target = undefined;
+				}
 			}
 		} else {
 
 			// Upgrade
 			// -----------------------------------------------------------------
 			/*//*/ if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
-				if( creep.upgradeController(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(           Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0ff"}});
+				if(creep.upgradeController(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0ff"}}) == ERR_NO_PATH) {
+						creep.memory.target = undefined;
+					}
 				}
 
 			// Build
 			// -----------------------------------------------------------------
 			} else if(Game.getObjectById(creep.memory.target).progress) {
-				if( creep.build( Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0f0"}});
+				if(creep.build( Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0f0"}}) == ERR_NO_PATH) {
+						creep.memory.target = undefined;
+					}
 				}
 
 			// Repair
 			// -----------------------------------------------------------------
 			} else if(Game.getObjectById(creep.memory.target).hits < Game.getObjectById(creep.memory.target).hitsMax) {
-				if( creep.repair(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f"}});
+				if(creep.repair(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f"}}) == ERR_NO_PATH) {
+						creep.memory.target = undefined;
+					}
 				}
 
 			// Transfer
 			// -----------------------------------------------------------------
 			} else {
-				if( creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-					creep.moveTo(  Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#fff"}});
+				if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#fff"}}) == ERR_NO_PATH) {
+						creep.memory.target = undefined;
+					}
 				}
 			}
 		}
