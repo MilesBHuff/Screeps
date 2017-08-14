@@ -139,7 +139,7 @@ module.exports.loop = function () {
 		for(var i = 0; i < 2; i++) {
 			switch(i) {
 				case 0:
-				if(workers.length < 3) {
+				if(workers.length < 4) {
 					var creepRole = 0;
 				} else {
 					var creepRole = Math.floor(Math.random() * totalCreepRoles);
