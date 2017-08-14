@@ -1,7 +1,11 @@
+// role.worker.js
+// #############################################################################
+
 var roleWorker = {
 	run: function (creep) {
 
 		// Decide whether to harvest
+		// =====================================================================
 		if(creep.memory.harvesting) {
 			if(creep.carry.energy >= creep.carryCapacity) {
 				creep.memory.harvesting = false;
@@ -15,11 +19,18 @@ var roleWorker = {
 		}
 
 		// Decide on a target
+		// =====================================================================
 		if(creep.memory.target == undefined) {
+
+			// Source
+			// -----------------------------------------------------------------
 			if(creep.memory.harvesting) {
 				var sources = creep.room.find(FIND_SOURCES);
 				creep.memory.target = sources[Math.floor(Math.random() * sources.length)].id;
 				creep.say("Harvest");
+
+			// Structure
+			// -----------------------------------------------------------------
 			} else {
 				var structures;
 				for(var i = 0; i < 2; i++) {
@@ -43,7 +54,7 @@ var roleWorker = {
 						}
 						if(i == 0) break;
 
-						case 1: // Construction
+						case 1: // Build
 						structures = creep.room.find(FIND_CONSTRUCTION_SITES);
 						if(structures) {
 							creep.say("Build");
@@ -74,23 +85,39 @@ var roleWorker = {
 		}
 
 		// Move towards the target
+		// =====================================================================
+
+		// Harvest
+		// ---------------------------------------------------------------------
 		if(creep.memory.harvesting) {
 			if( creep.harvest( Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 				creep.moveTo(  Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#ff0"}});
 			}
 		} else {
+
+			// Upgrade
+			// -----------------------------------------------------------------
 			/*//*/ if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
 				if( creep.upgradeController(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					creep.moveTo(           Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0ff"}});
 				}
+
+			// Build
+			// -----------------------------------------------------------------
 			} else if(Game.getObjectById(creep.memory.target).progress) {
 				if( creep.build( Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0f0"}});
 				}
+
+			// Repair
+			// -----------------------------------------------------------------
 			} else if(Game.getObjectById(creep.memory.target).hits < Game.getObjectById(creep.memory.target).hitsMax) {
 				if( creep.repair(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f"}});
 				}
+
+			// Transfer
+			// -----------------------------------------------------------------
 			} else {
 				if( creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 					creep.moveTo(  Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#fff"}});
