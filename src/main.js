@@ -7,28 +7,24 @@
 // Constants
 // =============================================================================
 const username = "MilesBHuff";
-const totalCreepRoles = 7;
+const totalCreepRoles = 5;
 
 // Metrics
 // =============================================================================
-var   brawlerCount = 0;
-var   builderCount = 0;
-var   claimerCount = 0;
-var    healerCount = 0;
-var harvesterCount = 0;
-var    rangerCount = 0;
-var  upgraderCount = 0;
+var brawlerCount = 0;
+var claimerCount = 0;
+var  healerCount = 0;
+var  workerCount = 0;
+var  rangerCount = 0;
 
 // Import roles
 // =============================================================================
-var roleBrawler   = require("role.brawler"  );
-var roleBuilder   = require("role.builder"  );
-var roleClaimer   = require("role.claimer"  );
-var roleHarvester = require("role.harvester");
-var roleHealer    = require("role.healer"   );
-var roleRanger    = require("role.ranger"   );
-var roleTower     = require("role.tower"    );
-var roleUpgrader  = require("role.upgrader" );
+var roleBrawler   = require("role.brawler");
+var roleClaimer   = require("role.claimer");
+var roleWorker    = require("role.worker" );
+var roleHealer    = require("role.healer" );
+var roleRanger    = require("role.ranger" );
+var roleTower     = require("role.tower"  );
 
 // Kill off unneeded creeps
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -77,10 +73,10 @@ module.exports.loop = function () {
 	// Metrics
 	// -------------------------------------------------------------------------
 	var cpuLimit = Game.cpu.limit;
-	var cpuUsed  = Game.cpu.getUsed;
 	if(!cpuLimit) {
 		cpuLimit = 30;
 	}
+	var cpuUsed  = Game.cpu.getUsed;
 	if(cpuUsed == 0) {
 		cpuUsed = creeps.length;
 	}
@@ -88,26 +84,22 @@ module.exports.loop = function () {
 	// Count creeps, buildings, etc
 	// -------------------------------------------------------------------------
 	// Buildings
-	var     towers = _.filter(Game.structures);
+	var   towers = _.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_TOWER);
 	// Creeps
-	var   brawlers = _.filter(Game.creeps, (creep) => creep.memory.role == "brawlers" );
-	var   builders = _.filter(Game.creeps, (creep) => creep.memory.role == "builder"  );
-	var   claimers = _.filter(Game.creeps, (creep) => creep.memory.role == "claimer"  );
-	var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == "harvester");
-	var    healers = _.filter(Game.creeps, (creep) => creep.memory.role == "healer"   );
-	var    rangers = _.filter(Game.creeps, (creep) => creep.memory.role == "ranger"   );
-	var  upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == "upgrader" );
+	var brawlers = _.filter(Game.creeps, (creep) => creep.memory.role == "brawler");
+	var claimers = _.filter(Game.creeps, (creep) => creep.memory.role == "claimer");
+	var  workers = _.filter(Game.creeps, (creep) => creep.memory.role == "worker" );
+	var  healers = _.filter(Game.creeps, (creep) => creep.memory.role == "healer" );
+	var  rangers = _.filter(Game.creeps, (creep) => creep.memory.role == "ranger" );
 
 	// Spawn ratios
 	// -------------------------------------------------------------------------
-	var   brawlerLimit = Math.ceil(0.0 * cpuLimit);
-	var   builderLimit = Math.ceil(0.2 * cpuLimit);
-	var   claimerLimit = Math.ceil(0.0 * cpuLimit);
-	var    healerLimit = Math.ceil(0.0 * cpuLimit);
-	var    rangerLimit = Math.ceil(0.0 * cpuLimit);
-	var  upgraderLimit = Math.ceil(0.2 * cpuLimit);
-	var harvesterLimit = cpuLimit - (brawlerLimit + builderLimit + claimerLimit + healerLimit + rangerLimit + upgraderLimit);
-	if(harvesterLimit < 0) {
+	var brawlerLimit = Math.ceil(0.0 * cpuLimit);
+	var claimerLimit = Math.ceil(0.0 * cpuLimit);
+	var  healerLimit = Math.ceil(0.0 * cpuLimit);
+	var  rangerLimit = Math.ceil(0.0 * cpuLimit);
+	var workerLimit = cpuLimit - (brawlerLimit + claimerLimit + healerLimit + rangerLimit);
+	if(workerLimit < 0) {
 		console.log("WARNING:  Invalid role ratios!");
 	}
 
@@ -116,13 +108,11 @@ module.exports.loop = function () {
 
 	// Kill off unneeded creeps
 	// -------------------------------------------------------------------------
-	killOff(  brawlers,   brawlerLimit);
-	killOff(  builders,   builderLimit);
-	killOff(  claimers,   claimerLimit);
-	killOff(harvesters, harvesterLimit);
-	killOff(   healers,    healerLimit);
-	killOff(   rangers,    rangerLimit);
-	killOff( upgraders,  upgraderLimit);
+	killOff(brawlers, brawlerLimit);
+	killOff(claimers, claimerLimit);
+	killOff( workers,  workerLimit);
+	killOff( healers,  healerLimit);
+	killOff( rangers,  rangerLimit);
 
 	// Delete the memories of dead creeps
 	// -------------------------------------------------------------------------
@@ -149,7 +139,7 @@ module.exports.loop = function () {
 		for(var i = 0; i < 2; i++) {
 			switch(i) {
 				case 0:
-				if(harvesters.length < 3) {
+				if(workers.length < 3) {
 					var creepRole = 0;
 				} else {
 					var creepRole = Math.floor(Math.random() * totalCreepRoles);
@@ -162,30 +152,14 @@ module.exports.loop = function () {
 			}
 			switch(creepRole) {
 				case 0:
-				if(harvesters.length < harvesterLimit) {
-					spawnCreep(spawn, [CARRY, MOVE, WORK], "Harvester" + harvesterCount, "harvester");
-					harvesterCount++;
+				if(workers.length < workerLimit) {
+					spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker" + workerCount, "worker");
+					workerCount++;
 					break;
 				}
 				if(i == 0) break;
 
 				case 1:
-				if(upgraders.length < upgraderLimit) {
-					spawnCreep(spawn, [CARRY, MOVE, WORK], "Upgrader" + upgraderCount, "upgrader");
-					upgraderCount++;
-					break;
-				}
-				if(i == 0) break;
-
-				case 2:
-				if(builders.length < builderLimit) {
-					spawnCreep(spawn, [CARRY, MOVE, WORK], "Builder" + builderCount, "builder");
-					builderCount++;
-					break;
-				}
-				if(i == 0) break;
-
-				case 3:
 				if(rangers.length < rangerLimit) {
 					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Ranger" + rangerCount, "ranger");
 					rangerCount++;
@@ -193,7 +167,7 @@ module.exports.loop = function () {
 				}
 				if(i == 0) break;
 
-				case 4:
+				case 2:
 				if(claimers.length < claimerLimit) {
 					spawnCreep(spawn, [CLAIM, MOVE, TOUGH], "Claimer" + claimerCount, "claimer");
 					claimerCount++;
@@ -201,7 +175,7 @@ module.exports.loop = function () {
 				}
 				if(i == 0) break;
 
-				case 5:
+				case 3:
 				if(healers.length < healerLimit) {
 					spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer" + healerCount, "healer");
 					healerCount++;
@@ -209,7 +183,7 @@ module.exports.loop = function () {
 				}
 				if(i == 0) break;
 
-				case 6:
+				case 4:
 				if(brawlers.length < brawlerLimit) {
 					spawnCreep(spawn, [ATTACK, MOVE, TOUGH], "Brawler" + brawlerCount, "brawler");
 					brawlerCount++;
@@ -250,7 +224,7 @@ module.exports.loop = function () {
 		// Display text
 		// -----------------------------------------------------------------
 		spawn.room.visual.text(
-			"🛠️ " + newCreep.memory.role.charAt(0).toUpperCase() + newCreep.memory.role.slice(1),
+			newCreep.memory.role.charAt(0).toUpperCase() + newCreep.memory.role.slice(1),
 			spawn.pos.x,
 			spawn.pos.y,
 			{align: 'left', opacity: 0.7}
@@ -279,20 +253,16 @@ module.exports.loop = function () {
 		if(creep.owner.username != username) {
 			continue
 		}
-		/*//*/ if(creep.memory.role == "brawler"  ) {
+		/*//*/ if(creep.memory.role == "brawler") {
 			roleBrawler.run(creep);
-		} else if(creep.memory.role == "builder"  ) {
-			roleBuilder.run(creep);
-		} else if(creep.memory.role == "claimer"  ) {
+		} else if(creep.memory.role == "claimer") {
 			roleClaimer.run(creep);
-		} else if(creep.memory.role == "harvester") {
-			roleHarvester.run(creep);
-		} else if(creep.memory.role == "healer"   ) {
+		} else if(creep.memory.role == "worker" ) {
+			roleWorker.run(creep);
+		} else if(creep.memory.role == "healer" ) {
 			roleHealer.run(creep);
-		} else if(creep.memory.role == "ranger"   ) {
+		} else if(creep.memory.role == "ranger" ) {
 			roleRanger.run(creep);
-		} else if(creep.memory.role == "upgrader" ) {
-			roleUpgrader.run(creep);
 		}
 	}
 }
