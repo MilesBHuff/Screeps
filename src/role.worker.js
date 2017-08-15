@@ -116,9 +116,14 @@ var roleWorker = {
 			}
 		} else {
 
+			// Clear nonexistant targets
+			// -----------------------------------------------------------------
+			/*//*/ if(!Game.getObjectById(creep.memory.target)) {
+				creep.memory.target = undefined;
+
 			// Upgrade
 			// -----------------------------------------------------------------
-			/*//*/ if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
+			} else if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
 				if(creep.upgradeController(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0ff"}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
