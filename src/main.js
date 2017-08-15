@@ -13,10 +13,10 @@ const totalCreepRoles = 5;
 // =============================================================================
 var roleBrawler   = require("role.brawler");
 var roleClaimer   = require("role.claimer");
-var roleWorker    = require("role.worker" );
 var roleHealer    = require("role.healer" );
 var roleRanger    = require("role.ranger" );
 var roleTower     = require("role.tower"  );
+var roleWorker    = require("role.worker" );
 
 // Kill off unneeded creeps
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -80,16 +80,16 @@ module.exports.loop = function () {
 	// Creeps
 	var brawlers = _.filter(Game.creeps, (creep) => creep.memory.role == "brawler");
 	var claimers = _.filter(Game.creeps, (creep) => creep.memory.role == "claimer");
-	var  workers = _.filter(Game.creeps, (creep) => creep.memory.role == "worker" );
 	var  healers = _.filter(Game.creeps, (creep) => creep.memory.role == "healer" );
 	var  rangers = _.filter(Game.creeps, (creep) => creep.memory.role == "ranger" );
+	var  workers = _.filter(Game.creeps, (creep) => creep.memory.role == "worker" );
 
 	// Spawn ratios
 	// -------------------------------------------------------------------------
 	var brawlerLimit = Math.ceil(0.0 * cpuLimit);
 	var claimerLimit = Math.ceil(0.0 * cpuLimit);
 	var  healerLimit = Math.ceil(0.0 * cpuLimit);
-	var  rangerLimit = Math.ceil(0.1 * cpuLimit);
+	var  rangerLimit = Math.ceil(0.5 * cpuLimit);
 	var workerLimit = cpuLimit - (brawlerLimit + claimerLimit + healerLimit + rangerLimit);
 	if(workerLimit < 0) {
 		console.log("WARNING:  Invalid role ratios!");
@@ -102,9 +102,9 @@ module.exports.loop = function () {
 	// -------------------------------------------------------------------------
 	killOff(brawlers, brawlerLimit);
 	killOff(claimers, claimerLimit);
-	killOff( workers,  workerLimit);
 	killOff( healers,  healerLimit);
 	killOff( rangers,  rangerLimit);
+	killOff( workers,  workerLimit);
 
 	// Delete the memories of dead creeps
 	// -------------------------------------------------------------------------
@@ -240,16 +240,16 @@ module.exports.loop = function () {
 		if(creep.owner.username != username) {
 			continue
 		}
-		/*//*/ if(creep.memory.role == "brawler") {
-			roleBrawler.run(creep);
-		} else if(creep.memory.role == "claimer") {
-			roleClaimer.run(creep);
-		} else if(creep.memory.role == "worker" ) {
+		/*//*/ if(creep.memory.role == "worker" ) {
 			roleWorker.run(creep);
-		} else if(creep.memory.role == "healer" ) {
-			roleHealer.run(creep);
 		} else if(creep.memory.role == "ranger" ) {
 			roleRanger.run(creep);
+		} else if(creep.memory.role == "claimer") {
+			roleClaimer.run(creep);
+		} else if(creep.memory.role == "healer" ) {
+			roleHealer.run(creep);
+		} else if(creep.memory.role == "brawler") {
+			roleBrawler.run(creep);
 		}
 	}
 }
