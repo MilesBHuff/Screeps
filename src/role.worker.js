@@ -34,7 +34,7 @@ var roleWorker = {
 			// Source
 			// -----------------------------------------------------------------
 			if(creep.memory.harvesting) {
-				var sources = creep.room.find(FIND_SOURCES);
+				var sources = creep.room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
 				if(creep.memory.closest) {
 					creep.memory.target = creep.pos.findClosestByPath(sources).id;
 				} else {
@@ -108,7 +108,10 @@ var roleWorker = {
 		// Harvest
 		// ---------------------------------------------------------------------
 		if(creep.memory.harvesting) {
-			if( creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+			/*//*/ if(creep.memory.target.energy <= 0) {
+				creep.memory.target  = undefined;
+				creep.memory.closest = false;
+			} else if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#ff0"}}) == ERR_NO_PATH) {
 					creep.memory.target  = undefined;
 					creep.memory.closest = false;
