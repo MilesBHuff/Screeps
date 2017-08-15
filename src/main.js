@@ -129,23 +129,24 @@ module.exports.loop = function () {
 		// Determine role
 		// -----------------------------------------------------------------
 		for(var i = 0; i < 2; i++) {
+			var creepRole = 0;
 			switch(i) {
 				case 0:
 				if(workers.length < 4) {
-					var creepRole = 0;
+					creepRole = 0;
 				} else {
-					var creepRole = Math.floor(Math.random() * totalCreepRoles);
+					creepRole = Math.floor(Math.random() * totalCreepRoles);
 				}
 				break;
 
 				case 1:
-				var creepRole = 0;
+				creepRole = 0;
 				break;
 			}
 			switch(creepRole) {
 				case 0:
 				if(workers.length < workerLimit) {
-					spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker");
+					spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker", "worker");
 					break;
 				}
 				if(i == 0) break;
