@@ -52,7 +52,7 @@ function spawnCreep(spawn, rawParts, name, role) {
 			j = 0;
 		}
 	}
-	return spawn.createCreep(bodyParts, name, {role: role});
+	for(var i = 0; spawn.createCreep(bodyParts, name + i, {role: role}) == ERR_NAME_EXISTS; i++) {}
 }
 
 // Main loop
@@ -145,35 +145,35 @@ module.exports.loop = function () {
 			switch(creepRole) {
 				case 0:
 				if(workers.length < workerLimit) {
-					for(var num = 0; spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker" + num, "worker") == ERR_NAME_EXISTS; num++) {}
+					spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker");
 					break;
 				}
 				if(i == 0) break;
 
 				case 1:
 				if(rangers.length < rangerLimit) {
-					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Ranger" + 0, "ranger");
+					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Ranger", "ranger");
 					break;
 				}
 				if(i == 0) break;
 
 				case 2:
 				if(claimers.length < claimerLimit) {
-					spawnCreep(spawn, [CLAIM, MOVE, TOUGH], "Claimer" + 0, "claimer");
+					spawnCreep(spawn, [CLAIM, MOVE, TOUGH], "Claimer", "claimer");
 					break;
 				}
 				if(i == 0) break;
 
 				case 3:
 				if(healers.length < healerLimit) {
-					spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer" + 0, "healer");
+					spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", "healer");
 					break;
 				}
 				if(i == 0) break;
 
 				case 4:
 				if(brawlers.length < brawlerLimit) {
-					spawnCreep(spawn, [ATTACK, MOVE, TOUGH], "Brawler" + 0, "brawler");
+					spawnCreep(spawn, [ATTACK, MOVE, TOUGH], "Brawler", "brawler");
 					break;
 				}
 				if(i == 0) break;
