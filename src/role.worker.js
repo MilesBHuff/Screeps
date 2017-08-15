@@ -1,8 +1,15 @@
 // role.worker.js
 // #############################################################################
+/** What this script does, is it causes workers to vary between harvesting and
+ *  using energy, the latter meaning to transfer, build, repair, or upgrade.
+ *  Which of these tasks is chosen is random, and resets at every harvest.
+ *  These worker creeps also always look for the closest target first.  If that
+ *  target is inaccessible, they then pick one at random within their room.
+**/
 
 var roleWorker = {
 	run: function (creep) {
+// creep.memory.target = undefined; // Useful when you need to reset everyone's task.
 
 		// Decide whether to harvest
 		// =====================================================================
@@ -10,11 +17,13 @@ var roleWorker = {
 			if(creep.carry.energy >= creep.carryCapacity) {
 				creep.memory.harvesting = false;
 				creep.memory.target = undefined;
+				creep.memory.closest = true;
 			}
 		} else {
 			if(creep.carry.energy <= 0) {
 				creep.memory.harvesting = true;
 				creep.memory.target = undefined;
+				creep.memory.closest = true;
 			}
 		}
 
@@ -26,7 +35,11 @@ var roleWorker = {
 			// -----------------------------------------------------------------
 			if(creep.memory.harvesting) {
 				var sources = creep.room.find(FIND_SOURCES);
-				creep.memory.target = sources[Math.floor(Math.random() * sources.length)].id;
+				if(creep.memory.closest) {
+					creep.memory.target = creep.pos.findClosestByPath(sources).id;
+				} else {
+					creep.memory.target = sources[Math.floor(Math.random() * sources.length)].id;
+				}
 				creep.say("Harvest");
 
 			// Structure
@@ -45,10 +58,11 @@ var roleWorker = {
 								(	 structure.structureType == STRUCTURE_EXTENSION
 								  || structure.structureType == STRUCTURE_SPAWN
 								  || structure.structureType == STRUCTURE_TOWER
+								  || structure.structureType == STRUCTURE_CONTAINER
 								) && structure.energy        <  structure.energyCapacity
 							);}
 						});
-						if(structures) {
+						if(structures && structures.length) {
 							creep.say("Transfer");
 							break;
 						}
@@ -56,7 +70,7 @@ var roleWorker = {
 
 						case 1: // Build
 						structures = creep.room.find(FIND_CONSTRUCTION_SITES);
-						if(structures) {
+						if(structures && structures.length) {
 							creep.say("Build");
 							break;
 						}
@@ -64,7 +78,7 @@ var roleWorker = {
 
 						case 2: // Repair
 						creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax});
-						if(structures) {
+						if(structures && structures.length) {
 							creep.say("Repair");
 							break;
 						}
@@ -72,15 +86,19 @@ var roleWorker = {
 
 						case 3: // Upgrade
 						structures = [creep.room.controller];
-						if(structures) {
+						if(structures && structures.length) {
 							creep.say("Upgrade");
 							break;
 						}
 						if(i == 0) break;
 					}
-					if(structures) break;
+					if(structures && structures.length) break;
 				}
-				creep.memory.target = structures[Math.floor(Math.random() * structures.length)].id;
+				if(creep.memory.closest) {
+					creep.memory.target = creep.pos.findClosestByPath(structures).id;
+				} else {
+					creep.memory.target = structures[Math.floor(Math.random() * structures.length)].id;
+				}
 			}
 		}
 
@@ -90,9 +108,10 @@ var roleWorker = {
 		// Harvest
 		// ---------------------------------------------------------------------
 		if(creep.memory.harvesting) {
-			if( creep.harvest( Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-				if(creep.moveTo(  Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#ff0"}}) == ERR_NO_PATH) {
-					creep.memory.target = undefined;
+			if( creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#ff0"}}) == ERR_NO_PATH) {
+					creep.memory.target  = undefined;
+					creep.memory.closest = false;
 				}
 			}
 		} else {
@@ -108,10 +127,11 @@ var roleWorker = {
 
 			// Build
 			// -----------------------------------------------------------------
-			} else if(Game.getObjectById(creep.memory.target).progress) {
-				if(creep.build( Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+			} else if(Game.getObjectById(creep.memory.target).progressTotal) {
+				if(creep.build(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0f0"}}) == ERR_NO_PATH) {
-						creep.memory.target = undefined;
+						creep.memory.target  = undefined;
+						creep.memory.closest = false;
 					}
 				}
 
@@ -121,6 +141,7 @@ var roleWorker = {
 				if(creep.repair(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f"}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
+						creep.memory.closest = false;
 					}
 				}
 
@@ -129,7 +150,8 @@ var roleWorker = {
 			} else {
 				if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#fff"}}) == ERR_NO_PATH) {
-						creep.memory.target = undefined;
+						creep.memory.target  = undefined;
+						creep.memory.closest = false;
 					}
 				}
 			}
