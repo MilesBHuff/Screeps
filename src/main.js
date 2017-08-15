@@ -9,14 +9,6 @@
 const username = "MilesBHuff";
 const totalCreepRoles = 5;
 
-// Metrics
-// =============================================================================
-var brawlerCount = 0;
-var claimerCount = 0;
-var  healerCount = 0;
-var  workerCount = 0;
-var  rangerCount = 0;
-
 // Import roles
 // =============================================================================
 var roleBrawler   = require("role.brawler");
@@ -60,7 +52,7 @@ function spawnCreep(spawn, rawParts, name, role) {
 			j = 0;
 		}
 	}
-	spawn.createCreep(bodyParts, name, {role: role});
+	return spawn.createCreep(bodyParts, name, {role: role});
 }
 
 // Main loop
@@ -97,7 +89,7 @@ module.exports.loop = function () {
 	var brawlerLimit = Math.ceil(0.0 * cpuLimit);
 	var claimerLimit = Math.ceil(0.0 * cpuLimit);
 	var  healerLimit = Math.ceil(0.0 * cpuLimit);
-	var  rangerLimit = Math.ceil(0.0 * cpuLimit);
+	var  rangerLimit = Math.ceil(0.1 * cpuLimit);
 	var workerLimit = cpuLimit - (brawlerLimit + claimerLimit + healerLimit + rangerLimit);
 	if(workerLimit < 0) {
 		console.log("WARNING:  Invalid role ratios!");
@@ -153,40 +145,35 @@ module.exports.loop = function () {
 			switch(creepRole) {
 				case 0:
 				if(workers.length < workerLimit) {
-					spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker" + workerCount, "worker");
-					workerCount++;
+					for(var num = 0; spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker" + num, "worker") == ERR_NAME_EXISTS; num++) {}
 					break;
 				}
 				if(i == 0) break;
 
 				case 1:
 				if(rangers.length < rangerLimit) {
-					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Ranger" + rangerCount, "ranger");
-					rangerCount++;
+					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Ranger" + 0, "ranger");
 					break;
 				}
 				if(i == 0) break;
 
 				case 2:
 				if(claimers.length < claimerLimit) {
-					spawnCreep(spawn, [CLAIM, MOVE, TOUGH], "Claimer" + claimerCount, "claimer");
-					claimerCount++;
+					spawnCreep(spawn, [CLAIM, MOVE, TOUGH], "Claimer" + 0, "claimer");
 					break;
 				}
 				if(i == 0) break;
 
 				case 3:
 				if(healers.length < healerLimit) {
-					spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer" + healerCount, "healer");
-					healerCount++;
+					spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer" + 0, "healer");
 					break;
 				}
 				if(i == 0) break;
 
 				case 4:
 				if(brawlers.length < brawlerLimit) {
-					spawnCreep(spawn, [ATTACK, MOVE, TOUGH], "Brawler" + brawlerCount, "brawler");
-					brawlerCount++;
+					spawnCreep(spawn, [ATTACK, MOVE, TOUGH], "Brawler" + 0, "brawler");
 					break;
 				}
 				if(i == 0) break;
