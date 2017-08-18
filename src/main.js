@@ -4,19 +4,27 @@
 // Set variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-// Constants
+// Miscellaneous
 // =============================================================================
 const username = "MilesBHuff";
-const totalCreepRoles = 5;
+
+// Spawn amounts
+// -------------------------------------------------------------------------
+var brawlerLimit = 0; // Doubled during conflict
+var claimerLimit = 1;
+var  healerLimit = 2; // Doubled during conflict
+var  rangerLimit = 4; // Doubled during conflict
+var  workerLimit = 4; // Multiplied by the number of sources
 
 // Import roles
 // =============================================================================
-var roleBrawler   = require("role.brawler");
-var roleClaimer   = require("role.claimer");
-var roleHealer    = require("role.healer" );
-var roleRanger    = require("role.ranger" );
-var roleTower     = require("role.tower"  );
-var roleWorker    = require("role.worker" );
+const totalCreepRoles = 5;
+const roleBrawler   = require("role.brawler");
+const roleClaimer   = require("role.claimer");
+const roleHealer    = require("role.healer" );
+const roleRanger    = require("role.ranger" );
+const roleTower     = require("role.tower"  );
+const roleWorker    = require("role.worker" );
 
 // Kill off unneeded creeps
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -73,14 +81,17 @@ module.exports.loop = function () {
 	var  rangers = _.filter(Game.creeps, (creep) => creep.memory.role == "ranger" );
 	var  workers = _.filter(Game.creeps, (creep) => creep.memory.role == "worker" );
 
-	// Spawn amounts
+	// Adjust creep ratios
 	// -------------------------------------------------------------------------
-	var brawlerLimit = 0;
-	var claimerLimit = 1;
-	var  healerLimit = 2;
-	var  rangerLimit = 4;
-	var  workerLimit = 8;
-
+	// Multiply workers by the number of sources
+	workerLimit*= creep.room.find(FIND_SOURCES).length;
+	// If aggressive creeps are present, double the military creeps.
+	if(false) { //TODO
+		brawlerLimit*= 2;
+		 healerLimit*= 2;
+		 rangerLimit*= 2;
+	}
+	
 	// Cleanup
 	// =========================================================================
 
