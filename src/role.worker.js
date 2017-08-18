@@ -36,7 +36,9 @@ var roleWorker = {
 			if(creep.memory.harvesting) {
 				var sources = creep.room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
 				var target = undefined;
-				if(target = creep.pos.findClosestByPath(sources) || target = sources[Math.floor(Math.random() * sources.length)]) {
+				if((target = creep.pos.findClosestByPath(sources))
+				|| (target = sources[Math.floor(Math.random() * sources.length)])
+				){
 					creep.memory.target = target.id;
 				} else {
 					creep.memory.target = undefined;
