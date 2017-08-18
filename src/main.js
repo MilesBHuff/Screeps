@@ -4,7 +4,7 @@
 // Set variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-// Import roles
+// Define roles
 // =============================================================================
 const ROLES = Object.freeze({
 	"WORKER":  0,
@@ -65,59 +65,31 @@ function spawnCreep(spawn, rawParts, name, role) {
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 module.exports.loop = function () {
 
-	// Modify the creeps in each room
+	// Set limits for creeps in each room
 	// =====================================================================
 	for(var name in Game.rooms) {
 		var room = Game.rooms[name];
 
-		// Adjust creep ratios
+		// Set things to their default values.
 		// -------------------------------------------------------------
-		// Set the default values
 		room.memory.claimerLimit = claimerBaseLimit;
 		room.memory.healerLimit  =  healerBaseLimit;
 		room.memory.fighterLimit = fighterBaseLimit;
 		room.memory.workerLimit  =  workerBaseLimit;
-		// Multiply workers by the number of sources
+
+		// Multiply workers by the number of sources.
+		// -------------------------------------------------------------
 		room.memory.workerLimit *= room.find(FIND_SOURCES).length;
+
 		// If aggressive creeps are present, double the military creeps.
+		// -------------------------------------------------------------
 		if(false) { //TODO
 			room.memory.healerLimit  *= 2;
 			room.memory.fighterLimit *= 2;
 		}
-
-		// Cleanup
-		// =============================================================
-
-		// Kill off unneeded creeps
-		// -------------------------------------------------------------
-		killOff(claimers, room.memory.claimerLimit);
-		killOff( healers, room.memory.healerLimit );
-		killOff(fighters, room.memory.fighterLimit);
-		killOff( workers, room.memory.workerLimit );
 	}
 
-	// Delete the memories of dead entities
-	// ---------------------------------------------------------------------
-	// Creeps
-	for(var name in Memory.creeps) {
-		if(!Game.creeps[name]) {
-			delete Memory.creeps[name];
-		}
-	}
-	// Structures
-	for(var name in Memory.structures) {
-		if(!Game.structures[name]) {
-			delete Memory.structures[name];
-		}
-	}
-	// Rooms
-	for(var name in Memory.rooms) {
-		if(!Game.rooms[name]) {
-			delete Memory.rooms[name];
-		}
-	}
-
-	// Spawn new creeps
+	// Manage creeps
 	// =====================================================================
 	for(var name in Game.spawns) {
 		var spawn = Game.spawns[name];
@@ -219,6 +191,37 @@ module.exports.loop = function () {
 			spawn.pos.y,
 			{align: 'left', opacity: 0.7}
 		);
+
+		// Cleanup
+		// =============================================================
+
+		// Kill off unneeded creeps
+		// -------------------------------------------------------------
+		killOff(claimers, room.memory.claimerLimit);
+		killOff( healers, room.memory.healerLimit );
+		killOff(fighters, room.memory.fighterLimit);
+		killOff( workers, room.memory.workerLimit );
+	}
+
+	// Delete the memories of dead entities
+	// ---------------------------------------------------------------------
+	// Creeps
+	for(var name in Memory.creeps) {
+		if(!Game.creeps[name]) {
+			delete Memory.creeps[name];
+		}
+	}
+	// Structures
+	for(var name in Memory.structures) {
+		if(!Game.structures[name]) {
+			delete Memory.structures[name];
+		}
+	}
+	// Rooms
+	for(var name in Memory.rooms) {
+		if(!Game.rooms[name]) {
+			delete Memory.rooms[name];
+		}
 	}
 
 	// AIs
