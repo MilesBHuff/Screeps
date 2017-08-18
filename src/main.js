@@ -84,7 +84,7 @@ module.exports.loop = function () {
 	// Adjust creep ratios
 	// -------------------------------------------------------------------------
 	// Multiply workers by the number of sources
-	workerLimit*= creep.room.find(FIND_SOURCES).length;
+	//workerLimit*= creep.room.find(FIND_SOURCES).length;
 	// If aggressive creeps are present, double the military creeps.
 	if(false) { //TODO
 		brawlerLimit*= 2;
