@@ -4,27 +4,25 @@
 // Set variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-// Miscellaneous
-// =============================================================================
-const username = "MilesBHuff";
-
-// Spawn amounts
-// -------------------------------------------------------------------------
-var brawlerLimit = 0; // Doubled during conflict
-var claimerLimit = 1;
-var  healerLimit = 2; // Doubled during conflict
-var  rangerLimit = 4; // Doubled during conflict
-var  workerLimit = 4; // Multiplied by the number of sources
-
 // Import roles
 // =============================================================================
-const totalCreepRoles = 5;
-const roleBrawler   = require("role.brawler");
-const roleClaimer   = require("role.claimer");
-const roleHealer    = require("role.healer" );
-const roleRanger    = require("role.ranger" );
-const roleTower     = require("role.tower"  );
-const roleWorker    = require("role.worker" );
+const ROLES = Object.freeze({
+	"WORKER":  0,
+	"FIGHTER": 1,
+	"HEALER":  2,
+	"CLAIMER": 3
+})
+
+// Spawn amounts
+// =============================================================================
+const claimerBaseLimit = 1;
+const  healerBaseLimit = 2; // Doubled during conflict
+const fighterBaseLimit = 4; // Doubled during conflict
+const  workerBaseLimit = 4; // Multiplied by the number of sources
+
+// Miscellaneous
+// =============================================================================
+const USERNAME = "MilesBHuff";
 
 // Kill off unneeded creeps
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -67,68 +65,85 @@ function spawnCreep(spawn, rawParts, name, role) {
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 module.exports.loop = function () {
 
-	// Important variables
-	// =========================================================================
+	// Modify the creeps in each room
+	// =====================================================================
+	for(var room in Game.rooms) {
 
-	// Count creeps, buildings, etc
-	// -------------------------------------------------------------------------
-	// Buildings
-	var   towers = _.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_TOWER);
-	// Creeps
-	var brawlers = _.filter(Game.creeps, (creep) => creep.memory.role == "brawler");
-	var claimers = _.filter(Game.creeps, (creep) => creep.memory.role == "claimer");
-	var  healers = _.filter(Game.creeps, (creep) => creep.memory.role == "healer" );
-	var  rangers = _.filter(Game.creeps, (creep) => creep.memory.role == "ranger" );
-	var  workers = _.filter(Game.creeps, (creep) => creep.memory.role == "worker" );
+		// Adjust creep ratios
+		// -------------------------------------------------------------
+		// Set the default values
+		room.memory.claimerLimit = claimerBaseLimit;
+		room.memory.healerLimit  =  healerBaseLimit;
+		room.memory.fighterLimit = fighterBaseLimit;
+		room.memory.workerLimit  =  workerBaseLimit;
+		// Multiply workers by the number of sources
+		workerRoomLimit*= room.find(FIND_SOURCES).length;
+		// If aggressive creeps are present, double the military creeps.
+		if(false) { //TODO
+			room.memory.healerLimit  *= 2;
+			room.memory.fighterLimit *= 2;
+		}
 
-	// Adjust creep ratios
-	// -------------------------------------------------------------------------
-	// Multiply workers by the number of sources
-	//workerLimit*= creep.room.find(FIND_SOURCES).length;
-	// If aggressive creeps are present, double the military creeps.
-	if(false) { //TODO
-		brawlerLimit*= 2;
-		 healerLimit*= 2;
-		 rangerLimit*= 2;
+		// Cleanup
+		// =============================================================
+
+		// Kill off unneeded creeps
+		// -------------------------------------------------------------
+		killOff(claimers, room.memory.claimerLimit);
+		killOff( healers, room.memory.healerLimit );
+		killOff(fighters, room.memory.fighterLimit);
+		killOff( workers, room.memory.workerLimit );
 	}
-	
-	// Cleanup
-	// =========================================================================
 
-	// Kill off unneeded creeps
-	// -------------------------------------------------------------------------
-	killOff(brawlers, brawlerLimit);
-	killOff(claimers, claimerLimit);
-	killOff( healers,  healerLimit);
-	killOff( rangers,  rangerLimit);
-	killOff( workers,  workerLimit);
-
-	// Delete the memories of dead creeps
-	// -------------------------------------------------------------------------
+	// Delete the memories of dead entities
+	// ---------------------------------------------------------------------
+	// Creeps
 	for(var name in Memory.creeps) {
 		if(!Game.creeps[name]) {
 			delete Memory.creeps[name];
 		}
 	}
+	// Structures
+	for(var name in Memory.structures) {
+		if(!Game.structures[name]) {
+			delete Memory.structures[name];
+		}
+	}
+	// Rooms
+	for(var name in Memory.rooms) {
+		if(!Game.rooms[name]) {
+			delete Memory.rooms[name];
+		}
+	}
 
 	// Spawn new creeps
-	// =========================================================================
+	// =====================================================================
 	for(var name in Game.spawns) {
 		var spawn = Game.spawns[name];
-		if(spawn.spawning || spawn.energy < spawn.energyCapacity) {
+		if(spawn.spawning || room.energyAvailable < room.energyCapacityAvailable) {
 			continue;
 		}
 
+		// Count creeps, buildings, etc
+		// -------------------------------------------------------------
+		// Buildings
+		var   towers = _.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_TOWER && structure.room == spawn.room);
+		// Creeps
+		var claimers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.CLAIMER   && structure.room == spawn.room);
+		var  healers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.HEALER    && structure.room == spawn.room);
+		var fighters = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.FIGHTER   && structure.room == spawn.room);
+		var  workers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.WORKER    && structure.room == spawn.room);
+
 		// Determine role
-		// -----------------------------------------------------------------
+		// -------------------------------------------------------------
 		for(var i = 0; i < 2; i++) {
 			var creepRole = 0;
 			switch(i) {
 				case 0:
-				if(workers.length < 4) {
-					creepRole = 0;
+				if(workers.length < spawn.room.memory.workerLimit / 2) {
+					creepRole = ROLES.WORKER;
 				} else {
-					creepRole = Math.floor(Math.random() * totalCreepRoles);
+					creepRole = Math.floor(Math.random() * ROLES.length);
 				}
 				break;
 
@@ -137,40 +152,33 @@ module.exports.loop = function () {
 				break;
 			}
 			switch(creepRole) {
-				case 0:
-				if(workers.length < workerLimit) {
-					spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker", "worker");
+				case ROLES.WORKER:
+				if(workers.length < workerBaseLimit) {
+					spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker", ROLES.WORKER);
 					break;
 				}
 				if(i == 0) break;
 
-				case 1:
-				if(rangers.length < rangerLimit) {
-					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Ranger", "ranger");
+				case ROLES.FIGHTER:
+				if(fighters.length <fighterBaseLimit) {
+					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Fighter", ROLES.FIGHTER);
 					break;
 				}
 				if(i == 0) break;
 
-				case 2:
-				if(claimers.length < claimerLimit) {
-					spawnCreep(spawn, [CLAIM, MOVE, TOUGH], "Claimer", "claimer");
+				case ROLES.HEALER:
+				if(healers.length < healerBaseLimit) {
+					spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", ROLES.HEALER);
 					break;
 				}
 				if(i == 0) break;
 
-				case 3:
-				if(healers.length < healerLimit) {
-					spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", "healer");
+				case ROLES.CLAIMER:
+				if(claimers.length < claimerBaseLimit) {
+					spawnCreep(spawn, [CLAIM, MOVE, TOUGH], "Claimer", ROLES.CLAIMER);
 					break;
 				}
-				if(i == 0) break;
-
-				case 4:
-				if(brawlers.length < brawlerLimit) {
-					spawnCreep(spawn, [ATTACK, MOVE, TOUGH], "Brawler", "brawler");
-					break;
-				}
-				if(i == 0) break;
+				break;
 			}
 			if(spawn.spawning) break;
 		}
@@ -180,7 +188,7 @@ module.exports.loop = function () {
 		var newCreep = Game.creeps[spawn.spawning.name];
 
 		// Determine starting position
-		// -----------------------------------------------------------------
+		// -------------------------------------------------------------
 		var pos = {
 			x: spawn.pos.x,
 			y: spawn.pos.y
@@ -203,7 +211,7 @@ module.exports.loop = function () {
 		}
 
 		// Display text
-		// -----------------------------------------------------------------
+		// -------------------------------------------------------------
 		spawn.room.visual.text(
 			newCreep.memory.role.charAt(0).toUpperCase() + newCreep.memory.role.slice(1),
 			spawn.pos.x,
@@ -213,37 +221,35 @@ module.exports.loop = function () {
 	}
 
 	// AIs
-	// =========================================================================
+	// =====================================================================
 
 	// Structures
-	// -------------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 	for(var name in Game.structures) {
 		var structure = Game.structures[name];
-		if(structure.owner.username != username) {
+		if(structure.owner.USERNAME != USERNAME) {
 			continue
 		}
-		/*//*/ if(structure.structureType == "tower") {
-			roleTower.run(structure);
+		/*//*/ if(structure.structureType == ROLES.TOWER) {
+			require("role.tower").run(structure);
 		}
 	}
 
 	// Creeps
-	// -------------------------------------------------------------------------
+	// ---------------------------------------------------------------------
 	for(var name in Game.creeps) {
 		var creep = Game.creeps[name];
-		if(creep.owner.username != username) {
+		if(creep.owner.USERNAME != USERNAME) {
 			continue
 		}
-		/*//*/ if(creep.memory.role == "worker" ) {
-			roleWorker.run(creep);
-		} else if(creep.memory.role == "ranger" ) {
-			roleRanger.run(creep);
-		} else if(creep.memory.role == "claimer") {
-			roleClaimer.run(creep);
-		} else if(creep.memory.role == "healer" ) {
-			roleHealer.run(creep);
-		} else if(creep.memory.role == "brawler") {
-			roleBrawler.run(creep);
+		/*//*/ if(creep.memory.role == ROLES.WORKER ) {
+			require("role.worker" ).run(creep);
+		} else if(creep.memory.role == ROLES.FIGHTER) {
+			require("role.fighter").run(creep);
+		} else if(creep.memory.role == ROLES.HEALER ) {
+			require("role.healer" ).run(creep);
+		} else if(creep.memory.role == ROLES.CLAIMER) {
+			require("role.claimer").run(creep);
 		}
 	}
 }
