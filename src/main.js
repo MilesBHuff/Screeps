@@ -103,10 +103,10 @@ module.exports.loop = function () {
 		// Buildings
 		var   towers = _.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_TOWER && structure.room == spawn.room);
 		// Creeps
-		var claimers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.CLAIMER   && structure.room == spawn.room);
-		var  healers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.HEALER    && structure.room == spawn.room);
-		var fighters = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.FIGHTER   && structure.room == spawn.room);
-		var  workers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.WORKER    && structure.room == spawn.room);
+		var claimers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.CLAIMER   && creep.room == spawn.room);
+		var  healers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.HEALER    && creep.room == spawn.room);
+		var fighters = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.FIGHTER   && creep.room == spawn.room);
+		var  workers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.WORKER    && creep.room == spawn.room);
 
 		// Determine role
 		// -------------------------------------------------------------
