@@ -62,17 +62,6 @@ module.exports.loop = function () {
 	// Important variables
 	// =========================================================================
 
-	// Metrics
-	// -------------------------------------------------------------------------
-	var cpuLimit = Game.cpu.limit;
-	if(!cpuLimit) {
-		cpuLimit = 30;
-	}
-	var cpuUsed  = Game.cpu.getUsed;
-	if(cpuUsed == 0) {
-		cpuUsed = creeps.length;
-	}
-
 	// Count creeps, buildings, etc
 	// -------------------------------------------------------------------------
 	// Buildings
@@ -84,16 +73,13 @@ module.exports.loop = function () {
 	var  rangers = _.filter(Game.creeps, (creep) => creep.memory.role == "ranger" );
 	var  workers = _.filter(Game.creeps, (creep) => creep.memory.role == "worker" );
 
-	// Spawn ratios
+	// Spawn amounts
 	// -------------------------------------------------------------------------
-	var brawlerLimit = Math.ceil(0.0 * cpuLimit);
-	var claimerLimit = Math.ceil(0.0 * cpuLimit);
-	var  healerLimit = Math.ceil(0.0 * cpuLimit);
-	var  rangerLimit = Math.ceil(0.5 * cpuLimit);
-	var workerLimit = cpuLimit - (brawlerLimit + claimerLimit + healerLimit + rangerLimit);
-	if(workerLimit < 0) {
-		console.log("WARNING:  Invalid role ratios!");
-	}
+	var brawlerLimit = 0;
+	var claimerLimit = 1;
+	var  healerLimit = 2;
+	var  rangerLimit = 4;
+	var  workerLimit = 8;
 
 	// Cleanup
 	// =========================================================================
@@ -118,10 +104,6 @@ module.exports.loop = function () {
 	// =========================================================================
 	for(var name in Game.spawns) {
 		var spawn = Game.spawns[name];
-		cpuUsed = Game.creeps.length;
-		if(cpuUsed >= cpuLimit) {
-			break;
-		}
 		if(spawn.spawning || spawn.energy < spawn.energyCapacity) {
 			continue;
 		}
