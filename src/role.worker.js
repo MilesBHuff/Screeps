@@ -38,14 +38,15 @@ var roleWorker = {
 				if(creep.memory.closest) {
 					if(creep.pos.findClosestByPath(sources)) {
 						creep.memory.target = creep.pos.findClosestByPath(sources).id;
+						creep.say("Harvest");
 					}
 				} else {
 					var rand = Math.floor(Math.random() * sources.length);
 					if(sources[rand].id) {
 						creep.memory.target = sources[rand];
+						creep.say("Harvest");
 					}
 				}
-				creep.say("Harvest");
 
 			// Structure
 			// -----------------------------------------------------------------
@@ -113,7 +114,7 @@ var roleWorker = {
 		// Harvest
 		// ---------------------------------------------------------------------
 		if(creep.memory.harvesting) {
-			/*//*/ if(creep.memory.target.energy <= 0) {
+			/*//*/ if(creep.memory.target && creep.memory.target.energy <= 0) {
 				creep.memory.target  = undefined;
 				creep.memory.closest = false;
 			} else if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
