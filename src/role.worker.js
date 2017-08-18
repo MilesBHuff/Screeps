@@ -35,16 +35,17 @@ var roleWorker = {
 			// -----------------------------------------------------------------
 			if(creep.memory.harvesting) {
 				var sources = creep.room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
-				if(creep.memory.closest) {
-					if(creep.pos.findClosestByPath(sources)) {
+				if(creep.memory.closest && creep.pos.findClosestByPath(sources)) {
 						creep.memory.target = creep.pos.findClosestByPath(sources).id;
 						creep.say("Harvest");
-					}
 				} else {
+					creep.memory.closest = false;
 					var rand = Math.floor(Math.random() * sources.length);
 					if(sources[rand].id) {
 						creep.memory.target = sources[rand];
 						creep.say("Harvest");
+					} else {
+						creep.memory.target = undefined;
 					}
 				}
 
