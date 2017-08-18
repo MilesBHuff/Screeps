@@ -12,7 +12,6 @@ const ROLES = Object.freeze({
 	"HEALER":  2,
 	"CLAIMER": 3
 })
-const WORKER = require("role.worker" );
 
 // Spawn amounts
 // =============================================================================
@@ -242,7 +241,7 @@ module.exports.loop = function () {
 	for(var name in Game.creeps) {
 		var creep = Game.creeps[name];
 		/*//*/ if(creep.memory.role == ROLES.WORKER ) {
-			WORKER.run(creep);
+			require("role.worker" ).run(creep);
 		} else if(creep.memory.role == ROLES.FIGHTER) {
 			require("role.fighter").run(creep);
 		} else if(creep.memory.role == ROLES.HEALER ) {
