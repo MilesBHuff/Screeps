@@ -29,6 +29,9 @@ var roleWorker = {
 
 		// Decide on a target
 		// =====================================================================
+		if(!Game.getObjectById(creep.memory.target)) {
+			creep.memory.target = undefined;
+		}
 		if(creep.memory.target == undefined) {
 
 			// Source
@@ -113,7 +116,7 @@ var roleWorker = {
 		// Harvest
 		// ---------------------------------------------------------------------
 		if(creep.memory.harvesting) {
-			/*//*/ if(creep.memory.target && creep.memory.target.energy <= 0) {
+			/*//*/ if(Game.getObjectById(creep.memory.target).energy <= 0) {
 				creep.memory.target  = undefined;
 				creep.memory.closest = false;
 			} else if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
