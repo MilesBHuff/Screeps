@@ -41,7 +41,7 @@ var roleWorker = {
 				var target = undefined;
 				if((target = creep.pos.findClosestByPath(sources))
 				||((target = sources[Math.floor(Math.random() * sources.length)]
-				&& (findPathTo(target))
+				&& (creep.pos.findPathTo(target))
 				)){
 					creep.memory.target = target.id;
 					creep.say("Harvest");
