@@ -1,4 +1,4 @@
-var roleRanger = {
+var roleFighter = {
     run: function (creep) {
 		var hostile = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
 		if(hostile) {
@@ -6,4 +6,4 @@ var roleRanger = {
 		}
 	}
 };
-module.exports = roleRanger;
+module.exports = roleFighter;
