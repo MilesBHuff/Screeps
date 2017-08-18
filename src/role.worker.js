@@ -29,10 +29,10 @@ var roleWorker = {
 
 		// Decide on a target
 		// =====================================================================
-		if(!Game.getObjectById(creep.memory.target)) {
+		if(creep.memory.target == undefined
+		|| !Game.getObjectById(creep.memory.target)
+		){
 			creep.memory.target = undefined;
-		}
-		if(creep.memory.target == undefined) {
 
 			// Source
 			// -----------------------------------------------------------------
@@ -43,10 +43,6 @@ var roleWorker = {
 				|| (target = sources[Math.floor(Math.random() * sources.length)])
 				){
 					creep.memory.target = target.id;
-				} else {
-					creep.memory.target = undefined;
-				}
-				if(creep.memory.target) {
 					creep.say("Harvest");
 				}
 
