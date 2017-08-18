@@ -78,7 +78,7 @@ module.exports.loop = function () {
 		room.memory.fighterLimit = fighterBaseLimit;
 		room.memory.workerLimit  =  workerBaseLimit;
 		// Multiply workers by the number of sources
-		workerRoomLimit*= room.find(FIND_SOURCES).length;
+		room.memory.workerLimit *= room.find(FIND_SOURCES).length;
 		// If aggressive creeps are present, double the military creeps.
 		if(false) { //TODO
 			room.memory.healerLimit  *= 2;
