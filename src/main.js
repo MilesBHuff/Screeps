@@ -12,7 +12,7 @@ const ROLES = Object.freeze({
 	"HEALER":  2,
 	"CLAIMER": 3
 })
-const AI_WORKER = require("role.worker" );
+const roleWorker = require("role.worker" );
 
 // Spawn amounts
 // =============================================================================
@@ -232,9 +232,6 @@ module.exports.loop = function () {
 	// ---------------------------------------------------------------------
 	for(var name in Game.structures) {
 		var structure = Game.structures[name];
-		if(structure.owner.USERNAME != USERNAME) {
-			continue
-		}
 		/*//*/ if(structure.structureType == ROLES.TOWER) {
 			require("role.tower").run(structure);
 		}
@@ -244,11 +241,8 @@ module.exports.loop = function () {
 	// ---------------------------------------------------------------------
 	for(var name in Game.creeps) {
 		var creep = Game.creeps[name];
-		if(creep.owner.USERNAME != USERNAME) {
-			continue
-		}
 		/*//*/ if(creep.memory.role == ROLES.WORKER ) {
-			AI_WORKER.run(creep);
+			roleWorker.run(creep);
 		} else if(creep.memory.role == ROLES.FIGHTER) {
 			require("role.fighter").run(creep);
 		} else if(creep.memory.role == ROLES.HEALER ) {
