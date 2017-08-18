@@ -67,7 +67,8 @@ module.exports.loop = function () {
 
 	// Modify the creeps in each room
 	// =====================================================================
-	for(var room in Game.rooms) {
+	for(var name in Game.rooms) {
+		var room = Game.rooms[name];
 
 		// Adjust creep ratios
 		// -------------------------------------------------------------
