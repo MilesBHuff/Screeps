@@ -18,6 +18,7 @@ var roleFighter = {
 			if(Math.floor(Math.random())) {
 				y*= -1;
 			}
+			console.log(x + ',' + y);
 			creep.moveTo(creep.pos.x + x, creep.pos.y + y);
 		}
 	}
