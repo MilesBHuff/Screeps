@@ -17,13 +17,11 @@ var roleWorker = {
 			if(creep.carry.energy >= creep.carryCapacity) {
 				creep.memory.harvesting = false;
 				creep.memory.target = undefined;
-				creep.memory.closest = true;
 			}
 		} else {
 			if(creep.carry.energy <= 0) {
 				creep.memory.harvesting = true;
 				creep.memory.target = undefined;
-				creep.memory.closest = true;
 			}
 		}
 
@@ -97,12 +95,16 @@ var roleWorker = {
 						}
 						if(i == 0) break;
 					}
-					if(structures && structures.length) break;
-				}
-				if(creep.memory.closest) {
-					creep.memory.target = creep.pos.findClosestByPath(structures).id;
-				} else {
-					creep.memory.target = structures[Math.floor(Math.random() * structures.length)].id;
+					if(structures && structures.length) {
+						var target = undefined;
+						if((target = creep.pos.findClosestByPath(structures))
+						||((target = structures[Math.floor(Math.random() * structures.length)])
+						&& creep.pos.findPathTo(target)
+						)){
+							creep.memory.target = target.id;
+							break;
+						}
+					} else if(i >= 1) break;
 				}
 			}
 		}
@@ -115,11 +117,9 @@ var roleWorker = {
 		if(creep.memory.harvesting) {
 			/*//*/ if(Game.getObjectById(creep.memory.target).energy <= 0) {
 				creep.memory.target  = undefined;
-				creep.memory.closest = false;
 			} else if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#ff0"}}) == ERR_NO_PATH) {
 					creep.memory.target  = undefined;
-					creep.memory.closest = false;
 				}
 			}
 		} else {
@@ -140,7 +140,6 @@ var roleWorker = {
 				if(creep.build(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0f0"}}) == ERR_NO_PATH) {
 						creep.memory.target  = undefined;
-						creep.memory.closest = false;
 					}
 				}
 
@@ -150,7 +149,6 @@ var roleWorker = {
 				if(creep.repair(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f"}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
-						creep.memory.closest = false;
 					}
 				}
 
@@ -160,7 +158,6 @@ var roleWorker = {
 				if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#fff"}}) == ERR_NO_PATH) {
 						creep.memory.target  = undefined;
-						creep.memory.closest = false;
 					}
 				}
 			} else {
