@@ -39,7 +39,7 @@ function killOff(creeps, maxCreeps) {
 // Spawn new creeps
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 /** The idea behind this function, is to create each creep with as many parts as
- *  possible, given the room's current energy maximum.  It cycles through the
+ *  possible, given the room's current energy total.  It cycles through the
  *  given parts array, and continues until there is no more energy to spend.
  * @param spawn    The spawner to use
  * @param rawParts This is an array of body parts;  this function reduplicates
@@ -100,7 +100,6 @@ function spawnCreep(spawn, rawParts, name, role) {
 			console.log("ERROR:  Spawn:  Part doesn't exist!");
 			return;
 		}
-console.log('(' + energyCost + " + " + partCost + ") / " + energyTotal);
 		// See whether we can afford the part.  If so, add it.
 		if(energyCost + partCost <= energyTotal) {
 			failCount = 0;
