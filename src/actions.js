@@ -1,5 +1,5 @@
-var taskWander = {
-	run: function (creep) {
+var actions = {
+	wander: function (creep) {
 			var x = Math.round(Math.random());
 			var y = Math.round(Math.random());
 			if(Math.round(Math.random())) {
@@ -12,4 +12,4 @@ var taskWander = {
 		}
 	}
 };
-module.exports = taskWander;
+module.exports = actions;
