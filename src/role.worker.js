@@ -102,7 +102,7 @@ var roleWorker = {
 						||((target = structures[Math.floor(Math.random() * structures.length)])
 						&& creep.pos.findPathTo(target)
 						)){
-							if(target.hits && target.hits >= 100000) continue; // Only repair [walls] to 100k.
+							if(target.hits && target.hits >= 100000) continue; // Only repair things to 100k.
 							creep.memory.target = target.id;
 							if(quote != "") creep.say(quote);
 							break;
