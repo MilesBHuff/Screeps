@@ -11,7 +11,7 @@ var roleWorker = {
 	run: function (creep) {
 		// Variables
 		// =====================================================================
-		repairLimit = 100000;
+		var repairLimit = 100000;
 
 		// Decide whether to harvest
 		// =====================================================================
