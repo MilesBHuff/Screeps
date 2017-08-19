@@ -103,7 +103,7 @@ var roleWorker = {
 						&& creep.pos.findPathTo(target)
 						)){
 							creep.memory.target = target.id;
-							creep.say(quote);
+							if(quote != "") creep.say(quote);
 							break;
 						}
 					} else if(i >= 1) break;
