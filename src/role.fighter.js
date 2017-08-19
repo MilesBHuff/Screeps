@@ -7,9 +7,10 @@ var roleFighter = {
 			var x = Math.ceil(Math.random() * 6);
 			var y = Math.ceil(Math.random() * 6);
 			if(Math.floor(Math.random())) {
-				if(Math.floor(Math.random())) {
-					   x*= -1;
-				} else y*= -1;
+				x*= -1;
+			}
+			if(Math.floor(Math.random())) {
+				y*= -1;
 			}
 			x+= creep.pos.x;
 			y+= creep.pos.y;
