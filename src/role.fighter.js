@@ -4,8 +4,8 @@ var roleFighter = {
 		if(hostile) {
 			creep.attack(hostile);
 		} else {
-			var x = Math.ceil(Math.random() * 6);
-			var y = Math.ceil(Math.random() * 6);
+			var x = Math.round(Math.random());
+			var y = Math.round(Math.random());
 			if(Math.floor(Math.random())) {
 				x*= -1;
 			}
