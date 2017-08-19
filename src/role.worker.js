@@ -59,19 +59,41 @@ var roleWorker = {
 					}
 					switch(targetType) {
 						case 0: // Transfer
+						quote = "Transfer";
+						// Fill extensions
 						structures = creep.room.find(FIND_STRUCTURES, {
 							filter: (structure) => {return(
-								(    structure.structureType == STRUCTURE_EXTENSION
-								  || structure.structureType == STRUCTURE_SPAWN
-								  || structure.structureType == STRUCTURE_STORAGE
-								  || structure.structureType == STRUCTURE_TOWER
-								) && structure.energy        <  structure.energyCapacity
+								   structure.structureType == STRUCTURE_EXTENSION
+								&& structure.energy        <  structure.energyCapacity
 							);}
 						});
-						if(structures && structures.length) {
-							quote = "Transfer";
-							break;
-						}
+						if(structures && structures.length) break;
+						// Fill spawns
+						structures = creep.room.find(FIND_STRUCTURES, {
+							filter: (structure) => {return(
+								   structure.structureType == STRUCTURE_SPAWN
+								&& structure.energy        <  structure.energyCapacity
+							);}
+						});
+						if(structures && structures.length) break;
+						// Fill towers
+						structures = creep.room.find(FIND_STRUCTURES, {
+							filter: (structure) => {return(
+								   structure.structureType == STRUCTURE_TOWER
+								&& structure.energy        <  structure.energyCapacity
+							);}
+						});
+						if(structures && structures.length) break;
+						// Fill storage
+						structures = creep.room.find(FIND_STRUCTURES, {
+							filter: (structure) => {return(
+								   structure.structureType == STRUCTURE_STORAGE
+								&& structure.energy        <  structure.energyCapacity
+							);}
+						});
+						if(structures && structures.length) break;
+							
+						quote = "";
 						if(i == 0) break;
 
 						case 1: // Build
