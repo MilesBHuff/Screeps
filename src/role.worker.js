@@ -9,7 +9,9 @@
 
 var roleWorker = {
 	run: function (creep) {
-// creep.memory.target = undefined; // Useful when you need to reset everyone's task.
+		// Variables
+		// =====================================================================
+		repairLimit = 100000;
 
 		// Decide whether to harvest
 		// =====================================================================
@@ -81,7 +83,7 @@ var roleWorker = {
 						if(i == 0) break;
 
 						case 2: // Repair
-						structures = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax});
+						structures = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax && structure.hits < repairLimit});
 						if(structures && structures.length) {
 							quote = "Repair";
 							break;
@@ -102,7 +104,6 @@ var roleWorker = {
 						||((target = structures[Math.floor(Math.random() * structures.length)])
 						&& creep.pos.findPathTo(target)
 						)){
-							if(target.hits && target.hits >= 100000) continue; // Only repair things to 100k.
 							creep.memory.target = target.id;
 							if(quote != "") creep.say(quote);
 							break;
