@@ -181,28 +181,28 @@ module.exports.loop = function () {
 			}
 			switch(creepRole) {
 				case ROLES.WORKER:
-				if(workers.length < workerBaseLimit) {
+				if(workers.length < spawn.room.memory.workerLimit) {
 					spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker", ROLES.WORKER);
 					break;
 				}
 				if(i == 0) break;
 
 				case ROLES.FIGHTER:
-				if(fighters.length <fighterBaseLimit) {
+				if(fighters.length < spawn.room.memory.fighterLimit) {
 					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Fighter", ROLES.FIGHTER);
 					break;
 				}
 				if(i == 0) break;
 
 				case ROLES.HEALER:
-				if(healers.length < healerBaseLimit) {
+				if(healers.length < spawn.room.memory.healerLimit) {
 					spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", ROLES.HEALER);
 					break;
 				}
 				if(i == 0) break;
 
 				case ROLES.CLAIMER:
-				if(claimers.length < claimerBaseLimit) {
+				if(claimers.length < spawn.room.memory.claimerLimit) {
 					spawnCreep(spawn, [CLAIM, MOVE, TOUGH], "Claimer", ROLES.CLAIMER);
 					break;
 				}
