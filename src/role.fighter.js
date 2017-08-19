@@ -12,11 +12,11 @@ var roleFighter = {
 		} else {
 			var x = Math.round(Math.random());
 			var y = Math.round(Math.random());
-			if(Math.floor(Math.random())) {
-				x = 0 - x;
+			if(Math.round(Math.random())) {
+				x *= -1;
 			}
-			if(Math.floor(Math.random())) {
-				y = 0 - y;
+			if(Math.round(Math.random())) {
+				y *= -1;
 			}
 			console.log(x + ',' + y);
 			creep.moveTo(creep.pos.x + x, creep.pos.y + y);
