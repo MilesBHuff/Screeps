@@ -40,7 +40,9 @@ function killOff(creeps, maxCreeps) {
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 /** The idea behind this function, is to create each creep with as many parts as
  *  possible, given the room's current energy total.  It cycles through the
- *  given parts array, and continues until there is no more energy to spend.
+ *  given parts array, and continues until there is no more energy to spend.  It
+ *  then sorts the parts in such a way that maximises each creep's
+ *  survivability.
  * @param spawn    The spawner to use
  * @param rawParts This is an array of body parts;  this function reduplicates
  *                 it infinitely.
@@ -49,9 +51,20 @@ function killOff(creeps, maxCreeps) {
 **/
 function spawnCreep(spawn, rawParts, name, role) {
 	// Variables
+	// -------------------------------------------------------------------------
 	var bodyParts   = Array();
 	var energyCost  = 0;
 	var energyTotal = spawn.room.energyAvailable;
+	var partCount   = {
+		attack: 0,
+		carry:  0,
+		claim:  0,
+		heal:   0,
+		move:   0,
+		rangedAttack: 0,
+		tough:  0,
+		work:   0
+	}
 	for(var currentPart = 0, failCount = 0; true; currentPart++) {
 		// Stop once we've used up as much energy as possible
 		if(failCount >= rawParts.length) {
@@ -61,7 +74,9 @@ function spawnCreep(spawn, rawParts, name, role) {
 		if(currentPart >= rawParts.length) {
 			currentPart = 0;
 		}
+
 		// Find out how expensive the current part is
+		// ---------------------------------------------------------------------
 		var partCost = 0;
 		switch(rawParts[currentPart]) {
 			case ATTACK:
@@ -100,11 +115,49 @@ function spawnCreep(spawn, rawParts, name, role) {
 			console.log("ERROR:  Spawn:  Part doesn't exist!");
 			return;
 		}
-		// See whether we can afford the part.  If so, add it.
+
+		// See whether we can afford the part.  If so, count it.
+		// ---------------------------------------------------------------------
 		if(energyCost + partCost <= energyTotal) {
 			failCount = 0;
 			energyCost += partCost;
-			bodyParts.push(rawParts[currentPart]);
+			switch(rawParts[currentPart]) {
+				case ATTACK:
+				partCount.attack++;
+				break;
+
+				case CARRY:
+				partCount.carry++;
+				break;
+
+				case CLAIM:
+				partCount.claim++;
+				break;
+
+				case HEAL:
+				partCount.heal++;
+				break;
+
+				case MOVE:
+				partCount.move++;
+				break;
+
+				case RANGED_ATTACK:
+				partCount.rangedAttack++;
+				break;
+
+				case TOUGH:
+				partCount.tough++;
+				break;
+
+				case WORK:
+				partCount.work++;
+				break;
+
+				default:
+				console.log("ERROR:  Spawn:  Part doesn't exist!");
+				return;
+			}
 		} else {
 			failCount++;
 			// If this is the absolute first part and we are unable to construct it, there is no point in building this creep.
@@ -113,7 +166,36 @@ function spawnCreep(spawn, rawParts, name, role) {
 			} else continue;
 		}
 	}
-	// If the parts list is not empty, spawn the creep
+
+	// Sort the parts in order to make the creep more resilient in combat
+	// -------------------------------------------------------------------------
+	for(var i = 0; i < partCount.tough; i++) {
+		bodyParts.push(TOUGH);
+	}
+	for(var i = 0; i < partCount.work; i++) {
+		bodyParts.push(WORK);
+	}
+	for(var i = 0; i < partCount.claim; i++) {
+		bodyParts.push(CLAIM);
+	}
+	for(var i = 0; i < partCount.attack; i++) {
+		bodyParts.push(ATTACK);
+	}
+	for(var i = 0; i < partCount.rangedAttack; i++) {
+		bodyParts.push(RANGED_ATTACK);
+	}
+	for(var i = 0; i < partCount.heal; i++) {
+		bodyParts.push(HEAL);
+	}
+	for(var i = 0; i < partCount.carry; i++) {
+		bodyParts.push(CARRY);
+	}
+	for(var i = 0; i < partCount.move; i++) {
+		bodyParts.push(MOVE);
+	}
+
+	// If we have parts, create the creep.
+	// -------------------------------------------------------------------------
 	if(bodyParts[0]) {
 		for(var i = 0; spawn.createCreep(bodyParts, name + i, {role: role}) == ERR_NAME_EXISTS; i++) {}
 	}
