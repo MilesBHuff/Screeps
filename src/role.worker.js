@@ -81,7 +81,7 @@ var roleWorker = {
 						if(i == 0) break;
 
 						case 2: // Repair
-						creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax});
+						structures = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax});
 						if(structures && structures.length) {
 							quote = "Repair";
 							break;
