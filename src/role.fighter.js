@@ -11,6 +11,8 @@ var roleFighter = {
 					   x*= -1;
 				} else y*= -1;
 			}
+			x+= creep.pos.x;
+			y+= creep.pos.y;
 			creep.moveTo(x, y);
 		}
 	}
