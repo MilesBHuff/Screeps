@@ -93,7 +93,7 @@ function spawnCreep(spawn, rawParts, name, role) {
 			partCost = 10;
 			break;
 				
-			case WORK;
+			case WORK:
 			partCost = 100;
 			break;
 		}
