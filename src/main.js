@@ -67,35 +67,35 @@ function spawnCreep(spawn, rawParts, name, role) {
 			case ATTACK:
 			partCost = 80;
 			break;
-				
+
 			case CARRY:
 			partCost = 50;
 			break;
-				
+
 			case CLAIM:
 			partCost = 600;
 			break;
-				
+
 			case HEAL:
 			partCost = 250;
 			break;
-				
+
 			case MOVE:
 			partCost = 50;
 			break;
-				
+
 			case RANGED_ATTACK:
 			partCost = 150;
 			break;
-				
+
 			case TOUGH:
 			partCost = 10;
 			break;
-				
+
 			case WORK:
 			partCost = 100;
 			break;
-			
+
 			default:
 			console.log("ERROR:  Spawn:  Part doesn't exist!");
 			return;
@@ -107,7 +107,10 @@ function spawnCreep(spawn, rawParts, name, role) {
 			bodyParts.push(rawParts[currentPart]);
 		} else {
 			failCount++;
-			continue;
+			// If this is the absolute first part and we are unable to construct it, there is no point in building this creep.
+			if(currentPart == 0 && energyCost == 0) {
+				return;
+			} else continue;
 		}
 	}
 	// If the parts list is not empty, spawn the creep
@@ -121,23 +124,23 @@ function spawnCreep(spawn, rawParts, name, role) {
 module.exports.loop = function () {
 
 	// Set limits for creeps in each room
-	// =====================================================================
+	// =========================================================================
 	for(var name in Game.rooms) {
 		var room = Game.rooms[name];
 
 		// Set things to their default values.
-		// -------------------------------------------------------------
+		// ---------------------------------------------------------------------
 		room.memory.claimerLimit = claimerBaseLimit;
 		room.memory.healerLimit  =  healerBaseLimit;
 		room.memory.fighterLimit = fighterBaseLimit;
 		room.memory.workerLimit  =  workerBaseLimit;
 
 		// Multiply workers by the number of sources.
-		// -------------------------------------------------------------
+		// ---------------------------------------------------------------------
 		room.memory.workerLimit *= room.find(FIND_SOURCES).length;
 
 		// If aggressive creeps are present, double the military creeps.
-		// -------------------------------------------------------------
+		// ---------------------------------------------------------------------
 		if(false) { //TODO
 			room.memory.healerLimit  *= 2;
 			room.memory.fighterLimit *= 2;
@@ -145,7 +148,7 @@ module.exports.loop = function () {
 	}
 
 	// Manage creeps
-	// =====================================================================
+	// =========================================================================
 	for(var name in Game.spawns) {
 		var spawn = Game.spawns[name];
 		if(spawn.spawning || spawn.energy < spawn.energyCapacity) {
@@ -153,7 +156,7 @@ module.exports.loop = function () {
 		}
 
 		// Count creeps, buildings, etc
-		// -------------------------------------------------------------
+		// ---------------------------------------------------------------------
 		// Buildings
 		var   towers = _.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_TOWER && structure.room == spawn.room);
 		// Creeps
@@ -163,7 +166,7 @@ module.exports.loop = function () {
 		var  workers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.WORKER    && creep.room == spawn.room);
 
 		// Determine role
-		// -------------------------------------------------------------
+		// ---------------------------------------------------------------------
 		for(var i = 0; i < 2; i++) {
 			var creepRole = 0;
 			switch(i) {
@@ -216,7 +219,7 @@ module.exports.loop = function () {
 		var newCreep = Game.creeps[spawn.spawning.name];
 
 		// Determine starting position
-		// -------------------------------------------------------------
+		// ---------------------------------------------------------------------
 		var pos = {
 			x: spawn.pos.x,
 			y: spawn.pos.y
@@ -239,7 +242,7 @@ module.exports.loop = function () {
 		}
 
 		// Display text
-		// -------------------------------------------------------------
+		// ---------------------------------------------------------------------
 		spawn.room.visual.text(
 			newCreep.memory.role.charAt(0).toUpperCase() + newCreep.memory.role.slice(1),
 			spawn.pos.x,
@@ -248,10 +251,10 @@ module.exports.loop = function () {
 		);
 
 		// Cleanup
-		// =============================================================
+		// =====================================================================
 
 		// Kill off unneeded creeps
-		// -------------------------------------------------------------
+		// ---------------------------------------------------------------------
 		killOff(claimers, room.memory.claimerLimit);
 		killOff( healers, room.memory.healerLimit );
 		killOff(fighters, room.memory.fighterLimit);
@@ -259,7 +262,7 @@ module.exports.loop = function () {
 	}
 
 	// Delete the memories of dead entities
-	// ---------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// Creeps
 	for(var name in Memory.creeps) {
 		if(!Game.creeps[name]) {
@@ -280,10 +283,10 @@ module.exports.loop = function () {
 	}
 
 	// AIs
-	// =====================================================================
+	// =========================================================================
 
 	// Structures
-	// ---------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	for(var name in Game.structures) {
 		var structure = Game.structures[name];
 		/*//*/ if(structure.structureType == ROLES.TOWER) {
@@ -292,7 +295,7 @@ module.exports.loop = function () {
 	}
 
 	// Creeps
-	// ---------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	for(var name in Game.creeps) {
 		var creep = Game.creeps[name];
 		/*//*/ if(creep.memory.role == ROLES.WORKER ) {
