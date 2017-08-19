@@ -3,10 +3,13 @@ var roleFighter = {
 
 		// Attack any enemy units present in the room
 		// ---------------------------------------------------------------------
-		creep.memory.target = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS).id;
-		if(creep.attack(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-			if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#f00"}}) == ERR_NO_PATH) {
-				creep.memory.target = undefined;
+		var target = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
+	    	if(target && target.id) {
+			creep.memory.target = target.id;
+			if(creep.attack(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#f00"}}) == ERR_NO_PATH) {
+					creep.memory.target = undefined;
+				}
 			}
 		}
 
