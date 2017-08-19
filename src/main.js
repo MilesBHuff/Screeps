@@ -48,13 +48,9 @@ function killOff(creeps, maxCreeps) {
  * @param role     The role the new creep should have.
 **/
 function spawnCreep(spawn, rawParts, name, role) {
-	return;
+//return;
 	var bodyParts = Array();
-	for(var currentPart = 0; true; currentPart++) {
-		// Stop if we're using too much CPU
-		if(Game.cpu.bucket <= 10) {
-			return;
-		}
+	for(var currentPart = 0; Game.cpu.bucket <= 1; currentPart++) {
 		// Variables
 		var energyCost  = 0;
 		var energyTotal = spawn.room.energyAvailable;
@@ -68,6 +64,7 @@ function spawnCreep(spawn, rawParts, name, role) {
 		if(currentPart >= rawParts.length) {
 			currentPart = 0;
 		}
+console.log(rawParts[currentPart]);
 		// Find out how expensive the current part is
 		switch(rawParts[currentPart]) {
 			case ATTACK:
