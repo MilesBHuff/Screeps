@@ -1,6 +1,6 @@
 var role = {
 	run: function (creep) {
-		//TODO
+		require("actions").wander(creep);
 	}
 };
 module.exports = role;
