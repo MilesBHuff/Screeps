@@ -31,17 +31,16 @@ const USERNAME = "MilesBHuff";
  * @param maxCreeps The number to cull to.
 **/
 function killOff(creeps, maxCreeps) {
-	var i = 0;
-	while(creeps.length > maxCreeps) {
+	for(var i = 0; creeps.length > maxCreeps; i++) {
 		creeps[i].suicide();
-		i++;
 	}
 }
 
 // Spawn new creeps
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-/** The idea behind this function, is to create each creep with the maximum
- *  number of parts possible, per the currently energy maximum.
+/** The idea behind this function, is to create each creep with as many parts as
+ *  possible, given the room's current energy maximum.  It cycles through the
+ *  given parts array, and continues until there is no more energy to spend.
  * @param spawn    The spawner to use
  * @param rawParts This is an array of body parts;  this function reduplicates
  *                 it infinitely.
@@ -49,16 +48,69 @@ function killOff(creeps, maxCreeps) {
  * @param role     The role the new creep should have.
 **/
 function spawnCreep(spawn, rawParts, name, role) {
-	var bodyParts  = Array();
-	var totalParts = (spawn.room.energyCapacityAvailable - 100) / 50;
-	for(var i = 0, j = 0; i < totalParts; i++) {
-		bodyParts.push(rawParts[j]);
-		j++;
-		if(j >= rawParts.length) {
-			j = 0;
+	var bodyParts   = Array();
+	var energyCost  = 0;
+	var energyTotal = spawn.room.energyAvailable;
+	for(var currentPart = 0; true; currentPart++) {
+		// Variables
+		var failCount = 0;
+		var partCost = 0;
+		// Stop once we've used up as much energy as possible
+		if(failCount >= rawParts.length) {
+			break;
+		}
+		// Start over once we finish the parts array
+		if(currentPart >= rawParts.length) {
+			currentPart = 0;
+		}
+		// Find out how expensive the current part is
+		switch(rawParts[currentPart]) {
+			case ATTACK:
+			partCost = 80;
+			break;
+				
+			case CARRY:
+			partCost = 50;
+			break;
+				
+			case CLAIM:
+			partCost = 600;
+			break;
+				
+			case HEAL:
+			partCost = 250;
+			break;
+				
+			case MOVE:
+			partCost = 50;
+			break;
+				
+			case RANGED_ATTACK:
+			partCost = 150;
+			break;
+				
+			case TOUGH:
+			partCost = 10;
+			break;
+				
+			case WORK;
+			partCost = 100;
+			break;
+		}
+		// See whether we can afford the part.  If so, add it.
+		if(energyCost + partCost <= energyTotal) {
+			failCount = 0;
+			energyCost += partCost;
+			bodyParts.push(rawParts[currentPart]);
+		} else {
+			failCount++;
+			continue;
 		}
 	}
-	for(var i = 0; spawn.createCreep(bodyParts, name + i, {role: role}) == ERR_NAME_EXISTS; i++) {}
+	// If the parts list is not empty, spawn the creep
+	if(bodyParts[0]) {
+		for(var i = 0; spawn.createCreep(bodyParts, name + i, {role: role}) == ERR_NAME_EXISTS; i++) {}
+	}
 }
 
 // Main loop
