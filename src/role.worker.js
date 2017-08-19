@@ -124,17 +124,9 @@ var roleWorker = {
 			}
 		} else {
 
-			// Clear nonexistant targets
-			// -----------------------------------------------------------------
-			/*//*/ if(!Game.getObjectById(creep.memory.target)) {
-				creep.memory.target = undefined;
-
 			// Upgrade
 			// -----------------------------------------------------------------
-			} else if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
-				if(false) {
-					creep.memory.target = undefined;
-				}
+			/*//*/ if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
 				if(creep.upgradeController(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0ff"}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
@@ -144,9 +136,7 @@ var roleWorker = {
 			// Build
 			// -----------------------------------------------------------------
 			} else if(Game.getObjectById(creep.memory.target).progressTotal) {
-				if(false) {
-					creep.memory.target = undefined;
-				}
+
 				if(creep.build(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0f0"}}) == ERR_NO_PATH) {
 						creep.memory.target  = undefined;
@@ -157,9 +147,6 @@ var roleWorker = {
 			// Repair
 			// -----------------------------------------------------------------
 			} else if(Game.getObjectById(creep.memory.target).hits < Game.getObjectById(creep.memory.target).hitsMax) {
-				if(false) {
-					creep.memory.target = undefined;
-				}
 				if(creep.repair(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f"}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
@@ -169,14 +156,15 @@ var roleWorker = {
 
 			// Transfer
 			// -----------------------------------------------------------------
-			} else if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-				if(false) {
-					creep.memory.target = undefined;
+			} else if(Game.getObjectById(creep.memory.target).energy < Game.getObjectById(creep.memory.target).energyCapacity) {
+				if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#fff"}}) == ERR_NO_PATH) {
+						creep.memory.target  = undefined;
+						creep.memory.closest = false;
+					}
 				}
-				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#fff"}}) == ERR_NO_PATH) {
-					creep.memory.target  = undefined;
-					creep.memory.closest = false;
-				}
+			} else {
+				creep.memory.target = undefined;
 			}
 		}
 	}
