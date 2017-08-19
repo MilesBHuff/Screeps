@@ -16,8 +16,8 @@ const ROLES = Object.freeze({
 // Spawn amounts
 // =============================================================================
 const claimerBaseLimit = 1;
-const  healerBaseLimit = 2; // Doubled during conflict
 const fighterBaseLimit = 4; // Doubled during conflict
+const  healerBaseLimit = 2; // Doubled during conflict
 const  workerBaseLimit = 4; // Multiplied by the number of sources
 
 // Miscellaneous
@@ -131,8 +131,8 @@ module.exports.loop = function () {
 		// Set things to their default values.
 		// ---------------------------------------------------------------------
 		room.memory.claimerLimit = claimerBaseLimit;
-		room.memory.healerLimit  =  healerBaseLimit;
 		room.memory.fighterLimit = fighterBaseLimit;
+		room.memory.healerLimit  =  healerBaseLimit;
 		room.memory.workerLimit  =  workerBaseLimit;
 
 		// Multiply workers by the number of sources.
@@ -142,8 +142,8 @@ module.exports.loop = function () {
 		// If aggressive creeps are present, double the military creeps.
 		// ---------------------------------------------------------------------
 		if(room.find(FIND_HOSTILE_CREEPS)) {
-			room.memory.healerLimit  *= 2;
 			room.memory.fighterLimit *= 2;
+			room.memory.healerLimit  *= 2;
 		}
 	}
 
@@ -161,8 +161,8 @@ module.exports.loop = function () {
 		var   towers = _.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_TOWER && structure.room == spawn.room);
 		// Creeps
 		var claimers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.CLAIMER   && creep.room == spawn.room);
-		var  healers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.HEALER    && creep.room == spawn.room);
 		var fighters = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.FIGHTER   && creep.room == spawn.room);
+		var  healers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.HEALER    && creep.room == spawn.room);
 		var  workers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.WORKER    && creep.room == spawn.room);
 
 		// Determine role
@@ -256,8 +256,8 @@ module.exports.loop = function () {
 		// Kill off unneeded creeps
 		// ---------------------------------------------------------------------
 		killOff(claimers, room.memory.claimerLimit);
-		killOff( healers, room.memory.healerLimit );
 		killOff(fighters, room.memory.fighterLimit);
+		killOff( healers, room.memory.healerLimit );
 		killOff( workers, room.memory.workerLimit );
 	}
 
