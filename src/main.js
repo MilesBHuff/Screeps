@@ -50,7 +50,7 @@ function killOff(creeps, maxCreeps) {
 function spawnCreep(spawn, rawParts, name, role) {
 //return;
 	var bodyParts = Array();
-	for(var currentPart = 0; currentPart < 4; currentPart++) {
+	for(var currentPart = 0; currentPart < rawParts.length; currentPart++) {
 		// Variables
 		var energyCost  = 0;
 		var energyTotal = spawn.room.energyAvailable;
@@ -99,6 +99,7 @@ console.log(rawParts[currentPart]);
 			partCost = 100;
 			break;
 		}
+console.log(energyCost + '/' + energyTotal);
 		// See whether we can afford the part.  If so, add it.
 		if(energyCost + partCost <= energyTotal) {
 			failCount = 0;
