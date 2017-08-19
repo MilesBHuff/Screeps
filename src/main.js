@@ -52,8 +52,8 @@ function spawnCreep(spawn, rawParts, name, role) {
 	var bodyParts = Array();
 	for(var currentPart = 0; true; currentPart++) {
 		// Stop if we're using too much CPU
-		if(Game.cpu.bucket <= 5) {
-			break;
+		if(Game.cpu.bucket <= 10) {
+			return;
 		}
 		// Variables
 		var energyCost  = 0;
