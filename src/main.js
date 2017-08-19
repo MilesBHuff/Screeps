@@ -49,10 +49,14 @@ function killOff(creeps, maxCreeps) {
 **/
 function spawnCreep(spawn, rawParts, name, role) {
 	var bodyParts   = Array();
-	var energyCost  = 0;
-	var energyTotal = spawn.room.energyAvailable;
 	for(var currentPart = 0; true; currentPart++) {
+		// Stop if we're using too much CPU
+		if(Game.cpu.bucket <= 1) {
+			break;
+		}
 		// Variables
+		var energyCost  = 0;
+		var energyTotal = spawn.room.energyAvailable;
 		var failCount = 0;
 		var partCost = 0;
 		// Stop once we've used up as much energy as possible
