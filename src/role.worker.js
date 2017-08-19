@@ -50,6 +50,7 @@ var roleWorker = {
 			} else {
 				var structures;
 				for(var i = 0; i < 2; i++) {
+					var quote = "";
 					var targetType = 0;
 					if(i == 0) {
 						targetType = Math.floor(Math.random() * 4);
@@ -66,7 +67,7 @@ var roleWorker = {
 							);}
 						});
 						if(structures && structures.length) {
-							creep.say("Transfer");
+							quote = "Transfer";
 							break;
 						}
 						if(i == 0) break;
@@ -74,7 +75,7 @@ var roleWorker = {
 						case 1: // Build
 						structures = creep.room.find(FIND_CONSTRUCTION_SITES);
 						if(structures && structures.length) {
-							creep.say("Build");
+							quote = "Build";
 							break;
 						}
 						if(i == 0) break;
@@ -82,7 +83,7 @@ var roleWorker = {
 						case 2: // Repair
 						creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax});
 						if(structures && structures.length) {
-							creep.say("Repair");
+							quote = "Repair";
 							break;
 						}
 						if(i == 0) break;
@@ -90,7 +91,7 @@ var roleWorker = {
 						case 3: // Upgrade
 						structures = [creep.room.controller];
 						if(structures && structures.length) {
-							creep.say("Upgrade");
+							quote = "Upgrade";
 							break;
 						}
 						if(i == 0) break;
@@ -102,6 +103,7 @@ var roleWorker = {
 						&& creep.pos.findPathTo(target)
 						)){
 							creep.memory.target = target.id;
+							creep.say(quote);
 							break;
 						}
 					} else if(i >= 1) break;
@@ -136,7 +138,6 @@ var roleWorker = {
 			// Build
 			// -----------------------------------------------------------------
 			} else if(Game.getObjectById(creep.memory.target).progressTotal) {
-
 				if(creep.build(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0f0"}}) == ERR_NO_PATH) {
 						creep.memory.target  = undefined;
