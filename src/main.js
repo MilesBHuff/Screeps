@@ -50,7 +50,7 @@ function killOff(creeps, maxCreeps) {
 function spawnCreep(spawn, rawParts, name, role) {
 //return;
 	var bodyParts = Array();
-	for(var currentPart = 0; currentPart < rawParts.length; currentPart++) {
+	for(var currentPart = 0; true; currentPart++) {
 		// Variables
 		var energyCost  = 0;
 		var energyTotal = spawn.room.energyAvailable;
@@ -62,9 +62,10 @@ function spawnCreep(spawn, rawParts, name, role) {
 		}
 		// Start over once we finish the parts array
 		if(currentPart >= rawParts.length) {
-			//currentPart = 0;
+			currentPart = 0;
 		}
 console.log(rawParts[currentPart]);
+console.log(rawParts[ATTACK]);
 		// Find out how expensive the current part is
 		switch(rawParts[currentPart]) {
 			case ATTACK:
