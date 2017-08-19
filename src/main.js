@@ -50,7 +50,7 @@ function killOff(creeps, maxCreeps) {
 **/
 function spawnCreep(spawn, rawParts, name, role) {
 	var bodyParts  = Array();
-	var totalParts = (spawn.energyCapacity - 100) / 50;
+	var totalParts = (spawn.room.energyCapacityAvailable - 100) / 50;
 	for(var i = 0, j = 0; i < totalParts; i++) {
 		bodyParts.push(rawParts[j]);
 		j++;
@@ -93,7 +93,7 @@ module.exports.loop = function () {
 	// =====================================================================
 	for(var name in Game.spawns) {
 		var spawn = Game.spawns[name];
-		if(spawn.spawning || room.energyAvailable < room.energyCapacityAvailable) {
+		if(spawn.spawning || spawn.energy < spawn.energyCapacity) {
 			continue;
 		}
 
