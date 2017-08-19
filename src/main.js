@@ -101,6 +101,7 @@ function spawnCreep(spawn, rawParts, name, role) {
 			console.log("ERROR:  Spawn:  Part doesn't exist!");
 			return;
 		}
+console.log('(' + energyCost + " + " + partCost + ") / " + energyTotal);
 		// See whether we can afford the part.  If so, add it.
 		if(energyCost + partCost <= energyTotal) {
 			failCount = 0;
