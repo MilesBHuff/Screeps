@@ -50,7 +50,7 @@ function killOff(creeps, maxCreeps) {
 function spawnCreep(spawn, rawParts, name, role) {
 //return;
 	var bodyParts = Array();
-	for(var currentPart = 0; Game.cpu.bucket <= 1; currentPart++) {
+	for(var currentPart = 0; Game.cpu.bucket >= 1; currentPart++) {
 		// Variables
 		var energyCost  = 0;
 		var energyTotal = spawn.room.energyAvailable;
