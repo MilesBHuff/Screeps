@@ -48,7 +48,7 @@ function killOff(creeps, maxCreeps) {
  * @param role     The role the new creep should have.
 **/
 function spawnCreep(spawn, rawParts, name, role) {
-	//return;
+	return;
 	var bodyParts = Array();
 	for(var currentPart = 0; true; currentPart++) {
 		// Stop if we're using too much CPU
