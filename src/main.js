@@ -98,6 +98,10 @@ console.log(rawParts[currentPart]);
 			case WORK:
 			partCost = 100;
 			break;
+			
+			default:
+			console.log("ERROR:  Spawn:  Part doesn't exist!");
+			return;
 		}
 console.log(energyCost + '/' + energyTotal);
 		// See whether we can afford the part.  If so, add it.
