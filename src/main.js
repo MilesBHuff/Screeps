@@ -62,7 +62,7 @@ function spawnCreep(spawn, rawParts, name, role) {
 		}
 		// Start over once we finish the parts array
 		if(currentPart >= rawParts.length) {
-			currentPart = 0;
+			//currentPart = 0;
 		}
 console.log(rawParts[currentPart]);
 		// Find out how expensive the current part is
