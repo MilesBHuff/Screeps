@@ -48,13 +48,11 @@ function killOff(creeps, maxCreeps) {
  * @param role     The role the new creep should have.
 **/
 function spawnCreep(spawn, rawParts, name, role) {
+	// Variables
 	var bodyParts   = Array();
 	var energyCost  = 0;
 	var energyTotal = spawn.room.energyAvailable;
-	for(var currentPart = 0; true; currentPart++) {
-		// Variables
-		var failCount = 0;
-		var partCost  = 0;
+	for(var currentPart = 0, failCount = 0; true; currentPart++) {
 		// Stop once we've used up as much energy as possible
 		if(failCount >= rawParts.length) {
 			break;
@@ -64,6 +62,7 @@ function spawnCreep(spawn, rawParts, name, role) {
 			currentPart = 0;
 		}
 		// Find out how expensive the current part is
+		var partCost = 0;
 		switch(rawParts[currentPart]) {
 			case ATTACK:
 			partCost = 80;
