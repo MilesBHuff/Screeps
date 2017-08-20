@@ -113,6 +113,7 @@ var roleWorker = {
 				if(!Math.round(Math.random())) {
 					// It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
 					targets = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax && structure.hits < repairLimit});
+				if(targets && targets.length) break;
 				}
 
 				// Build new things
