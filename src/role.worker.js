@@ -112,7 +112,7 @@ var roleWorker = {
 						if(i == 0) break;
 
 						case 2: // Repair
-						structures = creep.room.find(FIND_MY_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax && structure.hits < repairLimit});
+						structures = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax && structure.hits < repairLimit}); // It would seem that walls cannot be owned, so we have to search through all structures in the room, not just our own.
 						if(structures && structures.length) {
 							quote = "Repair";
 							break;
