@@ -7,6 +7,12 @@
  *  target is inaccessible, they then pick one at random within their room.
 **/
 
+// Set variables
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+require("defines");
+
+// Define the role
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 var roleWorker = {
 	run: function (creep) {
 		// Variables
