@@ -10,5 +10,5 @@ const defines = {
 		"FIGHTER": 1,
 		"HEALER":  2,
 		"CLAIMER": 3
-	}
+	})
 }
