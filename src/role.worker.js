@@ -9,7 +9,7 @@
 
 // Set variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-require("defines");
+const DEFINES = require("defines");
 
 // Define the role
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -48,7 +48,7 @@ var roleWorker = {
 				for(var i = 0; i < 1; i++) {
 					var sources = creep.room.find(FIND_DROPPED_RESOURCES);
 					if(sources && sources.length) break;
-					
+
 					var sources = creep.room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
 					if(sources && sources.length) break;
 				}
@@ -69,10 +69,10 @@ var roleWorker = {
 					var targetType = 0;
 					// Make sure we always have the max number of creeps
 					if(i == 0
-					&& creep.room.memory.claimerLimit >= _.filter(Game.creeps, (creep) => creep.memory.role == ROLES.CLAIMER && creep.room == spawn.room).length
-					&& creep.room.memory.fighterLimit >= _.filter(Game.creeps, (creep) => creep.memory.role == ROLES.FIGHTER && creep.room == spawn.room).length
-					&& creep.room.memory.healerLimit  >= _.filter(Game.creeps, (creep) => creep.memory.role == ROLES.HEALER  && creep.room == spawn.room).length
-					&& creep.room.memory.workerLimit  >= _.filter(Game.creeps, (creep) => creep.memory.role == ROLES.WORKER  && creep.room == spawn.room).length) {
+					&& creep.room.memory.claimerLimit >= _.filter(Game.creeps, (creep) => creep.memory.role == DEFINES.ROLES.CLAIMER && creep.room == spawn.room).length
+					&& creep.room.memory.fighterLimit >= _.filter(Game.creeps, (creep) => creep.memory.role == DEFINES.ROLES.FIGHTER && creep.room == spawn.room).length
+					&& creep.room.memory.healerLimit  >= _.filter(Game.creeps, (creep) => creep.memory.role == DEFINES.ROLES.HEALER  && creep.room == spawn.room).length
+					&& creep.room.memory.workerLimit  >= _.filter(Game.creeps, (creep) => creep.memory.role == DEFINES.ROLES.WORKER  && creep.room == spawn.room).length) {
 						targetType = Math.floor(Math.random() * 4);
 					}
 					switch(targetType) {
@@ -110,7 +110,7 @@ var roleWorker = {
 							);}
 						});
 						if(structures && structures.length) break;
-							
+
 						quote = "";
 						if(i == 0) break;
 
