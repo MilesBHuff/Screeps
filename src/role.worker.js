@@ -32,7 +32,7 @@ var roleWorker = {
 				creep.memory.target = undefined;
 			}
 		}
-
+console.log(creep.room);
 		// Decide on a target
 		// =====================================================================
 		if(creep.memory.target == undefined
