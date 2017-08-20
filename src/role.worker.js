@@ -7,7 +7,7 @@
  *  target is inaccessible, they then pick one at random within their room.
 **/
 
-// Set variables
+// Non-member variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES = require("defines");
 
@@ -15,6 +15,7 @@ const DEFINES = require("defines");
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 var roleWorker = {
 	run: function (creep) {
+console.log(_.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.WORKER && eachCreep.room == creep.room).length + " / " + creep.room.memory.claimerLimit);
 		// Variables
 		// =====================================================================
 		var repairLimit = 100000;
