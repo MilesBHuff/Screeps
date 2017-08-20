@@ -40,10 +40,10 @@ var roleWorker = {
 				var sources = undefined;
 				var target  = undefined;
 				for(var i = 0; i < 1; i++) {
-					var sources = creep.room.find(FIND_DROPPED_ENERGY});
+					var sources = creep.room.find(FIND_DROPPED_ENERGY);
 					if(sources && sources.length) break;
 					
-					var sources = creep.room.find(FIND_DROPPED_RESOURCES});
+					var sources = creep.room.find(FIND_DROPPED_RESOURCES);
 					if(sources && sources.length) break;
 					
 					var sources = creep.room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
