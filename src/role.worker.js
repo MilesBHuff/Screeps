@@ -115,18 +115,18 @@ var roleWorker = {
 						quote = "";
 						if(i == 0) break;
 
-						case 1: // Build
-						structures = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
+						case 1: // Repair
+						structures = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax && structure.hits < repairLimit}); // It would seem that walls cannot be owned, so we have to search through all structures in the room, not just our own.
 						if(structures && structures.length) {
-							quote = "Build";
+							quote = "Repair";
 							break;
 						}
 						if(i == 0) break;
 
-						case 2: // Repair
-						structures = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax && structure.hits < repairLimit}); // It would seem that walls cannot be owned, so we have to search through all structures in the room, not just our own.
+						case 2: // Build
+						structures = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
 						if(structures && structures.length) {
-							quote = "Repair";
+							quote = "Build";
 							break;
 						}
 						if(i == 0) break;
