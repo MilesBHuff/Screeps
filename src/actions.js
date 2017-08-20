@@ -1,10 +1,19 @@
 const actions = {
 	wander: function (creep) {
-		// Variables
-		var direction = Math.round(Math.random() * 8);
-		// Move
-		if(direction) {
-			creep.move(direction);
+		// Don't let the creep wander outside the room
+		if(creep.pos.x <  3
+		|| creep.pos.x > 46
+		|| creep.pos.y <  3
+		|| creep.pos.y > 46
+		){
+			creep.moveTo(25, 25);
+		} else {
+			// Variables
+			var direction = Math.round(Math.random() * 8);
+			// Move
+			if(direction) {
+				creep.move(direction);
+			}
 		}
 	}
 };
