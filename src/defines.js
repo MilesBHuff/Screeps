@@ -11,4 +11,5 @@ const defines = {
 		"HEALER":  2,
 		"CLAIMER": 3
 	})
-}
+};
+module.exports = defines;
