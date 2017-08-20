@@ -38,118 +38,130 @@ var roleWorker = {
 		if(creep.memory.target == undefined
 		|| !Game.getObjectById(creep.memory.target)
 		){
+			// Variables
+			// -----------------------------------------------------------------
 			creep.memory.target = undefined;
+			var target  = "";
+			var targets = new Array();
+			const TASKS = Object.freeze({
+				"WAIT":    -1,
+				"HARVEST":  0,
+				"TRANSFER": 1,
+				"UPGRADE":  2,
+				"BUILD":    3,
+				"REPAIR":   4
+			})
+			var task = TASKS.WAIT;
+			for(var i = 0; i < 1; i++) {
 
-			// Source
-			// -----------------------------------------------------------------
-			if(creep.memory.harvesting) {
-				var sources = undefined;
-				var target  = undefined;
-				for(var i = 0; i < 1; i++) {
-					var sources = creep.room.find(FIND_DROPPED_RESOURCES);
-					if(sources && sources.length) break;
-
-					var sources = creep.room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
-					if(sources && sources.length) break;
+				// If harvesting, harvest.
+				// -------------------------------------------------------------
+				task = TASKS.HARVEST;
+				if(creep.memory.harvesting) {
+					// Pick up dropped resources
+					targets = creep.room.find(FIND_DROPPED_RESOURCES);
+					if(targets && targets.length) break;
+					// Harvest new energy
+					targets = creep.room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
+					if(targets && targets.length) break;
 				}
-				if((target = creep.pos.findClosestByPath(sources))
-				||((target = sources[Math.floor(Math.random() * sources.length)])
-				&& creep.pos.findPathTo(target)
-				)){
-					creep.memory.target = target.id;
+
+				// Always keep spawns and extensions filled up to max.
+				// -------------------------------------------------------------
+				task = TASKS.TRANSFER;
+				// Fill extensions
+				targets = creep.room.find(FIND_MY_STRUCTURES, {
+					filter: (structure) => {return(
+						   structure.structureType == STRUCTURE_EXTENSION
+						&& structure.energy        <  structure.energyCapacity
+					);}
+				});
+				if(targets && targets.length) break;
+				// Fill spawns
+				targets = creep.room.find(FIND_MY_STRUCTURES, {
+					filter: (structure) => {return(
+						   structure.structureType == STRUCTURE_SPAWN
+						&& structure.energy        <  structure.energyCapacity
+					);}
+				});
+				if(targets && targets.length) break;
+
+				// 25% chance of upgrading the controller
+				// -------------------------------------------------------------
+				task = TASKS.UPGRADE;
+				if(!Math.round(Math.random() * 3)) {
+					targets = [creep.room.controller];
+					if(targets && targets.length) break;
+				}
+
+				// 50% chance of maintaining towers
+				// -------------------------------------------------------------
+				task = TASKS.TRANSFER;
+				if(!Math.round(Math.random())) {
+					targets = creep.room.find(FIND_MY_STRUCTURES, {
+						filter: (structure) => {return(
+							   structure.structureType == STRUCTURE_TOWER
+							&& structure.energy        <  structure.energyCapacity
+						);}
+					});
+					if(targets && targets.length) break;
+				}
+
+				// 50% chance of repairing constructions
+				// -------------------------------------------------------------
+				task = TASKS.REPAIR;
+				if(!Math.round(Math.random())) {
+					// It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
+					targets = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax && structure.hits < repairLimit});
+				}
+
+				// Build new things
+				// -------------------------------------------------------------
+				task = TASKS.BUILD;
+				targets = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
+				if(targets && targets.length) break;
+
+				// Store excess resources
+				// -------------------------------------------------------------
+				task = TASKS.TRANSFER;
+				targets = creep.room.find(FIND_MY_STRUCTURES, {
+					filter: (structure) => {return(
+						   structure.structureType == STRUCTURE_STORAGE
+						&& structure.energy        <  structure.energyCapacity
+					);}
+				});
+				if(targets && targets.length) break;
+
+				task = TASKS.WAIT;
+			}
+
+			// Find a path to the target
+			// -----------------------------------------------------------------
+			if((target = creep.pos.findClosestByPath(targets))
+			||((target = targets[Math.floor(Math.random() * targets.length)])
+			&& creep.pos.findPathTo(target)
+			)){
+				creep.memory.target = target.id;
+				switch(task) {
+					case TASKS.HARVEST:
 					creep.say("Harvest");
-				}
+					break;
 
-			// Structure
-			// -----------------------------------------------------------------
-			} else {
-				var structures;
-				for(var i = 0; i < 2; i++) {
-					var quote = "";
-					var targetType = 0;
-					// Make sure we always have the max number of creeps
-					if(i == 0
-					&& creep.room.memory.claimerLimit <= _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.CLAIMER && eachCreep.room == creep.room).length
-					&& creep.room.memory.fighterLimit <= _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.FIGHTER && eachCreep.room == creep.room).length
-					&& creep.room.memory.healerLimit  <= _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.HEALER  && eachCreep.room == creep.room).length
-					&& creep.room.memory.workerLimit  <= _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.WORKER  && eachCreep.room == creep.room).length
-					){
-						targetType = Math.floor(Math.random() * 4);
-					}
-					switch(targetType) {
-						case 0: // Transfer
-						quote = "Transfer";
-						// Fill extensions
-						structures = creep.room.find(FIND_MY_STRUCTURES, {
-							filter: (structure) => {return(
-								   structure.structureType == STRUCTURE_EXTENSION
-								&& structure.energy        <  structure.energyCapacity
-							);}
-						});
-						if(structures && structures.length) break;
-						// Fill spawns
-						structures = creep.room.find(FIND_MY_STRUCTURES, {
-							filter: (structure) => {return(
-								   structure.structureType == STRUCTURE_SPAWN
-								&& structure.energy        <  structure.energyCapacity
-							);}
-						});
-						if(structures && structures.length) break;
-						// Fill towers
-						structures = creep.room.find(FIND_MY_STRUCTURES, {
-							filter: (structure) => {return(
-								   structure.structureType == STRUCTURE_TOWER
-								&& structure.energy        <  structure.energyCapacity
-							);}
-						});
-						if(structures && structures.length) break;
-						// Fill storage
-						structures = creep.room.find(FIND_MY_STRUCTURES, {
-							filter: (structure) => {return(
-								   structure.structureType == STRUCTURE_STORAGE
-								&& structure.energy        <  structure.energyCapacity
-							);}
-						});
-						if(structures && structures.length) break;
+					case TASKS.TRANSFER:
+					creep.say("Transfer");
+					break;
 
-						quote = "";
-						if(i == 0) break;
+					case TASKS.UPGRADE:
+					creep.say("Upgrade");
+					break;
 
-						case 1: // Repair
-						structures = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax && structure.hits < repairLimit}); // It would seem that walls cannot be owned, so we have to search through all structures in the room, not just our own.
-						if(structures && structures.length) {
-							quote = "Repair";
-							break;
-						}
-						if(i == 0) break;
+					case TASKS.BUILD:
+					creep.say("Build");
+					break;
 
-						case 2: // Build
-						structures = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
-						if(structures && structures.length) {
-							quote = "Build";
-							break;
-						}
-						if(i == 0) break;
-
-						case 3: // Upgrade
-						structures = [creep.room.controller];
-						if(structures && structures.length) {
-							quote = "Upgrade";
-							break;
-						}
-						if(i == 0) break;
-					}
-					if(structures && structures.length) {
-						var target = undefined;
-						if((target = creep.pos.findClosestByPath(structures))
-						||((target = structures[Math.floor(Math.random() * structures.length)])
-						&& creep.pos.findPathTo(target)
-						)){
-							creep.memory.target = target.id;
-							if(quote != "") creep.say(quote);
-							break;
-						}
-					} else if(i >= 1) break;
+					case TASKS.REPAIR:
+					creep.say("Repair");
+					break;
 				}
 			}
 		}
