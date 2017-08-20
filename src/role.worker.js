@@ -16,7 +16,7 @@ const DEFINES = require("defines");
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 var roleWorker = {
 	run: function (creep) {
-creep.memory.target = undefined;
+//creep.memory.target = undefined;
 
 		// Variables
 		// =====================================================================
