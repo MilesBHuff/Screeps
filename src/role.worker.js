@@ -213,12 +213,10 @@ var roleWorker = {
 				}
 			}
 		} else {
-console.log(creep + "Not harvesting.");
 
 			// Upgrade
 			// -----------------------------------------------------------------
 			/*//*/ if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
-console.log(creep + "Upgrading...");
 				if(creep.upgradeController(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0ff"}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
@@ -228,7 +226,6 @@ console.log(creep + "Upgrading...");
 			// Build
 			// -----------------------------------------------------------------
 			} else if(Game.getObjectById(creep.memory.target).progressTotal) {
-console.log(creep + "Building...");
 				if(creep.build(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0f0"}}) == ERR_NO_PATH) {
 						creep.memory.target  = undefined;
@@ -240,7 +237,6 @@ console.log(creep + "Building...");
 			} else  if(Game.getObjectById(creep.memory.target).hits < Game.getObjectById(creep.memory.target).hitsMax
 				&& Game.getObjectById(creep.memory.target).hits < repairLimit
 				){
-console.log(creep + "Repairing...");
 				if(creep.repair(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f"}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
@@ -250,11 +246,8 @@ console.log(creep + "Repairing...");
 			// Transfer
 			// -----------------------------------------------------------------
 			} else if(Game.getObjectById(creep.memory.target).energy < Game.getObjectById(creep.memory.target).energyCapacity) {
-console.log(creep + "Trying to transfer...");
 				if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-console.log(creep + "Trying to move...");
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#fff"}}) == ERR_NO_PATH) {
-console.log(creep + "Resetting target...");
 						creep.memory.target  = undefined;
 					}
 				}
