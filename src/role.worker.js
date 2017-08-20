@@ -16,7 +16,6 @@ const DEFINES = require("defines");
 var roleWorker = {
 	run: function (creep) {
 console.log(_.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.WORKER && eachCreep.room == creep.room).length + " / " + creep.room.memory.workerLimit);
-console.log(creep.room.memory.workerLimit);
 		// Variables
 		// =====================================================================
 		var repairLimit = 100000;
@@ -69,12 +68,11 @@ console.log(creep.room.memory.workerLimit);
 					var quote = "";
 					var targetType = 0;
 					// Make sure we always have the max number of creeps
-					if(i == 0
-					&& creep.room.memory.claimerLimit == _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.CLAIMER && eachCreep.room == creep.room).length
-					&& creep.room.memory.fighterLimit == _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.FIGHTER && eachCreep.room == creep.room).length
-					&& creep.room.memory.healerLimit  == _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.HEALER  && eachCreep.room == creep.room).length
-					&& creep.room.memory.workerLimit  == _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.WORKER  && eachCreep.room == creep.room).length) {
-						targetType = Math.floor(Math.random() * 4);
+					if(creep.room.memory.claimerLimit == _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.CLAIMER && eachCreep.room == creep.room).length
+					|| creep.room.memory.fighterLimit == _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.FIGHTER && eachCreep.room == creep.room).length
+					|| creep.room.memory.healerLimit  == _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.HEALER  && eachCreep.room == creep.room).length
+					|| creep.room.memory.workerLimit  == _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.WORKER  && eachCreep.room == creep.room).length) {
+						if(i == 0) targetType = Math.floor(Math.random() * 4);
 					}
 					switch(targetType) {
 						case 0: // Transfer
