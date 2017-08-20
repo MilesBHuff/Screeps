@@ -99,6 +99,17 @@ var roleWorker = {
 				});
 				if(targets && targets.length) break;
 
+				// 50% chance to build things that complete instantaneously
+				// -------------------------------------------------------------
+				task = TASKS.BUILD;
+				if(Math.round(Math.random())) {
+					targets = creep.room.find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
+						   site.structureType == STRUCTURE_WALL
+						|| site.structureType == STRUCTURE_RAMPART
+					);
+					if(targets && targets.length) break;
+				}
+
 				// 75% chance of repairing constructions
 				// -------------------------------------------------------------
 				task = TASKS.REPAIR;
