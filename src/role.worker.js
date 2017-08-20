@@ -62,15 +62,11 @@ var roleWorker = {
 					var quote = "";
 					var targetType = 0;
 					// Make sure we always have the max number of creeps
-					var claimers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.CLAIMER   && creep.room == spawn.room);
-					var fighters = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.FIGHTER   && creep.room == spawn.room);
-					var  healers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.HEALER    && creep.room == spawn.room);
-					var  workers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.WORKER    && creep.room == spawn.room);
 					if(i == 0
-					&& creep.room.memory.claimerLimit >= claimers.length
-					&& creep.room.memory.fighterLimit >= fighters.length
-					&& creep.room.memory.healerLimit  >= healers.length
-					&& creep.room.memory.workerLimit  >= workers.length) {
+					&& creep.room.memory.claimerLimit >= _.filter(Game.creeps, (creep) => creep.memory.role == ROLES.CLAIMER && creep.room == spawn.room).length
+					&& creep.room.memory.fighterLimit >= _.filter(Game.creeps, (creep) => creep.memory.role == ROLES.FIGHTER && creep.room == spawn.room).length
+					&& creep.room.memory.healerLimit  >= _.filter(Game.creeps, (creep) => creep.memory.role == ROLES.HEALER  && creep.room == spawn.room).length
+					&& creep.room.memory.workerLimit  >= _.filter(Game.creeps, (creep) => creep.memory.role == ROLES.WORKER  && creep.room == spawn.room).length) {
 						targetType = Math.floor(Math.random() * 4);
 					}
 					switch(targetType) {
