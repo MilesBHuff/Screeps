@@ -16,6 +16,7 @@ const DEFINES = require("defines");
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 var roleWorker = {
 	run: function (creep) {
+creep.memory.target = undefined;
 
 		// Variables
 		// =====================================================================
@@ -42,7 +43,7 @@ var roleWorker = {
 			// Variables
 			// -----------------------------------------------------------------
 			creep.memory.target = undefined;
-			var target  = "";
+			var target  = undefined;
 			var targets = new Array();
 			const TASKS = Object.freeze({
 				"WAIT":    -1,
@@ -101,14 +102,14 @@ var roleWorker = {
 
 				// 50% chance to build things that complete instantaneously
 				// -------------------------------------------------------------
-//				task = TASKS.BUILD;
-//				if(Math.round(Math.random())) {
-//					targets = creep.room.find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
-//						   site.structureType == STRUCTURE_WALL
-//						|| site.structureType == STRUCTURE_RAMPART
-//					});
-//					if(targets && targets.length) break;
-//				}
+				task = TASKS.BUILD;
+				if(Math.round(Math.random())) {
+					targets = creep.room.find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
+						   site.structureType == STRUCTURE_WALL
+						|| site.structureType == STRUCTURE_RAMPART
+					});
+					if(targets && targets.length) break;
+				}
 
 				// 75% chance of repairing constructions
 				// -------------------------------------------------------------
@@ -161,7 +162,7 @@ var roleWorker = {
 				task = TASKS.WAIT;
 			}
 
-			// Find a path to the target
+			// Pick a target from the list of targets
 			// -----------------------------------------------------------------
 			if((target = creep.pos.findClosestByPath(targets))
 			||((target = targets[Math.floor(Math.random() * targets.length)])
