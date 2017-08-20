@@ -99,6 +99,15 @@ var roleWorker = {
 				});
 				if(targets && targets.length) break;
 
+				// 75% chance of repairing constructions
+				// -------------------------------------------------------------
+				task = TASKS.REPAIR;
+				if(Math.round(Math.random() * 3)) {
+					// It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
+					targets = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax && structure.hits < repairLimit});
+				if(targets && targets.length) break;
+				}
+
 				// 25% chance of upgrading the controller
 				// -------------------------------------------------------------
 				task = TASKS.UPGRADE;
@@ -118,15 +127,6 @@ var roleWorker = {
 						);}
 					});
 					if(targets && targets.length) break;
-				}
-
-				// 75% chance of repairing constructions
-				// -------------------------------------------------------------
-				task = TASKS.REPAIR;
-				if(Math.round(Math.random() * 3)) {
-					// It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
-					targets = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax && structure.hits < repairLimit});
-				if(targets && targets.length) break;
 				}
 
 				// Build new things
