@@ -329,10 +329,10 @@ module.exports.loop = function () {
 
 		// Kill off unneeded creeps
 		// ---------------------------------------------------------------------
-		killOff(claimers, spawn.room.memory.claimerLimit);
-		killOff(fighters, spawn.room.memory.fighterLimit);
-		killOff( healers, spawn.room.memory.healerLimit );
-		killOff( workers, spawn.room.memory.workerLimit );
+//		killOff(claimers, spawn.room.memory.claimerLimit);
+//		killOff(fighters, spawn.room.memory.fighterLimit);
+//		killOff( healers, spawn.room.memory.healerLimit );
+//		killOff( workers, spawn.room.memory.workerLimit );
 	}
 
 	// Delete the memories of dead entities
