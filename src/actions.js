@@ -8,7 +8,7 @@ const actions = {
 		if(Math.round(Math.random())) {
 			y *= -1;
 		}
-		if(!creep.moveTo(creep.pos.x + x, creep.pos.y + y) {
+		if(!creep.moveTo(creep.pos.x + x, creep.pos.y + y)) {
 			creep.moveTo(creep.pos.x - x, creep.pos.y - y);
 		}
 	}
