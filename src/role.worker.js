@@ -15,7 +15,8 @@ const DEFINES = require("defines");
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 var roleWorker = {
 	run: function (creep) {
-console.log(_.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.WORKER && eachCreep.room == creep.room).length + " / " + creep.room.memory.claimerLimit);
+console.log(_.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.WORKER && eachCreep.room == creep.room).length + " / " + creep.room.memory.workerLimit);
+console.log(creep.room.memory.workerLimit);
 		// Variables
 		// =====================================================================
 		var repairLimit = 100000;
@@ -68,7 +69,6 @@ console.log(_.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINE
 					var quote = "";
 					var targetType = 0;
 					// Make sure we always have the max number of creeps
-					console.log(_.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.WORKER && eachCreep.room == creep.room).length + " / " + creep.room.memory.claimerLimit);
 					if(i == 0
 					&& creep.room.memory.claimerLimit == _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.CLAIMER && eachCreep.room == creep.room).length
 					&& creep.room.memory.fighterLimit == _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.FIGHTER && eachCreep.room == creep.room).length
