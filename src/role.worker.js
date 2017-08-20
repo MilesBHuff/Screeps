@@ -237,6 +237,12 @@ var roleWorker = {
 				creep.memory.target = undefined;
 			}
 		}
+		
+		// If the creep can't find a target, it wanders
+		// ---------------------------------------------------------------------
+		if(creep.memory.target == undefined) {
+			require("actions").wander(creep);
+		}
 	}
 };
 module.exports = roleWorker;
