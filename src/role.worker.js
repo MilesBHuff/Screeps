@@ -2,7 +2,8 @@
 // #############################################################################
 /** What this script does, is it causes workers to vary between harvesting and
  *  using energy, the latter meaning to transfer, build, repair, or upgrade.
- *  Which of these tasks is chosen is random, and resets at completion.
+ *  Which of these tasks is chosen depends on a mixture of strategy and
+ *  randomness.
  *  These worker creeps also always look for the closest target first.  If that
  *  target is inaccessible, they then pick one at random within their room.
 **/
