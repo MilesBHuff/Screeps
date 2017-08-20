@@ -16,9 +16,9 @@ const ROLES = Object.freeze({
 // Spawn amounts
 // =============================================================================
 const claimerBaseLimit = 0; // Should only be spawned in special cases
-const fighterBaseLimit = 4; // Doubled during conflict
-const  healerBaseLimit = 2; // Doubled during conflict
-const  workerBaseLimit = 4; // Multiplied by the number of sources
+const fighterBaseLimit = 3; // Doubled during conflict
+const  healerBaseLimit = 1; // Doubled during conflict
+const  workerBaseLimit = 3; // Multiplied by the number of sources
 
 // Miscellaneous
 // =============================================================================
