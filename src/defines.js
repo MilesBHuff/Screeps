@@ -1,11 +1,11 @@
 // defines.js
 // #############################################################################
 
-var defines = {
+const defines = {
 
 	// Define roles
 	// =========================================================================
-	const ROLES: Object.freeze({
+	ROLES: Object.freeze({
 		"WORKER":  0,
 		"FIGHTER": 1,
 		"HEALER":  2,
