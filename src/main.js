@@ -3,7 +3,7 @@
 
 // Set variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-require("defines");
+const DEFINES = require("defines");
 
 // Spawn amounts
 // =============================================================================
@@ -234,10 +234,10 @@ module.exports.loop = function () {
 		// Buildings
 		var   towers = _.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_TOWER && structure.room == spawn.room);
 		// Creeps
-		var claimers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.CLAIMER   && creep.room == spawn.room);
-		var fighters = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.FIGHTER   && creep.room == spawn.room);
-		var  healers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.HEALER    && creep.room == spawn.room);
-		var  workers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == ROLES.WORKER    && creep.room == spawn.room);
+		var claimers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.CLAIMER   && creep.room == spawn.room);
+		var fighters = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.FIGHTER   && creep.room == spawn.room);
+		var  healers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.HEALER    && creep.room == spawn.room);
+		var  workers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.WORKER    && creep.room == spawn.room);
 
 		// Determine role
 		// ---------------------------------------------------------------------
@@ -246,9 +246,9 @@ module.exports.loop = function () {
 			switch(i) {
 				case 0:
 				if(workers.length < spawn.room.memory.workerLimit / 2) {
-					creepRole = ROLES.WORKER;
+					creepRole = DEFINES.ROLES.WORKER;
 				} else {
-					creepRole = Math.floor(Math.random() * ROLES.length);
+					creepRole = Math.floor(Math.random() * DEFINES.ROLES.length);
 				}
 				break;
 
@@ -257,30 +257,30 @@ module.exports.loop = function () {
 				break;
 			}
 			switch(creepRole) {
-				case ROLES.WORKER:
+				case DEFINES.ROLES.WORKER:
 				if(workers.length < spawn.room.memory.workerLimit) {
-					spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker", ROLES.WORKER);
+					spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker", DEFINES.ROLES.WORKER);
 					break;
 				}
 				if(i == 0) break;
 
-				case ROLES.FIGHTER:
+				case DEFINES.ROLES.FIGHTER:
 				if(fighters.length < spawn.room.memory.fighterLimit) {
-					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Fighter", ROLES.FIGHTER);
+					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Fighter", DEFINES.ROLES.FIGHTER);
 					break;
 				}
 				if(i == 0) break;
 
-				case ROLES.HEALER:
+				case DEFINES.ROLES.HEALER:
 				if(healers.length < spawn.room.memory.healerLimit) {
-					spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", ROLES.HEALER);
+					spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", DEFINES.ROLES.HEALER);
 					break;
 				}
 				if(i == 0) break;
 
-				case ROLES.CLAIMER:
+				case DEFINES.ROLES.CLAIMER:
 				if(claimers.length < spawn.room.memory.claimerLimit) {
-					spawnCreep(spawn, [CLAIM, MOVE, TOUGH], "Claimer", ROLES.CLAIMER);
+					spawnCreep(spawn, [CLAIM, MOVE, TOUGH], "Claimer", DEFINES.ROLES.CLAIMER);
 					break;
 				}
 				break;
@@ -363,7 +363,7 @@ module.exports.loop = function () {
 	// -------------------------------------------------------------------------
 	for(var name in Game.structures) {
 		var structure = Game.structures[name];
-		/*//*/ if(structure.structureType == ROLES.TOWER) {
+		/*//*/ if(structure.structureType == DEFINES.ROLES.TOWER) {
 			require("role.tower").run(structure);
 		}
 	}
@@ -372,13 +372,13 @@ module.exports.loop = function () {
 	// -------------------------------------------------------------------------
 	for(var name in Game.creeps) {
 		var creep = Game.creeps[name];
-		/*//*/ if(creep.memory.role == ROLES.WORKER ) {
+		/*//*/ if(creep.memory.role == DEFINES.ROLES.WORKER ) {
 			require("role.worker" ).run(creep);
-		} else if(creep.memory.role == ROLES.FIGHTER) {
+		} else if(creep.memory.role == DEFINES.ROLES.FIGHTER) {
 			require("role.fighter").run(creep);
-		} else if(creep.memory.role == ROLES.HEALER ) {
+		} else if(creep.memory.role == DEFINES.ROLES.HEALER ) {
 			require("role.healer" ).run(creep);
-		} else if(creep.memory.role == ROLES.CLAIMER) {
+		} else if(creep.memory.role == DEFINES.ROLES.CLAIMER) {
 			require("role.claimer").run(creep);
 		}
 	}
