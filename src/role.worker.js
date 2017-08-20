@@ -37,8 +37,18 @@ var roleWorker = {
 			// Source
 			// -----------------------------------------------------------------
 			if(creep.memory.harvesting) {
-				var sources = creep.room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
-				var target = undefined;
+				var sources = undefined;
+				var target  = undefined;
+				for(var i = 0, i < 1; i++) {
+					var sources = creep.room.find(FIND_DROPPED_ENERGY});
+					if(sources && sources.length) break;
+					
+					var sources = creep.room.find(FIND_DROPPED_RESOURCES});
+					if(sources && sources.length) break;
+					
+					var sources = creep.room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
+					if(sources && sources.length) break;
+				}
 				if((target = creep.pos.findClosestByPath(sources))
 				||((target = sources[Math.floor(Math.random() * sources.length)])
 				&& creep.pos.findPathTo(target)
@@ -61,7 +71,7 @@ var roleWorker = {
 						case 0: // Transfer
 						quote = "Transfer";
 						// Fill extensions
-						structures = creep.room.find(FIND_STRUCTURES, {
+						structures = creep.room.find(FIND_MY_STRUCTURES, {
 							filter: (structure) => {return(
 								   structure.structureType == STRUCTURE_EXTENSION
 								&& structure.energy        <  structure.energyCapacity
@@ -69,7 +79,7 @@ var roleWorker = {
 						});
 						if(structures && structures.length) break;
 						// Fill spawns
-						structures = creep.room.find(FIND_STRUCTURES, {
+						structures = creep.room.find(FIND_MY_STRUCTURES, {
 							filter: (structure) => {return(
 								   structure.structureType == STRUCTURE_SPAWN
 								&& structure.energy        <  structure.energyCapacity
@@ -77,7 +87,7 @@ var roleWorker = {
 						});
 						if(structures && structures.length) break;
 						// Fill towers
-						structures = creep.room.find(FIND_STRUCTURES, {
+						structures = creep.room.find(FIND_MY_STRUCTURES, {
 							filter: (structure) => {return(
 								   structure.structureType == STRUCTURE_TOWER
 								&& structure.energy        <  structure.energyCapacity
@@ -85,7 +95,7 @@ var roleWorker = {
 						});
 						if(structures && structures.length) break;
 						// Fill storage
-						structures = creep.room.find(FIND_STRUCTURES, {
+						structures = creep.room.find(FIND_MY_STRUCTURES, {
 							filter: (structure) => {return(
 								   structure.structureType == STRUCTURE_STORAGE
 								&& structure.energy        <  structure.energyCapacity
@@ -97,7 +107,7 @@ var roleWorker = {
 						if(i == 0) break;
 
 						case 1: // Build
-						structures = creep.room.find(FIND_CONSTRUCTION_SITES);
+						structures = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
 						if(structures && structures.length) {
 							quote = "Build";
 							break;
@@ -105,7 +115,7 @@ var roleWorker = {
 						if(i == 0) break;
 
 						case 2: // Repair
-						structures = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax && structure.hits < repairLimit});
+						structures = creep.room.find(FIND_MY_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax && structure.hits < repairLimit});
 						if(structures && structures.length) {
 							quote = "Repair";
 							break;
