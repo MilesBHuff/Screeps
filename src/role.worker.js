@@ -110,7 +110,7 @@ var roleWorker = {
 				// 50% chance of maintaining towers
 				// -------------------------------------------------------------
 				task = TASKS.TRANSFER;
-				if(!Math.round(Math.random())) {
+				if(Math.round(Math.random())) {
 					targets = creep.room.find(FIND_MY_STRUCTURES, {
 						filter: (structure) => {return(
 							   structure.structureType == STRUCTURE_TOWER
@@ -120,10 +120,10 @@ var roleWorker = {
 					if(targets && targets.length) break;
 				}
 
-				// 50% chance of repairing constructions
+				// 75% chance of repairing constructions
 				// -------------------------------------------------------------
 				task = TASKS.REPAIR;
-				if(!Math.round(Math.random())) {
+				if(Math.round(Math.random() * 3)) {
 					// It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
 					targets = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax && structure.hits < repairLimit});
 				if(targets && targets.length) break;
