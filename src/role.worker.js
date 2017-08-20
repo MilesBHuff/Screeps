@@ -103,8 +103,9 @@ var roleWorker = {
 				// -------------------------------------------------------------
 				task = TASKS.REPAIR;
 				if(Math.round(Math.random() * 3)) {
+					// Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
 					// It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
-					targets = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < structure.hitsMax && structure.hits < repairLimit});
+					targets = creep.room.find(FIND_STRUCTURES, {filter: (structure) => structure.hits < (structure.hitsMax * 0.75) && structure.hits < (repairLimit) * 0.75});
 				if(targets && targets.length) break;
 				}
 
@@ -218,7 +219,9 @@ var roleWorker = {
 
 			// Repair
 			// -----------------------------------------------------------------
-			} else if(Game.getObjectById(creep.memory.target).hits < Game.getObjectById(creep.memory.target).hitsMax) {
+			} else  if(Game.getObjectById(creep.memory.target).hits < Game.getObjectById(creep.memory.target).hitsMax
+				|| Game.getObjectById(creep.memory.target).hits < repairLimit
+				){
 				if(creep.repair(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f"}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
