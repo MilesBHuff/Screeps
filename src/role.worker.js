@@ -106,7 +106,7 @@ var roleWorker = {
 					targets = creep.room.find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
 						   site.structureType == STRUCTURE_WALL
 						|| site.structureType == STRUCTURE_RAMPART
-					);
+					});
 					if(targets && targets.length) break;
 				}
 
