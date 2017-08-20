@@ -243,8 +243,11 @@ var roleWorker = {
 			// Transfer
 			// -----------------------------------------------------------------
 			} else if(Game.getObjectById(creep.memory.target).energy < Game.getObjectById(creep.memory.target).energyCapacity) {
+console.log(creep + "Trying to transfer...");
 				if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+console.log(creep + "Trying to move...");
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#fff"}}) == ERR_NO_PATH) {
+console.log(creep + "Resetting target...");
 						creep.memory.target  = undefined;
 					}
 				}
