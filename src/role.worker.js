@@ -188,7 +188,10 @@ var roleWorker = {
 		if(creep.memory.harvesting) {
 			/*//*/ if(Game.getObjectById(creep.memory.target).energy <= 0) {
 				creep.memory.target  = undefined;
-			} else if(creep.harvest(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE || creep.pickup(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+			} else if(creep.harvest( Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+				   || creep.pickup(  Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+				   || creep.withdraw(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+				   ){
 				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#ff0"}}) == ERR_NO_PATH) {
 					creep.memory.target  = undefined;
 				}
