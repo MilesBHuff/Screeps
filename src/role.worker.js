@@ -65,6 +65,10 @@ var roleWorker = {
 					// Harvest new energy
 					targets = creep.room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
 					if(targets && targets.length) break;
+					// If there's no new energy available, use what you're already carrying, if anything.
+					if(creep.carry.energy > 0) {
+						creep.memory.harvesting = false;
+					}
 				}
 
 				// Always keep spawns and extensions filled up to max.
