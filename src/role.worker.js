@@ -210,10 +210,12 @@ var roleWorker = {
 				}
 			}
 		} else {
+console.log(creep + "Not harvesting.");
 
 			// Upgrade
 			// -----------------------------------------------------------------
 			/*//*/ if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
+console.log(creep + "Upgrading...");
 				if(creep.upgradeController(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0ff"}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
@@ -223,6 +225,7 @@ var roleWorker = {
 			// Build
 			// -----------------------------------------------------------------
 			} else if(Game.getObjectById(creep.memory.target).progressTotal) {
+console.log(creep + "Building...");
 				if(creep.build(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0f0"}}) == ERR_NO_PATH) {
 						creep.memory.target  = undefined;
@@ -232,6 +235,7 @@ var roleWorker = {
 			// Repair
 			// -----------------------------------------------------------------
 			} else  if(Game.getObjectById(creep.memory.target).hits < Game.getObjectById(creep.memory.target).hitsMax
+console.log(creep + "Repairing...");
 				|| Game.getObjectById(creep.memory.target).hits < repairLimit
 				){
 				if(creep.repair(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
