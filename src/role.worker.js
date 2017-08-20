@@ -39,7 +39,7 @@ var roleWorker = {
 			if(creep.memory.harvesting) {
 				var sources = undefined;
 				var target  = undefined;
-				for(var i = 0, i < 1; i++) {
+				for(var i = 0; i < 1; i++) {
 					var sources = creep.room.find(FIND_DROPPED_ENERGY});
 					if(sources && sources.length) break;
 					
