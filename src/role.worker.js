@@ -68,6 +68,7 @@ var roleWorker = {
 					var quote = "";
 					var targetType = 0;
 					// Make sure we always have the max number of creeps
+					console.log(_.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.WORKER  && eachCreep.room == creep.room).length + " / " + creep.room.memory.claimerLimit);
 					if(i == 0
 					&& creep.room.memory.claimerLimit >= _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.CLAIMER && eachCreep.room == creep.room).length
 					&& creep.room.memory.fighterLimit >= _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.FIGHTER && eachCreep.room == creep.room).length
@@ -75,7 +76,7 @@ var roleWorker = {
 					&& creep.room.memory.workerLimit  >= _.filter(Game.creeps, (eachCreep) => eachCreep.memory.role == DEFINES.ROLES.WORKER  && eachCreep.room == creep.room).length) {
 						console.log("All creeps spawned.");
 						targetType = Math.floor(Math.random() * 4);
-					}	console.log("Need to spawn creeps.");
+					} else console.log("Need to spawn creeps.");
 					switch(targetType) {
 						case 0: // Transfer
 						quote = "Transfer";
