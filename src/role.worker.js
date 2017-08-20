@@ -235,9 +235,9 @@ console.log(creep + "Building...");
 			// Repair
 			// -----------------------------------------------------------------
 			} else  if(Game.getObjectById(creep.memory.target).hits < Game.getObjectById(creep.memory.target).hitsMax
-console.log(creep + "Repairing...");
 				|| Game.getObjectById(creep.memory.target).hits < repairLimit
 				){
+console.log(creep + "Repairing...");
 				if(creep.repair(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f"}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
