@@ -361,7 +361,7 @@ module.exports.loop = function () {
 
 	// Structures
 	// -------------------------------------------------------------------------
-	for(var structure in Game.find(FIND_MY_STRUCTURES)) {
+	for(var structure in Game.structures.find(FIND_MY_STRUCTURES)) {
 		switch(structure.structureType) {
 			case STRUCTURE_TOWER:
 			require("role.tower").run(structure);
