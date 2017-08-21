@@ -47,7 +47,7 @@ var roleWorker = {
 			creep.memory.target = undefined;
 			var rooms    = Array();
 			rooms.push(creep.room.name);
-			var roomsRaw = Game.map.describeExits(room.name);
+			var roomsRaw = Game.map.describeExits(creep.room.name);
 			for(var i = 0; i < 4; i++) {
 				var index = ((2 * 1) + 1).toString();
 				if(roomsRaw[index] != undefined) {
