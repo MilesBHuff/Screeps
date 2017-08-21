@@ -4,7 +4,7 @@
 const defines = {
 	
 	// This is the base limit to which things should be repaired.  It should be multiplied by the room in-question's current control level.
-	REPAIR_LIMIT: 24000
+	REPAIR_LIMIT: 24000,
 
 	// These are all the roles available for creeps
 	ROLES: Object.freeze({
