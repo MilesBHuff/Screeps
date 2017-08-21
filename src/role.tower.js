@@ -20,7 +20,7 @@ var roleTower = {
 			// =================================================================
 			target = structure.pos.findClosestByRange(FIND_MY_CREEPS, {filter: (creep) =>
 				   creep.hits < creep.hitsMax
-			}););
+			});
 			if(target && target.id) {
 				structure.heal(target);
 				break;
