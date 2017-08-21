@@ -16,9 +16,9 @@ Goals
   but also allows for a more even distribution of labour, by using each worker
   wherever needed, instead of limiting each one to a specific task.
   Likewise, where the military is concerned, I have chosen to only use ranged
-  attacks;  so only a single creep is needed.  The only other two roles I'm
-  using, are healers and "claimers", the latter of which is only summoned on-
-  demand, and claims the room specified in its spawn call.
+  attacks;  so only a single role is needed.  The only other two roles I'm using
+  are healers and "claimers", the latter of which is only summoned on-demand,
+  and claims the room specified in its spawn call.
 | Generally speaking, I leave construction site placement up to the player, as
   while some aspects of it are algorithmic, most take true intelligence to do
   right.  Plus, it's fun manually laying out a fort.
