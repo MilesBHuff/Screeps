@@ -1,6 +1,6 @@
-var role = {
+var roleClaimer = {
 	run: function (creep) {
 		require("actions").wander(creep);
 	}
 };
-module.exports = role;
+module.exports = roleClaimer;
