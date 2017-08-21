@@ -3,8 +3,7 @@
 
 const defines = {
 
-	// Define roles
-	// =========================================================================
+	// These are all the roles available for creeps
 	ROLES: Object.freeze({
 		"WORKER":  0,
 		"FIGHTER": 1,
