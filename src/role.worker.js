@@ -22,7 +22,7 @@ var roleWorker = {
 
 		// Variables
 		// =====================================================================
-		var repairLimit = 50000;
+		var repairLimit = 24000 * creep.room.controller.level;
 
 		// Decide whether to harvest
 		// =====================================================================
