@@ -12,7 +12,7 @@ var roleTower = {
 
 		// Variables
 		// =================================================================
-		var repairLimit = DEFINES.REPAIR_LIMIT * creep.room.controller.level;
+		var repairLimit = DEFINES.REPAIR_LIMIT * structure.room.controller.level;
 		for(var b = true; b; b = false) {
 			var target = undefined;
 			
