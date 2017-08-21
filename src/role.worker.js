@@ -92,7 +92,7 @@ var roleWorker = {
 					targets = room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
 					for(var j = 0; j < targets.length; j++) {
 						if(creep.moveTo(targets[j]) == ERR_NO_PATH) {
-							targets = undefined;
+							targets = Array();
 						}
 					}
 					if(targets && targets.length) break;
