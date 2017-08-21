@@ -242,7 +242,8 @@ var roleWorker = {
 		// Harvest
 		// ---------------------------------------------------------------------
 		if(creep.memory.harvesting) {
-			/*//*/ if(!Game.getObjectById(creep.memory.target).energy
+			/*//*/ if(!Game.getObjectById(creep.memory.target)
+				||!Game.getObjectById(creep.memory.target).energy
 				|| Game.getObjectById(creep.memory.target).energy <= 0) {
 				creep.memory.target  = undefined;
 			} else if(creep.harvest( Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
