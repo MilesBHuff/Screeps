@@ -45,9 +45,18 @@ var roleWorker = {
 			// Variables
 			// -----------------------------------------------------------------
 			creep.memory.target = undefined;
-			var target  = undefined;
-			var targets = new Array();
-			const TASKS = Object.freeze({
+			var rooms    = Array();
+			rooms.push(creep.room.name);
+			var roomsRaw = Game.map.describeExits(room.name);
+			for(var i = 0; i < 4; i++) {
+				var index = ((2 * 1) + 1).toString();
+				if(roomsRaw[index] != undefined) {
+					rooms.push(roomsRaw[index]);
+				}
+			}
+			var target   = undefined;
+			var targets  = Array();
+			const TASKS  = Object.freeze({
 				"WAIT":    -1,
 				"HARVEST":  0,
 				"TRANSFER": 1,
@@ -56,29 +65,25 @@ var roleWorker = {
 				"REPAIR":   4
 			})
 			var task = TASKS.WAIT;
-			for(var i = 0; i < 5; i++) {
-				var room;
-				switch(i) {
-					// Use the current room
-					case 0:
-					room = creep.room;
-					break;
-
-					// Find the room with the closest path from the creep
-					case 1:
-					break;
-
-					// Find the room with the second closest path from the creep
-					case 2:
-					break;
-
-					// Find the room with the second furthest path from the creep
-					case 3:
-					break;
-
-					// Find the room with the furthest path from the creep
-					case 4:
-					break;
+			for(var i = 0; i < rooms.length;) {
+				// Use the current room first.
+				if(rooms[0] == creep.room.name) {
+					var room = rooms.shift();
+				// If the current room failed...
+				//TODO:  A better way to do this, would be to sort the array by distance one time.
+				} else {
+					// Find the room with the shortest path
+					room = creep.pos.findClosestByPath(rooms);
+					// Find its index
+					var index = 0;
+					for(var j = 0; j < rooms.length; j++) {
+						if(rooms[j] == room) {
+							index = j;
+							break;
+						}
+					}
+					// Splice it
+					rooms.splice(index, 1);
 				}
 
 				// If harvesting, harvest.
@@ -241,7 +246,7 @@ var roleWorker = {
 				   || creep.pickup(  Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
 				   || creep.withdraw(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
 				   ){
-				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#ff0"}}) == ERR_NO_PATH) {
+				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#ff0", opacity: .25}}) == ERR_NO_PATH) {
 					creep.memory.target  = undefined;
 				}
 			}
@@ -251,7 +256,7 @@ var roleWorker = {
 			// -----------------------------------------------------------------
 			/*//*/ if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
 				if(creep.upgradeController(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0ff"}}) == ERR_NO_PATH) {
+					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0ff", opacity: .25}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
 					}
 				}
@@ -260,7 +265,7 @@ var roleWorker = {
 			// -----------------------------------------------------------------
 			} else if(Game.getObjectById(creep.memory.target).progressTotal) {
 				if(creep.build(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0f0"}}) == ERR_NO_PATH) {
+					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0f0", opacity: .25}}) == ERR_NO_PATH) {
 						creep.memory.target  = undefined;
 					}
 				}
@@ -271,7 +276,7 @@ var roleWorker = {
 				&& Game.getObjectById(creep.memory.target).hits < repairLimit
 				){
 				if(creep.repair(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f"}}) == ERR_NO_PATH) {
+					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f", opacity: .25}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
 					}
 				}
@@ -280,7 +285,7 @@ var roleWorker = {
 			// -----------------------------------------------------------------
 			} else if(Game.getObjectById(creep.memory.target).energy < Game.getObjectById(creep.memory.target).energyCapacity) {
 				if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#fff"}}) == ERR_NO_PATH) {
+					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#fff", opacity: .25}}) == ERR_NO_PATH) {
 						creep.memory.target  = undefined;
 					}
 				}
