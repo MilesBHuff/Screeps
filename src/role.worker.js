@@ -65,7 +65,7 @@ var roleWorker = {
 				"REPAIR":   4
 			})
 			var task = TASKS.WAIT;
-			for(var i = 0; i < rooms.length;) {
+			for(var i = 0; i < 1) { //rooms.length;) {
 				var room;
 				// Use the current room first.
 				if(rooms[0] == creep.room.name) {
