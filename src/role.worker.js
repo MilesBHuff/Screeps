@@ -5,7 +5,9 @@
  *  Which of these tasks is chosen depends on a mixture of strategy and
  *  randomness.
  *  These worker creeps also always look for the closest target first.  If that
- *  target is inaccessible, they then pick one at random within their room.
+ *  target is inaccessible, they then pick one at random within their room.  If
+ *  the creep cannot find anything to do in its current room, it will look for
+ *  things to do in a neighbouring room.
 **/
 
 // Non-member variables
@@ -54,20 +56,48 @@ var roleWorker = {
 				"REPAIR":   4
 			})
 			var task = TASKS.WAIT;
-			for(var b = true; b; b = false) {
+			for(var i = 0; i < 5; i++) {
+				var room;
+				switch(i) {
+					// Use the current room
+					case 0:
+					room = creep.room;
+					break;
+
+					// Find the room with the closest path from the creep
+					case 1:
+					break;
+
+					// Find the room with the second closest path from the creep
+					case 2:
+					break;
+
+					// Find the room with the second furthest path from the creep
+					case 3:
+					break;
+
+					// Find the room with the furthest path from the creep
+					case 4:
+					break;
+				}
 
 				// If harvesting, harvest.
 				// -------------------------------------------------------------
 				task = TASKS.HARVEST;
 				if(creep.memory.harvesting) {
 					// Pick up dropped resources
-					targets = creep.room.find(FIND_DROPPED_RESOURCES);
+					targets = room.find(FIND_DROPPED_RESOURCES);
 					if(targets && targets.length) break;
 					// Harvest new energy
-					targets = creep.room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
+					targets = room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
+					for(var j = 0; j < targets.length; j++) {
+						if(creep.moveTo(targets[j]) == ERR_NO_PATH) {
+							targets = undefined;
+						}
+					}
 					if(targets && targets.length) break;
 					// Get energy from storage
-					targets = creep.room.find(FIND_STRUCTURES, {
+					targets = room.find(FIND_STRUCTURES, {
 						filter: (structure) => {return(
 							   structure.structureType == STRUCTURE_STORAGE
 							&& structure.energy        >  0
@@ -84,7 +114,7 @@ var roleWorker = {
 				// -------------------------------------------------------------
 				task = TASKS.TRANSFER;
 				// Fill extensions
-				targets = creep.room.find(FIND_MY_STRUCTURES, {
+				targets = room.find(FIND_MY_STRUCTURES, {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_EXTENSION
 						&& structure.energy        <  structure.energyCapacity
@@ -92,7 +122,7 @@ var roleWorker = {
 				});
 				if(targets && targets.length) break;
 				// Fill spawns
-				targets = creep.room.find(FIND_MY_STRUCTURES, {
+				targets = room.find(FIND_MY_STRUCTURES, {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_SPAWN
 						&& structure.energy        <  structure.energyCapacity
@@ -104,7 +134,7 @@ var roleWorker = {
 				// -------------------------------------------------------------
 				task = TASKS.BUILD;
 				if(Math.round(Math.random())) {
-					targets = creep.room.find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
+					targets = room.find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
 						   site.structureType == STRUCTURE_WALL
 						|| site.structureType == STRUCTURE_RAMPART
 					});
@@ -117,7 +147,7 @@ var roleWorker = {
 				if(Math.round(Math.random() * 3)) {
 					// Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
 					// It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
-					targets = creep.room.find(FIND_STRUCTURES, {filter: (structure) =>
+					targets = room.find(FIND_STRUCTURES, {filter: (structure) =>
 						   structure.hits < (structure.hitsMax * 0.75)
 						&& structure.hits < (repairLimit * 0.75)
 				   	});
@@ -128,7 +158,7 @@ var roleWorker = {
 				// -------------------------------------------------------------
 				task = TASKS.UPGRADE;
 				if(!Math.round(Math.random() * 3)) {
-					targets = [creep.room.controller];
+					targets = [room.controller];
 					if(targets && targets.length) break;
 				}
 
@@ -136,7 +166,7 @@ var roleWorker = {
 				// -------------------------------------------------------------
 				task = TASKS.TRANSFER;
 				if(Math.round(Math.random())) {
-					targets = creep.room.find(FIND_MY_STRUCTURES, {
+					targets = room.find(FIND_MY_STRUCTURES, {
 						filter: (structure) => {return(
 							   structure.structureType == STRUCTURE_TOWER
 							&& structure.energy        <  structure.energyCapacity
@@ -148,13 +178,13 @@ var roleWorker = {
 				// Build new things
 				// -------------------------------------------------------------
 				task = TASKS.BUILD;
-				targets = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
+				targets = room.find(FIND_MY_CONSTRUCTION_SITES);
 				if(targets && targets.length) break;
 
 				// Store excess resources
 				// -------------------------------------------------------------
 				task = TASKS.TRANSFER;
-				targets = creep.room.find(FIND_MY_STRUCTURES, {
+				targets = room.find(FIND_MY_STRUCTURES, {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_STORAGE
 						&& structure.energy        <  structure.energyCapacity
