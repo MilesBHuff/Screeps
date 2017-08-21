@@ -22,7 +22,7 @@ var roleTower = {
 				   creep.hits < creep.hitsMax
 			}););
 			if(target && target.id) {
-				structure.heal(target)
+				structure.heal(target);
 				break;
 			}
 			
@@ -30,7 +30,7 @@ var roleTower = {
 			// =================================================================
 			target = structure.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
 			if(target && target.id) {
-				structure.attack(target)
+				structure.attack(target);
 				break;
 			}
 			
@@ -43,7 +43,7 @@ var roleTower = {
 				&& structureEach.hits < (repairLimit * 0.75)
 			});
 			if(target && target.id) {
-				structure.repair(target)
+				structure.repair(target);
 				break;
 			}
 		}
