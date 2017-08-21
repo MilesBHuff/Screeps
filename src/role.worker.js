@@ -86,9 +86,7 @@ var roleWorker = {
 					// Splice it
 					rooms.splice(index, 1);
 				}
-console.log(room);
-				room = Game.getObjectById(room);
-				room = creep.room; //TEMP
+				room = Game.rooms[room];
 
 				// If harvesting, harvest.
 				// -------------------------------------------------------------
