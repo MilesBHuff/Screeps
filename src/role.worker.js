@@ -66,9 +66,10 @@ var roleWorker = {
 			})
 			var task = TASKS.WAIT;
 			for(var i = 0; i < rooms.length;) {
+				var room;
 				// Use the current room first.
 				if(rooms[0] == creep.room.name) {
-					var room = rooms.shift();
+					room = rooms.shift();
 				// If the current room failed...
 				//TODO:  A better way to do this, would be to sort the array by distance one time.
 				} else {
@@ -85,6 +86,7 @@ var roleWorker = {
 					// Splice it
 					rooms.splice(index, 1);
 				}
+				room = Game.getObjectById(room);
 
 				// If harvesting, harvest.
 				// -------------------------------------------------------------
