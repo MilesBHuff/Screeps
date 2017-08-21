@@ -259,7 +259,7 @@ var roleWorker = {
 			// -----------------------------------------------------------------
 			/*//*/ if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
 				if(creep.upgradeController(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0ff", opacity: .25}}) == ERR_NO_PATH) {
+					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f", opacity: .25}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
 					}
 				}
@@ -279,7 +279,7 @@ var roleWorker = {
 				&& Game.getObjectById(creep.memory.target).hits < repairLimit
 				){
 				if(creep.repair(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f", opacity: .25}}) == ERR_NO_PATH) {
+					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0ff", opacity: .25}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
 					}
 				}
