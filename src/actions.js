@@ -5,8 +5,7 @@ const actions = {
 		|| creep.pos.x > 46
 		|| creep.pos.y <  3
 		|| creep.pos.y > 46
-		){
-			creep.moveTo(25, 25);
+		){ creep.moveTo(24, 24);
 		} else {
 			// Variables
 			var direction = Math.round(Math.random() * 8);
