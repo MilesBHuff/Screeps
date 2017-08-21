@@ -151,6 +151,19 @@ var roleWorker = {
 					if(targets && targets.length) break;
 				}
 
+				// 50% chance of maintaining towers
+				// -------------------------------------------------------------
+				task = TASKS.TRANSFER;
+				if(Math.round(Math.random())) {
+					targets = room.find(FIND_MY_STRUCTURES, {
+						filter: (structure) => {return(
+							   structure.structureType == STRUCTURE_TOWER
+							&& structure.energy        <  structure.energyCapacity
+						);}
+					});
+					if(targets && targets.length) break;
+				}
+
 				// 75% chance of repairing constructions
 				// -------------------------------------------------------------
 				task = TASKS.REPAIR;
@@ -169,19 +182,6 @@ var roleWorker = {
 				task = TASKS.UPGRADE;
 				if(!Math.round(Math.random() * 3)) {
 					targets = [room.controller];
-					if(targets && targets.length) break;
-				}
-
-				// 50% chance of maintaining towers
-				// -------------------------------------------------------------
-				task = TASKS.TRANSFER;
-				if(Math.round(Math.random())) {
-					targets = room.find(FIND_MY_STRUCTURES, {
-						filter: (structure) => {return(
-							   structure.structureType == STRUCTURE_TOWER
-							&& structure.energy        <  structure.energyCapacity
-						);}
-					});
 					if(targets && targets.length) break;
 				}
 
