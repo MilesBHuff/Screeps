@@ -361,10 +361,11 @@ module.exports.loop = function () {
 
 	// Structures
 	// -------------------------------------------------------------------------
-	for(var name in Game.structures) {
-		var structure = Game.structures[name];
-		/*//*/ if(structure.structureType == DEFINES.ROLES.TOWER) {
+	for(var structure in Game.find(FIND_MY_STRUCTURES)) {
+		switch(structure.structureType) {
+			case STRUCTURE_TOWER:
 			require("role.tower").run(structure);
+			break;
 		}
 	}
 
