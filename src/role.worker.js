@@ -140,17 +140,6 @@ var roleWorker = {
 				});
 				if(targets && targets.length) break;
 
-				// 50% chance to build things that complete instantaneously
-				// -------------------------------------------------------------
-				task = TASKS.BUILD;
-				if(Math.round(Math.random())) {
-					targets = room.find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
-						   site.structureType == STRUCTURE_WALL
-						|| site.structureType == STRUCTURE_RAMPART
-					});
-					if(targets && targets.length) break;
-				}
-
 				// 50% chance of maintaining towers
 				// -------------------------------------------------------------
 				task = TASKS.TRANSFER;
@@ -160,6 +149,17 @@ var roleWorker = {
 							   structure.structureType == STRUCTURE_TOWER
 							&& structure.energy        <  structure.energyCapacity
 						);}
+					});
+					if(targets && targets.length) break;
+				}
+
+				// 50% chance to build things that complete instantaneously
+				// -------------------------------------------------------------
+				task = TASKS.BUILD;
+				if(Math.round(Math.random())) {
+					targets = room.find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
+						   site.structureType == STRUCTURE_WALL
+						|| site.structureType == STRUCTURE_RAMPART
 					});
 					if(targets && targets.length) break;
 				}
@@ -177,10 +177,10 @@ var roleWorker = {
 				if(targets && targets.length) break;
 				}
 
-				// 25% chance of upgrading the controller
+				// 50% chance of upgrading the controller
 				// -------------------------------------------------------------
 				task = TASKS.UPGRADE;
-				if(!Math.round(Math.random() * 3)) {
+				if(Math.round(Math.random())) {
 					targets = [room.controller];
 					if(targets && targets.length) break;
 				}
