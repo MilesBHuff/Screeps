@@ -380,6 +380,8 @@ module.exports.loop = function () {
 			require("role.healer" ).run(creep);
 		} else if(creep.memory.role == DEFINES.ROLES.CLAIMER) {
 			require("role.claimer").run(creep);
+		} else {
+			require("role.manual").run(creep);
 		}
 	}
 }
