@@ -54,7 +54,7 @@ var roleWorker = {
 				"REPAIR":   4
 			})
 			var task = TASKS.WAIT;
-			for(var i = 0; i < 1; i++) {
+			for(var b = true; b; b = false) {
 
 				// If harvesting, harvest.
 				// -------------------------------------------------------------
