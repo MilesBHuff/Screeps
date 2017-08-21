@@ -215,7 +215,7 @@ module.exports.loop = function () {
 
 		// If aggressive creeps are present, double the military creeps.
 		// ---------------------------------------------------------------------
-		if(room.find(FIND_HOSTILE_CREEPS)) {
+		if(room.find(FIND_HOSTILE_CREEPS).length) {
 			room.memory.fighterLimit *= 2;
 			room.memory.healerLimit  *= 2;
 		}
