@@ -301,7 +301,8 @@ var roleWorker = {
 
 			// Dismantle
 			// -----------------------------------------------------------------
-			/*//*/ if(Game.getObjectById(creep.memory.target).memory && Game.getObjectById(creep.memory.target).memory.dismantle) {
+			/*//*/  if(Game.getObjectById(creep.memory.target).memory
+				&& Game.getObjectById(creep.memory.target).memory.dismantle) {
 				if(creep.dismantle(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#f0f", opacity: .25}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
@@ -310,7 +311,7 @@ var roleWorker = {
 
 			// Upgrade
 			// -----------------------------------------------------------------
-			} else if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
+			} else  if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
 				if(creep.upgradeController(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f", opacity: .25}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
@@ -319,7 +320,7 @@ var roleWorker = {
 
 			// Build
 			// -----------------------------------------------------------------
-			} else if(Game.getObjectById(creep.memory.target).progressTotal) {
+			} else  if(Game.getObjectById(creep.memory.target).progressTotal) {
 				if(creep.build(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0f0", opacity: .25}}) == ERR_NO_PATH) {
 						creep.memory.target  = undefined;
@@ -339,7 +340,7 @@ var roleWorker = {
 
 			// Transfer
 			// -----------------------------------------------------------------
-			} else if(Game.getObjectById(creep.memory.target).energy < Game.getObjectById(creep.memory.target).energyCapacity) {
+			} else  if(Game.getObjectById(creep.memory.target).energy < Game.getObjectById(creep.memory.target).energyCapacity) {
 				if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#fff", opacity: .25}}) == ERR_NO_PATH) {
 						creep.memory.target  = undefined;
