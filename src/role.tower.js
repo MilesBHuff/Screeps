@@ -19,23 +19,23 @@ var roleTower = {
 		// =====================================================================
 		var repairLimit = DEFINES.REPAIR_LIMIT * structure.room.controller.level;
 		for(var b = true; b; b = false) {
-			var target = undefined;
+			var targets = Array();
 			
 			// Heal the closest damaged allied unit
 			// =================================================================
-			target = structure.pos.findClosestByRange(FIND_MY_CREEPS, {filter: (creep) =>
+			targets = structure.room.find(FIND_MY_CREEPS, {filter: (creep) =>
 				   creep.hits < creep.hitsMax
 			});
-			if(target && target.id) {
-				structure.heal(target);
+			if(targets && targets.length) {
+				structure.heal(structure.pos.findClosestByRange(targets));
 				break;
 			}
 			
 			// Attack the closest enemy unit
 			// =================================================================
-			target = structure.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-			if(target && target.id) {
-				structure.attack(target);
+			targets = structure.room.find(FIND_HOSTILE_CREEPS);
+			if(targets && targets.length) {
+				structure.attack(structure.pos.findClosestByRange(targets));
 				break;
 			}
 			
@@ -43,13 +43,17 @@ var roleTower = {
 			// =================================================================
 			// Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
 			// It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
-			target = structure.pos.findClosestByRange(FIND_STRUCTURES, {filter: (structureEach) =>
+			targets = structure.room.find(FIND_STRUCTURES, {filter: (structureEach) =>
 				   structureEach.hits < (structureEach.hitsMax * 0.75)
 				&& structureEach.hits < (repairLimit * 0.75)
-				&& !(structureEach.memory && structureEach.memory.dismantle)
 			});
-			if(target && target.id) {
-				structure.repair(target);
+			targets = targets.filter(function(item) {
+				if(structure.room.memory && structure.room.memory.dismantle) {
+					return structure.room.memory.dismantle.indexOf(item) === -1;
+				}
+			});
+			if(targets && targets.length) {
+				structure.repair(structure.pos.findClosestByRange(targets));
 				break;
 			}
 		}
