@@ -10,15 +10,15 @@
  *  things to do in a neighbouring room.
 **/
 
-// Constants and variables
+// Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES = require("defines");
 var roleWorker = {
 	
-	// The main function
+	// run()
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	/** This function provides AI to a creep.
-	 * @param creep The creep to which to give this AI.
+	/** This function controls the provided creep.
+	 * @param creep The creep to control.
 	**/
 	run: function (creep) {
 //creep.memory.target = undefined; // Useful when you need to reset everyone's tasks.
@@ -324,8 +324,11 @@ var roleWorker = {
 		// If the creep can't find a target, it wanders
 		// ---------------------------------------------------------------------
 		if(creep.memory.target == undefined) {
-			require("actions").wander(creep);
+			INCLUDES.WANDER(creep);
 		}
 	}
 };
+
+// Export this file for use in others.
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 module.exports = roleWorker;
