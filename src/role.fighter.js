@@ -2,7 +2,7 @@
 // #############################################################################
 /** This script provides an AI for fighter creeps.
 **/
-//TODO:  Fighter creeps without attack parts should run to the nearest healer.
+//TODO:  Fighter creeps without attack parts should run to the nearest healer.  If no healer is available, they should run to the nearest tower.
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
