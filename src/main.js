@@ -252,8 +252,6 @@ module.exports.loop = function () {
 			creepLimitsAll.workers  += room.memory.workerLimit;
 		}
 
-console.log(workers.length + " / " + workersAll.length + " | Max = " + creepLimitsAll.workers);
-
 		// Determine role
 		// ---------------------------------------------------------------------
 		for(var i = 0; i < 2; i++) {
