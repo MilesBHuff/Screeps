@@ -102,6 +102,22 @@ var roleWorker = {
 					// Pick up dropped resources
 					targets = room.find(FIND_DROPPED_RESOURCES);
 					if(targets && targets.length) break;
+					// Withdraw resources from enemy structures
+					targets = room.find(FIND_HOSTILE_STRUCTURES, {
+						filter: (structure) => {return(
+							structure.energy >  0
+						);}
+					});
+					if(targets && targets.length) break;
+					// Withdraw resources from condemned structures
+					targets = room.find(FIND_STRUCTURES, {
+						filter: (structure) => {return(
+							   structure.memory
+							&& structure.memory.dismantle
+							&& structure.energy >  0
+						);}
+					});
+					if(targets && targets.length) break;
 					// Harvest new energy
 					targets = room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
 					for(var j = 0, k = 0; j < targets.length; j++) {
