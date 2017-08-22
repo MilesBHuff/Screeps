@@ -303,8 +303,15 @@ var roleWorker = {
 		// ---------------------------------------------------------------------
 		if(creep.memory.harvesting) {
 			/*//*/  if(!Game.getObjectById(creep.memory.target)
-				||!Game.getObjectById(creep.memory.target).energy
-				|| Game.getObjectById(creep.memory.target).energy <= 0) {
+				    ||
+				  ((   !Game.getObjectById(creep.memory.target).energy
+				    ||  Game.getObjectById(creep.memory.target).energy <= 0
+				  ) &&
+				  !(    Game.getObjectById(creep.memory.target).room.memory
+				    &&  Game.getObjectById(creep.memory.target).room.memory.dismantle
+				    &&  Game.getObjectById(creep.memory.target).room.memory.dismantle.indexOf(creep.memory.target) != -1
+				  ))
+			){
 				creep.memory.target  = undefined;
 			} else  if(creep.harvest(  Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
 				    || creep.pickup(   Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
