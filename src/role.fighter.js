@@ -32,7 +32,7 @@ var roleFighter = {
 		// If there is no imminent threat, wander around, so as not to interfere with the workers.
 		// ====================================================================
 		else {
-			require("actions").wander(creep);
+			INCLUDES.WANDER(creep);
 		}
 	}
 };
