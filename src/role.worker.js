@@ -324,7 +324,7 @@ var roleWorker = {
 		// If the creep can't find a target, it wanders
 		// ---------------------------------------------------------------------
 		if(creep.memory.target == undefined) {
-			INCLUDES.WANDER(creep);
+			DEFINES.WANDER(creep);
 		}
 	}
 };
