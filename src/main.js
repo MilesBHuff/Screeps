@@ -252,7 +252,7 @@ module.exports.loop = function () {
 		}
 
 		
-console.log(fighters + " / " + fightersAll);
+console.log(fighters.length + " / " + fightersAll.length);
 
 		// Determine role
 		// ---------------------------------------------------------------------
