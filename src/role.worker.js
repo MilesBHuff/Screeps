@@ -60,18 +60,19 @@ var roleWorker = {
 			var target   = undefined;
 			var targets  = Array();
 			const TASKS  = Object.freeze({
-				"WAIT":    -1,
-				"HARVEST":  0,
-				"TRANSFER": 1,
-				"UPGRADE":  2,
-				"BUILD":    3,
-				"REPAIR":   4
+				"WAIT":     -1,
+				"HARVEST":   0,
+				"TRANSFER":  1,
+				"UPGRADE":   2,
+				"BUILD":     3,
+				"REPAIR":    4,
+				"DISMANTLE": 5,
 			})
 			var task = TASKS.WAIT;
 			
 			// Decide on a room
 			// -----------------------------------------------------------------
-			for(var i = 0; i < 1;) { //rooms.length;) {
+			for(var i = 0; i < rooms.length;) {
 				var room;
 				// Use the current room first.
 				if(rooms[0] == creep.room.name) {
