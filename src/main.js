@@ -252,7 +252,7 @@ module.exports.loop = function () {
 		}
 
 		
-console.log(fighters.length + " / " + fightersAll.length);
+console.log(workers.length + " / " + workersAll.length + " | Max = " + creepLimitsAll.workers);
 
 		// Determine role
 		// ---------------------------------------------------------------------
