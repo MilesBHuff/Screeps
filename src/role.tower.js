@@ -1,17 +1,22 @@
 // role.tower.js
 // #############################################################################
+/** This script provides an AI for tower structures.
+**/
 
-// Non-member variables
+// Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES = require("defines");
-
-// Define the role
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 var roleTower = {
+	
+	// run()
+	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	/** This function controls the provided structure.
+	 * @param structure The structure to control.
+	**/
 	run: function (structure) {
 
 		// Variables
-		// =================================================================
+		// =====================================================================
 		var repairLimit = DEFINES.REPAIR_LIMIT * structure.room.controller.level;
 		for(var b = true; b; b = false) {
 			var target = undefined;
@@ -35,7 +40,7 @@ var roleTower = {
 			}
 			
 			// Repair the closest damaged structure
-			// ---------------------------------------------------------------------
+			// =================================================================
 			// Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
 			// It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
 			target = structure.pos.findClosestByRange(FIND_STRUCTURES, {filter: (structureEach) =>
@@ -49,4 +54,7 @@ var roleTower = {
 		}
 	}
 };
+
+// Export this file for use in others.
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 module.exports = roleTower;
