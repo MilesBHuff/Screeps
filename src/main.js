@@ -7,7 +7,6 @@ const DEFINES = require("defines");
 
 // Spawn amounts
 // =============================================================================
-const claimerBaseLimit = 0; // Should only be spawned in special cases
 const fighterBaseLimit = 3; // Doubled during conflict
 const  healerBaseLimit = 1; // Doubled during conflict
 const  workerBaseLimit = 3; // Multiplied by the number of sources
@@ -204,7 +203,6 @@ module.exports.loop = function () {
 
 		// Set things to their default values.
 		// ---------------------------------------------------------------------
-		room.memory.claimerLimit = claimerBaseLimit;
 		room.memory.fighterLimit = fighterBaseLimit;
 		room.memory.healerLimit  =  healerBaseLimit;
 		room.memory.workerLimit  =  workerBaseLimit;
@@ -231,13 +229,27 @@ module.exports.loop = function () {
 
 		// Count creeps, buildings, etc
 		// ---------------------------------------------------------------------
-		// Buildings
-		var   towers = _.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_TOWER && structure.room == spawn.room);
-		// Creeps
-		var claimers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.CLAIMER   && creep.room == spawn.room);
-		var fighters = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.FIGHTER   && creep.room == spawn.room);
-		var  healers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.HEALER    && creep.room == spawn.room);
-		var  workers = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.WORKER    && creep.room == spawn.room);
+		// Structures in the current room
+		var   towers    = _.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_TOWER         && structure.room == spawn.room);
+		// Creeps in the current room
+		var fighters    = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.FIGHTER   && creep.room == spawn.room);
+		var  healers    = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.HEALER    && creep.room == spawn.room);
+		var  workers    = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.WORKER    && creep.room == spawn.room);
+		// Creeps in all rooms
+		var fightersAll = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.FIGHTER);
+		var  healersAll = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.HEALER );
+		var  workersAll = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.WORKER );
+		// The total creep limits across all owned rooms (this is needed to prevent rooms from respawning all their creeps during an expedition to another room)
+		var creepLimitsAll = {
+			fighters: 0,
+			healers:  0,
+			workers:  0,
+		};
+		for(var roomMem in Memory.rooms) {
+			creepLimitsAll.fighters += roomMem.fighterLimit;
+			creepLimitsAll.healers  += roomMem.healerLimit;
+			creepLimitsAll.workers  += roomMem.workerLimit;
+		}
 
 		// Determine role
 		// ---------------------------------------------------------------------
@@ -258,31 +270,31 @@ module.exports.loop = function () {
 			}
 			switch(creepRole) {
 				case DEFINES.ROLES.WORKER:
-				if(workers.length < spawn.room.memory.workerLimit) {
+				if(workers.length    < spawn.room.memory.workerLimit
+				&& workersAll.length < creepLimitsAll.workers
+				){
 					spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker", DEFINES.ROLES.WORKER);
 					break;
 				}
 				if(i == 0) break;
 
 				case DEFINES.ROLES.FIGHTER:
-				if(fighters.length < spawn.room.memory.fighterLimit) {
+				if(fighters.length    < spawn.room.memory.fighterLimit
+				&& fightersAll.length < creepLimitsAll.fighters
+				){
 					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Fighter", DEFINES.ROLES.FIGHTER);
 					break;
 				}
 				if(i == 0) break;
 
 				case DEFINES.ROLES.HEALER:
-				if(healers.length < spawn.room.memory.healerLimit) {
+				if(healers.length    < spawn.room.memory.healerLimit
+				&& healersAll.length < creepLimitsAll.healers
+				){
 					spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", DEFINES.ROLES.HEALER);
 					break;
 				}
 				if(i == 0) break;
-
-				case DEFINES.ROLES.CLAIMER:
-				if(claimers.length < spawn.room.memory.claimerLimit) {
-					spawnCreep(spawn, [CLAIM, MOVE, TOUGH], "Claimer", DEFINES.ROLES.CLAIMER);
-					break;
-				}
 				break;
 			}
 			if(spawn.spawning) break;
@@ -329,7 +341,6 @@ module.exports.loop = function () {
 
 		// Kill off unneeded creeps
 		// ---------------------------------------------------------------------
-//		killOff(claimers, spawn.room.memory.claimerLimit);
 //		killOff(fighters, spawn.room.memory.fighterLimit);
 //		killOff( healers, spawn.room.memory.healerLimit );
 //		killOff( workers, spawn.room.memory.workerLimit );
@@ -380,8 +391,6 @@ module.exports.loop = function () {
 			require("role.fighter").run(creep);
 		} else if(creep.memory.role == DEFINES.ROLES.HEALER ) {
 			require("role.healer" ).run(creep);
-		} else if(creep.memory.role == DEFINES.ROLES.CLAIMER) {
-			require("role.claimer").run(creep);
 		} else {
 			require("role.manual").run(creep);
 		}
