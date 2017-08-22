@@ -1,7 +1,7 @@
 // main.js
 // #############################################################################
 
-// Set variables
+// Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES = require("defines");
 
@@ -10,10 +10,6 @@ const DEFINES = require("defines");
 const fighterBaseLimit = 3; // Doubled during conflict
 const  healerBaseLimit = 1; // Doubled during conflict
 const  workerBaseLimit = 3; // Multiplied by the number of sources
-
-// Miscellaneous
-// =============================================================================
-const USERNAME = "MilesBHuff";
 
 // Kill off unneeded creeps
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
