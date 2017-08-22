@@ -105,8 +105,12 @@ var roleWorker = {
 					targets = room.find(FIND_HOSTILE_STRUCTURES);
 					if(targets && targets.length) break;
 					// Withdraw resources from condemned structures
-					if(false && room.memory && room.memory.dismantle) { //TODO
-						targets = room.memory.dismantle;
+					if(false && room.memory && room.memory.dismantle) {
+						var dismantle = Array();
+						for(var a = 0; room.memory.dismantle[a]; a++) {
+							dismantle.push(Game.getObjectById(room.memory.dismantle[a]));
+						}
+						targets = dismantle;
 						if(targets && targets.length) break;
 					}
 					// Harvest new energy
