@@ -60,13 +60,12 @@ var roleWorker = {
 			var target   = undefined;
 			var targets  = Array();
 			const TASKS  = Object.freeze({
-				"WAIT":     -1,
-				"HARVEST":   0,
-				"TRANSFER":  1,
-				"UPGRADE":   2,
-				"BUILD":     3,
-				"REPAIR":    4,
-				"DISMANTLE": 5,
+				"WAIT":    -1,
+				"HARVEST":  0,
+				"TRANSFER": 1,
+				"UPGRADE":  2,
+				"BUILD":    3,
+				"REPAIR":   4,
 			})
 			var task = TASKS.WAIT;
 			
@@ -103,18 +102,13 @@ var roleWorker = {
 					targets = room.find(FIND_DROPPED_RESOURCES);
 					if(targets && targets.length) break;
 					// Withdraw resources from enemy structures
-					targets = room.find(FIND_HOSTILE_STRUCTURES, {
-						filter: (structure) => {return(
-							structure.energy >  0
-						);}
-					});
+					targets = room.find(FIND_HOSTILE_STRUCTURES);
 					if(targets && targets.length) break;
 					// Withdraw resources from condemned structures
 					targets = room.find(FIND_STRUCTURES, {
 						filter: (structure) => {return(
 							   structure.memory
 							&& structure.memory.dismantle
-							&& structure.energy >  0
 						);}
 					});
 					if(targets && targets.length) break;
@@ -221,17 +215,6 @@ var roleWorker = {
 					if(targets && targets.length) break;
 				}
 
-				// 50% chance of demolishing condemned buildings
-				// -------------------------------------------------------------
-				task = TASKS.DISMANTLE;
-				if(Math.round(Math.random())) {
-					targets = room.find(FIND_STRUCTURES, {filter: (structure) =>
-						   structure.memory
-						&& structure.memory.dismantle
-				   	});
-					if(targets && targets.length) break;
-				}
-
 				// Build new things
 				// -------------------------------------------------------------
 				task = TASKS.BUILD;
@@ -288,10 +271,6 @@ var roleWorker = {
 					case TASKS.REPAIR:
 					creep.say("Repair");
 					break;
-
-					case TASKS.DISMANTLE:
-					creep.say("Dismantle");
-					break;
 				}
 			}
 		}
@@ -302,33 +281,32 @@ var roleWorker = {
 		// Harvest
 		// ---------------------------------------------------------------------
 		if(creep.memory.harvesting) {
-			/*//*/ if(!Game.getObjectById(creep.memory.target)
+			/*//*/  if(!Game.getObjectById(creep.memory.target)
 				||!Game.getObjectById(creep.memory.target).energy
 				|| Game.getObjectById(creep.memory.target).energy <= 0) {
 				creep.memory.target  = undefined;
-			} else if(creep.harvest( Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-				   || creep.pickup(  Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-				   || creep.withdraw(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-				   ){
+			} else  if(creep.harvest(  Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+					|| creep.pickup(   Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+				    || creep.withdraw( Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+				    || ((
+				       Game.getObjectById(creep.memory.target).memory
+				    && Game.getObjectById(creep.memory.target).memory.dismantle
+				  ) || (
+				       Game.getObjectById(creep.memory.target).room.controller.owner
+				    && Game.getObjectById(creep.memory.target).room.controller.owner != DEFINES.USERNAME
+				  ) && creep.dismantle(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+				  )
+				  ) {
 				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#ff0", opacity: .25}}) == ERR_NO_PATH) {
 					creep.memory.target  = undefined;
 				}
 			}
 		} else {
 
-			// Dismantle
-			// -----------------------------------------------------------------
-			/*//*/  if(Game.getObjectById(creep.memory.target).memory
-				&& Game.getObjectById(creep.memory.target).memory.dismantle) {
-				if(creep.dismantle(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#f0f", opacity: .25}}) == ERR_NO_PATH) {
-						creep.memory.target = undefined;
-					}
-				}
 
 			// Upgrade
 			// -----------------------------------------------------------------
-			} else  if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
+			/*//*/  if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
 				if(creep.upgradeController(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f", opacity: .25}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
