@@ -191,11 +191,32 @@ function spawnCreep(spawn, rawParts, name, role) {
 // Main loop
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 module.exports.loop = function () {
-
-	// Set limits for creeps in each room
-	// =========================================================================
 	for(var name in Game.rooms) {
 		var room = Game.rooms[name];
+	
+		// Condemned structures
+		// =====================================================================
+		// If there is no array of condemned structures for this room, create one.
+		if(!room.memory || !room.memory.dismantle) {
+			room.memory.dismantle = Array();
+		}
+		// Update the array.  
+		for(var id in room.memory.dismantle) {
+			if(!Game.getObjectById(id)) {
+				room.memory.splice(room.memory.indexOf(id), 1);
+			}
+		}
+
+		// Backup of structure layout
+		// =====================================================================
+		// Create an array if there is none
+		if(!room.memory || !room.memory.layout) {
+			room.memory.layout = Array();
+		}
+		// TODO
+		
+		// Set limits for creeps in each room
+		// =====================================================================
 
 		// Set things to their default values.
 		// ---------------------------------------------------------------------
