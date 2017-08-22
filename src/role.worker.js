@@ -119,6 +119,14 @@ var roleWorker = {
 						creep.memory.harvesting = false;
 					} else break;
 				}
+				
+				// If the controller is about to degrade, contribute to it
+				// -------------------------------------------------------------
+				task = TASKS.UPGRADE;
+				if(room.controller.ticksToDowngrade < 1000) {
+					targets = [room.controller];
+					if(targets && targets.length) break;
+				}
 
 				// Always keep spawns and extensions filled up to max.
 				// -------------------------------------------------------------
@@ -177,10 +185,10 @@ var roleWorker = {
 				if(targets && targets.length) break;
 				}
 
-				// 50% chance of upgrading the controller
+				// 50% chance of upgrading the controller, if it's not already at max
 				// -------------------------------------------------------------
 				task = TASKS.UPGRADE;
-				if(Math.round(Math.random())) {
+				if(room.controller.level < 8 && Math.round(Math.random())) {
 					targets = [room.controller];
 					if(targets && targets.length) break;
 				}
@@ -190,6 +198,14 @@ var roleWorker = {
 				task = TASKS.BUILD;
 				targets = room.find(FIND_MY_CONSTRUCTION_SITES);
 				if(targets && targets.length) break;
+				
+				// Upgrade the controller if it's not already at max.
+				// -------------------------------------------------------------
+				task = TASKS.UPGRADE;
+				if(room.controller.level < 8) {
+					targets = [room.controller];
+					if(targets && targets.length) break;
+				}
 
 				// Store excess resources
 				// -------------------------------------------------------------
