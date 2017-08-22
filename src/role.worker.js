@@ -248,11 +248,11 @@ var roleWorker = {
 						   structure.structureType == STRUCTURE_STORAGE
 						&& structure.energy        <  structure.energyCapacity
 					);}
-					targets = targets.filter(function(item) {
-						if(room.memory && room.memory.dismantle) {
-							return room.memory.dismantle.indexOf(item) === -1;
-						}
-					});
+				});
+				targets = targets.filter(function(item) {
+					if(room.memory && room.memory.dismantle) {
+						return room.memory.dismantle.indexOf(item) === -1;
+					}
 				});
 				if(targets && targets.length) break;
 
