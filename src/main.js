@@ -1,4 +1,4 @@
-// main.js
+y.i// main.js
 // #############################################################################
 
 // Variables
@@ -203,7 +203,7 @@ module.exports.loop = function () {
 		// Update the array.  
 		for(var id in room.memory.dismantle) {
 			if(!Game.getObjectById(id)) {
-				room.memory.splice(room.memory.indexOf(id), 1);
+				room.memory.splice(room.memory.dismantle.indexOf(id), 1);
 			}
 		}
 
