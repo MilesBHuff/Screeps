@@ -201,9 +201,11 @@ module.exports.loop = function () {
 			room.memory.dismantle = Array();
 		}
 		// Update the array.  
-		for(var id in room.memory.dismantle) {
+		for(var i = 0; room.memory.dismantle[i]; i++) {
+			var id = room.memory.dismantle[i];
 			if(!Game.getObjectById(id)) {
 				room.memory.dismantle.splice(room.memory.dismantle.indexOf(id), 1);
+				i--;
 			}
 		}
 
