@@ -4,12 +4,7 @@
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES = require("defines");
-
-// Spawn amounts
-// =============================================================================
-const fighterBaseLimit = 3; // Doubled during conflict
-const  healerBaseLimit = 1; // Doubled during conflict
-const  workerBaseLimit = 3; // Multiplied by the number of sources
+const creepBaseLimit = 3;
 
 // Kill off unneeded creeps
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -221,19 +216,24 @@ module.exports.loop = function () {
 
 		// Set things to their default values.
 		// ---------------------------------------------------------------------
-		room.memory.fighterLimit = fighterBaseLimit;
-		room.memory.healerLimit  =  healerBaseLimit;
-		room.memory.workerLimit  =  workerBaseLimit;
+		room.memory.fighterLimit = 0;
+		room.memory.healerLimit  = 0;
+		room.memory.workerLimit  = creepBaseLimit;
 
 		// Multiply workers by the number of sources.
 		// ---------------------------------------------------------------------
 		room.memory.workerLimit *= room.find(FIND_SOURCES).length;
 
-		// If aggressive creeps are present, double the military creeps.
+		// Set the number of fighters to half the number of workers.
+		// ---------------------------------------------------------------------
+		room.memory.fighterLimit += Math.floor(room.memory.workerLimit / 2);
+
+
+		// If aggressive creeps are present, double the fighter creeps, and set the healers to equal fighterLimit / creepBaseLimit
 		// ---------------------------------------------------------------------
 		if(room.find(FIND_HOSTILE_CREEPS).length) {
 			room.memory.fighterLimit *= 2;
-			room.memory.healerLimit  *= 2;
+			room.memory.healerLimit   = room.memory.fighterLimit / creepBaseLimit;
 		}
 	}
 
