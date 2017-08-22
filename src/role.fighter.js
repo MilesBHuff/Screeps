@@ -14,40 +14,42 @@ var roleFighter = {
 	 * @param creep The creep to control.
 	**/
 	run: function (creep) {
-		for(var b = true; b; b = false) {
-
-			// Attack any enemy units present in the room
-			// ====================================================================
-			var target = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
-			if(target && target.id) {
-				creep.memory.target = target.id;
-				if(creep.rangedAttack(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-				|| creep.attack(      Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-				){
-					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#f00"}}) == ERR_NO_PATH) {
-						creep.memory.target = undefined;
-					}
-				}
-				break;
+		
+		// Validate the current target
+		// ====================================================================
+		if(creep.memory && creep.memory.target && !Game.getObjectById(creep.memory.target)) {
+			creep.memory.target = undefined;
+		}
+		
+		// Find targets
+		// ====================================================================
+		if(!creep.memory || !creep.memory.target) {
+			var targets = Array();
+			for(var b = true; b; b = false) {
+				targets = creep.room.find(FIND_HOSTILE_CREEPS);
+				if(targets.length) break;
+				targets = creep.room.find(FIND_HOSTILE_STRUCTURES);
+				if(targets.length) break;
 			}
-
-			// Attack any enemy structures present in the room
-			// ====================================================================
-			var target = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES);
-			if(target && target.id) {
-				creep.memory.target = target.id;
-				if(creep.rangedAttack(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-				|| creep.attack(      Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-				){
-					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#f00"}}) == ERR_NO_PATH) {
-						creep.memory.target = undefined;
-					}
-				}
-				break;
+			if(targets) {
+				creep.memory.target = creep.pos.findClosestByPath(targets).id;
 			}
-
-			// If there is no imminent threat, wander around, so as not to interfere with the workers.
-			// ====================================================================
+		}
+		
+		// Attack targets
+		// ====================================================================
+		if(creep.memory.target) {
+			if(creep.rangedAttack(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+			|| creep.attack(      Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+			){
+				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#f00"}}) == ERR_NO_PATH) {
+					creep.memory.target = undefined;
+				}
+			}
+			
+		// If there is no target, wander around, so as not to interfere with the workers.
+		// ====================================================================
+		} else {
 			DEFINES.WANDER(creep);
 		}
 	}
