@@ -301,7 +301,7 @@ var roleWorker = {
 
 			// Dismantle
 			// -----------------------------------------------------------------
-			/*//*/ if(Game.getObjectById(creep.memory.target).memory.dismantle) {
+			/*//*/ if(Game.getObjectById(creep.memory.target).memory && Game.getObjectById(creep.memory.target).memory.dismantle) {
 				if(creep.dismantle(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#f0f", opacity: .25}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
