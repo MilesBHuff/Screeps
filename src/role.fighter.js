@@ -32,6 +32,7 @@ var roleFighter = {
 				if(targets.length) break;
 			}
 			if(targets.length) {
+				creep.say("Attack");
 				creep.memory.target = creep.pos.findClosestByPath(targets).id;
 			}
 		}
