@@ -31,7 +31,7 @@ var roleFighter = {
 				targets = creep.room.find(FIND_HOSTILE_STRUCTURES);
 				if(targets.length) break;
 			}
-			if(targets) {
+			if(targets.length) {
 				creep.memory.target = creep.pos.findClosestByPath(targets).id;
 			}
 		}
