@@ -1,4 +1,4 @@
-// role.fighter.js
+// role.manual.js
 // #############################################################################
 /** This script is designed to streamline manual control of creeps.
 **/
