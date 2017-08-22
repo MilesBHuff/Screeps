@@ -214,19 +214,19 @@ module.exports.loop = function () {
 		// Set limits for creeps in each room
 		// =====================================================================
 
-		// Set things to their default values.
+		// Create the necessary variables
 		// ---------------------------------------------------------------------
 		room.memory.fighterLimit = 0;
 		room.memory.healerLimit  = 0;
-		room.memory.workerLimit  = creepBaseLimit;
+		room.memory.workerLimit  = 0;
 
-		// Multiply workers by the number of sources.
+		// Set the number of workers to equal creepBaseLimit multiplied by the number of sources in the room.
 		// ---------------------------------------------------------------------
-		room.memory.workerLimit *= room.find(FIND_SOURCES).length;
+		room.memory.workerLimit = creepBaseLimit * room.find(FIND_SOURCES).length;
 
 		// Set the number of fighters to half the number of workers.
 		// ---------------------------------------------------------------------
-		room.memory.fighterLimit += Math.floor(room.memory.workerLimit / 2);
+		room.memory.fighterLimit = Math.floor(room.memory.workerLimit / 2);
 
 
 		// If aggressive creeps are present, double the fighter creeps, and set the healers to equal fighterLimit / creepBaseLimit
