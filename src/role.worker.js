@@ -105,12 +105,7 @@ var roleWorker = {
 					targets = room.find(FIND_HOSTILE_STRUCTURES);
 					if(targets && targets.length) break;
 					// Withdraw resources from condemned structures
-					targets = room.find(FIND_STRUCTURES, {
-						filter: (structure) => {return(
-							   structure.memory
-							&& structure.memory.dismantle
-						);}
-					});
+					targets = room.memory.dismantle;
 					if(targets && targets.length) break;
 					// Harvest new energy
 					targets = room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
@@ -154,8 +149,12 @@ var roleWorker = {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_EXTENSION
 						&& structure.energy        <  structure.energyCapacity
-						&& !(structure.memory && structure.memory.dismantle)
 					);}
+				});
+				targets = targets.filter(function(item) {
+					if(room.memory && room.memory.dismantle) {
+						return room.memory.dismantle.indexOf(item) === -1;
+					}
 				});
 				if(targets && targets.length) break;
 				// Fill spawns
@@ -163,8 +162,12 @@ var roleWorker = {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_SPAWN
 						&& structure.energy        <  structure.energyCapacity
-						&& !(structure.memory && structure.memory.dismantle)
 					);}
+				});
+				targets = targets.filter(function(item) {
+					if(room.memory && room.memory.dismantle) {
+						return room.memory.dismantle.indexOf(item) === -1;
+					}
 				});
 				if(targets && targets.length) break;
 
@@ -176,8 +179,12 @@ var roleWorker = {
 						filter: (structure) => {return(
 							   structure.structureType == STRUCTURE_TOWER
 							&& structure.energy        <  structure.energyCapacity
-							&& !(structure.memory && structure.memory.dismantle)
 						);}
+					});
+					targets = targets.filter(function(item) {
+						if(room.memory && room.memory.dismantle) {
+							return room.memory.dismantle.indexOf(item) === -1;
+						}
 					});
 					if(targets && targets.length) break;
 				}
@@ -202,8 +209,12 @@ var roleWorker = {
 					targets = room.find(FIND_STRUCTURES, {filter: (structure) =>
 						   structure.hits < (structure.hitsMax * 0.75)
 						&& structure.hits < (repairLimit * 0.75)
-						&& !(structure.memory && structure.memory.dismantle)
 				   	});
+					targets = targets.filter(function(item) {
+						if(room.memory && room.memory.dismantle) {
+							return room.memory.dismantle.indexOf(item) === -1;
+						}
+					});
 				if(targets && targets.length) break;
 				}
 
@@ -236,8 +247,12 @@ var roleWorker = {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_STORAGE
 						&& structure.energy        <  structure.energyCapacity
-						&& !(structure.memory && structure.memory.dismantle)
 					);}
+					targets = targets.filter(function(item) {
+						if(room.memory && room.memory.dismantle) {
+							return room.memory.dismantle.indexOf(item) === -1;
+						}
+					});
 				});
 				if(targets && targets.length) break;
 
@@ -286,17 +301,17 @@ var roleWorker = {
 				|| Game.getObjectById(creep.memory.target).energy <= 0) {
 				creep.memory.target  = undefined;
 			} else  if(creep.harvest(  Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-					|| creep.pickup(   Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+				    || creep.pickup(   Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
 				    || creep.withdraw( Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-				    || ((
-				       Game.getObjectById(creep.memory.target).memory
-				    && Game.getObjectById(creep.memory.target).memory.dismantle
-				  ) || (
-				       Game.getObjectById(creep.memory.target).room.controller.owner
+				    ||
+				  ((   Game.getObjectById(creep.memory.target).room.controller.owner
 				    && Game.getObjectById(creep.memory.target).room.controller.owner != DEFINES.USERNAME
+				  ) || 
+				  (    Game.getObjectById(creep.memory.target).room.memory
+				    && Game.getObjectById(creep.memory.target).room.memory.dismantle
+				    && Game.getObjectById(creep.memory.target).room.memory.dismantle.indexOf(creep.memory.target) != -1
 				  ) && creep.dismantle(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-				  )
-				  ) {
+				  )){
 				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#ff0", opacity: .25}}) == ERR_NO_PATH) {
 					creep.memory.target  = undefined;
 				}
