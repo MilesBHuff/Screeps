@@ -1,6 +1,11 @@
 // defines.js
 // #############################################################################
+/** This file contains constants and variables that are used across multiple
+ *  files.
+**/
 
+// Constants and Variables
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const defines = {
 	
 	// This is the base limit to which things should be repaired.  It should be multiplied by the room in-question's current control level.
