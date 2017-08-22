@@ -26,7 +26,7 @@ var roleTower = {
 			targets = structure.room.find(FIND_MY_CREEPS, {filter: (creep) =>
 				   creep.hits < creep.hitsMax
 			});
-			if(targets && targets.length) {
+			if(targets.length) {
 				structure.heal(structure.pos.findClosestByRange(targets));
 				break;
 			}
@@ -34,7 +34,7 @@ var roleTower = {
 			// Attack the closest enemy unit
 			// =================================================================
 			targets = structure.room.find(FIND_HOSTILE_CREEPS);
-			if(targets && targets.length) {
+			if(targets.length) {
 				structure.attack(structure.pos.findClosestByRange(targets));
 				break;
 			}
@@ -52,7 +52,7 @@ var roleTower = {
 					return structure.room.memory.dismantle.indexOf(item) === -1;
 				}
 			});
-			if(targets && targets.length) {
+			if(targets.length) {
 				structure.repair(structure.pos.findClosestByRange(targets));
 				break;
 			}
