@@ -144,7 +144,7 @@ var roleWorker = {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_EXTENSION
 						&& structure.energy        <  structure.energyCapacity
-						&& !structure.memory.dismantle
+						&& !(structure.memory && structure.memory.dismantle)
 					);}
 				});
 				if(targets && targets.length) break;
@@ -153,7 +153,7 @@ var roleWorker = {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_SPAWN
 						&& structure.energy        <  structure.energyCapacity
-						&& !structure.memory.dismantle
+						&& !(structure.memory && structure.memory.dismantle)
 					);}
 				});
 				if(targets && targets.length) break;
@@ -166,7 +166,7 @@ var roleWorker = {
 						filter: (structure) => {return(
 							   structure.structureType == STRUCTURE_TOWER
 							&& structure.energy        <  structure.energyCapacity
-							&& !structure.memory.dismantle
+							&& !(structure.memory && structure.memory.dismantle)
 						);}
 					});
 					if(targets && targets.length) break;
@@ -192,7 +192,7 @@ var roleWorker = {
 					targets = room.find(FIND_STRUCTURES, {filter: (structure) =>
 						   structure.hits < (structure.hitsMax * 0.75)
 						&& structure.hits < (repairLimit * 0.75)
-						&& !structure.memory.dismantle
+						&& !(structure.memory && structure.memory.dismantle)
 				   	});
 				if(targets && targets.length) break;
 				}
@@ -210,7 +210,8 @@ var roleWorker = {
 				task = TASKS.DISMANTLE;
 				if(Math.round(Math.random())) {
 					targets = room.find(FIND_STRUCTURES, {filter: (structure) =>
-						   structure.memory.dismantle
+						   structure.memory
+						&& structure.memory.dismantle
 				   	});
 					if(targets && targets.length) break;
 				}
@@ -236,7 +237,7 @@ var roleWorker = {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_STORAGE
 						&& structure.energy        <  structure.energyCapacity
-						&& !structure.memory.dismantle
+						&& !(structure.memory && structure.memory.dismantle)
 					);}
 				});
 				if(targets && targets.length) break;
