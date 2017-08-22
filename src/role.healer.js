@@ -15,21 +15,44 @@ var roleHealer = {
 	**/
 	run: function (creep) {
 		
-		// Heal any damaged allied units present in the room
+		// Validate the current target
 		// ====================================================================
-		var target = creep.pos.findClosestByPath(FIND_MY_CREEPS, {filter: (eachCreep) => eachCreep.hits < eachCreep.hitsMax});
-	    	if(target && target.id) {
-			creep.memory.target = target.id;
+		if( creep.memory
+		&&  creep.memory.target
+		&&(!Game.getObjectById(creep.memory.target)
+		||  creep.memory.target.hits >= creep.memory.target.hitsMax
+		)){
+			creep.memory.target = undefined;
+		}
+		
+		// Find targets
+		// ====================================================================
+		if(!creep.memory || !creep.memory.target) {
+			var targets = Array();
+			for(var b = true; b; b = false) {
+				targets = creep.room.find(FIND_MY_CREEPS, {filter: (creepEach) =>
+					creepEach.hits < creepEach.hitsMax
+				});
+				if(targets.length) break;
+			}
+			if(targets.length) {
+				creep.say("Heal");
+				creep.memory.target = creep.pos.findClosestByPath(targets).id;
+			}
+		}
+		
+		// Heal targets
+		// ====================================================================
+		if(creep.memory && creep.memory.target) {
 			if(creep.heal(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#f00"}}) == ERR_NO_PATH) {
+				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#0f0", opacity: .25}}) == ERR_NO_PATH) {
 					creep.memory.target = undefined;
 				}
 			}
-		}
-
-		// If there is no imminent threat, wander around, so as not to interfere with the workers.
+			
+		// If there is no target, wander around, so as not to interfere with the workers.
 		// ====================================================================
-		else {
+		} else {
 			DEFINES.WANDER(creep);
 		}
 	}
