@@ -105,7 +105,7 @@ var roleWorker = {
 					targets = room.find(FIND_HOSTILE_STRUCTURES);
 					if(targets && targets.length) break;
 					// Withdraw resources from condemned structures
-					if(false && room.memory && room.memory.dismantle) {
+					if(room.memory && room.memory.dismantle) {
 						var dismantle = Array();
 						for(var a = 0; room.memory.dismantle[a]; a++) {
 							dismantle.push(Game.getObjectById(room.memory.dismantle[a]));
@@ -317,13 +317,13 @@ var roleWorker = {
 				    || creep.pickup(   Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
 				    || creep.withdraw( Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
 				    ||
-				  ((   Game.getObjectById(creep.memory.target).room.controller.owner
+				  (((  Game.getObjectById(creep.memory.target).room.controller.owner
 				    && Game.getObjectById(creep.memory.target).room.controller.owner != DEFINES.USERNAME
 				  ) || 
 				  (    Game.getObjectById(creep.memory.target).room.memory
 				    && Game.getObjectById(creep.memory.target).room.memory.dismantle
 				    && Game.getObjectById(creep.memory.target).room.memory.dismantle.indexOf(creep.memory.target) != -1
-				  ) && creep.dismantle(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+				  ))&& creep.dismantle(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
 				  )){
 				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#ff0", opacity: .25}}) == ERR_NO_PATH) {
 					creep.memory.target  = undefined;
