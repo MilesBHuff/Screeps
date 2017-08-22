@@ -245,14 +245,13 @@ module.exports.loop = function () {
 			healers:  0,
 			workers:  0,
 		};
-		for(var roomMem in Memory.rooms) {
-			creepLimitsAll.fighters += roomMem.fighterLimit;
-			creepLimitsAll.healers  += roomMem.healerLimit;
-			creepLimitsAll.workers  += roomMem.workerLimit;
+		for(var roomName in Game.rooms) {
+			var room = Game.rooms[roomName];
+			creepLimitsAll.fighters += room.memory.fighterLimit;
+			creepLimitsAll.healers  += room.memory.healerLimit;
+			creepLimitsAll.workers  += room.memory.workerLimit;
 		}
 
-console.log(Memory);
-console.log(Memory.rooms);
 console.log(workers.length + " / " + workersAll.length + " | Max = " + creepLimitsAll.workers);
 
 		// Determine role
