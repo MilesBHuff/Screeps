@@ -2,6 +2,7 @@
 // #############################################################################
 /** This script provides an AI for fighter creeps.
 **/
+//TODO:  Fighter creeps without attack parts should run to the nearest healer.
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
