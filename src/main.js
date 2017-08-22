@@ -251,7 +251,8 @@ module.exports.loop = function () {
 			creepLimitsAll.workers  += roomMem.workerLimit;
 		}
 
-		
+console.log(Memory);
+console.log(Memory.rooms);
 console.log(workers.length + " / " + workersAll.length + " | Max = " + creepLimitsAll.workers);
 
 		// Determine role
