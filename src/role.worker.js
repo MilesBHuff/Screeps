@@ -101,11 +101,12 @@ var roleWorker = {
 						if(creep.moveTo(targets[j]) == ERR_NO_PATH) {
 							k++;
 						}
-						if(k >= targets.length - 1) {
+						if(k >= targets.length) {
 							targets = Array();
 						}
 					}
 					if(targets && targets.length) break;
+					targets = undefined;
 					// Get energy from storage
 					targets = room.find(FIND_STRUCTURES, {
 						filter: (structure) => {return(
