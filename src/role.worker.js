@@ -144,6 +144,7 @@ var roleWorker = {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_EXTENSION
 						&& structure.energy        <  structure.energyCapacity
+						&& !structure.memory.dismantle
 					);}
 				});
 				if(targets && targets.length) break;
@@ -152,6 +153,7 @@ var roleWorker = {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_SPAWN
 						&& structure.energy        <  structure.energyCapacity
+						&& !structure.memory.dismantle
 					);}
 				});
 				if(targets && targets.length) break;
@@ -164,6 +166,7 @@ var roleWorker = {
 						filter: (structure) => {return(
 							   structure.structureType == STRUCTURE_TOWER
 							&& structure.energy        <  structure.energyCapacity
+							&& !structure.memory.dismantle
 						);}
 					});
 					if(targets && targets.length) break;
@@ -189,6 +192,7 @@ var roleWorker = {
 					targets = room.find(FIND_STRUCTURES, {filter: (structure) =>
 						   structure.hits < (structure.hitsMax * 0.75)
 						&& structure.hits < (repairLimit * 0.75)
+						&& !structure.memory.dismantle
 				   	});
 				if(targets && targets.length) break;
 				}
@@ -198,6 +202,16 @@ var roleWorker = {
 				task = TASKS.UPGRADE;
 				if(room.controller.level < 8 && Math.round(Math.random())) {
 					targets = [room.controller];
+					if(targets && targets.length) break;
+				}
+
+				// 50% chance of demolishing condemned buildings
+				// -------------------------------------------------------------
+				task = TASKS.DISMANTLE;
+				if(Math.round(Math.random())) {
+					targets = room.find(FIND_STRUCTURES, {filter: (structure) =>
+						   structure.memory.dismantle
+				   	});
 					if(targets && targets.length) break;
 				}
 
@@ -222,6 +236,7 @@ var roleWorker = {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_STORAGE
 						&& structure.energy        <  structure.energyCapacity
+						&& !structure.memory.dismantle
 					);}
 				});
 				if(targets && targets.length) break;
@@ -256,6 +271,10 @@ var roleWorker = {
 					case TASKS.REPAIR:
 					creep.say("Repair");
 					break;
+
+					case TASKS.DISMANTLE:
+					creep.say("Dismantle");
+					break;
 				}
 			}
 		}
@@ -280,9 +299,18 @@ var roleWorker = {
 			}
 		} else {
 
+			// Dismantle
+			// -----------------------------------------------------------------
+			/*//*/ if(Game.getObjectById(creep.memory.target).memory.dismantle) {
+				if(creep.dismantle(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#f0f", opacity: .25}}) == ERR_NO_PATH) {
+						creep.memory.target = undefined;
+					}
+				}
+
 			// Upgrade
 			// -----------------------------------------------------------------
-			/*//*/ if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
+			} else if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
 				if(creep.upgradeController(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
 					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f", opacity: .25}}) == ERR_NO_PATH) {
 						creep.memory.target = undefined;
