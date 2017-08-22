@@ -13,7 +13,7 @@ var roleFighter = {
 	/** This function controls the provided creep.
 	 * @param creep The creep to control.
 	**/
-    run: function (creep) {
+	run: function (creep) {
 
 		// Attack any enemy units present in the room
 		// ====================================================================
