@@ -20,7 +20,7 @@ var roleHealer = {
 		if( creep.memory
 		&&  creep.memory.target
 		&&(!Game.getObjectById(creep.memory.target)
-		||  creep.memory.target.hits >= creep.memory.target.hitsMax
+		||  Game.getObjectById(creep.memory.target).hits >= Game.getObjectById(creep.memory.target).hitsMax
 		)){
 			creep.memory.target = undefined;
 		}
