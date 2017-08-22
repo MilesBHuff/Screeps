@@ -1,8 +1,22 @@
+// role.healer.js
+// #############################################################################
+/** This script provides an AI for healer creeps.
+**/
+
+// Variables
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+const DEFINES = require("defines");
 var roleHealer = {
+	
+	// run()
+	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	/** This function controls the provided creep.
+	 * @param creep The creep to control.
+	**/
 	run: function (creep) {
 		
 		// Heal any damaged allied units present in the room
-		// ---------------------------------------------------------------------
+		// ====================================================================
 		var target = creep.pos.findClosestByPath(FIND_MY_CREEPS, {filter: (eachCreep) => eachCreep.hits < eachCreep.hitsMax});
 	    	if(target && target.id) {
 			creep.memory.target = target.id;
@@ -14,10 +28,13 @@ var roleHealer = {
 		}
 
 		// If there is no imminent threat, wander around, so as not to interfere with the workers.
-		// ---------------------------------------------------------------------
+		// ====================================================================
 		else {
-			require("actions").wander(creep);
+			DEFINES.WANDER(creep);
 		}
 	}
 };
+
+// Export this file for use in others.
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 module.exports = roleHealer;
