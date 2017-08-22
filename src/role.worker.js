@@ -345,7 +345,7 @@ var roleWorker = {
 			// -----------------------------------------------------------------
 			} else  if(Game.getObjectById(creep.memory.target).progressTotal) {
 				if(creep.build(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#00f", opacity: .25}}) == ERR_NO_PATH) {
+					if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#fff", opacity: .25}}) == ERR_NO_PATH) {
 						creep.memory.target  = undefined;
 					}
 				}
