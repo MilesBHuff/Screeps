@@ -56,6 +56,14 @@ var roleTower = {
 				structure.repair(structure.pos.findClosestByRange(targets));
 				break;
 			}
+			
+			// Attack the closest enemy structure
+			// =================================================================
+			targets = structure.room.find(FIND_HOSTILE_STRUCTURES);
+			if(targets.length) {
+				structure.attack(structure.pos.findClosestByRange(targets));
+				break;
+			}
 		}
 	}
 };
