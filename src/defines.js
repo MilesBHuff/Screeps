@@ -40,5 +40,10 @@ const DEFINES = {
 		"FIGHTER": 1,
 		"HEALER":  2,
 	}),
+	// The player's username
+	USERNAME: "MilesBHuff",
 };
+
+// Export this file for use in others.
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 module.exports = DEFINES;
