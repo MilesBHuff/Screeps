@@ -10,15 +10,18 @@
  *  things to do in a neighbouring room.
 **/
 
-// Non-member variables
+// Constants and variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES = require("defines");
-
-// Define the role
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 var roleWorker = {
+	
+	// The main function
+	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	/** This function provides AI to a creep.
+	 * @param creep The creep to which to give this AI.
+	**/
 	run: function (creep) {
-//creep.memory.target = undefined; // Useful when you need to reset everyone's roles.
+//creep.memory.target = undefined; // Useful when you need to reset everyone's tasks.
 
 		// Variables
 		// =====================================================================
@@ -65,6 +68,9 @@ var roleWorker = {
 				"REPAIR":   4
 			})
 			var task = TASKS.WAIT;
+			
+			// Decide on a room
+			// -----------------------------------------------------------------
 			for(var i = 0; i < 1;) { //rooms.length;) {
 				var room;
 				// Use the current room first.
