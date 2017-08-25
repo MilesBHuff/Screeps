@@ -17,7 +17,7 @@ var roleManual = {
 		
 		// Move to the provided destination, if there is one.
 		// ====================================================================
-		if(creep.memory._move.dest) {
+		if(creep.memory && creep.memory._move && creep.memory._move.dest) {
     		creep.moveTo(creep.memory._move.dest.x, creep.memory._move.dest.y);
 		}
 	}
