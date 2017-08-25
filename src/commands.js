@@ -12,4 +12,6 @@ if(false) {
 	Game.getObjectById("Creep ID").moveTo(x, y);
 	// Spawn a creep at the specified spawn
 	Game.spawns["Spawn Name"].createCreep(([PARTS], "Creep Name", {role: role});
+	// Remove all construction sites
+	for(var name in Game.constructionSites) {Game.constructionSites[name].remove();}
 }
