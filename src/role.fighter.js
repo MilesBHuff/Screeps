@@ -39,22 +39,22 @@ var roleFighter = {
 				// Attack enemy healers
 				targets = creep.room.find(FIND_HOSTILE_CREEPS, {filter: (hostile) => {return(
 					hostile.getActiveBodyparts(HEAL) > 0
-				)}});
+				);}});
 				if(targets.length) break;
 				// Attack enemy rangers
 				targets = creep.room.find(FIND_HOSTILE_CREEPS, {filter: (hostile) => {return(
 					hostile.getActiveBodyparts(RANGED_ATTACK) > 0
-				)}});
+				);}});
 				if(targets.length) break;
 				// Attack enemy meleers
 				targets = creep.room.find(FIND_HOSTILE_CREEPS, {filter: (hostile) => {return(
 					hostile.getActiveBodyparts(ATTACK) > 0
-				)}});
+				);}});
 				if(targets.length) break;
 				// Attack enemy claimers
 				targets = creep.room.find(FIND_HOSTILE_CREEPS, {filter: (hostile) => {return(
 					hostile.getActiveBodyparts(CLAIM) > 0
-				)}});
+				);}});
 				if(targets.length) break;
 				// Attack other enemy units
 				targets = creep.room.find(FIND_HOSTILE_CREEPS);
@@ -64,7 +64,7 @@ var roleFighter = {
 //				if(creep.ticksToLivenumber < DEFINES.NEAR_DEATH) {
 //					targets = creep.room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(
 //						structure.structureType == STRUCTURE_SPAWN
-//					)}}););
+//					);}}););
 //					if(targets.length) break;
 //				}
 				// Attack enemy structures
