@@ -24,7 +24,7 @@ var roleFighter = {
 		if(creep.memory
 		&& creep.memory.target
 		&&
-		( !Game.getObjectById(creep.memory.target
+		( !Game.getObjectById(creep.memory.target)
 		||
 		(  creep.ticksToLivenumber > DEFINES.NEAR_DEATH
 		&& Game.getObjectById(creep.memory.target).structureType
@@ -32,7 +32,7 @@ var roleFighter = {
 		&& Game.getObjectById(creep.memory.target).my
 		)
 		||
-		(  !hostiles.length
+		( !hostiles.length
 		&& Game.getObjectById(creep.memory.target).structureType
 		&& Game.getObjectById(creep.memory.target).structureType == STRUCTURE_RAMPART
 		&& Game.getObjectById(creep.memory.target).my
