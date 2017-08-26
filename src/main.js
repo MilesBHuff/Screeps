@@ -185,7 +185,7 @@ function spawnCreep(spawn, rawParts, name, role) {
 			if( room.controller.my
 			&& !room.find(FIND_MY_STRUCTURES, {filter: (structure) => {
 				return(structure.structureType == STRUCTURE_SPAWN)
-				}).length
+				}}).length
 			){
 				target = room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
 				break;
