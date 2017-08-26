@@ -59,7 +59,7 @@ var roleWorker = {
 			}
 			var roomObjs = Array();
 			for(name in rooms) {
-				roomObjs.push(Game.rooms[rooms[name]);
+				roomObjs.push(Game.rooms[rooms[name]]);
 			}
 			rooms    = roomObjs;
 			roomObjs = undefined;
