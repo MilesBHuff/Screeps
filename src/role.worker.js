@@ -98,11 +98,9 @@ var roleWorker = {
 					if(targets && targets.length) break;
 					// 50% chance to withdraw resources from condemned structures
 					if(room.memory && room.memory.dismantle && Math.round(Math.random())) {
-						var dismantle = Array();
 						for(var a = 0; room.memory.dismantle[a]; a++) {
-							dismantle.push(Game.getObjectById(room.memory.dismantle[a]));
+							targets.push(Game.getObjectById(room.memory.dismantle[a]));
 						}
-						targets = dismantle;
 						if(targets && targets.length) break;
 					}
 					// Harvest new energy
