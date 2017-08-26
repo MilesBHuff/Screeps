@@ -125,7 +125,6 @@ var roleFighter = {
 			&& Game.getObjectById(creep.memory.target).structureType == STRUCTURE_RAMPART
 			&& Game.getObjectById(creep.memory.target).my
 			)
-			|| 
 			|| creep.rangedAttack(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
 			|| creep.attack(      Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
 			){
