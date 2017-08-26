@@ -41,7 +41,7 @@ const DEFINES = {
 		"HEALER":  2,
 	}),
 	// These are all the cannonical tasks that can be assigned to a creep
-	const TASKS  = Object.freeze({
+	TASKS: Object.freeze({
 		WAIT:    -1,
 		HARVEST:  0,
 		TRANSFER: 1,
