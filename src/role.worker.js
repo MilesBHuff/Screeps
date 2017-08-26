@@ -57,6 +57,12 @@ var roleWorker = {
 					rooms.push(roomsRaw[index]);
 				}
 			}
+			var roomObjs = Array();
+			for(name in rooms) {
+				roomObjs.push(Game.rooms[rooms[name]);
+			}
+			rooms    = roomObjs;
+			roomObjs = undefined;
 			var target  = undefined;
 			var targets = Array();
 			var task    = DEFINES.TASKS.WAIT;
@@ -66,7 +72,7 @@ var roleWorker = {
 			for(var i = 0; i < rooms.length;) {
 				var room;
 				// Use the current room first.
-				if(rooms[0] == creep.room.name) {
+				if(rooms[0] == creep.room) {
 					room = rooms.shift();
 				// If the current room failed...
 				//TODO:  A better way to do this, would be to sort the array by distance one time.
@@ -84,7 +90,6 @@ var roleWorker = {
 					// Splice it
 					rooms.splice(index, 1);
 				}
-				room = Game.rooms[room];
 
 				// If harvesting, harvest.
 				// -------------------------------------------------------------
