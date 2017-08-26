@@ -62,35 +62,35 @@ function spawnCreep(spawn, rawParts, name, role) {
 		var partCost = 0;
 		switch(rawParts[currentPart]) {
 			case ATTACK:
-			partCost = 80;
+			partCost = BODYPART_COST[ATTACK];
 			break;
 
 			case CARRY:
-			partCost = 50;
+			partCost = BODYPART_COST[CARRY];
 			break;
 
 			case CLAIM:
-			partCost = 600;
+			partCost = BODYPART_COST[CLAIM];
 			break;
 
 			case HEAL:
-			partCost = 250;
+			partCost = BODYPART_COST[HEAL];
 			break;
 
 			case MOVE:
-			partCost = 50;
+			partCost = BODYPART_COST[MOVE];
 			break;
 
 			case RANGED_ATTACK:
-			partCost = 150;
+			partCost = BODYPART_COST[RANGED_ATTACK];
 			break;
 
 			case TOUGH:
-			partCost = 10;
+			partCost = BODYPART_COST[TOUGH];
 			break;
 
 			case WORK:
-			partCost = 100;
+			partCost = BODYPART_COST[WORK];
 			break;
 
 			default:
@@ -176,6 +176,12 @@ function spawnCreep(spawn, rawParts, name, role) {
 		bodyParts.push(MOVE);
 	}
 	
+	// If there's no MOVE part, there's no point in spawning the creep.
+	// -------------------------------------------------------------------------
+	if(partCount.move <= 0) {
+		return;
+	}
+	
 	// If any neighbouring owned room lacks spawners, 50% chance of sending this creep to it.
 	// -------------------------------------------------------------------------
 	var target = undefined;
@@ -191,29 +197,6 @@ function spawnCreep(spawn, rawParts, name, role) {
 				target = room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
 				break;
 			}
-		}
-	}
-
-	// Determine starting position
-	// ---------------------------------------------------------------------
-	var pos = {
-		x: spawn.pos.x,
-		y: spawn.pos.y
-	};
-	while((pos.x == spawn.pos.x
-		&& pos.y == spawn.pos.y))
-		//TODO:  Check for walls.
-		//TODO:  Check for other creeps.
-	{
-//		pos.x = spawn.pos.x + Math.round(Math.random());
-		pos.x+= 1;
-		if(Math.round(Math.random())) {
-			pos.x-= 2;
-		}
-//		pos.y = spawn.pos.y + Math.round(Math.random());
-		pos.y+= 1;
-		if(Math.round(Math.random())) {
-			pos.y-= 2;
 		}
 	}
 
