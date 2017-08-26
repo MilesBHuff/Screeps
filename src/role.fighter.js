@@ -59,7 +59,7 @@ var roleFighter = {
 						  structure.structureType == STRUCTURE_RAMPART);}});
 					var b = true;
 					for(var i = 0; targets[i]; i++) {
-						if(!creep.pos.findPathTo(target[i]).length) {
+						if(!creep.pos.findPathTo(targets[i]).length) {
 							b = false;
 						}
 					}
