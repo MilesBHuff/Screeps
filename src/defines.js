@@ -52,7 +52,7 @@ const DEFINES = {
 		HEAL:     6,
 		CLAIM:    7,
 		RENEW:    8,
-	})
+	}),
 	// The player's username
 	USERNAME: "MilesBHuff",
 };
