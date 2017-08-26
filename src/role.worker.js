@@ -52,7 +52,7 @@ var roleWorker = {
 			rooms.push(creep.room.name);
 			var roomsRaw = Game.map.describeExits(creep.room.name);
 			for(var i = 0; i < 4; i++) {
-				var index = ((2 * 1) + 1).toString();
+				var index = ((2 * i) + 1).toString();
 				if(roomsRaw[index] != undefined) {
 					rooms.push(roomsRaw[index]);
 				}
