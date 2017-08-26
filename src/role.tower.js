@@ -46,11 +46,7 @@ var roleTower = {
 			targets = structure.room.find(FIND_STRUCTURES, {filter: (structureEach) =>
 				   structureEach.hits < (structureEach.hitsMax * 0.75)
 				&& structureEach.hits < (repairLimit * 0.75)
-			});
-			targets = targets.filter(function(item) {
-				if(structure.room.memory && structure.room.memory.dismantle) {
-					return structure.room.memory.dismantle.indexOf(item) === -1;
-				}
+				&& structureEach.room.memory.dismantle.indexOf(structureEach.name) == -1
 			});
 			if(targets.length) {
 				structure.repair(structure.pos.findClosestByRange(targets));
