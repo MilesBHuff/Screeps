@@ -40,6 +40,19 @@ const DEFINES = {
 		"FIGHTER": 1,
 		"HEALER":  2,
 	}),
+	// These are all the cannonical tasks that can be assigned to a creep
+	const TASKS  = Object.freeze({
+		WAIT:    -1,
+		HARVEST:  0,
+		TRANSFER: 1,
+		UPGRADE:  2,
+		BUILD:    3,
+		REPAIR:   4,
+		ATTACK:   5,
+		HEAL:     6,
+		CLAIM:    7,
+		RENEW:    8,
+	})
 	// The player's username
 	USERNAME: "MilesBHuff",
 };
