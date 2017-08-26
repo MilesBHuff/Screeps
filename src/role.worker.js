@@ -126,7 +126,7 @@ var roleWorker = {
 					// If there's no new energy available, use what you're already carrying, if anything.
 					if(creep.carry.energy > 0) {
 						creep.memory.harvesting = false;
-					} else break;
+					} else continue;
 				}
 				
 				// If the controller is about to degrade, contribute to it
