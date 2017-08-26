@@ -38,7 +38,7 @@ var roleFighter = {
 		// If currently next to a hostile, retreat
 		// ====================================================================
 		for(var hostile in creep.room.find(FIND_HOSTILE_CREEPS)) {
-			if(creep.isNearTo(hostile)) {
+			if(creep.pos.isNearTo(hostile)) {
 				creep.moveTo(creep.pos.x + (creep.pos.x - hostile.pos.x),
 					     creep.pos.y + (creep.pos.y - hostile.pos.y));
 			}
