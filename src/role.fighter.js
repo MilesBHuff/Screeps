@@ -37,7 +37,7 @@ var roleFighter = {
 		&& Game.getObjectById(creep.memory.target).structureType == STRUCTURE_RAMPART
 		&& Game.getObjectById(creep.memory.target).my
 		)
-		||!Math.round(Math.random() * 8))
+		||!Math.round(Math.random() * 8)
 		)){
 			creep.memory.target = undefined;
 		}
