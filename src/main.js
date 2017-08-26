@@ -179,7 +179,7 @@ function spawnCreep(spawn, rawParts, name, role) {
 	// If any neighbouring owned room lacks spawners, 50% chance of sending this creep to it.
 	// -------------------------------------------------------------------------
 	var target = undefined;
-	if(Math.round(Math.random()) {
+	if(Math.round(Math.random())) {
 		for(var name in Game.map.describeExits(spawn.room.name)) {
 			var room = Game.rooms[name];
 			if( room.controller.my
