@@ -20,7 +20,12 @@ var roleFighter = {
 		
 		// Validate the current target (with a small chance of having to find a new target no matter what)
 		// ====================================================================
-		if(creep.memory && creep.memory.target && (!Game.getObjectById(creep.memory.target || !Math.round(Math.random() * 8)))) {
+		if(creep.memory
+		&& creep.memory.target
+		&&
+		( !Game.getObjectById(creep.memory.target
+		||!Math.round(Math.random() * 8))
+		)){
 			creep.memory.target = undefined;
 		}
 		
