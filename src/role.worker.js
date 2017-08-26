@@ -108,7 +108,7 @@ var roleWorker = {
 					// Harvest new energy
 					targets = room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
 					for(var j = 0, k = 0; j < targets.length; j++) {
-						if(creep.moveTo(targets[j]) == ERR_NO_PATH) {
+						if(creep.findPathTo(targets[j]) == ERR_NO_PATH) {
 							k++;
 						}
 						if(k >= targets.length) {
