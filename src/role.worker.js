@@ -78,7 +78,7 @@ var roleWorker = {
 				//TODO:  A better way to do this, would be to sort the array by distance one time.
 				} else {
 					// Find the room with the shortest path
-					room = creep.pos.findClosestByPath(rooms);
+					room = creep.pos.findClosestByPath(FIND_EXIT, rooms);
 					// Find its index
 					var index = 0;
 					for(var j = 0; j < rooms.length; j++) {
