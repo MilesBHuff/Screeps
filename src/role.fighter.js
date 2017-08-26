@@ -29,6 +29,15 @@ var roleFighter = {
 			creep.memory.target = undefined;
 		}
 		
+		// If currently next to a hostile, retreat
+		// ====================================================================
+		for(var hostile in creep.room.find(FIND_HOSTILE_CREEPS)) {
+			if(creep.isNearTo(hostile)) {
+				creep.moveTo(creep.pos.x + (creep.pos.x - hostile.pos.x), creep.pos.y + (creep.pos.y - hostile.pos.y));
+			}
+		}
+		
+		
 		// Find targets
 		// ====================================================================
 		if(!creep.memory || !creep.memory.target) {
