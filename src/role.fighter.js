@@ -33,7 +33,9 @@ var roleFighter = {
 		// ====================================================================
 		if(!creep.memory || !creep.memory.target) {
 			var targets = Array();
+			var task    = DEFINES.TASKS.WAIT;
 			for(var b = true; b; b = false) {
+				task = DEFINES.TASKS.ATTACK;
 				// Attack enemy healers
 				targets = creep.room.find(FIND_HOSTILE_CREEPS, {filter: (hostile) => {return(
 					hostile.getActiveBodyparts(HEAL) > 0
@@ -57,7 +59,16 @@ var roleFighter = {
 				// Attack other enemy units
 				targets = creep.room.find(FIND_HOSTILE_CREEPS);
 				if(targets.length) break;
+//				// Renew if near to a natural death
+//				task = DEFINES.TASKS.RENEW;
+//				if(creep.ticksToLivenumber < DEFINES.NEAR_DEATH) {
+//					targets = creep.room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(
+//						structure.structureType == STRUCTURE_SPAWN
+//					)}}););
+//					if(targets.length) break;
+//				}
 				// Attack enemy structures
+				task = DEFINES.TASKS.ATTACK;
 				targets = creep.room.find(FIND_HOSTILE_STRUCTURES);
 				if(targets.length) break;
 				// Attack condemned structures
@@ -71,7 +82,15 @@ var roleFighter = {
 				if(targets.length) break;
 			}
 			if(targets.length) {
-				creep.say("Attack");
+				switch(task) {
+					case DEFINES.TASKS.ATTACK:
+					creep.say("Attack");
+					break;
+						
+					case DEFINES.TASKS.RENEW:
+					creep.say("Renew");
+					break;
+				}
 				creep.memory.target = creep.pos.findClosestByPath(targets).id;
 			}
 		}
@@ -79,7 +98,8 @@ var roleFighter = {
 		// Attack targets
 		// ====================================================================
 		if(creep.memory && creep.memory.target) {
-			if(creep.rangedAttack(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+			if((creep.timeToLive < DEFINES.NEAR_DEATH)
+			|| creep.rangedAttack(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
 			|| creep.attack(      Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
 			){
 				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#f00", opacity: .25}}) == ERR_NO_PATH) {
