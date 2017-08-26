@@ -63,7 +63,7 @@ var roleFighter = {
 				// Attack condemned structures
 				if(creep.room.memory && creep.room.memory.dismantle) {
 					targets = Array();
-					for(var a = 0; room.memory.dismantle[a]; a++) {
+					for(var a = 0; creep.room.memory.dismantle[a]; a++) {
 						targets.push(Game.getObjectById(creep.room.memory.dismantle[a]));
 					};
 					if(targets && targets.length) break;
