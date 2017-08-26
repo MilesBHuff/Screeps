@@ -57,7 +57,13 @@ var roleFighter = {
 					// Man the ramparts
 					targets = creep.room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(
 						  structure.structureType == STRUCTURE_RAMPART);}});
-					if(targets.length && creep.pos.findPathTo(targets).length) break;
+					var b = true;
+					for(var i = 0; targets[i]; i++) {
+						if(!creep.pos.findPathTo(target[i]).length) {
+							b = false;
+						}
+					}
+					if(targets.length && b) break;
 					// Attack enemy healers
 					targets = _.filter(hostiles, (hostile) => hostile.getActiveBodyparts(HEAL) > 0);
 					if(targets.length) break;
