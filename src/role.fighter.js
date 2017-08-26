@@ -17,6 +17,7 @@ var roleFighter = {
 	 * @param creep The creep to control.
 	**/
 	run: function (creep) {
+		var hostiles = creep.room.find(FIND_HOSTILE_CREEPS);
 		
 		// Validate the current target (with a small chance of having to find a new target no matter what)
 		// ====================================================================
@@ -28,6 +29,12 @@ var roleFighter = {
 		(  creep.ticksToLivenumber > DEFINES.NEAR_DEATH
 		&& Game.getObjectById(creep.memory.target).structureType
 		&& Game.getObjectById(creep.memory.target).structureType == STRUCTURE_SPAWN
+		&& Game.getObjectById(creep.memory.target).my
+		)
+		||
+		(  !hostiles.length
+		&& Game.getObjectById(creep.memory.target).structureType
+		&& Game.getObjectById(creep.memory.target).structureType == STRUCTURE_RAMPART
 		&& Game.getObjectById(creep.memory.target).my
 		)
 		||!Math.round(Math.random() * 8))
@@ -52,7 +59,6 @@ var roleFighter = {
 			for(var b = true; b; b = false) {
 				task = DEFINES.TASKS.ATTACK;
 				// If there are hostiles
-				var hostiles = creep.room.find(FIND_HOSTILE_CREEPS);
 				if(hostiles.length) {
 					// Man the ramparts
 					targets = creep.room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(
