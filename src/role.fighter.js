@@ -24,6 +24,12 @@ var roleFighter = {
 		&& creep.memory.target
 		&&
 		( !Game.getObjectById(creep.memory.target
+		||
+		(  creep.ticksToLivenumber > DEFINES.NEAR_DEATH
+		&& Game.getObjectById(creep.memory.target).structureType
+		&& Game.getObjectById(creep.memory.target).structureType == STRUCTURE_SPAWN
+		&& Game.getObjectById(creep.memory.target).my
+		)
 		||!Math.round(Math.random() * 8))
 		)){
 			creep.memory.target = undefined;
@@ -33,10 +39,10 @@ var roleFighter = {
 		// ====================================================================
 		for(var hostile in creep.room.find(FIND_HOSTILE_CREEPS)) {
 			if(creep.isNearTo(hostile)) {
-				creep.moveTo(creep.pos.x + (creep.pos.x - hostile.pos.x), creep.pos.y + (creep.pos.y - hostile.pos.y));
+				creep.moveTo(creep.pos.x + (creep.pos.x - hostile.pos.x),
+					     creep.pos.y + (creep.pos.y - hostile.pos.y));
 			}
 		}
-		
 		
 		// Find targets
 		// ====================================================================
@@ -45,29 +51,29 @@ var roleFighter = {
 			var task    = DEFINES.TASKS.WAIT;
 			for(var b = true; b; b = false) {
 				task = DEFINES.TASKS.ATTACK;
-				// Attack enemy healers
-				targets = creep.room.find(FIND_HOSTILE_CREEPS, {filter: (hostile) => {return(
-					hostile.getActiveBodyparts(HEAL) > 0
-				);}});
-				if(targets.length) break;
-				// Attack enemy rangers
-				targets = creep.room.find(FIND_HOSTILE_CREEPS, {filter: (hostile) => {return(
-					hostile.getActiveBodyparts(RANGED_ATTACK) > 0
-				);}});
-				if(targets.length) break;
-				// Attack enemy meleers
-				targets = creep.room.find(FIND_HOSTILE_CREEPS, {filter: (hostile) => {return(
-					hostile.getActiveBodyparts(ATTACK) > 0
-				);}});
-				if(targets.length) break;
-				// Attack enemy claimers
-				targets = creep.room.find(FIND_HOSTILE_CREEPS, {filter: (hostile) => {return(
-					hostile.getActiveBodyparts(CLAIM) > 0
-				);}});
-				if(targets.length) break;
-				// Attack other enemy units
-				targets = creep.room.find(FIND_HOSTILE_CREEPS);
-				if(targets.length) break;
+				// If there are hostiles
+				var hostiles = creep.room.find(FIND_HOSTILE_CREEPS);
+				if(hostiles.length) {
+					// Man the ramparts
+					targets = creep.room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(
+						  structure.structureType == STRUCTURE_RAMPART);}});
+					if(targets.length && creep.pos.findPathTo(targets).length) break;
+					// Attack enemy healers
+					targets = _.filter(hostiles, (hostile) => hostile.getActiveBodyparts(HEAL) > 0);
+					if(targets.length) break;
+					// Attack enemy rangers
+					targets = _.filter(hostiles, (hostile) => hostile.getActiveBodyparts(RANGED_ATTACK) > 0);
+					if(targets.length) break;
+					// Attack enemy brawlers
+					targets = _.filter(hostiles, (hostile) => hostile.getActiveBodyparts(ATTACK) > 0);
+					if(targets.length) break;
+					// Attack enemy claimers
+					targets = _.filter(hostiles, (hostile) => hostile.getActiveBodyparts(CLAIM) > 0);
+					if(targets.length) break;
+					// Attack other enemy units
+					targets = hostiles;
+					if(targets.length) break;
+				}
 //				// Renew if near to a natural death
 //				task = DEFINES.TASKS.RENEW;
 //				if(creep.ticksToLivenumber < DEFINES.NEAR_DEATH) {
@@ -107,7 +113,19 @@ var roleFighter = {
 		// Attack targets
 		// ====================================================================
 		if(creep.memory && creep.memory.target) {
-			if((creep.timeToLive < DEFINES.NEAR_DEATH)
+			if(
+			(  creep.timeToLive < DEFINES.NEAR_DEATH
+			&& Game.getObjectById(creep.memory.target).structureType
+			&& Game.getObjectById(creep.memory.target).structureType == STRUCTURE_SPAWN
+			&& Game.getObjectById(creep.memory.target).my
+			&& creep.renew(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+			)
+			||
+			(  Game.getObjectById(creep.memory.target).structureType
+			&& Game.getObjectById(creep.memory.target).structureType == STRUCTURE_RAMPART
+			&& Game.getObjectById(creep.memory.target).my
+			)
+			|| 
 			|| creep.rangedAttack(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
 			|| creep.attack(      Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
 			){
