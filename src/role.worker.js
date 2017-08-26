@@ -137,7 +137,7 @@ var roleWorker = {
 				// If the controller is about to degrade, contribute to it
 				// -------------------------------------------------------------
 				task = DEFINES.TASKS.UPGRADE;
-				if(room.controller.ticksToDowngrade < 1000) {
+				if(room.controller.ticksToDowngrade < DEFINES.NEAR_DEATH * 10) {
 					targets = [room.controller];
 					if(targets && targets.length) break;
 				}
@@ -164,10 +164,10 @@ var roleWorker = {
 				});
 				if(targets && targets.length) break;
 
-				// 50% chance of maintaining towers
+				// 75% chance of maintaining towers
 				// -------------------------------------------------------------
 				task = DEFINES.TASKS.TRANSFER;
-				if(Math.round(Math.random())) {
+				if(Math.round(Math.random() * 3)) {
 					targets = room.find(FIND_MY_STRUCTURES, {
 						filter: (structure) => {return(
 							   structure.structureType == STRUCTURE_TOWER
