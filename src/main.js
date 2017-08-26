@@ -175,11 +175,28 @@ function spawnCreep(spawn, rawParts, name, role) {
 	for(var i = 0; i < partCount.move; i++) {
 		bodyParts.push(MOVE);
 	}
+	
+	// If any neighbouring owned room lacks spawners, 50% chance of sending this creep to it.
+	// -------------------------------------------------------------------------
+	var target = undefined;
+	if(Math.round(Math.random()) {
+		for(var name in Game.map.describeExits(spawn.room.name)) {
+			var room = Game.rooms[name];
+			if( room.controller.my
+			&& !room.find(FIND_MY_STRUCTURES, {filter: (structure) => {
+				return(structure.structureType == STRUCTURE_SPAWN)
+				}).length
+			){
+				target = room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
+				break;
+			}
+		}
+	}
 
 	// If we have parts, create the creep.
 	// -------------------------------------------------------------------------
 	if(bodyParts[0]) {
-		for(var i = 0; spawn.createCreep(bodyParts, name + i, {role: role}) == ERR_NAME_EXISTS; i++) {}
+		for(var i = 0; spawn.createCreep(bodyParts, name + i, {role: role, target: target}) == ERR_NAME_EXISTS; i++) {}
 	}
 }
 
