@@ -104,8 +104,8 @@ var roleWorker = {
 					// Withdraw resources from enemy structures
 					targets = room.find(FIND_HOSTILE_STRUCTURES);
 					if(targets && targets.length) break;
-					// Withdraw resources from condemned structures
-					if(room.memory && room.memory.dismantle) {
+					// 50% chance to withdraw resources from condemned structures
+					if(room.memory && room.memory.dismantle && Math.round(Math.random())) {
 						var dismantle = Array();
 						for(var a = 0; room.memory.dismantle[a]; a++) {
 							dismantle.push(Game.getObjectById(room.memory.dismantle[a]));
@@ -155,12 +155,8 @@ var roleWorker = {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_EXTENSION
 						&& structure.energy        <  structure.energyCapacity
+						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 					);}
-				});
-				targets = targets.filter(function(item) {
-					if(room.memory && room.memory.dismantle) {
-						return room.memory.dismantle.indexOf(item) === -1;
-					}
 				});
 				if(targets && targets.length) break;
 				// Fill spawns
@@ -168,12 +164,8 @@ var roleWorker = {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_SPAWN
 						&& structure.energy        <  structure.energyCapacity
+						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 					);}
-				});
-				targets = targets.filter(function(item) {
-					if(room.memory && room.memory.dismantle) {
-						return room.memory.dismantle.indexOf(item) === -1;
-					}
 				});
 				if(targets && targets.length) break;
 
@@ -185,12 +177,8 @@ var roleWorker = {
 						filter: (structure) => {return(
 							   structure.structureType == STRUCTURE_TOWER
 							&& structure.energy        <  structure.energyCapacity
+							&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 						);}
-					});
-					targets = targets.filter(function(item) {
-						if(room.memory && room.memory.dismantle) {
-							return room.memory.dismantle.indexOf(item) === -1;
-						}
 					});
 					if(targets && targets.length) break;
 				}
@@ -215,12 +203,8 @@ var roleWorker = {
 					targets = room.find(FIND_STRUCTURES, {filter: (structure) =>
 						   structure.hits < (structure.hitsMax * 0.75)
 						&& structure.hits < (repairLimit * 0.75)
+						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 				   	});
-					targets = targets.filter(function(item) {
-						if(room.memory && room.memory.dismantle) {
-							return room.memory.dismantle.indexOf(item) === -1;
-						}
-					});
 				if(targets && targets.length) break;
 				}
 
@@ -253,12 +237,8 @@ var roleWorker = {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_STORAGE
 						&& structure.energy        <  structure.energyCapacity
+						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 					);}
-				});
-				targets = targets.filter(function(item) {
-					if(room.memory && room.memory.dismantle) {
-						return room.memory.dismantle.indexOf(item) === -1;
-					}
 				});
 				if(targets && targets.length) break;
 
