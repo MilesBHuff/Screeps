@@ -194,6 +194,29 @@ function spawnCreep(spawn, rawParts, name, role) {
 		}
 	}
 
+	// Determine starting position
+	// ---------------------------------------------------------------------
+	var pos = {
+		x: spawn.pos.x,
+		y: spawn.pos.y
+	};
+	while((pos.x == spawn.pos.x
+		&& pos.y == spawn.pos.y))
+		//TODO:  Check for walls.
+		//TODO:  Check for other creeps.
+	{
+//		pos.x = spawn.pos.x + Math.round(Math.random());
+		pos.x+= 1;
+		if(Math.round(Math.random())) {
+			pos.x-= 2;
+		}
+//		pos.y = spawn.pos.y + Math.round(Math.random());
+		pos.y+= 1;
+		if(Math.round(Math.random())) {
+			pos.y-= 2;
+		}
+	}
+
 	// If we have parts, create the creep.
 	// -------------------------------------------------------------------------
 	if(bodyParts[0]) {
@@ -258,19 +281,20 @@ module.exports.loop = function () {
 	// Manage creeps
 	// =========================================================================
 	for(var name in Game.spawns) {
-		var spawn = Game.spawns[name];
-		if(spawn.spawning || spawn.energy < spawn.energyCapacity) {
+		var spawn  = Game.spawns[name];
+		var creeps = _.filter(Game.creeps, (creep) => creep.room == spawn.room);
+		if(spawn.spawning || (spawn.energy < spawn.energyCapacity && creeps.length > 0)) {
 			continue;
 		}
 
 		// Count creeps, buildings, etc
 		// ---------------------------------------------------------------------
 		// Structures in the current room
-		var   towers    = _.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_TOWER         && structure.room == spawn.room);
+		var   towers    = _.filter(Game.structures, (structure) => structure.structureType == STRUCTURE_TOWER       && structure.room == spawn.room);
 		// Creeps in the current room
-		var fighters    = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.FIGHTER   && creep.room == spawn.room);
-		var  healers    = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.HEALER    && creep.room == spawn.room);
-		var  workers    = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.WORKER    && creep.room == spawn.room);
+		var fighters    = _.filter(     creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.FIGHTER);
+		var  healers    = _.filter(     creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.HEALER );
+		var  workers    = _.filter(     creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.WORKER );
 		// Creeps in all rooms
 		var fightersAll = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.FIGHTER);
 		var  healersAll = _.filter(Game.creeps,     (creep)     => creep.memory.role       == DEFINES.ROLES.HEALER );
@@ -294,8 +318,10 @@ module.exports.loop = function () {
 			var creepRole = 0;
 			switch(i) {
 				case 0:
-				if(workers.length < spawn.room.memory.workerLimit / 2) {
+				/*//*/ if(workers.length < spawn.room.memory.workerLimit / 2) {
 					creepRole = DEFINES.ROLES.WORKER;
+				} else if(healers.length < spawn.room.memory.healerLimit) {
+					creepRole = DEFINES.ROLES.HEALER;
 				} else {
 					creepRole = Math.floor(Math.random() * DEFINES.ROLES.length);
 				}
@@ -319,7 +345,7 @@ module.exports.loop = function () {
 				if(fighters.length    < spawn.room.memory.fighterLimit
 				&& fightersAll.length < creepLimitsAll.fighters
 				){
-					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Fighter", DEFINES.ROLES.FIGHTER);
+					spawnCreep(spawn, [RANGED_ATTACK, TOUGH, MOVE], "Fighter", DEFINES.ROLES.FIGHTER);
 					break;
 				}
 				if(i == 0) break;
@@ -328,7 +354,7 @@ module.exports.loop = function () {
 				if(healers.length    < spawn.room.memory.healerLimit
 				&& healersAll.length < creepLimitsAll.healers
 				){
-					spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", DEFINES.ROLES.HEALER);
+					spawnCreep(spawn, [HEAL, TOUGH, MOVE], "Healer", DEFINES.ROLES.HEALER);
 					break;
 				}
 				if(i == 0) break;
@@ -340,29 +366,6 @@ module.exports.loop = function () {
 			continue;
 		}
 		var newCreep = Game.creeps[spawn.spawning.name];
-
-		// Determine starting position
-		// ---------------------------------------------------------------------
-		var pos = {
-			x: spawn.pos.x,
-			y: spawn.pos.y
-		};
-		while((pos.x == spawn.pos.x
-			&& pos.y == spawn.pos.y))
-			//TODO:  Check for walls.
-			//TODO:  Check for other creeps.
-		{
-//			pos.x = spawn.pos.x + Math.round(Math.random());
-			pos.x+= 1;
-			if(Math.round(Math.random())) {
-				pos.x-= 2;
-			}
-//			pos.y = spawn.pos.y + Math.round(Math.random());
-			pos.y+= 1;
-			if(Math.round(Math.random())) {
-				pos.y-= 2;
-			}
-		}
 
 		// Display text
 		// ---------------------------------------------------------------------
