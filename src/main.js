@@ -180,8 +180,9 @@ function spawnCreep(spawn, rawParts, name, role) {
 	// -------------------------------------------------------------------------
 	var target = undefined;
 	if(Math.round(Math.random())) {
-		for(var name in Game.map.describeExits(spawn.room.name)) {
-			var room = Game.rooms[name];
+		var exits = Game.map.describeExits(spawn.room.name);
+		for(var index in exits) {
+			var room = Game.rooms[exits[index]];
 			if( room.controller.my
 			&& !room.find(FIND_MY_STRUCTURES, {filter: (structure) => {
 				return(structure.structureType == STRUCTURE_SPAWN)
