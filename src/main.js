@@ -328,7 +328,7 @@ module.exports.loop = function () {
 				if(fighters.length    < spawn.room.memory.fighterLimit
 				&& fightersAll.length < creepLimitsAll.fighters
 				){
-					spawnCreep(spawn, [RANGED_ATTACK, TOUGH, MOVE], "Fighter", DEFINES.ROLES.FIGHTER);
+					spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Fighter", DEFINES.ROLES.FIGHTER);
 					break;
 				}
 				if(i == 0) break;
@@ -337,7 +337,7 @@ module.exports.loop = function () {
 				if(healers.length    < spawn.room.memory.healerLimit
 				&& healersAll.length < creepLimitsAll.healers
 				){
-					spawnCreep(spawn, [HEAL, TOUGH, MOVE], "Healer", DEFINES.ROLES.HEALER);
+					spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", DEFINES.ROLES.HEALER);
 					break;
 				}
 				if(i == 0) break;
