@@ -57,17 +57,9 @@ var roleWorker = {
 					rooms.push(roomsRaw[index]);
 				}
 			}
-			var target   = undefined;
-			var targets  = Array();
-			const TASKS  = Object.freeze({
-				"WAIT":    -1,
-				"HARVEST":  0,
-				"TRANSFER": 1,
-				"UPGRADE":  2,
-				"BUILD":    3,
-				"REPAIR":   4,
-			})
-			var task = TASKS.WAIT;
+			var target  = undefined;
+			var targets = Array();
+			var task    = DEFINES.TASKS.WAIT;
 			
 			// Decide on a room
 			// -----------------------------------------------------------------
@@ -96,7 +88,7 @@ var roleWorker = {
 
 				// If harvesting, harvest.
 				// -------------------------------------------------------------
-				task = TASKS.HARVEST;
+				task = DEFINES.TASKS.HARVEST;
 				if(creep.memory.harvesting) {
 					// Pick up dropped resources
 					targets = room.find(FIND_DROPPED_RESOURCES);
@@ -141,7 +133,7 @@ var roleWorker = {
 				
 				// If the controller is about to degrade, contribute to it
 				// -------------------------------------------------------------
-				task = TASKS.UPGRADE;
+				task = DEFINES.TASKS.UPGRADE;
 				if(room.controller.ticksToDowngrade < 1000) {
 					targets = [room.controller];
 					if(targets && targets.length) break;
@@ -149,7 +141,7 @@ var roleWorker = {
 
 				// Always keep spawns and extensions filled up to max.
 				// -------------------------------------------------------------
-				task = TASKS.TRANSFER;
+				task = DEFINES.TASKS.TRANSFER;
 				// Fill extensions
 				targets = room.find(FIND_MY_STRUCTURES, {
 					filter: (structure) => {return(
@@ -171,7 +163,7 @@ var roleWorker = {
 
 				// 50% chance of maintaining towers
 				// -------------------------------------------------------------
-				task = TASKS.TRANSFER;
+				task = DEFINES.TASKS.TRANSFER;
 				if(Math.round(Math.random())) {
 					targets = room.find(FIND_MY_STRUCTURES, {
 						filter: (structure) => {return(
@@ -185,7 +177,7 @@ var roleWorker = {
 
 				// 50% chance to build things that complete instantaneously
 				// -------------------------------------------------------------
-				task = TASKS.BUILD;
+				task = DEFINES.TASKS.BUILD;
 				if(Math.round(Math.random())) {
 					targets = room.find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
 						   site.structureType == STRUCTURE_WALL
@@ -196,7 +188,7 @@ var roleWorker = {
 
 				// 75% chance of repairing constructions
 				// -------------------------------------------------------------
-				task = TASKS.REPAIR;
+				task = DEFINES.TASKS.REPAIR;
 				if(Math.round(Math.random() * 3)) {
 					// Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
 					// It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
@@ -210,7 +202,7 @@ var roleWorker = {
 
 				// 50% chance of upgrading the controller, if it's not already at max
 				// -------------------------------------------------------------
-				task = TASKS.UPGRADE;
+				task = DEFINES.TASKS.UPGRADE;
 				if(room.controller.level < 8 && Math.round(Math.random())) {
 					targets = [room.controller];
 					if(targets && targets.length) break;
@@ -218,13 +210,13 @@ var roleWorker = {
 
 				// Build new things
 				// -------------------------------------------------------------
-				task = TASKS.BUILD;
+				task = DEFINES.TASKS.BUILD;
 				targets = room.find(FIND_MY_CONSTRUCTION_SITES);
 				if(targets && targets.length) break;
 				
 				// Upgrade the controller if it's not already at max.
 				// -------------------------------------------------------------
-				task = TASKS.UPGRADE;
+				task = DEFINES.TASKS.UPGRADE;
 				if(room.controller.level < 8) {
 					targets = [room.controller];
 					if(targets && targets.length) break;
@@ -232,7 +224,7 @@ var roleWorker = {
 
 				// Store excess resources
 				// -------------------------------------------------------------
-				task = TASKS.TRANSFER;
+				task = DEFINES.TASKS.TRANSFER;
 				targets = room.find(FIND_MY_STRUCTURES, {
 					filter: (structure) => {return(
 						   structure.structureType == STRUCTURE_STORAGE
@@ -242,7 +234,7 @@ var roleWorker = {
 				});
 				if(targets && targets.length) break;
 
-				task = TASKS.WAIT;
+				task = DEFINES.TASKS.WAIT;
 			}
 
 			// Pick a target from the list of targets
@@ -253,23 +245,23 @@ var roleWorker = {
 			)){
 				creep.memory.target = target.id;
 				switch(task) {
-					case TASKS.HARVEST:
+					case DEFINES.TASKS.HARVEST:
 					creep.say("Harvest");
 					break;
 
-					case TASKS.TRANSFER:
+					case DEFINES.TASKS.TRANSFER:
 					creep.say("Transfer");
 					break;
 
-					case TASKS.UPGRADE:
+					case DEFINES.TASKS.UPGRADE:
 					creep.say("Upgrade");
 					break;
 
-					case TASKS.BUILD:
+					case DEFINES.TASKS.BUILD:
 					creep.say("Build");
 					break;
 
-					case TASKS.REPAIR:
+					case DEFINES.TASKS.REPAIR:
 					creep.say("Repair");
 					break;
 				}
