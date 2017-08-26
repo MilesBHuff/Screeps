@@ -65,16 +65,16 @@ var roleFighter = {
 					}
 					if(targets.length && b) break;
 					// Attack enemy healers
-					targets = _.filter(hostiles, (hostile) => hostile.getActiveBodyparts(HEAL) > 0);
+					targets = _.filter(hostiles, (hostile) => {return(hostile.getActiveBodyparts(HEAL) > 0);});
 					if(targets.length) break;
 					// Attack enemy rangers
-					targets = _.filter(hostiles, (hostile) => hostile.getActiveBodyparts(RANGED_ATTACK) > 0);
+					targets = _.filter(hostiles, (hostile) => {return(hostile.getActiveBodyparts(RANGED_ATTACK) > 0);});
 					if(targets.length) break;
 					// Attack enemy brawlers
-					targets = _.filter(hostiles, (hostile) => hostile.getActiveBodyparts(ATTACK) > 0);
+					targets = _.filter(hostiles, (hostile) => {return(hostile.getActiveBodyparts(ATTACK) > 0);});
 					if(targets.length) break;
 					// Attack enemy claimers
-					targets = _.filter(hostiles, (hostile) => hostile.getActiveBodyparts(CLAIM) > 0);
+					targets = _.filter(hostiles, (hostile) => {return(hostile.getActiveBodyparts(CLAIM) > 0);});
 					if(targets.length) break;
 					// Attack other enemy units
 					targets = hostiles;
