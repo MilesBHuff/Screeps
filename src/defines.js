@@ -67,7 +67,7 @@ const DEFINES = {
 	 * @return OK, ERR_INVALID_ARGS
 	**/
 	SAY: function (text, object) {
-		if(!text || !text[0] || !object || !object.room }} !object.room.pos) {
+		if(!text || !text[0] || !object || !object.room || !object.room.pos) {
 			return ERR_INVALID_ARGS
 		}
 		new RoomVisual(object.room).text(
