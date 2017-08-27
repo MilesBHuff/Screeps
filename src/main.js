@@ -176,9 +176,18 @@ function spawnCreep(spawn, rawParts, name, role) {
 		bodyParts.push(MOVE);
 	}
 	
-	// If there's no MOVE part, there's no point in spawning the creep.
+	// If the creep is only partially formed, there's no point in spawning it.
 	// -------------------------------------------------------------------------
-	if(partCount.move <= 0) {
+	if(
+	!( partCount.move   > 0
+	&&
+	(  partCount.attack > 0
+	|| partCount.carry  > 0
+	|| partCount.claim  > 0
+	|| partCount.heal   > 0
+	|| partCount.rangedAttack > 0
+	|| partCount.work   > 0
+	))){
 		return;
 	}
 	
@@ -205,6 +214,10 @@ function spawnCreep(spawn, rawParts, name, role) {
 	if(bodyParts[0]) {
 		for(var i = 0; spawn.createCreep(bodyParts, name + i, {role: role, target: target}) == ERR_NAME_EXISTS; i++) {}
 	}
+	
+	// Display which type of creep is being spawned
+	// -------------------------------------------------------------------------
+	DEFINES.SAY(name[0].toUpperCase() + name.slice(1), spawn);
 }
 
 // Main loop
