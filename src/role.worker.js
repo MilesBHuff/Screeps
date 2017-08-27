@@ -100,11 +100,11 @@ var roleWorker = {
 
 					// If the current room is not the creep's room, sort the remaining rooms by distance if we have not already done so.
 					// -----------------------------------------------------------------
-					if(false && !roomsSorted && rooms[0] != creep.room) {
+					if(!roomsSorted && rooms[0] != creep.room) {
 						var roomsTmp = Array();
 						for(var i = 0; 0 < rooms.length; i++) {
 							// Find the nearest room that hasn't been found yet.
-							roomsTmp.push(creep.pos.findClosestByRange(FIND_EXIT, rooms));
+							roomsTmp.push(creep.pos.findClosestByRange(FIND_EXIT, {filter: (room) => function(room) {return rooms.indexOf(room) != -1;}}));
 							// Find its index.
 							var index = 0;
 							for(var j = 0; rooms[j]; j++) {
