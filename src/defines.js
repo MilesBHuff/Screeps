@@ -40,18 +40,20 @@ const DEFINES = {
 					ignoreRoads:  false,
 					maxOps:       1000,
 					maxRooms:        3,
-					serialize:    true,
+					serialize:    false,
 				};
 				// Find a path
-				var path = creep.pos.findPathTo(Game.getObjectById(creep.memory.target), pathOpts);
+				var path = creep.pos.findPathTo(target, pathOpts);
 				// Validate the path
 				var validPath = false;
-				for(var x = -1; x < 1; x++) {
-					for(var y = -1; y < 1; y++) {
-						if(path[path.length - 1].x + x == target.pos.x
-						|| path[path.length - 1].y + y == target.pos.y
-						){
-							validPath = true;
+				if(path.length) {
+					for(var x = -1; x < 1; x++) {
+						for(var y = -1; y < 1; y++) {
+							if(path[path.length - 1].x == target.pos.x + x
+							|| path[path.length - 1].y == target.pos.y + y
+							){
+								validPath = true;
+							}
 						}
 					}
 				}
