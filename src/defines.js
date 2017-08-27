@@ -52,10 +52,12 @@ const DEFINES = {
 				}
 			}
 			// Try to move the creep to the new location.  If this fails, reset the path.
-			if(creep.moveByPath(creep.memory.path) && creep.fatigue <= 0) {
+			var code = creep.moveByPath(creep.memory.path);
+			if(code && code != ERR_BUSY && code != ERR_TIRED) {
 				creep.memory.path = undefined;
 				return OK;
 			}
+			code = undefined;
 			// Draw the creep's path
 			var lineOpts = {
 				fill:        "transparent",
