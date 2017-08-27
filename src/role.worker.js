@@ -23,7 +23,7 @@ var roleWorker = {
 	run: function (creep) {
 		if(false) {
 			creep.memory.target = undefined; // Useful when you need to reset everyone's tasks.
-			creep.memory.target = undefined; // Useful when you need to reset everyone's paths.
+			creep.memory.path   = undefined; // Useful when you need to reset everyone's paths.
 		}
 
 		// Variables
