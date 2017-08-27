@@ -341,7 +341,7 @@ var roleWorker = {
 		
 		// If the creep can't find a target, it wanders
 		// ---------------------------------------------------------------------
-		} else
+		} else {
 			DEFINES.WANDER(creep);
 			return;
 		}
