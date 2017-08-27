@@ -90,7 +90,8 @@ var roleWorker = {
 							// Convert the array of strings into an array of objects.
 							roomsTmp = Array();
 							for(var name in rooms) {
-								roomsTmp.push(Game.rooms[rooms[name]]);
+								var room = Game.rooms[rooms[name]];
+								if(room) roomsTmp.push(room);
 							} //done
 							// Save the new array to rooms, and free up memory.
 							rooms    = roomsTmp;
@@ -104,7 +105,7 @@ var roleWorker = {
 						var roomsTmp = Array();
 						for(var i = 0; 0 < rooms.length; i++) {
 							// Find the nearest room that hasn't been found yet.
-							roomsTmp.push(creep.pos.findClosestByRange(FIND_EXIT, {filter: (room) => function(room) {return rooms.indexOf(room) != -1;}}));
+							roomsTmp.push(Game.rooms[creep.pos.findClosestByRange(FIND_EXIT, {filter: (room) => function(room) {return rooms.indexOf(room) != -1;}}).roomName]);
 							// Find its index.
 							var index = 0;
 							for(var j = 0; rooms[j]; j++) {
