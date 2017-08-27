@@ -21,7 +21,10 @@ var roleWorker = {
 	 * @param creep The creep to control.
 	**/
 	run: function (creep) {
-//creep.memory.target = undefined; // Useful when you need to reset everyone's tasks.
+		if(false) {
+			creep.memory.target = undefined; // Useful when you need to reset everyone's tasks.
+			creep.memory.target = undefined; // Useful when you need to reset everyone's paths.
+		}
 
 		// Variables
 		// =====================================================================
@@ -344,12 +347,12 @@ var roleWorker = {
 		} else {
 			DEFINES.WANDER(creep);
 		}
+	}
 
-		// If the creep has no target, reset its path
-		// ---------------------------------------------------------------------
-		if(!creep.memory.target) {
-			creep.memory.path = undefined;
-		}
+	// If the creep has no target, reset its path
+	// ---------------------------------------------------------------------
+	if(!creep.memory.target) {
+		creep.memory.path = undefined;
 	}
 };
 
