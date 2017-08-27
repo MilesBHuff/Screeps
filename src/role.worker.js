@@ -343,7 +343,12 @@ var roleWorker = {
 		// ---------------------------------------------------------------------
 		} else {
 			DEFINES.WANDER(creep);
-			return;
+		}
+
+		// If the creep has no target, reset its path
+		// ---------------------------------------------------------------------
+		if(!creep.memory.target) {
+			creep.memory.path = undefined;
 		}
 	}
 };
