@@ -44,7 +44,8 @@ const DEFINES = {
 					maxRooms:     3,
 					serialize:    true,
 				};
-				if((creep.memory.path = creep.pos.findPathTo(Game.getObjectById(creep.memory.target), pathOpts)) == ERR_NO_PATH) {
+				creep.memory.path = creep.pos.findPathTo(Game.getObjectById(creep.memory.target), pathOpts)
+				if(!creep.memory.path) {
 					creep.memory.target = undefined;
 					return ERR_NO_PATH;
 				}
