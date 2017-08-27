@@ -51,7 +51,7 @@ const DEFINES = {
 				}
 			}
 			// Try to move the creep to the new location.  If this fails, reset the path.
-			if(!creep.moveByPath(creep.memory.path)) {
+			if(creep.moveByPath(creep.memory.path)) {
 				creep.memory.path = undefined;
 				return OK;
 			}
