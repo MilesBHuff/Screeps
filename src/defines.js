@@ -11,6 +11,25 @@ const DEFINES = {
 	// Functions
 	// =========================================================================
 	
+	// Say
+	// -------------------------------------------------------------------------
+	/** Spawns text above the given object, similarly to creep.say().
+	 * @param text   The text to display.
+	 * @param object The thing that will display the text.
+	**/
+	SAY: function (text, object) {
+		if(text && object && object.room && object.room.pos) {
+			new RoomVisual(object.room).text(text,
+											 object.pos.x,
+											 object.pos.y - 1,
+											{backgroundColor:   "#CCC",
+											 backgroundPadding: "0.1",
+											 color:             "#111",
+											 font:              "bold 0.6 Arial",
+											});
+		}
+	},
+	
 	// Wander
 	// -------------------------------------------------------------------------
 	/** Makes the given creep wander around its room at random.
