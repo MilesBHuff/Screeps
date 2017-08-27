@@ -64,7 +64,7 @@ const DEFINES = {
 				stroke:      color,
 				strokeWidth: 0.15,
 			};
-//			new RoomVisual(creep.room.name).poly(creep.memory.path, lineOpts);
+			new RoomVisual(creep.room.name).poly(Room.deserializePath(creep.memory.path), lineOpts);
 			return OK;
 		} else return ERR_INVALID_TARGET;
 	},
