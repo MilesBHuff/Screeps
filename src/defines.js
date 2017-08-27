@@ -44,7 +44,7 @@ const DEFINES = {
 					maxRooms:     3,
 					serialize:    true,
 				};
-				if(creep.memory.path = creep.pos.findPathTo(Game.getObjectById(creep.memory.target), pathOpts) == ERR_NO_PATH) {
+				if((creep.memory.path = creep.pos.findPathTo(Game.getObjectById(creep.memory.target), pathOpts)) == ERR_NO_PATH) {
 					creep.memory.target = undefined;
 					return ERR_NO_PATH;
 				}
@@ -62,7 +62,7 @@ const DEFINES = {
 				stroke:      color,
 				strokeWidth: 0.15,
 			};
-			new RoomVisual(creep.room).poly(creep.memory.path, lineOpts);
+//			new RoomVisual(creep.room).poly(creep.memory.path, lineOpts);
 			return OK;
 		} else return ERR_INVALID_TARGET;
 	},
