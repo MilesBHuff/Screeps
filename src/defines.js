@@ -16,8 +16,8 @@ const DEFINES = {
 	/** Calculates a path for the creep to get to its target, and moves it.  If
 	 *  the creep is unable to move, recalculate its path.  If no path can be
 	 *  found, reset its target.  Also displays the creep's path on the map.
-	 * @param creep The creep to move.
-	 * @param color The colour for the creep's path.
+	 * @param  creep The creep to move.
+	 * @param  color The colour for the creep's path.
 	 * @return OK, ERR_NO_PATH, ERR_INVALID_TARGET, ERR_INVALID_ARGS
 	**/
 	MOVE: function (creep, color) {
@@ -62,26 +62,31 @@ const DEFINES = {
 	// Say
 	// -------------------------------------------------------------------------
 	/** Spawns text above the given object, similarly to creep.say().
-	 * @param text   The text to display.
-	 * @param object The thing that will display the text.
+	 * @param  text   The text to display.
+	 * @param  object The thing that will display the text.
+	 * @return OK, ERR_INVALID_ARGS
 	**/
 	SAY: function (text, object) {
-		if(text && object && object.room && object.room.pos) {
-			new RoomVisual(object.room).text(text,
-				                             object.pos.x,
-				                             object.pos.y - 1,
-				                            {backgroundColor:   "#CCC",
-				                             backgroundPadding: "0.1",
-				                             color:             "#111",
-				                             font:              "bold 0.6 Arial",
-				                            });
+		if(!text || !text[0] || !object || !object.room }} !object.room.pos) {
+			return ERR_INVALID_ARGS
 		}
+		new RoomVisual(object.room).text(
+			text,
+			object.pos.x,
+			object.pos.y - 1,
+			{backgroundColor:   "#CCC",
+			backgroundPadding: "0.1",
+			color:             "#111",
+			font:              "bold 0.6 Arial",
+		});
+		return OK;
 	},
 	
 	// Wander
 	// -------------------------------------------------------------------------
 	/** Makes the given creep wander around its room at random.
-	 * @param creep The creep to control.
+	 * @param  creep The creep to control.
+	 ( @return OK
 	**/
 	WANDER: function (creep) {
 		if(creep.pos.x <  3
@@ -95,6 +100,7 @@ const DEFINES = {
 				creep.move(direction);
 			}
 		}
+		return OK;
 	},
 	
 	// Variables
