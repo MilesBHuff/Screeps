@@ -25,8 +25,11 @@ const DEFINES = {
 			return ERR_INVALID_ARGS;
 		}
 		if(creep.memory && creep.memory.target) {
-			// If the creep has not moved since the last tick, recalculate its path.
-			//TODO
+//			// If the creep has not moved since the last tick, recalculate its path.
+//			if(creep.memory.oldPos == creep.pos) {
+//				creep.memory.path = undefined;
+//			}
+			creep.memory.oldPos = creep.pos;
 			// If the creep's position is equal to the target's position, delete the path and return.
 			if(creep.pos == Game.getObjectById(creep.memory.target).pos) {
 				creep.memory.path = undefined;
