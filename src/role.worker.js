@@ -39,11 +39,13 @@ var roleWorker = {
 			if(creep.carry.energy >= creep.carryCapacity) {
 				creep.memory.harvesting = false;
 				creep.memory.target = undefined;
+				creep.memory.path   = undefined;
 			}
 		} else {
 			if(creep.carry.energy <= 0) {
 				creep.memory.harvesting = true;
 				creep.memory.target = undefined;
+				creep.memory.path   = undefined;
 			}
 		}
 		// Decide on a target
@@ -54,6 +56,7 @@ var roleWorker = {
 			// Variables
 			// -----------------------------------------------------------------
 			creep.memory.target = undefined;
+			creep.memory.path   = undefined;
 			var rooms    = Array();
 			rooms.push(creep.room.name);
 			var roomsRaw = Game.map.describeExits(creep.room.name);
@@ -342,6 +345,7 @@ var roleWorker = {
 					}
 				} else {
 					creep.memory.target = undefined;
+					creep.memory.path   = undefined;
 				}
 			}
 		
