@@ -273,7 +273,7 @@ var roleWorker = {
 
 		// Move towards the target
 		// =====================================================================
-		if(creep.memory.target == undefined) {
+		if(creep.memory.target) {
 
 			// Harvest
 			// -----------------------------------------------------------------
