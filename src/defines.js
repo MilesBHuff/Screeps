@@ -25,18 +25,15 @@ const DEFINES = {
 			return ERR_INVALID_ARGS;
 		}
 		if(creep.memory && creep.memory.target) {
-//			// If the creep has not moved since the last tick, recalculate its path.
-//			if(creep.memory.oldPos && creep.memory.oldPos == creep.pos) {
-//				creep.memory.path = undefined;
-//			}
-//			creep.memory.oldPos = creep.pos;
+			var target = Game.getObjectById(creep.memory.target);
 			// If the creep's position is equal to the target's position, delete the path and return.
-			if(creep.pos == Game.getObjectById(creep.memory.target).pos) {
+			if(creep.pos == target.pos) {
 				creep.memory.path = undefined;
 				return OK;
 			}
 			// If the creep has no path, create one.  If there is no possible path, reset the creep's target and return.
 			if(!creep.memory.path) {
+				// Configure the pathfinder
 				var pathOpts = {
 					ignoreCreeps: false,
 					ignoreDestructibleStructures: false,
@@ -45,12 +42,30 @@ const DEFINES = {
 					maxRooms:        3,
 					serialize:    true,
 				};
-				creep.memory.path = creep.pos.findPathTo(Game.getObjectById(creep.memory.target), pathOpts);
-				if(false) { //TODO:  Detect whether the path is valid
+				// Find a path
+				var path = creep.pos.findPathTo(Game.getObjectById(creep.memory.target), pathOpts);
+				// Validate the path
+				var validPath = false;
+				for(var x = -1; x < 1; x++) {
+					for(var y = -1; y < 1; y++) {
+						if(path[path.length - 1].x + x == target.pos.x
+						|| path[path.length - 1].y + y == target.pos.y
+						){
+							validPath = true;
+						}
+					}
+				}
+				// If the path is invalid, then the target cannot be reached.  Find a new target.
+				if(!validPath){
 					creep.memory.target = undefined;
 					creep.memory.path = undefined;
 					return ERR_NO_PATH;
 				}
+				// If the path is valid, serialize it and save it in memory.
+				creep.memory.path = Room.serializePath(path);
+				// Clear unneeded memory.
+				path = undefined;
+				validPath = undefined;
 			}
 			// Try to move the creep to the new location.  If this fails, reset the path.
 			var code = creep.moveByPath(creep.memory.path);
