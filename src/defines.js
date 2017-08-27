@@ -26,7 +26,7 @@ const DEFINES = {
 		}
 		if(creep.memory && creep.memory.target) {
 //			// If the creep has not moved since the last tick, recalculate its path.
-//			if(creep.memory.oldPos == creep.pos) {
+//			if(creep.memory.oldPos && creep.memory.oldPos == creep.pos) {
 //				creep.memory.path = undefined;
 //			}
 //			creep.memory.oldPos = creep.pos;
@@ -41,7 +41,8 @@ const DEFINES = {
 					ignoreCreeps: false,
 					ignoreDestructibleStructures: false,
 					ignoreRoads:  false,
-					maxRooms:     3,
+					maxOps:       1000,
+					maxRooms:        3,
 					serialize:    true,
 				};
 				creep.memory.path = creep.pos.findPathTo(Game.getObjectById(creep.memory.target), pathOpts)
