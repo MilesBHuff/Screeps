@@ -11,6 +11,50 @@ const DEFINES = {
 	// Functions
 	// =========================================================================
 	
+	// Move
+	// -------------------------------------------------------------------------
+	/** Calculates a path for the creep to get to its target, and moves it.  If
+	 *  the creep is unable to move, recalculate its path.  If no path can be
+	 *  found, reset its target.  Also displays the creep's path on the map.
+	 * @param creep The creep to move.
+	 * @param color The colour for the creep's path.
+	 * @return OK, ERR_NO_PATH, ERR_INVALID_TARGET, ERR_INVALID_ARGS
+	**/
+	MOVE: function (creep, color) {
+		if(!creep || !creep.name || !Game.creeps[creep.name] || !color || !color[0]) {
+			return ERR_INVALID_ARGS;
+		}
+		if(creep.memory && creep.memory.target) {
+			// If the creep has not moved since the last tick, recalculate its path.
+			// If the creep's position is equal to the target's position, delete the path and return.
+			if(creep.pos == Game.getObjectById(creep.memory.target).pos) {
+				creep.memory.path = undefined;
+				return OK;
+			}
+			// If the creep has no path, create one.  If there is no possible path, reset the creep's target and return.
+			if(!creep.memory.path) {
+				var pathOpts = {
+					serialize: true,
+				};
+				if(creep.memory.path = creep.pos.findPathTo(Game.getObjectById(creep.memory.target), pathOpts) == ERR_NO_PATH) {
+					creep.memory.target = undefined;
+					return ERR_NO_PATH;
+				}
+			}
+			// Try to move the creep to the new location.  If this fails, reset the path.
+			if(!creep.moveByPath(creep.memory.path)) {
+				creep.memory.path = undefined;
+				return OK;
+			}
+			// Draw the creep's path
+			new RoomVisual(creep.room).poly(path, {stroke: color, strokeWidth: .15, opacity: .25, lineStyle: 'dashed'});
+			if(creep.moveTo(Game.getObjectById(creep.memory.target), {reusePath: creep.ticksToLive, visualizePathStyle: {stroke: "#ff0", opacity: .25}}) == ERR_NO_PATH) {
+				creep.memory.target  = undefined;
+			}
+			return OK;
+		} else return ERR_INVALID_TARGET;
+	},
+	
 	// Say
 	// -------------------------------------------------------------------------
 	/** Spawns text above the given object, similarly to creep.say().
@@ -20,13 +64,13 @@ const DEFINES = {
 	SAY: function (text, object) {
 		if(text && object && object.room && object.room.pos) {
 			new RoomVisual(object.room).text(text,
-											 object.pos.x,
-											 object.pos.y - 1,
-											{backgroundColor:   "#CCC",
-											 backgroundPadding: "0.1",
-											 color:             "#111",
-											 font:              "bold 0.6 Arial",
-											});
+				                             object.pos.x,
+				                             object.pos.y - 1,
+				                            {backgroundColor:   "#CCC",
+				                             backgroundPadding: "0.1",
+				                             color:             "#111",
+				                             font:              "bold 0.6 Arial",
+				                            });
 		}
 	},
 	
