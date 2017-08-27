@@ -29,7 +29,7 @@ const DEFINES = {
 //			if(creep.memory.oldPos == creep.pos) {
 //				creep.memory.path = undefined;
 //			}
-			creep.memory.oldPos = creep.pos;
+//			creep.memory.oldPos = creep.pos;
 			// If the creep's position is equal to the target's position, delete the path and return.
 			if(creep.pos == Game.getObjectById(creep.memory.target).pos) {
 				creep.memory.path = undefined;
