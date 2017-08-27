@@ -273,76 +273,77 @@ var roleWorker = {
 
 		// Move towards the target
 		// =====================================================================
+		if(creep.memory.target == undefined) {
 
-		// Harvest
-		// ---------------------------------------------------------------------
-		if(creep.memory.harvesting) {
-			/*//*/  if(!Game.getObjectById(creep.memory.target)
-				    ||
-				  ((   !Game.getObjectById(creep.memory.target).energy
-				    ||  Game.getObjectById(creep.memory.target).energy <= 0
-				  ) &&
-				  !(    Game.getObjectById(creep.memory.target).room.memory
-				    &&  Game.getObjectById(creep.memory.target).room.memory.dismantle
-				    &&  Game.getObjectById(creep.memory.target).room.memory.dismantle.indexOf(creep.memory.target) != -1
-				  ))
-			){
-				creep.memory.target  = undefined;
-			} else  if(creep.harvest(  Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-				    || creep.pickup(   Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-				    || creep.withdraw( Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-				    ||
-				  (((  Game.getObjectById(creep.memory.target).room.controller.owner
-				    && Game.getObjectById(creep.memory.target).room.controller.owner != DEFINES.USERNAME
-				  ) || 
-				  (    Game.getObjectById(creep.memory.target).room.memory
-				    && Game.getObjectById(creep.memory.target).room.memory.dismantle
-				    && Game.getObjectById(creep.memory.target).room.memory.dismantle.indexOf(creep.memory.target) != -1
-				  ))&& creep.dismantle(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-				  )){
-				DEFINES.MOVE(creep, "#ff0");
-			}
-		} else {
-
-
-			// Upgrade
+			// Harvest
 			// -----------------------------------------------------------------
-			/*//*/  if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
-				if(creep.upgradeController(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-					DEFINES.MOVE(creep, "#0ff");
-				}
-
-			// Build
-			// -----------------------------------------------------------------
-			} else  if(Game.getObjectById(creep.memory.target).progressTotal) {
-				if(creep.build(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-					DEFINES.MOVE(creep, "#fff");
-				}
-
-			// Repair
-			// -----------------------------------------------------------------
-			} else  if(Game.getObjectById(creep.memory.target).hits < Game.getObjectById(creep.memory.target).hitsMax
-				&& Game.getObjectById(creep.memory.target).hits < repairLimit
+			if(creep.memory.harvesting) {
+				/*//*/  if(!Game.getObjectById(creep.memory.target)
+					    ||
+					  ((   !Game.getObjectById(creep.memory.target).energy
+					    ||  Game.getObjectById(creep.memory.target).energy <= 0
+					  ) &&
+					  !(    Game.getObjectById(creep.memory.target).room.memory
+					    &&  Game.getObjectById(creep.memory.target).room.memory.dismantle
+					    &&  Game.getObjectById(creep.memory.target).room.memory.dismantle.indexOf(creep.memory.target) != -1
+					  ))
 				){
-				if(creep.repair(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
-					DEFINES.MOVE(creep, "#f0f");
-				}
-
-			// Transfer
-			// -----------------------------------------------------------------
-			} else  if(Game.getObjectById(creep.memory.target).energy < Game.getObjectById(creep.memory.target).energyCapacity) {
-				if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-					DEFINES.MOVE(creep, "#000");
+					creep.memory.target  = undefined;
+				} else  if(creep.harvest(  Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+					    || creep.pickup(   Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+					    || creep.withdraw( Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+					    ||
+					  (((  Game.getObjectById(creep.memory.target).room.controller.owner
+					    && Game.getObjectById(creep.memory.target).room.controller.owner != DEFINES.USERNAME
+					  ) || 
+					  (    Game.getObjectById(creep.memory.target).room.memory
+					    && Game.getObjectById(creep.memory.target).room.memory.dismantle
+					    && Game.getObjectById(creep.memory.target).room.memory.dismantle.indexOf(creep.memory.target) != -1
+					  ))&& creep.dismantle(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+					  )){
+					DEFINES.MOVE(creep, "#ff0");
 				}
 			} else {
-				creep.memory.target = undefined;
+
+				// Upgrade
+				// -------------------------------------------------------------
+				/*//*/  if(Game.getObjectById(creep.memory.target).structureType == STRUCTURE_CONTROLLER) {
+					if(creep.upgradeController(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+						DEFINES.MOVE(creep, "#0ff");
+					}
+
+				// Build
+				// -------------------------------------------------------------
+				} else  if(Game.getObjectById(creep.memory.target).progressTotal) {
+					if(creep.build(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+						DEFINES.MOVE(creep, "#fff");
+					}
+
+				// Repair
+				// -------------------------------------------------------------
+				} else  if(Game.getObjectById(creep.memory.target).hits < Game.getObjectById(creep.memory.target).hitsMax
+					&& Game.getObjectById(creep.memory.target).hits < repairLimit
+					){
+					if(creep.repair(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE) {
+						DEFINES.MOVE(creep, "#f0f");
+					}
+
+				// Transfer
+				// -------------------------------------------------------------
+				} else  if(Game.getObjectById(creep.memory.target).energy < Game.getObjectById(creep.memory.target).energyCapacity) {
+					if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+						DEFINES.MOVE(creep, "#000");
+					}
+				} else {
+					creep.memory.target = undefined;
+				}
 			}
-		}
 		
 		// If the creep can't find a target, it wanders
 		// ---------------------------------------------------------------------
-		if(creep.memory.target == undefined) {
+		} else
 			DEFINES.WANDER(creep);
+			return;
 		}
 	}
 };
