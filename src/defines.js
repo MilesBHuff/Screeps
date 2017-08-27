@@ -38,7 +38,11 @@ const DEFINES = {
 			// If the creep has no path, create one.  If there is no possible path, reset the creep's target and return.
 			if(!creep.memory.path) {
 				var pathOpts = {
-					serialize: true,
+					ignoreCreeps: false,
+					ignoreDestructibleStructures: false,
+					ignoreRoads:  false,
+					maxRooms:     3,
+					serialize:    true,
 				};
 				if(creep.memory.path = creep.pos.findPathTo(Game.getObjectById(creep.memory.target), pathOpts) == ERR_NO_PATH) {
 					creep.memory.target = undefined;
@@ -51,10 +55,14 @@ const DEFINES = {
 				return OK;
 			}
 			// Draw the creep's path
-			new RoomVisual(creep.room).poly(path, {stroke: color, strokeWidth: .15, opacity: .25, lineStyle: 'dashed'});
-			if(creep.moveTo(Game.getObjectById(creep.memory.target), {reusePath: creep.ticksToLive, visualizePathStyle: {stroke: "#ff0", opacity: .25}}) == ERR_NO_PATH) {
-				creep.memory.target  = undefined;
-			}
+			var lineOpts = {
+				fill:        "transparent",
+				lineStyle:   "dashed",
+				opacity:     0.25,
+				stroke:      color,
+				strokeWidth: 0.15,
+			};
+			new RoomVisual(creep.room).poly(creep.memory.path, lineOpts);
 			return OK;
 		} else return ERR_INVALID_TARGET;
 	},
