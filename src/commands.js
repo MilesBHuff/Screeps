@@ -14,4 +14,6 @@ if(false) {
 	Game.spawns["Spawn Name"].createCreep([PARTS], "Creep Name", {role: role});
 	// Remove all construction sites
 	for(var name in Game.constructionSites) {Game.constructionSites[name].remove();}
+	// Check the exact progress of a controller
+	var controller = Game.getObjectById("Controller ID"); console.log(controller.progress + " / " + controller.progressTotal);
 }
