@@ -128,10 +128,6 @@ var roleWorker = {
 					var targets = Array();
 					var task    = DEFINES.TASKS.WAIT;
 					for(var b = true; b; b = false) {
-						
-						// Debug
-						// -----------------------------------------------------
-						if(room != creep.room) break;
 
 						// If harvesting, harvest.
 						// -----------------------------------------------------
