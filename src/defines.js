@@ -11,7 +11,7 @@ const DEFINES = {
 	// Variables
 	// =========================================================================
 	// The maximum number of times to run a loop that would otherwise be while(true).
-	LOOP_LIMIT: 4,
+	LOOP_LIMIT: 2, // Should be much higher;  temporarily lowered until the looping bug is fixed with the worker script.
 	// This is the number of ticksToLive below which a creep is considered near-death.
 	NEAR_DEATH: 150,
 	// This determines whether to always recalculate paths.
