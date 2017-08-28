@@ -53,29 +53,28 @@ var roleWorker = {
 		} //fi
 		
 		for(var g = 0; g < DEFINES.LOOP_LIMIT; g++) {
-			if(creep.fatigue > 0) break;
 			var say = undefined;
 			
 			// Decide on a target
-			// =====================================================================
+			// =================================================================
 			if(!creep.memory.target
 			|| !Game.getObjectById(creep.memory.target)
 			){
 				for(var h = 0; h < DEFINES.LOOP_LIMIT; h++) {
 					
 					// Cleanup
-					// -----------------------------------------------------------------
+					// ---------------------------------------------------------
 					creep.memory.target = undefined;
 					creep.memory.path   = undefined;
 
 					// If we've already tried all the nearby rooms, break.
-					// -----------------------------------------------------------------
+					// ---------------------------------------------------------
 					if(!rooms.length) {
 						if(roomsSorted) {
 							break;
 
 						// If the array of possible rooms has not yet been populated, populate it.
-						// -----------------------------------------------------------------
+						// -----------------------------------------------------
 						} else {
 							// Push the creep's current room.
 							rooms.push(creep.room.name);
@@ -100,7 +99,7 @@ var roleWorker = {
 					} //fi
 
 					// If the current room is not the creep's room, sort the remaining rooms by distance if we have not already done so.
-					// -----------------------------------------------------------------
+					// ---------------------------------------------------------
 					if(!roomsSorted && rooms[0] != creep.room) {
 						var roomsTmp = Array();
 						for(var i = 0; 0 < rooms.length; i++) {
@@ -124,18 +123,18 @@ var roleWorker = {
 					} //fi
 
 					// Variables
-					// -----------------------------------------------------------------
+					// ---------------------------------------------------------
 					var room    = rooms.shift();
 					var targets = Array();
 					var task    = DEFINES.TASKS.WAIT;
 					for(var b = true; b; b = false) {
 						
 						// Debug
-						// -------------------------------------------------------------
+						// -----------------------------------------------------
 						if(room != creep.room) break;
 
 						// If harvesting, harvest.
-						// -------------------------------------------------------------
+						// -----------------------------------------------------
 						task = DEFINES.TASKS.HARVEST;
 						if(creep.memory.harvesting) {
 							// Pick up dropped resources
@@ -177,7 +176,7 @@ var roleWorker = {
 						} //fi
 
 						// If the controller is about to degrade, contribute to it
-						// -------------------------------------------------------------
+						// -----------------------------------------------------
 						task = DEFINES.TASKS.UPGRADE;
 						if(room.controller.ticksToDowngrade < DEFINES.NEAR_DEATH * 10) {
 							targets = [room.controller];
@@ -186,7 +185,7 @@ var roleWorker = {
 						} //fi
 
 						// Always keep spawns and extensions filled up to max.
-						// -------------------------------------------------------------
+						// -----------------------------------------------------
 						task = DEFINES.TASKS.TRANSFER;
 						// Fill extensions
 						targets = room.find(FIND_MY_STRUCTURES, {
@@ -210,7 +209,7 @@ var roleWorker = {
 						if(targets && targets.length) break;
 
 						// 75% chance of maintaining towers
-						// -------------------------------------------------------------
+						// -----------------------------------------------------
 						task = DEFINES.TASKS.TRANSFER;
 						if(Math.round(Math.random() * 3)) {
 							targets = room.find(FIND_MY_STRUCTURES, {
@@ -225,7 +224,7 @@ var roleWorker = {
 						} //fi
 
 						// 50% chance to build things that complete instantaneously
-						// -------------------------------------------------------------
+						// -----------------------------------------------------
 						task = DEFINES.TASKS.BUILD;
 						if(Math.round(Math.random())) {
 							targets = room.find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
@@ -237,7 +236,7 @@ var roleWorker = {
 						} //fi
 
 						// 75% chance of repairing constructions
-						// -------------------------------------------------------------
+						// -----------------------------------------------------
 						task = DEFINES.TASKS.REPAIR;
 						if(Math.round(Math.random() * 3)) {
 							// Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
@@ -252,7 +251,7 @@ var roleWorker = {
 						} //fi
 
 						// 50% chance of upgrading the controller, if it's not already at max
-						// -------------------------------------------------------------
+						// -----------------------------------------------------
 						task = DEFINES.TASKS.UPGRADE;
 						if(room.controller.level < 8 && Math.round(Math.random())) {
 							targets = [room.controller];
@@ -261,14 +260,14 @@ var roleWorker = {
 						} //fi
 
 						// Build new things
-						// -------------------------------------------------------------
+						// -----------------------------------------------------
 						task = DEFINES.TASKS.BUILD;
 						targets = room.find(FIND_MY_CONSTRUCTION_SITES);
 						targets = targets.filter(function(target) {return badTargets.indexOf(target.id) === -1;});
 						if(targets && targets.length) break;
 
 						// Upgrade the controller if it's not already at max.
-						// -------------------------------------------------------------
+						// -----------------------------------------------------
 						task = DEFINES.TASKS.UPGRADE;
 						if(room.controller.level < 8) {
 							targets = [room.controller];
@@ -277,7 +276,7 @@ var roleWorker = {
 						} //fi
 
 						// Store excess resources
-						// -------------------------------------------------------------
+						// -----------------------------------------------------
 						task = DEFINES.TASKS.TRANSFER;
 						targets = room.find(FIND_MY_STRUCTURES, {
 							filter: (structure) => {return(
@@ -294,7 +293,7 @@ var roleWorker = {
 					} //done
 
 					// Pick a target from the array of targets
-					// -----------------------------------------------------------------
+					// ---------------------------------------------------------
 					if(targets.length) {
 						creep.memory.target = creep.pos.findClosestByRange(targets).id;
 						switch(task) {
@@ -325,12 +324,12 @@ var roleWorker = {
 			} //fi
 
 			// Move towards the target
-			// =====================================================================
+			// =================================================================
 			if(creep.memory.target) {
 				var target = Game.getObjectById(creep.memory.target);
 
 				// Harvest
-				// -----------------------------------------------------------------
+				// -------------------------------------------------------------
 				if(creep.memory.harvesting) {
 					/*//*/  if(!target
 						    ||
@@ -368,7 +367,7 @@ var roleWorker = {
 				} else {
 
 					// Upgrade
-					// -------------------------------------------------------------
+					// ---------------------------------------------------------
 					/*//*/  if(target.structureType == STRUCTURE_CONTROLLER) {
 						if(creep.upgradeController(target) == ERR_NOT_IN_RANGE) {
 							if(DEFINES.MOVE(creep, "#0ff") == ERR_NO_PATH) {
@@ -379,7 +378,7 @@ var roleWorker = {
 						} //fi
 
 					// Build
-					// -------------------------------------------------------------
+					// ---------------------------------------------------------
 					} else  if(target.progressTotal) {
 						if(creep.build(target) == ERR_NOT_IN_RANGE) {
 							if(DEFINES.MOVE(creep, "#fff") == ERR_NO_PATH) {
@@ -390,7 +389,7 @@ var roleWorker = {
 						} //fi
 
 					// Repair
-					// -------------------------------------------------------------
+					// ---------------------------------------------------------
 					} else  if(target.hits < target.hitsMax
 						&& target.hits < repairLimit
 						){
@@ -403,7 +402,7 @@ var roleWorker = {
 						} //fi
 
 					// Transfer
-					// -------------------------------------------------------------
+					// ---------------------------------------------------------
 					} else  if(target.energy < target.energyCapacity) {
 						if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 							if(DEFINES.MOVE(creep, "#000") == ERR_NO_PATH) {
@@ -419,21 +418,21 @@ var roleWorker = {
 				} //fi
 
 			// If the creep wasn't able to find a target, it wanders.
-			// ---------------------------------------------------------------------
+			// -----------------------------------------------------------------
 			} else {
 				DEFINES.WANDER(creep);
 				break;
 			} //fi
 			
 			// If the creep found a target, say what it is.
-			// ---------------------------------------------------------------------
+			// -----------------------------------------------------------------
 			if(creep.memory.target) {
 				if(say) creep.say(say);
 				break;
 			}
 			
 			// If we're out of rooms, give up.
-			// ---------------------------------------------------------------------
+			// -----------------------------------------------------------------
 			if(!rooms.length) break;
 		} //done
 	} //function
