@@ -17,7 +17,7 @@ const DEFINES = {
 	// This determines whether to always recalculate paths.
 	RECALC_PATHS: false,
 	// This is the base limit to which things should be repaired.  It should be multiplied by the room in-question's current control level.
-	REPAIR_LIMIT: 24000,
+	REPAIR_LIMIT: 125000,
 	// These are all the roles available for creeps
 	ROLES: Object.freeze({
 		"WORKER":  0,
