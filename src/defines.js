@@ -8,6 +8,36 @@
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES = {
 	
+	// Variables
+	// =========================================================================
+	// The maximum number of times to run a loop that would otherwise be while(true).
+	LOOP_LIMIT: 4,
+	// This is the number of ticksToLive below which a creep is considered near-death.
+	NEAR_DEATH: 150,
+	// This is the base limit to which things should be repaired.  It should be multiplied by the room in-question's current control level.
+	REPAIR_LIMIT: 24000,
+	// These are all the roles available for creeps
+	ROLES: Object.freeze({
+		"WORKER":  0,
+		"FIGHTER": 1,
+		"HEALER":  2,
+	}),
+	// These are all the cannonical tasks that can be assigned to a creep
+	TASKS: Object.freeze({
+		WAIT:    -1,
+		HARVEST:  0,
+		TRANSFER: 1,
+		UPGRADE:  2,
+		BUILD:    3,
+		REPAIR:   4,
+		ATTACK:   5,
+		HEAL:     6,
+		CLAIM:    7,
+		RENEW:    8,
+	}),
+	// The player's username
+	USERNAME: "MilesBHuff",
+	
 	// Functions
 	// =========================================================================
 	
@@ -38,8 +68,8 @@ const DEFINES = {
 					ignoreCreeps: false,
 					ignoreDestructibleStructures: false,
 					ignoreRoads:  false,
-					maxOps:       1000,
-					maxRooms:        3,
+					maxOps:        1000,
+					maxRooms:         3,
 					serialize:    false,
 				}; //struct
 				// Find a path
@@ -132,36 +162,6 @@ const DEFINES = {
 		} //fi
 		return OK;
 	}, //function
-	
-	// Variables
-	// =========================================================================
-	// The maximum number of times to run a loop that would otherwise be while(true).
-	LOOP_LIMIT: 4,
-	// This is the number of ticksToLive below which a creep is considered near-death.
-	NEAR_DEATH: 150,
-	// This is the base limit to which things should be repaired.  It should be multiplied by the room in-question's current control level.
-	REPAIR_LIMIT: 24000,
-	// These are all the roles available for creeps
-	ROLES: Object.freeze({
-		"WORKER":  0,
-		"FIGHTER": 1,
-		"HEALER":  2,
-	}),
-	// These are all the cannonical tasks that can be assigned to a creep
-	TASKS: Object.freeze({
-		WAIT:    -1,
-		HARVEST:  0,
-		TRANSFER: 1,
-		UPGRADE:  2,
-		BUILD:    3,
-		REPAIR:   4,
-		ATTACK:   5,
-		HEAL:     6,
-		CLAIM:    7,
-		RENEW:    8,
-	}),
-	// The player's username
-	USERNAME: "MilesBHuff",
 }; //struct
 
 // Export this file for use in others.
