@@ -24,8 +24,8 @@ var roleWorker = {
 
 		// Debug
 		// =====================================================================
-		if(true) {
-//			creep.memory.target = undefined; // Useful when you need to reset everyone's tasks.
+		if(false) {
+			creep.memory.target = undefined; // Useful when you need to reset everyone's tasks.
 			creep.memory.path   = undefined; // Useful when you need to reset everyone's paths.
 		} //fi
 
