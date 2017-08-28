@@ -14,8 +14,6 @@ const DEFINES = {
 	LOOP_LIMIT: 2, // Should be much higher;  temporarily lowered until the looping bug is fixed with the worker script.
 	// This is the number of ticksToLive below which a creep is considered near-death.
 	NEAR_DEATH: 150,
-	// This determines whether to always recalculate paths.
-	RECALC_PATHS: false,
 	// This is the base limit to which things should be repaired.  It should be multiplied by the room in-question's current control level.
 	REPAIR_LIMIT: 62500,
 	// These are all the roles available for creeps
@@ -50,21 +48,22 @@ const DEFINES = {
 	 *  found, reset its target.  Also displays the creep's path on the map.
 	 * @param  creep The creep to move.
 	 * @param  color The colour for the creep's path.
+	 * @param  cache Whether to use the path cached in the creep's memory.
 	 * @return OK, ERR_NO_PATH, ERR_INVALID_TARGET, ERR_INVALID_ARGS
 	**/
-	MOVE: function (creep, color) {
+	MOVE: function (creep, color, cache) {
 		if(!creep || !creep.name || !Game.creeps[creep.name] || !color || !color[0]) {
 			return ERR_INVALID_ARGS;
 		} //fi
+		if(!cache) {
+			creep.memory.path = undefined;
+		}
 		if(creep.memory && creep.memory.target) {
 			var target = Game.getObjectById(creep.memory.target);
 			// If the creep's position is equal to the target's position, delete the path and return.
 			if(creep.pos == target.pos) {
 				creep.memory.path = undefined;
 				return OK;
-			} //fi
-			if(DEFINES.RECALC_PATHS) {
-				creep.memory.path = undefined;
 			} //fi
 			// If the creep has no path, create one.  If there is no possible path, reset the creep's target and return.
 			if(!creep.memory.path) {
