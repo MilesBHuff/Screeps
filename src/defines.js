@@ -23,14 +23,14 @@ const DEFINES = {
 	MOVE: function (creep, color) {
 		if(!creep || !creep.name || !Game.creeps[creep.name] || !color || !color[0]) {
 			return ERR_INVALID_ARGS;
-		}
+		} //fi
 		if(creep.memory && creep.memory.target) {
 			var target = Game.getObjectById(creep.memory.target);
 			// If the creep's position is equal to the target's position, delete the path and return.
 			if(creep.pos == target.pos) {
 				creep.memory.path = undefined;
 				return OK;
-			}
+			} //fi
 			// If the creep has no path, create one.  If there is no possible path, reset the creep's target and return.
 			if(!creep.memory.path) {
 				// Configure the pathfinder
@@ -41,7 +41,7 @@ const DEFINES = {
 					maxOps:       1000,
 					maxRooms:        3,
 					serialize:    false,
-				};
+				}; //struct
 				// Find a path
 				var path = creep.pos.findPathTo(target, pathOpts);
 				// Validate the path
@@ -53,41 +53,41 @@ const DEFINES = {
 							|| path[path.length - 1].y == target.pos.y + y
 							){
 								validPath = true;
-							}
-						}
-					}
-				}
+							} //fi
+						} //done
+					} //done
+				} //fi
 				// If the path is invalid, then the target cannot be reached.  Find a new target.
-				if(!validPath){
+				if(!validPath) {
 					creep.memory.target = undefined;
-					creep.memory.path = undefined;
+					creep.memory.path   = undefined;
 					return ERR_NO_PATH;
-				}
+				} //fi
 				// If the path is valid, serialize it and save it in memory.
 				creep.memory.path = Room.serializePath(path);
 				// Clear unneeded memory.
-				path = undefined;
+				     path = undefined;
 				validPath = undefined;
-			}
+			} //fi
 			// Try to move the creep to the new location.  If this fails, reset the path.
 			var code = creep.moveByPath(creep.memory.path);
 			if(code && code != ERR_BUSY && code != ERR_TIRED) {
 				creep.memory.path = undefined;
 				return OK;
-			}
+			} //fi
 			code = undefined;
 			// Draw the creep's path
 			var lineOpts = {
-				fill:        "transparent",
-				lineStyle:   "dashed",
-				opacity:     0.25,
-				stroke:      color,
-				strokeWidth: 0.15,
-			};
+				fill: "transparent",
+				lineStyle: "dashed",
+				opacity:       0.25,
+				stroke:       color,
+				strokeWidth:   0.15,
+			}; //struct
 			new RoomVisual(creep.room.name).poly(Room.deserializePath(creep.memory.path), lineOpts);
 			return OK;
 		} else return ERR_INVALID_TARGET;
-	},
+	}, //function
 	
 	// Say
 	// -------------------------------------------------------------------------
@@ -99,7 +99,7 @@ const DEFINES = {
 	SAY: function (text, object) {
 		if(!text || !text[0] || !object || !object.room || !object.room.pos) {
 			return ERR_INVALID_ARGS
-		}
+		} //fi
 		new RoomVisual(object.room).text(
 			text,
 			object.pos.x,
@@ -110,7 +110,7 @@ const DEFINES = {
 			font:              "bold 0.6 Arial",
 		});
 		return OK;
-	},
+	}, //function
 	
 	// Wander
 	// -------------------------------------------------------------------------
@@ -128,10 +128,10 @@ const DEFINES = {
 			var direction = Math.round(Math.random() * 8);
 			if(direction) {
 				creep.move(direction);
-			}
-		}
+			} //fi
+		} //fi
 		return OK;
-	},
+	}, //function
 	
 	// Variables
 	// =========================================================================
@@ -162,7 +162,7 @@ const DEFINES = {
 	}),
 	// The player's username
 	USERNAME: "MilesBHuff",
-};
+}; //struct
 
 // Export this file for use in others.
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
