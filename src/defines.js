@@ -52,12 +52,14 @@ const DEFINES = {
 	 * @return OK, ERR_NO_PATH, ERR_INVALID_TARGET, ERR_INVALID_ARGS
 	**/
 	MOVE: function (creep, color, cache) {
+		// Verify arguments
 		if(!creep || !creep.name || !Game.creeps[creep.name] || !color || !color[0]) {
 			return ERR_INVALID_ARGS;
 		} //fi
+		// If we aren't using cached paths, clear any cached path.
 		if(!cache) {
 			creep.memory.path = undefined;
-		}
+		} //fi
 		if(creep.memory && creep.memory.target) {
 			var target = Game.getObjectById(creep.memory.target);
 			// If the creep's position is equal to the target's position, delete the path and return.
@@ -117,7 +119,64 @@ const DEFINES = {
 				return OK;
 			} //fi
 			code = undefined;
-			// Draw the creep's path
+			// Parse the given color
+			switch(color) {
+				case COLOR_RED:
+//				color = "#ED5557"; // Hostile glow
+				color = "#EA4034"; // Flags
+				break;
+				
+				case COLOR_PURPLE:
+//				color = "#8F6F9F"; // Syntax-highlighting
+				color = "#9625A9"; // Flags
+				break;
+				
+				case COLOR_BLUE:
+//				color = "#3F51B5"; // Selection color 
+				color = "#2090E9"; // Flags
+				break;
+				
+				case COLOR_CYAN:
+//				color = "#47A89F"; // GCL color
+				color = "#00B5CC"; // Flags
+				break;
+				
+				case COLOR_GREEN:
+//				color = "#89B48D"; // Friendly glow
+				color = "#49A84D"; // Flags
+				break;
+				
+				case COLOR_YELLOW:
+//				color = "#FFE56E"; // Energy
+				color = "#F5E239"; // Flags
+				break;
+				
+				case COLOR_ORANGE:
+//				color = "#CA7731"; // Syntax-highlighting
+				color = "#F59200"; // Flags
+				break;
+				
+				case COLOR_BROWN:
+//				color = "#262816"; // Swampland
+				color = "#745245"; // Flags
+				break;
+				
+				case COLOR_GREY:
+//				color = "#626262"; // Roads
+				color = "#989898"; // Flags
+				break;
+				
+				case COLOR_WHITE:
+//				color = "#BCBCBC"; // Icons
+				color = "#F5F5F5"; // Flags
+				break;
+				
+				default: // COLOR_BLACK
+//				color = "#202020"; // Creep outlines
+				color = "#090909"; // Wall outlines
+				break;
+			} //esac
+			// Path-drawing settings
 			var lineOpts = {
 				fill: "transparent",
 				lineStyle: "dashed",
@@ -125,6 +184,7 @@ const DEFINES = {
 				stroke:       color,
 				strokeWidth:   0.15,
 			}; //struct
+			// Draw the creep's path
 			new RoomVisual(creep.room.name).poly(Room.deserializePath(creep.memory.path), lineOpts);
 			return OK;
 		} else return ERR_INVALID_TARGET;
