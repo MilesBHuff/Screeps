@@ -86,7 +86,7 @@ var roleWorker = {
 									rooms.push(roomsTmp[index]);
 								} //fi
 							} //done
-							// Convert the array of strings into an array of objects.
+							// Convert the array of strings into an array of objects.  This also trims rooms that we can't see.
 							roomsTmp = Array();
 							for(var name in rooms) {
 								var room = Game.rooms[rooms[name]];
