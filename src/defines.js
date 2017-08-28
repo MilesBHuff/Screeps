@@ -136,7 +136,7 @@ const DEFINES = {
 	// Variables
 	// =========================================================================
 	// The maximum number of times to run a loop that would otherwise be while(true).
-	LOOP_LIMIT: 10,
+	LOOP_LIMIT: 4,
 	// This is the number of ticksToLive below which a creep is considered near-death.
 	NEAR_DEATH: 150,
 	// This is the base limit to which things should be repaired.  It should be multiplied by the room in-question's current control level.
