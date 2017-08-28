@@ -53,7 +53,7 @@ const DEFINES = {
 	**/
 	MOVE: function (creep, color, cache) {
 		// Verify arguments
-		if(!creep || !creep.name || !Game.creeps[creep.name] || !color || !color[0]) {
+		if(!creep || !creep.name || !Game.creeps[creep.name] || color == undefined || cache == undefined) {
 			return ERR_INVALID_ARGS;
 		} //fi
 		// If we aren't using cached paths, clear any cached path.
