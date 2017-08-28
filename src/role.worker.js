@@ -401,7 +401,7 @@ var roleWorker = {
 					// ---------------------------------------------------------
 					} else  if(target.energy < target.energyCapacity) {
 						if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-							if(DEFINES.MOVE(creep, COLOR_YELLOW, true) == ERR_NO_PATH) {
+							if(DEFINES.MOVE(creep, COLOR_BLACK, true) == ERR_NO_PATH) {
 								badTargets.push(target);
 								creep.memory.target = undefined;
 								creep.memory.path   = undefined;
