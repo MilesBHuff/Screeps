@@ -14,6 +14,8 @@ const DEFINES = {
 	LOOP_LIMIT: 4,
 	// This is the number of ticksToLive below which a creep is considered near-death.
 	NEAR_DEATH: 150,
+	// This determines whether to always recalculate paths.
+	RECALC_PATHS: false,
 	// This is the base limit to which things should be repaired.  It should be multiplied by the room in-question's current control level.
 	REPAIR_LIMIT: 24000,
 	// These are all the roles available for creeps
@@ -61,6 +63,9 @@ const DEFINES = {
 				creep.memory.path = undefined;
 				return OK;
 			} //fi
+			if(DEFINES.RECALC_PATHS) {
+				creep.memory.path = undefined;
+			} //fi
 			// If the creep has no path, create one.  If there is no possible path, reset the creep's target and return.
 			if(!creep.memory.path) {
 				// Configure the pathfinder
@@ -98,7 +103,14 @@ const DEFINES = {
 				// Clear unneeded memory.
 				     path = undefined;
 				validPath = undefined;
-			} //fi
+			} else {
+				// If the creep already had a path, delete path elements that have already been traversed.
+				var path = Room.deserializePath(creep.memory.path);
+				if(path[0] != creep.pos) {
+					path.shift();
+				} //fi
+				creep.memory.path = Room.serializePath(path);
+			}
 			// Try to move the creep to the new location.  If this fails, reset the path.
 			var code = creep.moveByPath(creep.memory.path);
 			if(code && code != ERR_BUSY && code != ERR_TIRED) {
