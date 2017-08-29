@@ -25,37 +25,38 @@ module.exports.loop = function () {
 				i--;
 			} //fi
 		} //done
-
-		// Backup of structure layout
-		// =====================================================================
-		// Create an array if there is none
-		if(!room.memory || !room.memory.layout) {
-			room.memory.layout = Array();
-		} //fi
-		// TODO
 		
-		// Set limits for creeps in each room
-		// =====================================================================
+		// Only run this every once in a while
+		if(Math.round(Math.random() * 8)) {
+		
+			// Set limits for creeps in each room
+			// =====================================================================
 
-		// Create the necessary variables
-		// ---------------------------------------------------------------------
-		room.memory.fighterLimit = 4;
-		room.memory.healerLimit  = 0;
-		room.memory.workerLimit  = 1;
+			// Create the necessary variables
+			// ---------------------------------------------------------------------
+			room.memory.fighterLimit = 4;
+			room.memory.healerLimit  = 0;
+			room.memory.workerLimit  = 1;
 
-		// Set up the worker creep limit
-		// ---------------------------------------------------------------------
-		// Then, modify the number of workers per the level of the controller.
-		room.memory.workerLimit += (DEFINES.CONTROLLER_LEVEL_MAX - room.controller.level) / 2;
-		// Multiply the number of workers by the number of sources in the room.
-		room.memory.workerLimit *= room.find(FIND_SOURCES).length;
-		room.memory.workerLimit  = Math.round(room.memory.workerLimit);
+			// Set up the worker creep limit
+			// ---------------------------------------------------------------------
+			// Then, modify the number of workers per the level of the controller.
+			room.memory.workerLimit += (DEFINES.CONTROLLER_LEVEL_MAX - room.controller.level) / 2;
+			// Multiply the number of workers by the number of sources in the room.
+			room.memory.workerLimit *= room.find(FIND_SOURCES).length;
+			room.memory.workerLimit  = Math.round(room.memory.workerLimit);
 
-		// If aggressive creeps are present, set the healers to equal fighterLimit / 2 and double the fighter creeps
-		// ---------------------------------------------------------------------
-		if(room.find(FIND_HOSTILE_CREEPS).length) {
-			room.memory.healerLimit   = Math.round(room.memory.fighterLimit / 2);
-			room.memory.fighterLimit *= 2;
+			// Set up the combat creep limits
+			// ---------------------------------------------------------------------
+			// Set the number of fighter creeps to equal the number of accessible neighbour rooms
+			room.memory.fighterLimit = room.find(FIND_EXIT).length;
+			// If aggressive creeps are present...
+			if(room.find(FIND_HOSTILE_CREEPS).length) {
+				// Set the healers to equal fighterLimit / 2
+				room.memory.healerLimit   = Math.round(room.memory.fighterLimit / 2);
+				// Double the fighterLimit
+				room.memory.fighterLimit *= 2;
+			} //fi
 		} //fi
 	} //done
 
