@@ -129,7 +129,7 @@ module.exports.loop = function () {
 				case 0:
 				/*//*/ if(workers.length  < spawn.room.memory.workerLimit  / 2) {
 					creepRole = DEFINES.ROLES.WORKER;
-				} else if(healers.length  < spawn.room.memory.healerLimit  / 2) {
+				} else if(healers.length  < spawn.room.memory.healerLimit  / 2 && healers.length < fighters.length / 4) {
 					creepRole = DEFINES.ROLES.HEALER;
 				} else if(fighters.length < spawn.room.memory.fighterLimit / 2) {
 					creepRole = DEFINES.ROLES.FIGHTER;
