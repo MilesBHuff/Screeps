@@ -2,9 +2,6 @@
 // #############################################################################
 /** This script provides an AI for fighter creeps.
 **/
-//TODO:  Fighter creeps without attack parts should run to the nearest healer.  If no healer is available, they should run to the nearest tower.
-//TODO:  Fighter creeps should always keep their distance from an enemy.
-//TODO:  Choose which types of creep and structure the fighter should prioritize when selecting a target.
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -125,23 +122,26 @@ var roleFighter = {
 		// Attack targets
 		// ====================================================================
 		if(creep.memory && creep.memory.target) {
+			var target = Game.getObjectById(creep.memory.target);
 			if(
 			(  creep.timeToLive < DEFINES.NEAR_DEATH
-			&& Game.getObjectById(creep.memory.target).structureType
-			&& Game.getObjectById(creep.memory.target).structureType == STRUCTURE_SPAWN
-			&& Game.getObjectById(creep.memory.target).my
-			&& creep.renew(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
+			&& target.structureType
+			&& target.structureType == STRUCTURE_SPAWN
+			&& target.my
+			&& creep.renew(target) == ERR_NOT_IN_RANGE
 			)
 			||
-			(  Game.getObjectById(creep.memory.target).structureType
-			&& Game.getObjectById(creep.memory.target).structureType == STRUCTURE_RAMPART
-			&& Game.getObjectById(creep.memory.target).my
+			(  target.structureType
+			&& target.structureType == STRUCTURE_RAMPART
+			&& target.my
 			)
-			|| creep.rangedAttack(Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-			|| creep.attack(      Game.getObjectById(creep.memory.target)) == ERR_NOT_IN_RANGE
-			){
-				if(creep.moveTo(Game.getObjectById(creep.memory.target), {visualizePathStyle: {stroke: "#f00", opacity: .25}}) == ERR_NO_PATH) {
+			||
+			(  creep.attack(      target) == ERR_NOT_IN_RANGE
+			&& creep.rangedAttack(target) == ERR_NOT_IN_RANGE
+			)) {
+				if(DEFINES.move(creep, COLOR_RED, false) == ERR_NO_PATH) {
 					creep.memory.target = undefined;
+					creep.memory.path   = undefined;
 				}
 			}
 			
