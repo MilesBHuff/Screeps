@@ -57,7 +57,7 @@ module.exports.loop = function () {
 			var exitsCount = 0;
 			for(var i = 0; i < 4; i++) {
 				var index = ((2 * i) + 1).toString();
-				if(!exits[index]
+				if(exits[index]
 				&&
 				!( Game.rooms[exits[index]]
 				&& Game.rooms[exits[index]].controller
