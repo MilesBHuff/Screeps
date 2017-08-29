@@ -41,14 +41,15 @@ module.exports.loop = function () {
 		// ---------------------------------------------------------------------
 		room.memory.fighterLimit = 4;
 		room.memory.healerLimit  = 0;
-		room.memory.workerLimit  = 2;
+		room.memory.workerLimit  = 1.5;
 
 		// Set up the worker creep limit
 		// ---------------------------------------------------------------------
+		// Then, modify the number of workers per the level of the controller.
+		room.memory.workerLimit += (DEFINES.CONTROLLER_LEVEL_MAX - room.controller.level) / 2;
 		// Multiply the number of workers by the number of sources in the room.
 		room.memory.workerLimit *= room.find(FIND_SOURCES).length;
-		// Then, modify the number of workers per the level of the controller.
-		room.memory.workerLimit *= Math.round((DEFINES.CONTROLLER_LEVEL_MAX - room.controller.level) / 2);
+		room.memory.workerLimit  = Math.ceil(room.memory.workerLimit);
 
 		// If aggressive creeps are present, set the healers to equal fighterLimit / 2 and double the fighter creeps
 		// ---------------------------------------------------------------------
