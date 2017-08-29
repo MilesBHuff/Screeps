@@ -48,7 +48,7 @@ module.exports.loop = function () {
 		// Multiply the number of workers by the number of sources in the room.
 		room.memory.workerLimit *= room.find(FIND_SOURCES).length;
 		// Then, modify the number of workers per the level of the controller.
-		room.memory.workerLimit *= Math.round((CONTROLLER_DOWNGRADE.length - room.controller.level) / 2);
+		room.memory.workerLimit *= Math.round((DEFINES.CONTROLLER_LEVEL_MAX - room.controller.level) / 2);
 		// Lastly, add one worker.
 		room.memory.workerLimit += 1;
 		// This gives us a minimum number of 1 worker per source + one backup worker.
