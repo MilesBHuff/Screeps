@@ -16,6 +16,7 @@ Workers
   deposit box in the room's memory)
 + Fix the script.  It shouldn't be looping infinitely, and it should gracefully
   fall back to other courses of action when the first-guessed one fails.
++ Workers should never be adjacent to a source when not harvesting.
 
 Combat
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -25,3 +26,5 @@ Combat
   target will be a hostile room.  While it is set, military creeps spawn at
   elevated levels, and are all directed to the target map before looking for
   enemies.
++ The standing army should probably be equivalent to the number of ramparts in
+  the room.
