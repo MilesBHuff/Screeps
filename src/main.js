@@ -41,9 +41,9 @@ module.exports.loop = function () {
 
 			// Create the necessary variables
 			// ---------------------------------------------------------------------
-			room.memory.fighterLimit = 4;
-			room.memory.healerLimit  = 0;
-			room.memory.workerLimit  = 1;
+			room.memory.fighterLimit = 1.5;
+			room.memory.healerLimit  = 0.0;
+			room.memory.workerLimit  = 1.0;
 
 			// Set up the worker creep limit
 			// ---------------------------------------------------------------------
@@ -51,20 +51,21 @@ module.exports.loop = function () {
 			room.memory.workerLimit += (DEFINES.CONTROLLER_LEVEL_MAX - room.controller.level) / 2;
 			// Multiply the number of workers by the number of sources in the room.
 			room.memory.workerLimit *= room.find(FIND_SOURCES).length;
-			room.memory.workerLimit  = Math.round(room.memory.workerLimit);
 
-			// Set the number of fighter creeps to equal the number of accessible uncontrolled neighbour rooms
+			// Set up the fighter creep limit
 			// ---------------------------------------------------------------------
-			var exits    = Array();
-			var exitsTmp = Game.map.describeExits(room.name);
+			// Count the number of exits to uncontrolled rooms
+			var exits      = Game.map.describeExits(room.name);
+			var exitsCount = 0;
 			for(var i = 0; i < 4; i++) {
 				var index = ((2 * i) + 1).toString();
-				if(exitsTmp[index] != undefined && !Game.rooms[exitsTmp[index].name]) {
-					exits.push(exitsTmp[index]);
+				if(exits[index] != undefined && Game.rooms[exits[index].name] != undefined) {
+					exitsCount++;
 				} //fi
 			} //done
-			room.memory.fighterLimit = exits.length
 			exits = undefined;
+			// Multiply fighterLimit by the number of exits
+			room.memory.fighterLimit *= exitsCount;
 			
 			// If hostiles are present, increment fighterLimit by their number, and set healerLimit to fighterLimit / 4.
 			// ---------------------------------------------------------------------
@@ -74,6 +75,12 @@ module.exports.loop = function () {
 				room.memory.healerLimit   = Math.round(room.memory.fighterLimit / 4);
 			} //fi
 			hostileCount = undefined;
+			
+			// Round off the creep limits
+			// ---------------------------------------------------------------------
+			room.memory.fighterLimit  = Math.round(room.memory.fighterLimit);
+			room.memory.healerLimit   = Math.round(room.memory.healerLimit );
+			room.memory.workerLimit   = Math.round(room.memory.workerLimit );
 		} //fi
 	} //done
 
