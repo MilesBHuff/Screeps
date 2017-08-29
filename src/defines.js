@@ -51,7 +51,7 @@ const DEFINES = {
 		for(var i = 0; creeps.length > maxCreeps; i++) {
 			creeps[i].suicide();
 		} //done
-	} ,//function
+	}, //function
 
 	// Move
 	// =========================================================================
