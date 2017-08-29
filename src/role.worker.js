@@ -211,7 +211,7 @@ var roleWorker = {
 							targets = room.find(FIND_MY_STRUCTURES, {
 								filter: (structure) => {return(
 									   structure.structureType == STRUCTURE_TOWER
-									&& structure.energy        <  structure.energyCapacity
+									&& structure.energy        <  structure.energyCapacity * 0.75
 									&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 								);}
 							});
