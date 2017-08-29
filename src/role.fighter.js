@@ -148,7 +148,7 @@ var roleFighter = {
 		// If there is no target, wander around, so as not to interfere with the workers.
 		// ====================================================================
 		} else {
-			DEFINES.WANDER(creep);
+			DEFINES.wander(creep);
 		}
 	}
 };
