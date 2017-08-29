@@ -4,12 +4,10 @@
  *  multiple files.
 **/
 
-// Constant variables and functions
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES = {
 	
 	// Variables
-	// =========================================================================
+	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	// This color is missing from the global game defines.
 	COLOR_BLACK: 0,
 	// The maximum number of times to run a loop that would otherwise be while(true).
@@ -39,12 +37,24 @@ const DEFINES = {
 	}),
 	// The player's username
 	USERNAME: "MilesBHuff",
-	
-	// Functions
+
+	// Functions (tier 1)
+	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+	// Kill off
 	// =========================================================================
-	
+	/** This function kills off excess creeps.
+	* @param creeps    The creeps to use.
+	* @param maxCreeps The number to cull to.
+	**/
+	killOff: function (creeps, maxCreeps) {
+		for(var i = 0; creeps.length > maxCreeps; i++) {
+			creeps[i].suicide();
+		} //done
+	} ,//function
+
 	// Move
-	// -------------------------------------------------------------------------
+	// =========================================================================
 	/** Calculates a path for the creep to get to its target, and moves it.  If
 	 *  the creep is unable to move, recalculate its path.  If no path can be
 	 *  found, reset its target.  Also displays the creep's path on the map.
@@ -53,7 +63,7 @@ const DEFINES = {
 	 * @param  cache Whether to use the path cached in the creep's memory.
 	 * @return OK, ERR_NO_PATH, ERR_INVALID_TARGET, ERR_INVALID_ARGS
 	**/
-	MOVE: function (creep, color, cache) {
+	move: function (creep, color, cache) {
 		// Verify arguments
 		if(!creep || !creep.name || !Game.creeps[creep.name] || color == undefined || cache == undefined) {
 			return ERR_INVALID_ARGS;
@@ -196,13 +206,13 @@ const DEFINES = {
 	}, //function
 	
 	// Say
-	// -------------------------------------------------------------------------
+	// =========================================================================
 	/** Spawns text above the given object, similarly to creep.say().
 	 * @param  text   The text to display.
 	 * @param  object The thing that will display the text.
 	 * @return OK, ERR_INVALID_ARGS
 	**/
-	SAY: function (text, object) {
+	say: function (text, object) {
 		if(!text || !text[0] || !object || !object.room || !object.room.pos) {
 			return ERR_INVALID_ARGS
 		} //fi
@@ -219,12 +229,12 @@ const DEFINES = {
 	}, //function
 	
 	// Wander
-	// -------------------------------------------------------------------------
+	// =========================================================================
 	/** Makes the given creep wander around its room at random.
 	 * @param  creep The creep to control.
 	 ( @return OK
 	**/
-	WANDER: function (creep) {
+	wander: function (creep) {
 		if(creep.pos.x <  3
 		|| creep.pos.x > 46
 		|| creep.pos.y <  3
@@ -237,6 +247,220 @@ const DEFINES = {
 			} //fi
 		} //fi
 		return OK;
+	}, //function
+
+	// Functions (tier 2)
+	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	
+	// Create creep
+	// =========================================================================
+	// Depends: DEFINES.say()
+	/** The idea behind this function, is to create each creep with as many parts as
+	*  possible, given the room's current energy total.  It cycles through the
+	*  given parts array, and continues until there is no more energy to spend.  It
+	*  then sorts the parts in such a way that maximises each creep's
+	*  survivability.
+	* @param spawn    The spawner to use
+	* @param rawParts This is an array of body parts;  this function reduplicates
+	*                 it infinitely.
+	* @param name     The name of the new creep.
+	* @param role     The role the new creep should have.
+	**/
+	createCreep: function (spawn, rawParts, name, role) {
+		// Variables
+		// -------------------------------------------------------------------------
+		var bodyParts   = Array();
+		var energyCost  = 0;
+		var energyTotal = spawn.room.energyAvailable;
+		var partCount   = {
+			attack: 0,
+			carry:  0,
+			claim:  0,
+			heal:   0,
+			move:   0,
+			rangedAttack: 0,
+			tough:  0,
+			work:   0
+		}; //struct
+		for(var currentPart = 0, failCount = 0; true; currentPart++) {
+			// Stop once we've used up as much energy as possible
+			if(failCount >= rawParts.length) {
+				break;
+			} //fi
+			// Start over once we finish the parts array
+			if(currentPart >= rawParts.length) {
+				currentPart = 0;
+			} //fi
+
+			// Find out how expensive the current part is
+			// ---------------------------------------------------------------------
+			var partCost = 0;
+			switch(rawParts[currentPart]) {
+				case ATTACK:
+				partCost = BODYPART_COST[ATTACK];
+				break;
+
+				case CARRY:
+				partCost = BODYPART_COST[CARRY];
+				break;
+
+				case CLAIM:
+				partCost = BODYPART_COST[CLAIM];
+				break;
+
+				case HEAL:
+				partCost = BODYPART_COST[HEAL];
+				break;
+
+				case MOVE:
+				partCost = BODYPART_COST[MOVE];
+				break;
+
+				case RANGED_ATTACK:
+				partCost = BODYPART_COST[RANGED_ATTACK];
+				break;
+
+				case TOUGH:
+				partCost = BODYPART_COST[TOUGH];
+				break;
+
+				case WORK:
+				partCost = BODYPART_COST[WORK];
+				break;
+
+				default:
+				console.log("ERROR:  Spawn:  Part doesn't exist!");
+				return;
+			} //esac
+
+			// See whether we can afford the part.  If so, count it.
+			// ---------------------------------------------------------------------
+			if(energyCost + partCost <= energyTotal) {
+				failCount = 0;
+				energyCost += partCost;
+				switch(rawParts[currentPart]) {
+					case ATTACK:
+					partCount.attack++;
+					break;
+
+					case CARRY:
+					partCount.carry++;
+					break;
+
+					case CLAIM:
+					partCount.claim++;
+					break;
+
+					case HEAL:
+					partCount.heal++;
+					break;
+
+					case MOVE:
+					partCount.move++;
+					break;
+
+					case RANGED_ATTACK:
+					partCount.rangedAttack++;
+					break;
+
+					case TOUGH:
+					partCount.tough++;
+					break;
+
+					case WORK:
+					partCount.work++;
+					break;
+
+					default:
+					console.log("ERROR:  Spawn:  Part doesn't exist!");
+					return;
+				} //esac
+			} else {
+				failCount++;
+				// If this is the absolute first part and we are unable to construct it, there is no point in building this creep.
+				if(currentPart == 0 && energyCost == 0) {
+					return;
+				} else continue;
+			} //if
+		} //done
+
+		// Sort the parts in order to make the creep more resilient in combat
+		// -------------------------------------------------------------------------
+		for(var i = 0; i < partCount.tough; i++) {
+			bodyParts.push(TOUGH);
+		} //done
+		for(var i = 0; i < partCount.work; i++) {
+			bodyParts.push(WORK);
+		} //done
+		for(var i = 0; i < partCount.claim; i++) {
+			bodyParts.push(CLAIM);
+		} //done
+		for(var i = 0; i < partCount.attack; i++) {
+			bodyParts.push(ATTACK);
+		} //done
+		for(var i = 0; i < partCount.rangedAttack; i++) {
+			bodyParts.push(RANGED_ATTACK);
+		} //done
+		for(var i = 0; i < partCount.heal; i++) {
+			bodyParts.push(HEAL);
+		} //done
+		for(var i = 0; i < partCount.carry; i++) {
+			bodyParts.push(CARRY);
+		} //done
+		for(var i = 0; i < partCount.move; i++) {
+			bodyParts.push(MOVE);
+		} //done
+
+		// If the creep is only partially formed, there's no point in spawning it.
+		// -------------------------------------------------------------------------
+		if(
+		!( partCount.move   > 0
+		//	&&
+		//	(  partCount.attack > 0
+		//	|| partCount.carry  > 0
+		//	|| partCount.claim  > 0
+		//	|| partCount.heal   > 0
+		//	|| partCount.rangedAttack > 0
+		//	|| partCount.work   > 0
+		//	)
+		)) {
+			return;
+		} //fi
+
+		// Remove excess body parts
+		// -------------------------------------------------------------------------
+		//TODO:  If energy remains, replace TOUGH parts with non-TOUGH parts.
+		for(var i = bodyParts.length; i > MAX_CREEP_SIZE; i--) {
+			bodyParts.pop();
+		} //done
+
+		// If any neighbouring owned room lacks spawners, 50% chance of sending this creep to it.
+		// -------------------------------------------------------------------------
+		var target = undefined;
+		if(Math.round(Math.random())) {
+			var exits = Game.map.describeExits(spawn.room.name);
+			for(var index in exits) {
+				var room = Game.rooms[exits[index]];
+				if( room && room.controller && room.controller.my
+				&& !room.find(FIND_MY_STRUCTURES, {filter: (structure) => {
+					return(structure.structureType == STRUCTURE_SPAWN)
+					}}).length
+				){
+					target = room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
+					break;
+				} //fi
+			} //done
+		} //fi
+
+		// If we have parts, create the creep.
+		// -------------------------------------------------------------------------
+		if(bodyParts[0]) {
+			for(var i = 0; spawn.createCreep(bodyParts, name + i, {role: role, target: target}) == ERR_NAME_EXISTS; i++) {}
+		} //fi
+
+		// Display which type of creep is being spawned
+		// -------------------------------------------------------------------------
+		DEFINES.SAY(name[0].toUpperCase() + name.slice(1), spawn);
 	}, //function
 }; //struct
 
