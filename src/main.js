@@ -41,7 +41,7 @@ module.exports.loop = function () {
 		// ---------------------------------------------------------------------
 		room.memory.fighterLimit = 4;
 		room.memory.healerLimit  = 0;
-		room.memory.workerLimit  = 1.5;
+		room.memory.workerLimit  = 1;
 
 		// Set up the worker creep limit
 		// ---------------------------------------------------------------------
