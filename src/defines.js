@@ -69,7 +69,7 @@ const DEFINES = {
 				creep.memory.path = undefined;
 				return OK;
 			} //fi
-			for(var a = 0; !creep.memory.path && a < 2; a++) {
+			do {
 				// If the creep has no path, create one.  If there is no possible path, reset the creep's target and return.
 				if(!creep.memory.path) {
 					// Configure the pathfinder
@@ -121,7 +121,7 @@ const DEFINES = {
 					creep.memory.path = undefined;
 				} //fi
 				code = undefined;
-			}
+			} while(!creep.memory.path);
 			// Parse the given color
 			switch(color) {
 				case COLOR_RED:
