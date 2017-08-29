@@ -99,10 +99,12 @@ module.exports.loop = function () {
 			var creepRole = 0;
 			switch(i) {
 				case 0:
-				/*//*/ if(workers.length < spawn.room.memory.workerLimit / 2) {
+				/*//*/ if(workers.length  < spawn.room.memory.workerLimit  / 2) {
 					creepRole = DEFINES.ROLES.WORKER;
-				} else if(healers.length < spawn.room.memory.healerLimit) {
+				} else if(healers.length  < spawn.room.memory.healerLimit  / 2) {
 					creepRole = DEFINES.ROLES.HEALER;
+				} else if(fighters.length < spawn.room.memory.fighterLimit / 2) {
+					creepRole = DEFINES.ROLES.FIGHTER;
 				} else {
 					creepRole = Math.floor(Math.random() * DEFINES.ROLES.length);
 				}
