@@ -33,11 +33,9 @@ module.exports.loop = function () {
 		} //fi
 		//TODO:  Create construction sites at coordinates where structures are missing.
 		
-		// Only run this every once in a while
+		// Set limits for creeps in each room
+		// =========================================================================
 		if(Math.round(Math.random() * 8)) {
-		
-			// Set limits for creeps in each room
-			// =====================================================================
 
 			// Create the necessary variables
 			// ---------------------------------------------------------------------
@@ -59,7 +57,12 @@ module.exports.loop = function () {
 			var exitsCount = 0;
 			for(var i = 0; i < 4; i++) {
 				var index = ((2 * i) + 1).toString();
-				if(!exits[index] && !(Game.rooms[exits[index]] && Game.rooms[exits[index]].my)) {
+				if(!exits[index]
+				&&
+				!( Game.rooms[exits[index]]
+				&& Game.rooms[exits[index]].controller
+				&& Game.rooms[exits[index]].controller.my
+				)) {
 					exitsCount++;
 				} //fi
 			} //done
