@@ -45,9 +45,8 @@ var roleHealer = {
 		// ====================================================================
 		var target = Game.getObjectById(creep.memory.target);
 		if(creep.memory && creep.memory.target) {
-			if(creep.heal(target)       == ERR_NOT_IN_RANGE
-			|| creep.rangedHeal(target) == ERR_NOT_IN_RANGE
-			){
+			if(creep.heal(target) == ERR_NOT_IN_RANGE) {
+				creep.rangedHeal(target);
 				if(DEFINES.move(creep, COLOR_GREEN, false) == ERR_NO_PATH) {
 					creep.memory.target = undefined;
 					creep.memory.path   = undefined;
