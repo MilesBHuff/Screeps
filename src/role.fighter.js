@@ -15,27 +15,29 @@ var roleFighter = {
 	**/
 	run: function (creep) {
 		var hostiles = creep.room.find(FIND_HOSTILE_CREEPS);
+		var target = undefined;
 		
 		// Validate the current target (with a small chance of having to find a new target no matter what)
 		// ====================================================================
 		if(creep.memory
 		&& creep.memory.target
 		&&
-		( !Game.getObjectById(creep.memory.target)
+		((!Game.getObjectById(creep.memory.target)
+		&& target = Game.getObjectById(creep.memory.target)
 		||
 		(  creep.ticksToLivenumber > DEFINES.NEAR_DEATH
-		&& Game.getObjectById(creep.memory.target).structureType
-		&& Game.getObjectById(creep.memory.target).structureType == STRUCTURE_SPAWN
-		&& Game.getObjectById(creep.memory.target).my
+		&& target.structureType
+		&& target.structureType == STRUCTURE_SPAWN
+		&& target.my
 		)
 		||
 		( !hostiles.length
-		&& Game.getObjectById(creep.memory.target).structureType
-		&& Game.getObjectById(creep.memory.target).structureType == STRUCTURE_RAMPART
-		&& Game.getObjectById(creep.memory.target).my
+		&& target.structureType
+		&& target.structureType == STRUCTURE_RAMPART
+		&& target.my
 		)
 		||!Math.round(Math.random() * 8)
-		)){
+		)) {
 			creep.memory.target = undefined;
 		}
 		
@@ -121,8 +123,8 @@ var roleFighter = {
 		
 		// Attack targets
 		// ====================================================================
+		target = Game.getObjectById(creep.memory.target);
 		if(creep.memory && creep.memory.target) {
-			var target = Game.getObjectById(creep.memory.target);
 			if(
 			(  creep.timeToLive < DEFINES.NEAR_DEATH
 			&& target.structureType
