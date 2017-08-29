@@ -69,7 +69,7 @@ const DEFINES = {
 				creep.memory.path = undefined;
 				return OK;
 			} //fi
-			for(var = 0; !creep.memory.path && a < 2; a++) {
+			for(var a = 0; !creep.memory.path && a < 2; a++) {
 				// If the creep has no path, create one.  If there is no possible path, reset the creep's target and return.
 				if(!creep.memory.path) {
 					// Configure the pathfinder
