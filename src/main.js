@@ -26,6 +26,13 @@ module.exports.loop = function () {
 			} //fi
 		} //done
 		
+		// Saved structures
+		// =====================================================================
+		if(!room.memory || !room.memory.layout) {
+			room.memory.layout = Array();
+		} //fi
+		//TODO:  Create construction sites at coordinates where structures are missing.
+		
 		// Only run this every once in a while
 		if(Math.round(Math.random() * 8)) {
 		
@@ -49,7 +56,7 @@ module.exports.loop = function () {
 			// Set up the combat creep limits
 			// ---------------------------------------------------------------------
 			// Set the number of fighter creeps to equal the number of accessible uncontrolled neighbour rooms
-			room.memory.fighterLimit = Game.map.describeExits(room.name).length;
+			//room.memory.fighterLimit = Game.map.describeExits(room.name).length;
 			// If aggressive creeps are present...
 			if(room.find(FIND_HOSTILE_CREEPS).length) {
 				// Set the healers to equal fighterLimit / 2
