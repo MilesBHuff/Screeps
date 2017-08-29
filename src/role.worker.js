@@ -354,7 +354,7 @@ var roleWorker = {
 							&&  creep.dismantle(target) == ERR_NOT_IN_RANGE
 						    )
 					){
-						if(DEFINES.MOVE(creep, COLOR_YELLOW, true) == ERR_NO_PATH) {
+						if(DEFINES.move(creep, COLOR_YELLOW, true) == ERR_NO_PATH) {
 								badTargets.push(target, true);
 								creep.memory.target = undefined;
 								creep.memory.path   = undefined;
@@ -366,7 +366,7 @@ var roleWorker = {
 					// ---------------------------------------------------------
 					/*//*/  if(target.structureType == STRUCTURE_CONTROLLER) {
 						if(creep.upgradeController(target) == ERR_NOT_IN_RANGE) {
-							if(DEFINES.MOVE(creep, COLOR_CYAN, true) == ERR_NO_PATH) {
+							if(DEFINES.move(creep, COLOR_CYAN, true) == ERR_NO_PATH) {
 								badTargets.push(target);
 								creep.memory.target = undefined;
 								creep.memory.path   = undefined;
@@ -377,7 +377,7 @@ var roleWorker = {
 					// ---------------------------------------------------------
 					} else  if(target.progressTotal) {
 						if(creep.build(target) == ERR_NOT_IN_RANGE) {
-							if(DEFINES.MOVE(creep, COLOR_WHITE, true) == ERR_NO_PATH) {
+							if(DEFINES.move(creep, COLOR_WHITE, true) == ERR_NO_PATH) {
 								badTargets.push(target);
 								creep.memory.target = undefined;
 								creep.memory.path   = undefined;
@@ -390,7 +390,7 @@ var roleWorker = {
 						&& target.hits < repairLimit
 						){
 						if(creep.repair(target) == ERR_NOT_IN_RANGE) {
-							if(DEFINES.MOVE(creep, COLOR_PURPLE, true) == ERR_NO_PATH) {
+							if(DEFINES.move(creep, COLOR_PURPLE, true) == ERR_NO_PATH) {
 								badTargets.push(target);
 								creep.memory.target = undefined;
 								creep.memory.path   = undefined;
@@ -401,7 +401,7 @@ var roleWorker = {
 					// ---------------------------------------------------------
 					} else  if(target.energy < target.energyCapacity) {
 						if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-							if(DEFINES.MOVE(creep, DEFINES.COLOR_BLACK, true) == ERR_NO_PATH) {
+							if(DEFINES.move(creep, DEFINES.COLOR_BLACK, true) == ERR_NO_PATH) {
 								badTargets.push(target);
 								creep.memory.target = undefined;
 								creep.memory.path   = undefined;
@@ -416,7 +416,7 @@ var roleWorker = {
 			// If the creep wasn't able to find a target, it wanders.
 			// -----------------------------------------------------------------
 			} else {
-				DEFINES.WANDER(creep);
+				DEFINES.wander(creep);
 				break;
 			} //fi
 			
