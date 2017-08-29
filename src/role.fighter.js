@@ -22,8 +22,9 @@ var roleFighter = {
 		if(creep.memory
 		&& creep.memory.target
 		&&
-		((!Game.getObjectById(creep.memory.target)
-		||(target = Game.getObjectById(creep.memory.target))
+		(
+		!( Game.getObjectById(creep.memory.target)
+		&& (target = Game.getObjectById(creep.memory.target))
 		)
 		||
 		(  creep.ticksToLivenumber > DEFINES.NEAR_DEATH
