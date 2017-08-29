@@ -460,7 +460,7 @@ const DEFINES = {
 
 		// Display which type of creep is being spawned
 		// -------------------------------------------------------------------------
-		DEFINES.SAY(name[0].toUpperCase() + name.slice(1), spawn);
+		DEFINES.say(name[0].toUpperCase() + name.slice(1), spawn);
 	}, //function
 }; //struct
 
