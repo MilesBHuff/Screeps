@@ -4,7 +4,6 @@
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES = require("defines");
-const creepBaseLimit = 3;
 
 // Main loop
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -40,24 +39,25 @@ module.exports.loop = function () {
 
 		// Create the necessary variables
 		// ---------------------------------------------------------------------
-		room.memory.fighterLimit = 0;
+		room.memory.fighterLimit = 4;
 		room.memory.healerLimit  = 0;
-		room.memory.workerLimit  = 0;
+		room.memory.workerLimit  = 1;
 
-		// Set the number of workers to equal creepBaseLimit multiplied by the number of sources in the room.
+		// Set up the worker creep limit
 		// ---------------------------------------------------------------------
-		room.memory.workerLimit = creepBaseLimit * room.find(FIND_SOURCES).length;
+		// Multiply the number of workers by the number of sources in the room.
+		room.memory.workerLimit *= room.find(FIND_SOURCES).length;
+		// Then, modify the number of workers per the level of the controller.
+		room.memory.workerLimit *= Math.round((CONTROLLER_DOWNGRADE.length - room.controller.level) / 2);
+		// Lastly, add one worker.
+		room.memory.workerLimit += 1;
+		// This gives us a minimum number of 1 worker per source + one backup worker.
 
-		// Set the number of fighters to half the number of workers.
-		// ---------------------------------------------------------------------
-		room.memory.fighterLimit = Math.floor(room.memory.workerLimit / 2);
-
-
-		// If aggressive creeps are present, double the fighter creeps, and set the healers to equal fighterLimit / creepBaseLimit
+		// If aggressive creeps are present, set the healers to equal fighterLimit / 2 and double the fighter creeps
 		// ---------------------------------------------------------------------
 		if(room.find(FIND_HOSTILE_CREEPS).length) {
+			room.memory.healerLimit   = Math.round(room.memory.fighterLimit / 2);
 			room.memory.fighterLimit *= 2;
-			room.memory.healerLimit   = room.memory.fighterLimit / creepBaseLimit;
 		} //fi
 	} //done
 
