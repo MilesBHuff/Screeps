@@ -8,8 +8,6 @@ General
 + Figure out how to get creeps to bolster neighbouring owned maps.
 + Cheap scout creeps should be sent to neighbouring unowned maps in order to get
   vision on them.  They should not enter hostile rooms.
-+ When DEFINES.MOVE discovers that a path has failed, it should generate a new
-  one in the same tick.
 
 Workers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
