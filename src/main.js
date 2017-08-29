@@ -56,7 +56,18 @@ module.exports.loop = function () {
 			// Set up the combat creep limits
 			// ---------------------------------------------------------------------
 			// Set the number of fighter creeps to equal the number of accessible uncontrolled neighbour rooms
-			//room.memory.fighterLimit = Game.map.describeExits(room.name).length;
+			var exits    = Array();
+			var exitsTmp = Game.map.describeExits(room.name);
+			for(var i = 0; i < 4; i++) {
+				var index = ((2 * i) + 1).toString();
+				if(exitsTmp[index] != undefined && !Game.rooms[exitsTmp[index].name]) {
+					exits.push(exitsTmp[index]);
+				} //fi
+			} //done
+			room.memory.fighterLimit = exits.length
+			exits = undefined;
+			console.log(room.memory.fighterLimit);
+			room.memory.fighterLimit = 4; //TMP
 			// If aggressive creeps are present...
 			if(room.find(FIND_HOSTILE_CREEPS).length) {
 				// Set the healers to equal fighterLimit / 2
