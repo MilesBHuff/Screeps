@@ -59,7 +59,7 @@ module.exports.loop = function () {
 			var exitsCount = 0;
 			for(var i = 0; i < 4; i++) {
 				var index = ((2 * i) + 1).toString();
-				if(exits[index] != undefined && Game.rooms[exits[index].name] != undefined) {
+				if(exits[index] != undefined) {
 					exitsCount++;
 				} //fi
 			} //done
