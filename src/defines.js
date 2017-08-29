@@ -114,7 +114,7 @@ const DEFINES = {
 						path.shift();
 					} //fi
 					creep.memory.path = Room.serializePath(path);
-				}
+				} //fi
 				// Try to move the creep to the new location.  If this fails, reset the path.
 				var code = creep.moveByPath(creep.memory.path);
 				if(code && code != ERR_BUSY && code != ERR_TIRED) {
