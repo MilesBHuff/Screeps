@@ -18,6 +18,9 @@ Workers
 + Fix the script.  It shouldn't be looping infinitely, and it should gracefully
   fall back to other courses of action when the first-guessed one fails.
 + Workers should never be adjacent to a source when not harvesting.
++ Get rid of the harvest variable.  Instead, simply have creeps harvest whenever
+  they have no energy.  If they have energy when they have no target, their
+  target should always be an energy-expending task.
 
 Combat
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
