@@ -192,6 +192,13 @@ function spawnCreep(spawn, rawParts, name, role) {
 		return;
 	} //fi
 	
+	// Remove excess body parts
+	// -------------------------------------------------------------------------
+	//TODO:  If energy remains, replace TOUGH parts with non-TOUGH parts.
+	for(var i = bodyParts.length; i > MAX_CREEP_SIZE; i--) {
+		bodyParts.pop();
+	} //done
+	
 	// If any neighbouring owned room lacks spawners, 50% chance of sending this creep to it.
 	// -------------------------------------------------------------------------
 	var target = undefined;
