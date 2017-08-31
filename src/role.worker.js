@@ -149,12 +149,8 @@ var roleWorker = {
 								if(targets && targets.length) break;
 							} //fi
 							// 25% chance to harvest minerals
-							if(!Math.floor(Math.random() * 4)) {
-								targets = room.find(FIND_STRUCTURES, {
-									filter: (structure) => {return(
-										   structure.structureType == STRUCTURE_EXTRACTOR
-									);}
-								});
+							if(false && !Math.floor(Math.random() * 4)) {
+								targets = room.find(FIND_STRUCTURES, {filter: (structure) => {return(structure.structureType == STRUCTURE_EXTRACTOR);}});
 								targets = targets.filter(function(target) {return badTargets.indexOf(target.id) === -1;});
 								if((targets && targets.length) || room.find(FIND_MINERALS, {filter: (mineral) => mineral.mineralAmount > 0}).length) break;
 							}
