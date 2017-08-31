@@ -108,6 +108,9 @@ const DEFINES = {
 							} //done
 						} //done
 					} //fi
+					if(target.room && target.room.name && creep.room.name == target.room.name) {
+						validPath = true;
+					}
 					// If the path is invalid, then the target cannot be reached.  Find a new target.
 					if(!validPath) {
 						creep.memory.target = undefined;
