@@ -148,11 +148,16 @@ var roleWorker = {
 								targets = targets.filter(function(target) {return badTargets.indexOf(target.id) === -1;});
 								if(targets && targets.length) break;
 							} //fi
+							// 25% chance to harvest minerals
+							if(!Math.floor(Math.random() * 4)) {
+								targets = room.find(MINERALS, {filter: (mineral) => mineral.mineralAmount > 0});
+								targets = targets.filter(function(target) {return badTargets.indexOf(target.id) === -1;});
+								if(targets && targets.length) break;
+							}
 							// Harvest new energy
 							targets = room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
 							targets = targets.filter(function(target) {return badTargets.indexOf(target.id) === -1;});
 							if(targets && targets.length) break;
-							targets = undefined;
 							// Get energy from storage
 							targets = room.find(FIND_STRUCTURES, {
 								filter: (structure) => {return(
