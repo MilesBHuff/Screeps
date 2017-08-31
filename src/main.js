@@ -46,7 +46,9 @@ module.exports.loop = function () {
 			// Set up the worker creep limit
 			// ---------------------------------------------------------------------
 			// Then, modify the number of workers per the level of the controller.
-			room.memory.workerLimit += (DEFINES.CONTROLLER_LEVEL_MAX - room.controller.level) / 2;
+			room.find(STRUCTURE_EXTENSION).length
+			
+			room.memory.workerLimit += (Math.round((CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][DEFINES.CONTROLLER_LEVEL_MAX] - room.find(STRUCTURE_EXTENSION).length) / 10)) / 2;
 			// Multiply the number of workers by the number of sources in the room.
 			room.memory.workerLimit *= room.find(FIND_SOURCES).length;
 
