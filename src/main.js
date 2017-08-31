@@ -8,12 +8,15 @@ const DEFINES = require("defines");
 // Main loop
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 module.exports.loop = function () {
+
+	// Update rooms
+	// =========================================================================
 	for(var name in Game.rooms) {
 		var room = Game.rooms[name];
 		if(!room.controller.my) break;
-	
+
 		// Condemned structures
-		// =====================================================================
+		// ---------------------------------------------------------------------
 		// If there is no array of condemned structures for this room, create one.
 		if(!room.memory || !room.memory.dismantle) {
 			room.memory.dismantle = Array();
@@ -26,34 +29,34 @@ module.exports.loop = function () {
 			} //fi
 		} //done
 		
-		// Saved structures
-		// =====================================================================
-		if(!room.memory || !room.memory.layout) {
-			room.memory.layout = Array();
-		} //fi
-		//TODO:  Create construction sites at coordinates where structures are missing.
-		
-		// Set limits for creeps in each room
-		// =========================================================================
+		// These tasks are less important, and don't need to be done every tick.
 		if(Math.round(Math.random() * 8)) {
+			
+			// Saved structures
+			// -----------------------------------------------------------------
+			if(!room.memory || !room.memory.layout) {
+				room.memory.layout = Array();
+			} //fi
+			//TODO:  Create construction sites at coordinates where structures are missing.
+
+			// Set limits for creeps in each room
+			// =================================================================
 
 			// Create the necessary variables
-			// ---------------------------------------------------------------------
+			// -----------------------------------------------------------------
 			room.memory.fighterLimit = 1.5;
 			room.memory.healerLimit  = 0.0;
 			room.memory.workerLimit  = 1.0;
 
 			// Set up the worker creep limit
-			// ---------------------------------------------------------------------
+			// -----------------------------------------------------------------
 			// Then, modify the number of workers per the level of the controller.
-			room.find(STRUCTURE_EXTENSION).length
-			
 			room.memory.workerLimit += (Math.round((CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][DEFINES.CONTROLLER_LEVEL_MAX] - room.find(STRUCTURE_EXTENSION).length) / 10)) / 2;
 			// Multiply the number of workers by the number of sources in the room.
 			room.memory.workerLimit *= room.find(FIND_SOURCES).length;
 
 			// Set up the fighter creep limit
-			// ---------------------------------------------------------------------
+			// -----------------------------------------------------------------
 			// Count the number of exits to uncontrolled rooms
 			var exits      = Game.map.describeExits(room.name);
 			var exitsCount = 0;
