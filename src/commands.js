@@ -66,7 +66,7 @@ var commands = {
 	**/
 	moveCreepTo: function (creepName, target) {
 		Game.creeps[creepName].memory.target = target;
-		return DEFINES.MOVE(creep, COLOR_GREY, false);
+		return DEFINES.MOVE(Game.creeps[creepName], COLOR_GREY, false);
 	}, //function
 	
 	// Remove construction
