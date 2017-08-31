@@ -150,7 +150,7 @@ var roleWorker = {
 							} //fi
 							// 25% chance to harvest minerals
 							if(!Math.floor(Math.random() * 4)) {
-								targets = room.find(MINERALS, {filter: (mineral) => mineral.mineralAmount > 0});
+								targets = room.find(FIND_MINERALS, {filter: (mineral) => mineral.mineralAmount > 0});
 								targets = targets.filter(function(target) {return badTargets.indexOf(target.id) === -1;});
 								if(targets && targets.length) break;
 							}
