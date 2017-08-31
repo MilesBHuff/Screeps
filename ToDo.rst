@@ -3,6 +3,7 @@ MilesBHuff's Screeps ToDo List
 
 General
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++ DEFINES.move() should support visiting other rooms.
 + DEFINES.wander() should wander only on paths.
 + Toy with the idea of renewing creeps.
 + Figure out how to get creeps to bolster neighbouring owned maps.
@@ -12,6 +13,8 @@ General
 
 Workers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++ Refactor the code to use function for selecting and acting on a target.
++ Add support for mineral extraction.
 + Figure out how to get creeps to mine on bordering maps.
 + Get creeps to efficiently use links etc.  (Possibly designate one as the
   deposit box in the room's memory)
