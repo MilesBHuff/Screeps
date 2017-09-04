@@ -45,6 +45,17 @@ const DEFINES = {
 	// Functions (tier 1)
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+	// Filter targets
+	// =========================================================================
+	/** This function removes any element in badTargets from targets.
+	 * @param  targets    The array to filter.
+	 * @param  badTargets The items to remove from targets.
+	 * @return targets without badTargets.
+	**/
+	filterTargets: function (targets, badTargets) {
+		return targets; //TODO
+	}, //function
+
 	// Find rooms
 	// =========================================================================
 	/** This function finds and returns the given room and its neighbours.
