@@ -56,7 +56,7 @@ var roleWorker = {
 					// Pick up dropped resources
 					// ---------------------------------------------------------
 					targets = roleWorker.rooms[0].find(FIND_DROPPED_RESOURCES);
-					targets = targets.filter(function(target) {return roleWorker.badTargets.indexOf(target.id) === -1;});
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
 
 					// Withdraw resources from enemy structures
@@ -70,7 +70,7 @@ var roleWorker = {
 						for(var a = 0; roleWorker.rooms[0].memory.dismantle[a]; a++) {
 							targets.push(Game.getObjectById(roleWorker.rooms[0].memory.dismantle[a]));
 						} //done
-						targets = targets.filter(function(target) {return roleWorker.badTargets.indexOf(target.id) === -1;});
+						targets = DEFINES.filterTargets(targets, badTargets);
 						if(targets && targets.length) break;
 					} //fi
 
@@ -78,14 +78,14 @@ var roleWorker = {
 					// ---------------------------------------------------------
 					if(false && !Math.floor(Math.random() * 4)) {
 						targets = roleWorker.rooms[0].find(FIND_STRUCTURES, {filter: (structure) => {return(structure.structureType == STRUCTURE_EXTRACTOR);}});
-						targets = targets.filter(function(target) {return roleWorker.badTargets.indexOf(target.id) === -1;});
+						targets = DEFINES.filterTargets(targets, badTargets);
 						if((targets && targets.length) || roleWorker.rooms[0].find(FIND_MINERALS, {filter: (mineral) => mineral.mineralAmount > 0}).length) break;
 					} //fi
 
 					// Harvest new energy
 					// ---------------------------------------------------------
 					targets = roleWorker.rooms[0].find(FIND_SOURCES, {filter: (source) => source.energy > 0});
-					targets = targets.filter(function(target) {return roleWorker.badTargets.indexOf(target.id) === -1;});
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
 
 					// Get energy from storage
@@ -96,7 +96,7 @@ var roleWorker = {
 							&& structure.energy        >  0
 						);}
 					});
-					targets = targets.filter(function(target) {return roleWorker.badTargets.indexOf(target.id) === -1;});
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
 
 					// If there's no new energy available, use what you're already carrying, if anything.
@@ -114,7 +114,7 @@ var roleWorker = {
 				task = DEFINES.TASKS.UPGRADE;
 				if(roleWorker.rooms[0].controller.ticksToDowngrade < DEFINES.CONTROLLER_NEAR_DEGRADE) {
 					targets = [roleWorker.rooms[0].controller];
-					targets = targets.filter(function(target) {return roleWorker.badTargets.indexOf(target.id) === -1;});
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
 				} //fi
 
@@ -129,7 +129,7 @@ var roleWorker = {
 						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 					);}
 				});
-				targets = targets.filter(function(target) {return roleWorker.badTargets.indexOf(target.id) === -1;});
+				targets = DEFINES.filterTargets(targets, badTargets);
 				if(targets && targets.length) break;
 				// Fill spawns
 				targets = roleWorker.rooms[0].find(FIND_MY_STRUCTURES, {
@@ -139,7 +139,7 @@ var roleWorker = {
 						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 					);}
 				});
-				targets = targets.filter(function(target) {return roleWorker.badTargets.indexOf(target.id) === -1;});
+				targets = DEFINES.filterTargets(targets, badTargets);
 				if(targets && targets.length) break;
 
 				// 75% chance of maintaining towers
@@ -153,7 +153,7 @@ var roleWorker = {
 							&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 						);}
 					});
-					targets = targets.filter(function(target) {return roleWorker.badTargets.indexOf(target.id) === -1;});
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
 				} //fi
 
@@ -165,7 +165,7 @@ var roleWorker = {
 						   site.structureType == STRUCTURE_WALL
 						|| site.structureType == STRUCTURE_RAMPART
 					});
-					targets = targets.filter(function(target) {return roleWorker.badTargets.indexOf(target.id) === -1;});
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
 				} //fi
 
@@ -180,7 +180,7 @@ var roleWorker = {
 						&& structure.hits < (roleWorker.repairLimit * 0.75)
 						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 					});
-					targets = targets.filter(function(target) {return roleWorker.badTargets.indexOf(target.id) === -1;});
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
 				} //fi
 
@@ -189,7 +189,7 @@ var roleWorker = {
 				task = DEFINES.TASKS.UPGRADE;
 				if(roleWorker.rooms[0].controller.level < 8 && Math.round(Math.random())) {
 					targets = [roleWorker.rooms[0].controller];
-					targets = targets.filter(function(target) {return roleWorker.badTargets.indexOf(target.id) === -1;});
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
 				} //fi
 
@@ -197,7 +197,7 @@ var roleWorker = {
 				// =============================================================
 				task = DEFINES.TASKS.BUILD;
 				targets = roleWorker.rooms[0].find(FIND_MY_CONSTRUCTION_SITES);
-				targets = targets.filter(function(target) {return roleWorker.badTargets.indexOf(target.id) === -1;});
+				targets = DEFINES.filterTargets(targets, badTargets);
 				if(targets && targets.length) break;
 
 				// Upgrade the controller if it's not already at max.
@@ -205,7 +205,7 @@ var roleWorker = {
 				task = DEFINES.TASKS.UPGRADE;
 				if(roleWorker.rooms[0].controller.level < 8) {
 					targets = [roleWorker.rooms[0].controller];
-					targets = targets.filter(function(target) {return roleWorker.badTargets.indexOf(target.id) === -1;});
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
 				} //fi
 
@@ -219,7 +219,7 @@ var roleWorker = {
 						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 					);}
 				});
-				targets = targets.filter(function(target) {return roleWorker.badTargets.indexOf(target.id) === -1;});
+				targets = DEFINES.filterTargets(targets, badTargets);
 				if(targets && targets.length) break;
 
 				task = DEFINES.TASKS.WAIT;
@@ -258,6 +258,7 @@ var roleWorker = {
 
 			// If we reach this line, the current room had no valid targets.  Try another one.
 			// =================================================================
+roleWorker.rooms = Array(); //TODO:  This line is only here until DEFINES.move supports other rooms.
 			// If the array of rooms has not yet been sorted, sort it.
 			if(roleWorker.rooms[0] != creep.room) {
 				roleWorker.rooms = DEFINES.sortRooms(creep.pos, roleWorker.rooms);
@@ -427,7 +428,8 @@ var roleWorker = {
 
 		// Find and affect a target
 		// =====================================================================
-		for(var l = 0; l < DEFINES.LOOP_LIMIT; l++) {
+		var loopLimit = Math.ceil(Math.random() * DEFINES.LOOP_LIMIT);
+		for(var l = 0; l < loopLimit; l++) {
 
 			// Find a target
 			// -----------------------------------------------------------------
@@ -453,7 +455,10 @@ var roleWorker = {
 
 			// If we're out of rooms, give up.
 			// -----------------------------------------------------------------
-			if(!roleWorker.rooms.length) break;
+			if(!roleWorker.rooms.length) {
+				DEFINES.wander(creep);
+				break;
+			}
 		} //done
 	} //function
 }; //struct
