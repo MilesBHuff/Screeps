@@ -45,6 +45,34 @@ const DEFINES = {
 	// Functions (tier 1)
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+	// Find rooms
+	// =========================================================================
+	/** This function finds and returns the given room and its neighbours.
+	 * @param  roomName The name of the room whose neighbours to find.
+	 * @return the given room and its neighbours.
+	**/
+	findRooms: function (roomName) {
+		var rooms = Array();
+		// Push the creep's current room.
+		rooms.push(roomName);
+		// Find all the rooms connected to the current room.
+		var roomsTmp = Game.map.describeExits(roomName);
+		for(var i = 0; i < 4; i++) {
+			var index = ((2 * i) + 1).toString();
+			if(roomsTmp[index] != undefined) {
+				rooms.push(roomsTmp[index]);
+			} //fi
+		} //done
+		// Convert the array of strings into an array of objects.  This also trims rooms that we can't see.
+		roomsTmp = Array();
+		for(var name in rooms) {
+			var room = Game.rooms[rooms[name]];
+			if(room) roomsTmp.push(room);
+		} //done
+		// Return the array.
+		return roomsTmp;
+	}, //function
+
 	// Kill off
 	// =========================================================================
 	/** This function kills off excess creeps.
@@ -230,6 +258,33 @@ const DEFINES = {
 			font:              "bold 0.6 Arial",
 		});
 		return OK;
+	}, //function
+
+	// Sort rooms
+	// =========================================================================
+	/** This function sorts the given rooms by distance from the given position.
+	 * @param  pos   The position to use.
+	 * @param  rooms The array to sort.
+	 * @return the sorted array.
+	**/
+	sortRooms: function (pos, rooms) {
+		var roomsTmp = Array();
+		for(var i = 0; 0 < rooms.length; i++) {
+			// Find the nearest room that hasn't been found yet.
+			roomsTmp.push(Game.rooms[pos.findClosestByRange(FIND_EXIT, {filter: (room) => function(room) {return rooms.indexOf(room) != -1;}}).roomName]);
+			// Find its index.
+			var index = 0;
+			for(var j = 0; rooms[j]; j++) {
+				if(rooms[j] == roomsTmp[i]) {
+					index = j;
+					break;
+				} //fi
+			} //done
+			// Splice it.
+			rooms.splice(index, 1);
+		} //done
+		// Return the sorted array.
+		return roomsTmp
 	}, //function
 	
 	// Wander
