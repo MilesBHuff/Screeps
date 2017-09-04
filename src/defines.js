@@ -12,6 +12,8 @@ const DEFINES = {
 	COLOR_BLACK: 0,
 	// This constant is missing from the global game defines.
 	CONTROLLER_LEVEL_MAX: 8,
+	// This is the remaining repair amount at which you will receive an email about your controller degrading.
+	CONTROLLER_NEAR_DEGRADE: 3000,
 	// The maximum number of times to run a loop that would otherwise be while(true).
 	LOOP_LIMIT: 2, // Should be much higher;  temporarily lowered until the looping bug is fixed with the worker script.
 	// This is the number of ticksToLive below which a creep is considered near-death.
