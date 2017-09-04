@@ -179,7 +179,7 @@ var roleWorker = {
 						// If the controller is about to degrade, contribute to it
 						// -----------------------------------------------------
 						task = DEFINES.TASKS.UPGRADE;
-						if(room.controller.ticksToDowngrade < DEFINES.NEAR_DEATH * 10) {
+						if(room.controller.ticksToDowngrade < DEFINES.CONTROLLER_NEAR_DEGRADE) {
 							targets = [room.controller];
 							targets = targets.filter(function(target) {return badTargets.indexOf(target.id) === -1;});
 							if(targets && targets.length) break;
