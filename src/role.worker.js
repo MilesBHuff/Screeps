@@ -56,7 +56,7 @@ var roleWorker = {
 					// Pick up dropped resources
 					// ---------------------------------------------------------
 					targets = roleWorker.rooms[0].find(FIND_DROPPED_RESOURCES);
-					targets = DEFINES.filterTargets(targets, badTargets);
+					targets = DEFINES.filterTargets(targets, roleWorker.badTargets);
 					if(targets && targets.length) break;
 
 					// Withdraw resources from enemy structures
@@ -70,7 +70,7 @@ var roleWorker = {
 						for(var a = 0; roleWorker.rooms[0].memory.dismantle[a]; a++) {
 							targets.push(Game.getObjectById(roleWorker.rooms[0].memory.dismantle[a]));
 						} //done
-						targets = DEFINES.filterTargets(targets, badTargets);
+						targets = DEFINES.filterTargets(targets, roleWorker.badTargets);
 						if(targets && targets.length) break;
 					} //fi
 
@@ -78,14 +78,14 @@ var roleWorker = {
 					// ---------------------------------------------------------
 					if(false && !Math.floor(Math.random() * 4)) {
 						targets = roleWorker.rooms[0].find(FIND_STRUCTURES, {filter: (structure) => {return(structure.structureType == STRUCTURE_EXTRACTOR);}});
-						targets = DEFINES.filterTargets(targets, badTargets);
+						targets = DEFINES.filterTargets(targets, roleWorker.badTargets);
 						if((targets && targets.length) || roleWorker.rooms[0].find(FIND_MINERALS, {filter: (mineral) => mineral.mineralAmount > 0}).length) break;
 					} //fi
 
 					// Harvest new energy
 					// ---------------------------------------------------------
 					targets = roleWorker.rooms[0].find(FIND_SOURCES, {filter: (source) => source.energy > 0});
-					targets = DEFINES.filterTargets(targets, badTargets);
+					targets = DEFINES.filterTargets(targets, roleWorker.badTargets);
 					if(targets && targets.length) break;
 
 					// Get energy from storage
@@ -96,7 +96,7 @@ var roleWorker = {
 							&& structure.energy        >  0
 						);}
 					});
-					targets = DEFINES.filterTargets(targets, badTargets);
+					targets = DEFINES.filterTargets(targets, roleWorker.badTargets);
 					if(targets && targets.length) break;
 
 					// If there's no new energy available, use what you're already carrying, if anything.
@@ -114,7 +114,7 @@ var roleWorker = {
 				task = DEFINES.TASKS.UPGRADE;
 				if(roleWorker.rooms[0].controller.ticksToDowngrade < DEFINES.CONTROLLER_NEAR_DEGRADE) {
 					targets = [roleWorker.rooms[0].controller];
-					targets = DEFINES.filterTargets(targets, badTargets);
+					targets = DEFINES.filterTargets(targets, roleWorker.badTargets);
 					if(targets && targets.length) break;
 				} //fi
 
@@ -129,7 +129,7 @@ var roleWorker = {
 						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 					);}
 				});
-				targets = DEFINES.filterTargets(targets, badTargets);
+				targets = DEFINES.filterTargets(targets, roleWorker.badTargets);
 				if(targets && targets.length) break;
 				// Fill spawns
 				targets = roleWorker.rooms[0].find(FIND_MY_STRUCTURES, {
@@ -139,7 +139,7 @@ var roleWorker = {
 						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 					);}
 				});
-				targets = DEFINES.filterTargets(targets, badTargets);
+				targets = DEFINES.filterTargets(targets, roleWorker.badTargets);
 				if(targets && targets.length) break;
 
 				// 75% chance of maintaining towers
@@ -153,7 +153,7 @@ var roleWorker = {
 							&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 						);}
 					});
-					targets = DEFINES.filterTargets(targets, badTargets);
+					targets = DEFINES.filterTargets(targets, roleWorker.badTargets);
 					if(targets && targets.length) break;
 				} //fi
 
@@ -165,7 +165,7 @@ var roleWorker = {
 						   site.structureType == STRUCTURE_WALL
 						|| site.structureType == STRUCTURE_RAMPART
 					});
-					targets = DEFINES.filterTargets(targets, badTargets);
+					targets = DEFINES.filterTargets(targets, roleWorker.badTargets);
 					if(targets && targets.length) break;
 				} //fi
 
@@ -180,7 +180,7 @@ var roleWorker = {
 						&& structure.hits < (roleWorker.repairLimit * 0.75)
 						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 					});
-					targets = DEFINES.filterTargets(targets, badTargets);
+					targets = DEFINES.filterTargets(targets, roleWorker.badTargets);
 					if(targets && targets.length) break;
 				} //fi
 
@@ -189,7 +189,7 @@ var roleWorker = {
 				task = DEFINES.TASKS.UPGRADE;
 				if(roleWorker.rooms[0].controller.level < 8 && Math.round(Math.random())) {
 					targets = [roleWorker.rooms[0].controller];
-					targets = DEFINES.filterTargets(targets, badTargets);
+					targets = DEFINES.filterTargets(targets, roleWorker.badTargets);
 					if(targets && targets.length) break;
 				} //fi
 
@@ -197,7 +197,7 @@ var roleWorker = {
 				// =============================================================
 				task = DEFINES.TASKS.BUILD;
 				targets = roleWorker.rooms[0].find(FIND_MY_CONSTRUCTION_SITES);
-				targets = DEFINES.filterTargets(targets, badTargets);
+				targets = DEFINES.filterTargets(targets, roleWorker.badTargets);
 				if(targets && targets.length) break;
 
 				// Upgrade the controller if it's not already at max.
@@ -205,7 +205,7 @@ var roleWorker = {
 				task = DEFINES.TASKS.UPGRADE;
 				if(roleWorker.rooms[0].controller.level < 8) {
 					targets = [roleWorker.rooms[0].controller];
-					targets = DEFINES.filterTargets(targets, badTargets);
+					targets = DEFINES.filterTargets(targets, roleWorker.badTargets);
 					if(targets && targets.length) break;
 				} //fi
 
@@ -219,7 +219,7 @@ var roleWorker = {
 						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 					);}
 				});
-				targets = DEFINES.filterTargets(targets, badTargets);
+				targets = DEFINES.filterTargets(targets, roleWorker.badTargets);
 				if(targets && targets.length) break;
 
 				task = DEFINES.TASKS.WAIT;
