@@ -55,17 +55,19 @@ const DEFINES = {
 	filterTargets: function (targets, badTargets) {
 return targets; //TODO
 		var badTargetsCopy = badTargets;
-		for(var i = 0; targets[i]; i++) {
-			for(var j = 0; badTargets[j]; j++) {
-				if(targets[i].id == badTargets[j]) {
-					targets.splice(i, 1);
-					i--;
-					badTargets.splice(j, 1);
-					j--;
-					break;
-				}
-			}
-		}
+		if(targets.length && badTargets.length) {
+			for(var i = 0; targets[i]; i++) {
+				for(var j = 0; badTargets[j]; j++) {
+					if(targets[i].id && targets[i].id == badTargets[j]) {
+						targets.splice(i, 1);
+						i--;
+						badTargets.splice(j, 1);
+						j--;
+						break;
+					} //fi
+				} //done
+			} //done
+		} //fi
 		badTargets = badTargetsCopy;
 		badTargetsCopy = undefined;
 		return targets;
