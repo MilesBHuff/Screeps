@@ -17,9 +17,9 @@ var roleWorker = {
 
 	// Variables
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	badTargets:  Array(),
-	repairLimit: undefined,
-	rooms:       Array(),
+	badTargets,
+	repairLimit,
+	rooms,
 
 	// Find target
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -400,6 +400,7 @@ roleWorker.rooms = Array(); //TODO:  This line is only here until DEFINES.move s
 	 * @param creep The creep to control.
 	**/
 	run: function (creep) {
+
 		// Debug
 		// =====================================================================
 		if(false) {
@@ -409,7 +410,9 @@ roleWorker.rooms = Array(); //TODO:  This line is only here until DEFINES.move s
 
 		// Variables
 		// =====================================================================
+		roleWorker.badTargets = Array();
 		roleWorker.repairLimit = DEFINES.REPAIR_LIMIT * creep.room.controller.level;
+		roleWorker.rooms = Array();
 
 		// Decide whether to harvest
 		// =====================================================================
