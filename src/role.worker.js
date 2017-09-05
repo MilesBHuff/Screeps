@@ -274,7 +274,7 @@ rooms = Array(); //TODO:  This line is only here until DEFINES.move supports oth
 	affectTarget: function (creep) {
 		// Move towards the target
 		// =================================================================
-		if(creep.memory.target) {
+		if(creep.memory && creep.memory.target) {
 			var target = Game.getObjectById(creep.memory.target);
 			if(!target) return ERR_INVALID_TARGET;
 
