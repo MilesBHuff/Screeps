@@ -255,7 +255,7 @@ var roleWorker  = {
 
 			// If we reach this line, the current room had no valid targets.  Try another one.
 			// =================================================================
-rooms = Array(); //TODO:  This line is only here until DEFINES.move supports other rooms.
+rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES.move supports other rooms.
 			// If the array of rooms has not yet been sorted, sort it.
 			if(rooms[0] != creep.room) {
 				rooms = DEFINES.sortRooms(creep.pos, rooms);
