@@ -272,6 +272,7 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 	 * @return OK, ERR_NO_PATH, ERR_INVALID_TARGET
 	**/
 	affectTarget: function (creep) {
+
 		// Move towards the target
 		// =================================================================
 		if(creep.memory && creep.memory.target) {
@@ -293,6 +294,7 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 					    ))
 				){
 					creep.memory.target  = undefined;
+					return ERR_INVALID_TARGET;
 				} else  if( creep.harvest( target) == ERR_NOT_IN_RANGE
 					    ||  creep.pickup(  target) == ERR_NOT_IN_RANGE
 					    ||  creep.withdraw(target) == ERR_NOT_IN_RANGE
@@ -374,21 +376,19 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 			} //fi
 
 		// If the creep wasn't able to find a target, it wanders.
-		// -----------------------------------------------------------------
+		// =====================================================================
 		} else {
 			DEFINES.wander(creep);
 			return OK;
 		} //fi
 
 		// If the creep found a target, say what it is.
-		// -----------------------------------------------------------------
-		if(creep.memory.target) {
-			if(creep.memory.say) {
-				creep.say(creep.memory.say);
-				creep.memory.say = undefined;
-			} //fi
-			return OK;
+		// =====================================================================
+		if(creep.memory.say) {
+			creep.say(creep.memory.say);
+			creep.memory.say = undefined;
 		} //fi
+		return OK;
 	}, //function
 
 	// Run
