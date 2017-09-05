@@ -4,7 +4,7 @@ MilesBHuff's Screeps ToDo List
 General
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 + DEFINES.move() should support visiting other rooms.
-+ DEFINES.wander() should wander only on paths.
++ DEFINES.wander() should avoid swamps and paths wherever possible.
 + Toy with the idea of renewing creeps.
 + Figure out how to get creeps to bolster neighbouring owned maps.
 + Cheap scout creeps should be sent to neighbouring unowned maps in order to get
@@ -13,13 +13,9 @@ General
 
 Workers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+ Refactor the code to use function for selecting and acting on a target.
 + Add support for mineral extraction.
-+ Figure out how to get creeps to mine on bordering maps.
 + Get creeps to efficiently use links etc.  (Possibly designate one as the
   deposit box in the room's memory)
-+ Fix the script.  It shouldn't be looping infinitely, and it should gracefully
-  fall back to other courses of action when the first-guessed one fails.
 + Workers should never be adjacent to a source when not harvesting.
 + Get rid of the harvest variable.  Instead, simply have creeps harvest whenever
   they have no energy.  If they have energy when they have no target, their
