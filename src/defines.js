@@ -5,7 +5,7 @@
 **/
 
 const DEFINES = {
-	
+
 	// Variables
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	// This color is missing from the global game defines.
@@ -53,7 +53,21 @@ const DEFINES = {
 	 * @return targets without badTargets.
 	**/
 	filterTargets: function (targets, badTargets) {
-		return targets; //TODO
+		var badTargetsCopy = badTargets;
+		for(var i = 0; targets[i]; i++) {
+			for(var j = 0; badTargets[j]; j++) {
+				if(targets[i].id == badTargets[j]) {
+					targets.splice(i, 1);
+					i--;
+					badTargets.splice(j, 1);
+					j--;
+					break;
+				}
+			}
+		}
+		badTargets = badTargetsCopy;
+		badTargetsCopy = undefined;
+		return targets;
 	}, //function
 
 	// Find rooms
@@ -183,52 +197,52 @@ const DEFINES = {
 //				color = "#ED5557"; // Hostile glow
 				color = "#EA4034"; // Flags
 				break;
-				
+
 				case COLOR_PURPLE:
 //				color = "#8F6F9F"; // Syntax-highlighting
 				color = "#9625A9"; // Flags
 				break;
-				
+
 				case COLOR_BLUE:
-//				color = "#3F51B5"; // Selection color 
+//				color = "#3F51B5"; // Selection color
 				color = "#2090E9"; // Flags
 				break;
-				
+
 				case COLOR_CYAN:
 //				color = "#47A89F"; // GCL color
 				color = "#00B5CC"; // Flags
 				break;
-				
+
 				case COLOR_GREEN:
 //				color = "#89B48D"; // Friendly glow
 				color = "#49A84D"; // Flags
 				break;
-				
+
 				case COLOR_YELLOW:
 //				color = "#FFE56E"; // Energy
 				color = "#F5E239"; // Flags
 				break;
-				
+
 				case COLOR_ORANGE:
 //				color = "#CA7731"; // Syntax-highlighting
 				color = "#F59200"; // Flags
 				break;
-				
+
 				case COLOR_BROWN:
 //				color = "#262816"; // Swampland
 				color = "#745245"; // Flags
 				break;
-				
+
 				case COLOR_GREY:
 //				color = "#626262"; // Roads
 				color = "#989898"; // Flags
 				break;
-				
+
 				case COLOR_WHITE:
 //				color = "#BCBCBC"; // Icons
 				color = "#F5F5F5"; // Flags
 				break;
-				
+
 				default: // COLOR_BLACK
 //				color = "#202020"; // Creep outlines
 				color = "#090909"; // Wall outlines
@@ -247,7 +261,7 @@ const DEFINES = {
 			return OK;
 		} else return ERR_INVALID_TARGET;
 	}, //function
-	
+
 	// Say
 	// =========================================================================
 	/** Spawns text above the given object, similarly to creep.say().
@@ -297,7 +311,7 @@ const DEFINES = {
 		// Return the sorted array.
 		return roomsTmp
 	}, //function
-	
+
 	// Wander
 	// =========================================================================
 	/** Makes the given creep wander around its room at random.
@@ -321,7 +335,7 @@ const DEFINES = {
 
 	// Functions (tier 2)
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	
+
 	// Create creep
 	// =========================================================================
 	// Depends: DEFINES.say()
