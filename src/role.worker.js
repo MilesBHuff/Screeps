@@ -309,7 +309,7 @@ rooms = Array(); //TODO:  This line is only here until DEFINES.move supports oth
 					    )
 				){
 					if(DEFINES.move(creep, COLOR_YELLOW, true) == ERR_NO_PATH) {
-							badTargets.push(target, true);
+							badTargets.push(target.id, true);
 							creep.memory.target = undefined;
 							creep.memory.path   = undefined;
 							return ERR_NO_PATH;
@@ -322,7 +322,7 @@ rooms = Array(); //TODO:  This line is only here until DEFINES.move supports oth
 				/*//*/  if(target.structureType == STRUCTURE_CONTROLLER) {
 					if(creep.upgradeController(target) == ERR_NOT_IN_RANGE) {
 						if(DEFINES.move(creep, COLOR_CYAN, true) == ERR_NO_PATH) {
-							badTargets.push(target);
+							badTargets.push(target.id);
 							creep.memory.target = undefined;
 							creep.memory.path   = undefined;
 							return ERR_NO_PATH;
@@ -334,7 +334,7 @@ rooms = Array(); //TODO:  This line is only here until DEFINES.move supports oth
 				} else  if(target.progressTotal) {
 					if(creep.build(target) == ERR_NOT_IN_RANGE) {
 						if(DEFINES.move(creep, COLOR_WHITE, true) == ERR_NO_PATH) {
-							badTargets.push(target);
+							badTargets.push(target.id);
 							creep.memory.target = undefined;
 							creep.memory.path   = undefined;
 							return ERR_NO_PATH;
@@ -348,7 +348,7 @@ rooms = Array(); //TODO:  This line is only here until DEFINES.move supports oth
 					){
 					if(creep.repair(target) == ERR_NOT_IN_RANGE) {
 						if(DEFINES.move(creep, COLOR_PURPLE, true) == ERR_NO_PATH) {
-							badTargets.push(target);
+							badTargets.push(target.id);
 							creep.memory.target = undefined;
 							creep.memory.path   = undefined;
 							return ERR_NO_PATH;
@@ -360,7 +360,7 @@ rooms = Array(); //TODO:  This line is only here until DEFINES.move supports oth
 				} else  if(target.energy < target.energyCapacity) {
 					if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
 						if(DEFINES.move(creep, DEFINES.COLOR_BLACK, true) == ERR_NO_PATH) {
-							badTargets.push(target);
+							badTargets.push(target.id);
 							creep.memory.target = undefined;
 							creep.memory.path   = undefined;
 							return ERR_NO_PATH;
@@ -407,9 +407,7 @@ rooms = Array(); //TODO:  This line is only here until DEFINES.move supports oth
 
 		// Variables
 		// =====================================================================
-		badTargets = Array();
 		repairLimit = DEFINES.REPAIR_LIMIT * creep.room.controller.level;
-		rooms = Array();
 
 		// Decide whether to harvest
 		// =====================================================================
