@@ -444,7 +444,7 @@ rooms = Array(); //TODO:  This line is only here until DEFINES.move supports oth
 			// Affect the target
 			// -----------------------------------------------------------------
 			if(!roleWorker.affectTarget(creep)) {
-				break;
+				return OK;
 			} else {
 				// If we were unable to find a path to the target, try to find a new one.
 				badTargets.push(creep.memory.target);
@@ -454,11 +454,9 @@ rooms = Array(); //TODO:  This line is only here until DEFINES.move supports oth
 
 			// If we're out of rooms, give up.
 			// -----------------------------------------------------------------
-			if(!rooms.length) {
-				DEFINES.wander(creep);
-				break;
-			}
+			if(!rooms.length) break;
 		} //done
+		DEFINES.wander(creep);
 	} //function
 }; //struct
 
