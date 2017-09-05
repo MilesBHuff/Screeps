@@ -17,9 +17,9 @@ var roleWorker = {
 
 	// Variables
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	badTargets,
-	repairLimit,
-	rooms,
+	badTargets: undefined,
+	repairLimit: undefined,
+	rooms: undefined,
 
 	// Find target
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
