@@ -130,55 +130,53 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 	 * @return OK, ERR_NO_PATH, ERR_INVALID_TARGET
 	**/
 	affectTarget: function (creep) {
+
 		// Move towards the target
-		// =================================================================
-		if(creep.memory.target) {
-			if(creep.memory && creep.memory.target) {
-				var target = Game.getObjectById(creep.memory.target);
-				if(!target) {
+		// =====================================================================
+		if(creep.memory && creep.memory.target) {
+			var target = Game.getObjectById(creep.memory.target);
+			if(!target) {
+				creep.memory.target = undefined;
+				creep.memory.path   = undefined;
+				return ERR_INVALID_TARGET;
+			} //fi
+			if(
+			(  creep.timeToLive < DEFINES.NEAR_DEATH
+			&& target.structureType
+			&& target.structureType == STRUCTURE_SPAWN
+			&& target.my
+			&& creep.renew(target) == ERR_NOT_IN_RANGE
+			)
+			||
+			(  target.structureType
+			&& target.structureType == STRUCTURE_RAMPART
+			&& target.my
+			)
+			||
+			(  creep.attack(      target) == ERR_NOT_IN_RANGE
+			&& creep.rangedAttack(target) == ERR_NOT_IN_RANGE
+			)) {
+				if(DEFINES.move(creep, COLOR_RED, false) == ERR_NO_PATH) {
 					creep.memory.target = undefined;
 					creep.memory.path   = undefined;
-					return ERR_INVALID_TARGET;
+					return ERR_NO_PATH;
 				} //fi
-				if(
-				(  creep.timeToLive < DEFINES.NEAR_DEATH
-				&& target.structureType
-				&& target.structureType == STRUCTURE_SPAWN
-				&& target.my
-				&& creep.renew(target) == ERR_NOT_IN_RANGE
-				)
-				||
-				(  target.structureType
-				&& target.structureType == STRUCTURE_RAMPART
-				&& target.my
-				)
-				||
-				(  creep.attack(      target) == ERR_NOT_IN_RANGE
-				&& creep.rangedAttack(target) == ERR_NOT_IN_RANGE
-				)) {
-					if(DEFINES.move(creep, COLOR_RED, false) == ERR_NO_PATH) {
-						creep.memory.target = undefined;
-						creep.memory.path   = undefined;
-					} //fi
-				} //fi
-
-			// If the creep wasn't able to find a target, it wanders.
-			// -----------------------------------------------------------------
-			} else {
-				DEFINES.wander(creep);
-				return OK;
 			} //fi
 
-			// If the creep found a target, say what it is.
-			// -----------------------------------------------------------------
-			if(creep.memory.target) {
-				if(creep.memory.say) {
-					creep.say(creep.memory.say);
-					creep.memory.say = undefined;
-				} //fi
-				return OK;
-			} //fi
+		// If the creep wasn't able to find a target, it wanders.
+		// =================================================================
+		} else {
+			DEFINES.wander(creep);
+			return OK;
 		} //fi
+
+		// If the creep found a target, say what it is.
+		// =================================================================
+		if(creep.memory.say) {
+			creep.say(creep.memory.say);
+			creep.memory.say = undefined;
+		} //fi
+		return OK;
 	}, //function
 
 	// Run
