@@ -295,7 +295,7 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 				){
 					creep.memory.target  = undefined;
 					return ERR_INVALID_TARGET;
-				} else  if( creep.harvest( target) == ERR_NOT_IN_RANGE
+				} else if( creep.harvest( target) == ERR_NOT_IN_RANGE
 					    ||  creep.pickup(  target) == ERR_NOT_IN_RANGE
 					    ||  creep.withdraw(target) == ERR_NOT_IN_RANGE
 					    ||
