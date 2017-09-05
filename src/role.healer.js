@@ -3,7 +3,6 @@
 /** This script provides an AI for healer creeps.
 **/
 
-
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES   = require("defines");
