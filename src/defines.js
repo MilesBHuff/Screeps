@@ -53,6 +53,7 @@ const DEFINES = {
 	 * @return targets without badTargets.
 	**/
 	filterTargets: function (targets, badTargets) {
+return targets; //TODO
 		var badTargetsCopy = badTargets;
 		for(var i = 0; targets[i]; i++) {
 			for(var j = 0; badTargets[j]; j++) {
