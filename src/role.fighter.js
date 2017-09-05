@@ -9,7 +9,7 @@ const DEFINES   = require("defines");
 var badTargets  = Array();
 var hostiles    = Array();
 var rooms       = Array();
-var roleFighter  = {
+var roleFighter = {
 
 	// Find target
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -52,22 +52,28 @@ var roleFighter  = {
 //							b = false;
 //						}
 //					}
+//					targets = DEFINES.filterTargets(targets, badTargets);
 //					if(targets.length && b) break;
 					task = DEFINES.TASKS.ATTACK;
 					// Attack enemy healers
 					targets = _.filter(hostiles, (hostile) => {return(hostile.getActiveBodyparts(HEAL) > 0);});
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets.length) break;
 					// Attack enemy rangers
 					targets = _.filter(hostiles, (hostile) => {return(hostile.getActiveBodyparts(RANGED_ATTACK) > 0);});
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets.length) break;
 					// Attack enemy brawlers
 					targets = _.filter(hostiles, (hostile) => {return(hostile.getActiveBodyparts(ATTACK) > 0);});
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets.length) break;
 					// Attack enemy claimers
 					targets = _.filter(hostiles, (hostile) => {return(hostile.getActiveBodyparts(CLAIM) > 0);});
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets.length) break;
 					// Attack other enemy units
 					targets = hostiles;
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets.length) break;
 				} //fi
 //				// Renew if near to a natural death
@@ -76,11 +82,13 @@ var roleFighter  = {
 //					targets = creep.room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(
 //						structure.structureType == STRUCTURE_SPAWN
 //					);}}););
+//					targets = DEFINES.filterTargets(targets, badTargets);
 //					if(targets.length) break;
 //				} //fi
 				task = DEFINES.TASKS.HARVEST;
 				// Attack enemy structures
 				targets = creep.room.find(FIND_HOSTILE_STRUCTURES);
+				targets = DEFINES.filterTargets(targets, badTargets);
 				if(targets.length) break;
 				// Attack condemned structures
 				if(creep.room.memory && creep.room.memory.dismantle) {
@@ -88,9 +96,9 @@ var roleFighter  = {
 					for(var a = 0; creep.room.memory.dismantle[a]; a++) {
 						targets.push(Game.getObjectById(creep.room.memory.dismantle[a]));
 					} //done
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
 				} //fi
-				if(targets.length) break;
 			} //esac
 
 			// Pick a target from the array of targets
