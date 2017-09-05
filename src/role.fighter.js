@@ -113,7 +113,7 @@ var roleFighter  = {
 
 			// If we reach this line, the current room had no valid targets.  Try another one.
 			// =================================================================
-rooms = Array(); //TODO:  This line is only here until DEFINES.move supports other rooms.
+rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES.move supports other rooms.
 			// If the array of rooms has not yet been sorted, sort it.
 			if(rooms[0] != creep.room) {
 				rooms = DEFINES.sortRooms(creep.pos, rooms);
@@ -133,15 +133,13 @@ rooms = Array(); //TODO:  This line is only here until DEFINES.move supports oth
 		// Move towards the target
 		// =================================================================
 		if(creep.memory.target) {
-			var target = Game.getObjectById(creep.memory.target);
-			if(!target) {
-				creep.memory.target = undefined;
-				creep.memory.path   = undefined;
-				return ERR_INVALID_TARGET;
-			} //fi
-
-			target = Game.getObjectById(creep.memory.target);
 			if(creep.memory && creep.memory.target) {
+				var target = Game.getObjectById(creep.memory.target);
+				if(!target) {
+					creep.memory.target = undefined;
+					creep.memory.path   = undefined;
+					return ERR_INVALID_TARGET;
+				} //fi
 				if(
 				(  creep.timeToLive < DEFINES.NEAR_DEATH
 				&& target.structureType
