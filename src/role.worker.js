@@ -279,6 +279,7 @@ roleWorker.rooms = Array(); //TODO:  This line is only here until DEFINES.move s
 		// =================================================================
 		if(creep.memory.target) {
 			var target = Game.getObjectById(creep.memory.target);
+			if(!target) return ERR_INVALID_TARGET;
 
 			// Harvest
 			// -------------------------------------------------------------
