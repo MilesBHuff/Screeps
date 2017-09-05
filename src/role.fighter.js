@@ -33,7 +33,9 @@ var roleFighter  = {
 
 			// Variables
 			// =================================================================
-			hostiles = Game.rooms[rooms[0]].find(FIND_HOSTILE_CREEPS);
+			if(rooms[0] != creep.room.name) {
+				hostiles = Game.rooms[rooms[0]].find(FIND_HOSTILE_CREEPS);
+			} //fi
 			var targets  = Array();
 			var task     = DEFINES.TASKS.WAIT;
 			switch(true) {
@@ -153,7 +155,11 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 			&& target.my
 			)
 			||
-			(  creep.attack(      target) == ERR_NOT_IN_RANGE
+			(  creep.getActiveBodyparts(ATTACK) > 0
+			&& creep.attack(      target) == ERR_NOT_IN_RANGE
+			)
+			||
+			(  creep.getActiveBodyparts(RANGED_ATTACK) > 0
 			&& creep.rangedAttack(target) == ERR_NOT_IN_RANGE
 			)) {
 				if(DEFINES.move(creep, COLOR_RED, false) == ERR_NO_PATH) {
@@ -195,6 +201,7 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 
 		// Validate the current target (with a small chance of having to find a new target no matter what)
 		// ====================================================================
+		hostiles = creep.room.find(FIND_HOSTILE_CREEPS);
 		if(creep.memory
 		&& creep.memory.target
 		&&
