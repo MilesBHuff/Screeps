@@ -142,7 +142,7 @@ const DEFINES = {
 			// If the target is in a different room, find the nearest exit to that room
 			//TODO:  Check to see if the stated exit is even accessible.
 			if(creep.room.id != target.id) {
-				target = creep.room.findClosestByRange(creep.room.findExitTo(target.room));
+				target = creep.pos.findClosestByRange(creep.room.find(creep.room.findExitTo(target.room)));
 			}
 			for(var a = 0; a < 2; a++) {
 				// If the creep has no path, create one.  If there is no possible path, reset the creep's target and return.
@@ -173,7 +173,6 @@ const DEFINES = {
 					} //fi
 					// If the path is invalid, then the target cannot be reached.  Find a new target.
 					if(!validPath) {
-console.log(target.id);
 						creep.memory.target = undefined;
 						creep.memory.path   = undefined;
 						return ERR_NO_PATH;
