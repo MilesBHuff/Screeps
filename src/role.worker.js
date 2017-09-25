@@ -414,14 +414,12 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 
 			// Affect the target
 			// -----------------------------------------------------------------
-			if(!roleWorker.affectTarget(creep)) {
-				return OK;
-			} else {
-				// If we were unable to find a path to the target, try to find a new one.
+			// If an error ocurred during pathfinding, reset the current target.
+			if(roleWorker.affectTarget(creep)) {
 				badTargets.push(creep.memory.target);
 				creep.memory.target = undefined;
 				creep.memory.path   = undefined;
-			} //fi
+			} else return;
 
 			// If we're out of rooms, give up.
 			// -----------------------------------------------------------------
