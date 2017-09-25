@@ -472,10 +472,78 @@ const DEFINES = {
 		} //done
 
 		// Remove excess body parts
-		// -------------------------------------------------------------------------
+		// ---------------------------------------------------------------------
 		//TODO:  If energy remains, replace TOUGH parts with non-TOUGH parts.
-		for(var i = bodyParts.length; i > MAX_CREEP_SIZE; i--) {
-			bodyParts.pop();
+		while((partCount.attack
+			 + partCount.carry
+			 + partCount.claim
+			 + partCount.heal
+			 + partCount.move
+			 + partCount.rangedAttack
+			 + partCount.tough
+			 + partCount.work
+		   ) > MAX_CREEP_SIZE
+		) {
+			// TOUGH parts are useless when we can affort non-TOUGH parts to replace them.
+			if(partCount.tough > 0) {
+				partCount.tough--;
+				continue;
+			}
+			
+			// Henceforth, decrement each part-type evenly, according to the order used in the sorting section (below).
+			// '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+			// WORK
+			if(partCount.work <= partCount.attack
+			&& partCount.work <= partCount.carry
+			&& partCount.work <= partCount.claim
+			&& partCount.work <= partCount.heal
+			&& partCount.work <= partCount.move
+			&& partCount.work <= partCount.rangedAttack
+			) {
+				partCount.work--;
+				continue;
+			} //fi
+			// CLAIM
+			if(partCount.claim <= partCount.attack
+			&& partCount.claim <= partCount.carry
+			&& partCount.claim <= partCount.heal
+			&& partCount.claim <= partCount.move
+			&& partCount.claim <= partCount.rangedAttack
+			) {
+				partCount.claim--;
+				continue;
+			} //fi
+			// ATTACK
+			if(partCount.attack <= partCount.carry
+			&& partCount.attack <= partCount.heal
+			&& partCount.attack <= partCount.move
+			&& partCount.attack <= partCount.rangedAttack
+			) {
+				partCount.attack--;
+				continue;
+			} //fi
+			// RANGED_ATTACK
+			if(partCount.rangedAttack <= partCount.carry
+			&& partCount.rangedAttack <= partCount.heal
+			&& partCount.rangedAttack <= partCount.move
+			) {
+				partCount.rangedAttack--;
+				continue;
+			} //fi
+			// HEAL
+			if(partCount.heal <= partCount.carry
+			&& partCount.heal <= partCount.move
+			) {
+				partCount.heal--;
+				continue;
+			} //fi
+			// CARRY
+			if(partCount.carry <= partCount.move) {
+				partCount.carry--;
+				continue;
+			} //fi
+			// MOVE
+			partCount.move--;
 		} //done
 
 		// Sort the parts in order to make the creep more resilient in combat
