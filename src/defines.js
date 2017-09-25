@@ -201,12 +201,12 @@ const DEFINES = {
 				} //fi
 				creep.memory.path = Room.serializePath(path);
 			} //fi
-			// Try to move the creep to the new location.  If this fails, reset the path.
+			// Try to move the creep to the new location.  If this fails, reset the path and return an error.
+			//NOTE:  In the past, I simply recalculated the path once;  but this frequently resulted in neverending creep path-loops.
 			var code = creep.moveByPath(creep.memory.path);
 			if(code && code != ERR_BUSY && code != ERR_TIRED) {
 				creep.memory.path = undefined;
-				return ERR_NO_PATH; // This makes creeps find a new target.
-				// return OK;         // This makes creeps wait a step.
+				return ERR_NO_PATH;
 			} //fi
 			code = undefined;
 			// Parse the given color
