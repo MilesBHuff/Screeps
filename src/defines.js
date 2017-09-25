@@ -144,73 +144,70 @@ const DEFINES = {
 			if(creep.room.name != target.room.name) {
 				target = creep.pos.findClosestByRange(creep.room.find(creep.room.findExitTo(target.room)));
 			}
-			for(var a = 0; a < 2; a++) {
-				// If the creep has no path, create one.  If there is no possible path, reset the creep's target and return.
-				if(!creep.memory.path) {
-					// Configure the pathfinder
-					var pathOpts = {
-						ignoreCreeps: false,
-						ignoreDestructibleStructures: false,
-						ignoreRoads:  false,
-						maxOps:        1000,
-						maxRooms:         3,
-						serialize:    false,
-					}; //struct
-					// Find a path
-					var path = creep.pos.findPathTo(target, pathOpts);
-					// Validate the path
-					var validPath = false;
-					if(path.length) {
-						if(target == Game.getObjectById(creep.memory.target)) {
-							for(var x = -1; x < 1; x++) {
-								for(var y = -1; y < 1; y++) {
-									if(path[path.length - 1].x == target.pos.x + x
-									|| path[path.length - 1].y == target.pos.y + y
-									){
-										validPath = true;
-									} //fi
-								} //done
+			// If the creep has no path, create one.  If there is no possible path, reset the creep's target and return.
+			if(!creep.memory.path) {
+				// Configure the pathfinder
+				var pathOpts = {
+					ignoreCreeps: false,
+					ignoreDestructibleStructures: false,
+					ignoreRoads:  false,
+					maxOps:        1000,
+					maxRooms:         3,
+					serialize:    false,
+				}; //struct
+				// Find a path
+				var path = creep.pos.findPathTo(target, pathOpts);
+				// Validate the path
+				var validPath = false;
+				if(path.length) {
+					if(target == Game.getObjectById(creep.memory.target)) {
+						for(var x = -1; x < 1; x++) {
+							for(var y = -1; y < 1; y++) {
+								if(path[path.length - 1].x == target.pos.x + x
+								|| path[path.length - 1].y == target.pos.y + y
+								){
+									validPath = true;
+								} //fi
 							} //done
-						} else {
+						} //done
+					} else {
 //							for(var x = -1; x < 1; x++) {
 //								for(var y = -1; y < 1; y++) {
 //									if(path[path.length - 1].x == target.x + x
 //									|| path[path.length - 1].y == target.y + y
 //									){
-										validPath = true;
+									validPath = true;
 //									} //fi
 //								} //done
 //							} //done
-						} //fi
 					} //fi
-					// If the path is invalid, then the target cannot be reached.  Find a new target.
-					if(!validPath) {
-						creep.memory.target = undefined;
-						creep.memory.path   = undefined;
-						return ERR_NO_PATH;
-					} //fi
-					// If the path is valid, serialize it and save it in memory.
-					creep.memory.path = Room.serializePath(path);
-					// Clear unneeded memory.
-					     path = undefined;
-					validPath = undefined;
-				} else {
-					// If the creep already had a path, delete path elements that have already been traversed.
-					var path = Room.deserializePath(creep.memory.path);
-					if(path[0] != creep.pos) {
-						path.shift();
-					} //fi
-					creep.memory.path = Room.serializePath(path);
 				} //fi
-				// Try to move the creep to the new location.  If this fails, reset the path.
-				var code = creep.moveByPath(creep.memory.path);
-				if(code && code != ERR_BUSY && code != ERR_TIRED) {
-					creep.memory.path = undefined;
-					continue;
+				// If the path is invalid, then the target cannot be reached.  Find a new target.
+				if(!validPath) {
+					creep.memory.target = undefined;
+					creep.memory.path   = undefined;
+					return ERR_NO_PATH;
 				} //fi
-				code = undefined;
-				break;
-			} //done
+				// If the path is valid, serialize it and save it in memory.
+				creep.memory.path = Room.serializePath(path);
+				// Clear unneeded memory.
+				     path = undefined;
+				validPath = undefined;
+			} else {
+				// If the creep already had a path, delete path elements that have already been traversed.
+				var path = Room.deserializePath(creep.memory.path);
+				if(path[0] != creep.pos) {
+					path.shift();
+				} //fi
+				creep.memory.path = Room.serializePath(path);
+			} //fi
+			// Try to move the creep to the new location.  If this fails, reset the path.
+			var code = creep.moveByPath(creep.memory.path);
+			if(code && code != ERR_BUSY && code != ERR_TIRED) {
+				creep.memory.path = undefined;
+				return ERR_NO_PATH;
+			} //fi
+			code = undefined;
 			// Parse the given color
 			switch(color) {
 				case COLOR_RED:
