@@ -59,6 +59,7 @@ var roleWorker  = {
 					// Withdraw resources from enemy structures
 					// ---------------------------------------------------------
 					targets = rooms[0].find(FIND_HOSTILE_STRUCTURES);
+					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
 
 					// 50% chance to withdraw resources from condemned structures
