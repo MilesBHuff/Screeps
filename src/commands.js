@@ -32,7 +32,7 @@ var commands = {
 
 	// Create creep
 	// =========================================================================
-	// require("commands").createCreep("SpawnName", [MOVE], "CreepName", DEFINES.ROLES.MANUAL);
+	// require("commands").createCreep("SpawnName", [MOVE], "CreepName", require("defines")ROLES.MANUAL);
 	/** This function spawns a creep at the desired spawn, using the same
 	 *  creep-generation function as main().
 	 * @param  spawnName The name of the spawn to use.
