@@ -86,9 +86,9 @@ module.exports.loop = function () {
 			
 			// Round off the creep limits
 			// ---------------------------------------------------------------------
-			room.memory.fighterLimit  = Math.round(room.memory.fighterLimit);
-			room.memory.healerLimit   = Math.round(room.memory.healerLimit );
-			room.memory.workerLimit   = Math.round(room.memory.workerLimit );
+			room.memory.fighterLimit = Math.round(room.memory.fighterLimit);
+			room.memory.healerLimit  = Math.round(room.memory.healerLimit );
+			room.memory.workerLimit  = Math.round(room.memory.workerLimit );
 		} //fi
 	} //done
 
