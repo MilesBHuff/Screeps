@@ -155,10 +155,10 @@ var roleWorker  = {
 					if(targets && targets.length) break;
 				} //fi
 
-				// 50% chance to build things that complete instantaneously
+				// 25% chance to build things that complete instantaneously
 				// =============================================================
 				task = DEFINES.TASKS.BUILD;
-				if(Math.round(Math.random())) {
+				if(Math.round(Math.random() * 2)) {
 					targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
 						   site.structureType == STRUCTURE_WALL
 						|| site.structureType == STRUCTURE_RAMPART
@@ -177,6 +177,18 @@ var roleWorker  = {
 						   structure.hits < (structure.hitsMax * 0.75)
 						&& structure.hits < (repairLimit * 0.75)
 						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
+					});
+					targets = DEFINES.filterTargets(targets, badTargets);
+					if(targets && targets.length) break;
+				} //fi
+
+				// 50% chance of building cheap / important structures.
+				// =============================================================
+				task = DEFINES.TASKS.BUILD;
+				if(Math.round(Math.random())) {
+					targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
+						   site.structureType == STRUCTURE_SPAWN
+						|| site.structureType == STRUCTURE_ROAD
 					});
 					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
