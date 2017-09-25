@@ -205,7 +205,8 @@ const DEFINES = {
 			var code = creep.moveByPath(creep.memory.path);
 			if(code && code != ERR_BUSY && code != ERR_TIRED) {
 				creep.memory.path = undefined;
-				return ERR_NO_PATH;
+				return ERR_NO_PATH; // This makes creeps find a new target.
+				// return OK;         // This makes creeps wait a step.
 			} //fi
 			code = undefined;
 			// Parse the given color
