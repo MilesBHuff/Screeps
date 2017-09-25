@@ -293,9 +293,7 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 					    &&  target.room.memory.dismantle
 					    &&  target.room.memory.dismantle.indexOf(creep.memory.target) != -1
 					    ))
-				){
-					creep.memory.target  = undefined;
-					return ERR_INVALID_TARGET;
+				) {	return ERR_INVALID_TARGET;
 				} else if( creep.harvest( target) == ERR_NOT_IN_RANGE
 					    ||  creep.pickup(  target) == ERR_NOT_IN_RANGE
 					    ||  creep.withdraw(target) == ERR_NOT_IN_RANGE
@@ -310,13 +308,7 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 					    ))
 						&&  creep.dismantle(target) == ERR_NOT_IN_RANGE
 					    )
-				){
-					if(DEFINES.move(creep, COLOR_YELLOW, true) == ERR_NO_PATH) {
-							badTargets.push(target.id, true);
-							creep.memory.target = undefined;
-							creep.memory.path   = undefined;
-							return ERR_NO_PATH;
-						}
+				) {	return DEFINES.move(creep, COLOR_YELLOW, true);
 				} //fi
 			} else {
 
@@ -324,24 +316,14 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 				// ---------------------------------------------------------
 				/*//*/  if(target.structureType == STRUCTURE_CONTROLLER) {
 					if(creep.upgradeController(target) == ERR_NOT_IN_RANGE) {
-						if(DEFINES.move(creep, COLOR_CYAN, true) == ERR_NO_PATH) {
-							badTargets.push(target.id);
-							creep.memory.target = undefined;
-							creep.memory.path   = undefined;
-							return ERR_NO_PATH;
-						}
+						return DEFINES.move(creep, COLOR_CYAN, true);
 					} //fi
 
 				// Build
 				// ---------------------------------------------------------
 				} else  if(target.progressTotal) {
 					if(creep.build(target) == ERR_NOT_IN_RANGE) {
-						if(DEFINES.move(creep, COLOR_WHITE, true) == ERR_NO_PATH) {
-							badTargets.push(target.id);
-							creep.memory.target = undefined;
-							creep.memory.path   = undefined;
-							return ERR_NO_PATH;
-						}
+						return DEFINES.move(creep, COLOR_WHITE, true);
 					} //fi
 
 				// Repair
@@ -350,28 +332,16 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 					&& target.hits < repairLimit
 					){
 					if(creep.repair(target) == ERR_NOT_IN_RANGE) {
-						if(DEFINES.move(creep, COLOR_PURPLE, true) == ERR_NO_PATH) {
-							badTargets.push(target.id);
-							creep.memory.target = undefined;
-							creep.memory.path   = undefined;
-							return ERR_NO_PATH;
-						}
+						return DEFINES.move(creep, COLOR_PURPLE, true);
 					} //fi
 
 				// Transfer
 				// ---------------------------------------------------------
 				} else  if(target.energy < target.energyCapacity) {
 					if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-						if(DEFINES.move(creep, DEFINES.COLOR_BLACK, true) == ERR_NO_PATH) {
-							badTargets.push(target.id);
-							creep.memory.target = undefined;
-							creep.memory.path   = undefined;
-							return ERR_NO_PATH;
-						}
+						return DEFINES.move(creep, DEFINES.COLOR_BLACK, true);
 					} //fi
 				} else {
-					creep.memory.target = undefined;
-					creep.memory.path   = undefined;
 					return ERR_INVALID_TARGET;
 				} //fi
 			} //fi
