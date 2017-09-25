@@ -49,8 +49,8 @@ const DEFINES = {
 	// Filter targets
 	// =========================================================================
 	/** This function removes any element in badTargets from targets.
-	 * @param  targets    The array to filter.
-	 * @param  badTargets The items to remove from targets.
+	 * @param  targets    The array whose items to check.
+	 * @param  badTargets The IDs of the items to filter out.
 	 * @return targets without badTargets.
 	**/
 	filterTargets: function (targets, badTargets) {
