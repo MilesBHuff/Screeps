@@ -141,7 +141,7 @@ const DEFINES = {
 			} //fi
 			// If the target is in a different room, find the nearest exit to that room
 			//TODO:  Check to see if the stated exit is even accessible.
-			if(creep.room.id != target.id) {
+			if(creep.room.name != target.room.name) {
 				target = creep.pos.findClosestByRange(creep.room.find(creep.room.findExitTo(target.room)));
 			}
 			for(var a = 0; a < 2; a++) {
@@ -161,15 +161,27 @@ const DEFINES = {
 					// Validate the path
 					var validPath = false;
 					if(path.length) {
-						for(var x = -1; x < 1; x++) {
-							for(var y = -1; y < 1; y++) {
-								if(path[path.length - 1].x == target.pos.x + x
-								|| path[path.length - 1].y == target.pos.y + y
-								){
-									validPath = true;
-								} //fi
+						if(target == Game.getObjectById(creep.memory.target)) {
+							for(var x = -1; x < 1; x++) {
+								for(var y = -1; y < 1; y++) {
+									if(path[path.length - 1].x == target.pos.x + x
+									|| path[path.length - 1].y == target.pos.y + y
+									){
+										validPath = true;
+									} //fi
+								} //done
 							} //done
-						} //done
+						} else {
+//							for(var x = -1; x < 1; x++) {
+//								for(var y = -1; y < 1; y++) {
+//									if(path[path.length - 1].x == target.x + x
+//									|| path[path.length - 1].y == target.y + y
+//									){
+										validPath = true;
+//									} //fi
+//								} //done
+//							} //done
+						} //fi
 					} //fi
 					// If the path is invalid, then the target cannot be reached.  Find a new target.
 					if(!validPath) {
