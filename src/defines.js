@@ -493,52 +493,52 @@ const DEFINES = {
 			// Henceforth, decrement each part-type evenly, according to the order used in the sorting section (below).
 			// '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 			// WORK
-			if(partCount.work <= partCount.attack
-			&& partCount.work <= partCount.carry
-			&& partCount.work <= partCount.claim
-			&& partCount.work <= partCount.heal
-			&& partCount.work <= partCount.move
-			&& partCount.work <= partCount.rangedAttack
+			if(partCount.work >= partCount.attack
+			&& partCount.work >= partCount.carry
+			&& partCount.work >= partCount.claim
+			&& partCount.work >= partCount.heal
+			&& partCount.work >= partCount.move
+			&& partCount.work >= partCount.rangedAttack
 			) {
 				partCount.work--;
 				continue;
 			} //fi
 			// CLAIM
-			if(partCount.claim <= partCount.attack
-			&& partCount.claim <= partCount.carry
-			&& partCount.claim <= partCount.heal
-			&& partCount.claim <= partCount.move
-			&& partCount.claim <= partCount.rangedAttack
+			if(partCount.claim >= partCount.attack
+			&& partCount.claim >= partCount.carry
+			&& partCount.claim >= partCount.heal
+			&& partCount.claim >= partCount.move
+			&& partCount.claim >= partCount.rangedAttack
 			) {
 				partCount.claim--;
 				continue;
 			} //fi
 			// ATTACK
-			if(partCount.attack <= partCount.carry
-			&& partCount.attack <= partCount.heal
-			&& partCount.attack <= partCount.move
-			&& partCount.attack <= partCount.rangedAttack
+			if(partCount.attack >= partCount.carry
+			&& partCount.attack >= partCount.heal
+			&& partCount.attack >= partCount.move
+			&& partCount.attack >= partCount.rangedAttack
 			) {
 				partCount.attack--;
 				continue;
 			} //fi
 			// RANGED_ATTACK
-			if(partCount.rangedAttack <= partCount.carry
-			&& partCount.rangedAttack <= partCount.heal
-			&& partCount.rangedAttack <= partCount.move
+			if(partCount.rangedAttack >= partCount.carry
+			&& partCount.rangedAttack >= partCount.heal
+			&& partCount.rangedAttack >= partCount.move
 			) {
 				partCount.rangedAttack--;
 				continue;
 			} //fi
 			// HEAL
-			if(partCount.heal <= partCount.carry
-			&& partCount.heal <= partCount.move
+			if(partCount.heal >= partCount.carry
+			&& partCount.heal >= partCount.move
 			) {
 				partCount.heal--;
 				continue;
 			} //fi
 			// CARRY
-			if(partCount.carry <= partCount.move) {
+			if(partCount.carry >= partCount.move) {
 				partCount.carry--;
 				continue;
 			} //fi
