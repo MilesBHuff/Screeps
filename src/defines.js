@@ -155,7 +155,7 @@ const DEFINES = {
 					var path = creep.pos.findPathTo(target, pathOpts);
 					// Validate the path
 					var validPath = false;
-					if(path.length) {{
+					if(path.length) {
 						for(var x = -1; x < 1; x++) {
 							for(var y = -1; y < 1; y++) {
 								if(path[path.length - 1].x == target.pos.x + x
