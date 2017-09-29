@@ -320,8 +320,8 @@ var roleWorker  = {
 			if(creep.memory.harvesting) {
 				/*//*/  if(!target
 					    ||
-					    (( !target.energy
-					    ||  target.energy <= 0
+					    (( !(target.store  && _.sum(target.store) > 0)
+					    && !(target.energy &&       target.energy > 0)
 					    )
 						&&
 					    !(  target.room.memory
