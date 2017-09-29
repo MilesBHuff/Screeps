@@ -89,13 +89,13 @@ var roleWorker  = {
 						if(targets && targets.length) break;
 					} //fi
 
-					// 50% chance to harvest minerals
-					// ---------------------------------------------------------
-					if(false && !Math.floor(Math.random() * 4)) {
-						targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) => {return(structure.structureType == STRUCTURE_EXTRACTOR);}});
-						targets = DEFINES.filterTargets(targets, badTargets);
-						if((targets && targets.length) || rooms[0].find(FIND_MINERALS, {filter: (mineral) => mineral.mineralAmount > 0}).length) break;
-					} //fi
+//					// 50% chance to harvest minerals
+//					// ---------------------------------------------------------
+//					if(Math.floor(Math.random())) {
+//						targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) => {return(structure.structureType == STRUCTURE_EXTRACTOR);}});
+//						targets = DEFINES.filterTargets(targets, badTargets);
+//						if((targets && targets.length) || rooms[0].find(FIND_MINERALS, {filter: (mineral) => mineral.mineralAmount > 0}).length) break;
+//					} //fi
 
 					// Get resources from storage
 					// ---------------------------------------------------------
