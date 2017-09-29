@@ -237,8 +237,19 @@ var roleWorker  = {
 				task = DEFINES.TASKS.TRANSFER;
 				targets = rooms[0].find(FIND_MY_STRUCTURES, {
 					filter: (structure) => {return(
-						   structure.structureType == STRUCTURE_STORAGE
-						&& structure.energy        <  structure.energyCapacity
+						(  structure.structureType == STRUCTURE_CONTAINER
+						|| structure.structureType == STRUCTURE_LINK
+						|| structure.structureType == STRUCTURE_STORAGE
+						|| structure.structureType == STRUCTURE_TERMINAL
+						)
+						&&
+						(( structure.energy && structure.energyCapacity
+						&& structure.energy <  structure.energyCapacity
+						)
+						||
+						(        structure.store && structure.storeCapacity
+						&& _.sum(structure.store) < structure.storeCapacity
+						))
 						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
 					);}
 				});
@@ -407,7 +418,7 @@ var roleWorker  = {
 		// Decide whether to harvest
 		// =====================================================================
 		if(creep.memory.harvesting) {
-			if(creep.carry.energy >= creep.carryCapacity) {
+			if(_.sum(creep.carry) >= creep.carryCapacity) {
 				creep.memory.harvesting = false;
 				creep.memory.target = undefined;
 				creep.memory.path   = undefined;
