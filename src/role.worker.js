@@ -318,31 +318,31 @@ var roleWorker  = {
 			// Harvest
 			// -------------------------------------------------------------
 			if(creep.memory.harvesting) {
-				/*//*/  if(!target
-					    ||
-					    (( !(target.store  && _.sum(target.store) > 0)
-					    && !(target.energy &&       target.energy > 0)
-					    )
-						&&
-					    !(  target.room.memory
-					    &&  target.room.memory.dismantle
-					    &&  target.room.memory.dismantle.indexOf(creep.memory.target) != -1
-					    ))
+				/*//*/ if(!target
+					   ||
+					   (( !(target.store  && _.sum(target.store) > 0)
+					   && !(target.energy &&       target.energy > 0)
+					   )
+					   &&
+					   !(  target.room.memory
+					   &&  target.room.memory.dismantle
+					   &&  target.room.memory.dismantle.indexOf(creep.memory.target) != -1
+					   ))
 				) {	return ERR_INVALID_TARGET;
 				} else if( creep.harvest( target) == ERR_NOT_IN_RANGE
-					    ||  creep.pickup(  target) == ERR_NOT_IN_RANGE
-					    ||  creep.withdraw(target) == ERR_NOT_IN_RANGE
-					    ||
-					    ((( target.room.controller.owner
-					    &&  target.room.controller.owner != DEFINES.USERNAME
-					    )
-						||
-					    (   target.room.memory
-					    &&  target.room.memory.dismantle
-					    &&  target.room.memory.dismantle.indexOf(creep.memory.target) != -1
-					    ))
-						&&  creep.dismantle(target) == ERR_NOT_IN_RANGE
-					    )
+					   ||  creep.pickup(  target) == ERR_NOT_IN_RANGE
+					   ||  creep.withdraw(target) == ERR_NOT_IN_RANGE
+					   ||
+					   ((( target.room.controller.owner
+					   &&  target.room.controller.owner != DEFINES.USERNAME
+					   )
+					   ||
+					   (   target.room.memory
+					   &&  target.room.memory.dismantle
+					   &&  target.room.memory.dismantle.indexOf(creep.memory.target) != -1
+					   ))
+					   &&  creep.dismantle(target) == ERR_NOT_IN_RANGE
+					   )
 				) {	return DEFINES.move(creep, COLOR_YELLOW, true);
 				} //fi
 			} else {
