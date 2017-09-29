@@ -62,7 +62,24 @@ var roleWorker  = {
 					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
 
-					// 50% chance to withdraw resources from condemned structures
+//					// Get energy from a full retrieval link
+//					// ---------------------------------------------------------
+//					targets = rooms[0].find(FIND_STRUCTURES, {
+//						filter: (structure) => {return(
+//							   structure.structureType == STRUCTURE_LINK
+//							&& structure.energy        >= structure.energyCapacity
+//						);}
+//					});
+//					targets = DEFINES.filterTargets(targets, badTargets);
+//					if(targets && targets.length) break;
+
+					// Harvest new energy
+					// ---------------------------------------------------------
+					targets = rooms[0].find(FIND_SOURCES, {filter: (source) => source.energy > 0});
+					targets = DEFINES.filterTargets(targets, badTargets);
+					if(targets && targets.length) break;
+
+					// Withdraw resources from condemned structures
 					// ---------------------------------------------------------
 					if(rooms[0].memory && rooms[0].memory.dismantle && Math.round(Math.random())) {
 						for(var a = 0; rooms[0].memory.dismantle[a]; a++) {
@@ -72,7 +89,7 @@ var roleWorker  = {
 						if(targets && targets.length) break;
 					} //fi
 
-					// 25% chance to harvest minerals
+					// 50% chance to harvest minerals
 					// ---------------------------------------------------------
 					if(false && !Math.floor(Math.random() * 4)) {
 						targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) => {return(structure.structureType == STRUCTURE_EXTRACTOR);}});
@@ -80,18 +97,14 @@ var roleWorker  = {
 						if((targets && targets.length) || rooms[0].find(FIND_MINERALS, {filter: (mineral) => mineral.mineralAmount > 0}).length) break;
 					} //fi
 
-					// Harvest new energy
-					// ---------------------------------------------------------
-					targets = rooms[0].find(FIND_SOURCES, {filter: (source) => source.energy > 0});
-					targets = DEFINES.filterTargets(targets, badTargets);
-					if(targets && targets.length) break;
-
-					// Get energy from storage
+					// Get resources from storage
 					// ---------------------------------------------------------
 					targets = rooms[0].find(FIND_STRUCTURES, {
 						filter: (structure) => {return(
-							   structure.structureType == STRUCTURE_STORAGE
-							&& structure.energy        >  0
+							(  structure.structureType == STRUCTURE_CONTAINER
+							|| structure.structureType == STRUCTURE_STORAGE
+							)
+							&& _.sum(structure.store) >  0
 						);}
 					});
 					targets = DEFINES.filterTargets(targets, badTargets);
