@@ -326,7 +326,7 @@ var roleWorker  = {
 					   &&
 					   !(  target.room.memory
 					   &&  target.room.memory.dismantle
-					   &&  target.room.memory.dismantle.indexOf(creep.memory.target) != -1
+					   &&  target.room.memory.dismantle.indexOf(creep.memory.target) == -1
 					   ))
 				) {	return ERR_INVALID_TARGET;
 				} else if( creep.harvest( target) == ERR_NOT_IN_RANGE
