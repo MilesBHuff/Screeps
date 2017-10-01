@@ -5,15 +5,16 @@
  *  Which of these tasks is chosen depends on a mixture of strategy and
  *  randomness.
  *  These worker creeps also always look for the closest target first.  If that
- *  target is inaccessible, they then pick one at random within their room.  If
- *  the creep cannot find anything to do in its current room, it will look for
- *  things to do in a neighbouring room.
+ *  target is inaccessible, they then pick the next closest.  If the creep
+ *  cannot find anything to do in its current room, it will look for things to
+ *  do in a neighbouring room.
 **/
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES   = require("defines");
 var badTargets  = Array();
+var canWander   = true;
 var repairLimit = undefined;
 var rooms       = Array();
 var roleWorker  = {
@@ -322,26 +323,26 @@ var roleWorker  = {
 					   ||
 					   (( !(target.store  && _.sum(target.store) > 0)
 					   && !(target.energy &&       target.energy > 0)
-					   )
+					    )
 					   &&
-					   !(  target.room.memory
-					   &&  target.room.memory.dismantle
-					   &&  target.room.memory.dismantle.indexOf(creep.memory.target) == -1
+					   !(   target.room.memory
+					   &&   target.room.memory.dismantle
+					   &&   target.room.memory.dismantle.indexOf(creep.memory.target) != -1
 					   ))
 				) {	return ERR_INVALID_TARGET;
-				} else if( creep.harvest( target) == ERR_NOT_IN_RANGE
-					   ||  creep.pickup(  target) == ERR_NOT_IN_RANGE
-					   ||  creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE
+				} else if( creep.harvest( target)
+					   ||  creep.pickup(  target)
+					   ||  creep.withdraw(target, RESOURCE_ENERGY)
 					   ||
 					   ((( target.room.controller.owner
 					   &&  target.room.controller.owner != DEFINES.USERNAME
-					   )
+					     )
 					   ||
-					   (   target.room.memory
+					     ( target.room.memory
 					   &&  target.room.memory.dismantle
 					   &&  target.room.memory.dismantle.indexOf(creep.memory.target) != -1
-					   ))
-					   &&  creep.dismantle(target) == ERR_NOT_IN_RANGE
+					    ))
+					   &&  creep.dismantle(target)
 					   )
 				) {	return DEFINES.move(creep, COLOR_YELLOW, true);
 				} //fi
@@ -350,14 +351,14 @@ var roleWorker  = {
 				// Upgrade
 				// ---------------------------------------------------------
 				/*//*/  if(target.structureType == STRUCTURE_CONTROLLER) {
-					if(creep.upgradeController(target) == ERR_NOT_IN_RANGE) {
+					if(creep.upgradeController(target)) {
 						return DEFINES.move(creep, COLOR_CYAN, true);
 					} //fi
 
 				// Build
 				// ---------------------------------------------------------
 				} else  if(target.progressTotal) {
-					if(creep.build(target) == ERR_NOT_IN_RANGE) {
+					if(creep.build(target)) {
 						return DEFINES.move(creep, COLOR_WHITE, true);
 					} //fi
 
@@ -366,14 +367,14 @@ var roleWorker  = {
 				} else  if(target.hits < target.hitsMax
 					&& target.hits < repairLimit
 					){
-					if(creep.repair(target) == ERR_NOT_IN_RANGE) {
+					if(creep.repair(target)) {
 						return DEFINES.move(creep, COLOR_PURPLE, true);
 					} //fi
 
 				// Transfer
 				// ---------------------------------------------------------
 				} else  if(target.energy < target.energyCapacity) {
-					if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+					if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY)) {
 						return DEFINES.move(creep, DEFINES.COLOR_BLACK, true);
 					} //fi
 				} else {
@@ -384,7 +385,7 @@ var roleWorker  = {
 		// If the creep wasn't able to find a target, it wanders.
 		// =====================================================================
 		} else {
-			DEFINES.wander(creep);
+			if(canWander) DEFINES.wander(creep);
 			return OK;
 		} //fi
 
@@ -414,6 +415,7 @@ var roleWorker  = {
 		// Variables
 		// =====================================================================
 		repairLimit = DEFINES.REPAIR_LIMIT * creep.room.controller.level;
+		if(creep.memory && creep.memory.target) canWander = false;
 
 		// Decide whether to harvest
 		// =====================================================================
