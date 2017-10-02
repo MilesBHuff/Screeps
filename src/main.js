@@ -13,7 +13,7 @@ module.exports.loop = function () {
 	// =========================================================================
 	for(var name in Game.rooms) {
 		var room = Game.rooms[name];
-		if(!room.controller.my) break;
+		if(!room || !room.controller || !room.controller.my) break;
 
 		// Condemned structures
 		// ---------------------------------------------------------------------
@@ -21,17 +21,17 @@ module.exports.loop = function () {
 		if(!room.memory || !room.memory.dismantle) {
 			room.memory.dismantle = Array();
 		} //fi
-		// Update the array.  
+		// Update the array.
 		for(var i = 0; room.memory.dismantle[i]; i++) {
 			if(!Game.getObjectById(room.memory.dismantle[i])) {
 				room.memory.dismantle.splice(i, 1);
 				i--;
 			} //fi
 		} //done
-		
+
 		// These tasks are less important, and don't need to be done every tick.
 		if(Math.round(Math.random() * 8)) {
-			
+
 			// Saved structures
 			// -----------------------------------------------------------------
 			if(!room.memory || !room.memory.layout) {
@@ -74,7 +74,7 @@ module.exports.loop = function () {
 			exits = undefined;
 			// Multiply fighterLimit by the number of exits
 			room.memory.fighterLimit *= exitsCount;
-			
+
 			// If hostiles are present, increment fighterLimit by their number, and set healerLimit to fighterLimit / 4.
 			// ---------------------------------------------------------------------
 			var hostileCount = room.find(FIND_HOSTILE_CREEPS).length;
@@ -83,7 +83,7 @@ module.exports.loop = function () {
 				room.memory.healerLimit   = Math.round(room.memory.fighterLimit / 4);
 			} //fi
 			hostileCount = undefined;
-			
+
 			// Round off the creep limits
 			// ---------------------------------------------------------------------
 			room.memory.fighterLimit = Math.round(room.memory.fighterLimit);
