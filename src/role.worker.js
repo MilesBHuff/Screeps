@@ -452,7 +452,11 @@ var roleWorker  = {
 			// Affect the target
 			// -----------------------------------------------------------------
 			// If an error ocurred during pathfinding, reset the current target.
-			if(roleWorker.affectTarget(creep)) {
+			var code = roleWorker.affectTarget(creep);
+			if(code
+			&& code != OK
+			&& code != ERR_TIRED
+			) {
 				badTargets.push(creep.memory.target);
 				creep.memory.target = undefined;
 				creep.memory.path   = undefined;
