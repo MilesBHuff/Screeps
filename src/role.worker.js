@@ -331,9 +331,9 @@ var roleWorker  = {
 					   ))
 				) {	return ERR_INVALID_TARGET;
 				} else if( creep.harvest( target)
-					   ||  creep.pickup(  target)
-					   ||  creep.withdraw(target, RESOURCE_ENERGY)
-					   ||
+					   &&  creep.pickup(  target)
+					   &&  creep.withdraw(target, RESOURCE_ENERGY)
+					   &&
 					   ((( target.room.controller.owner
 					   &&  target.room.controller.owner != DEFINES.USERNAME
 					     )
