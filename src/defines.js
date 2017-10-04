@@ -204,11 +204,17 @@ const DEFINES = {
 			// Try to move the creep to the new location.  If this fails, reset the path and return an error.
 			//NOTE:  In the past, I simply recalculated the path once;  but this frequently resulted in neverending creep path-loops.
 			var code = creep.moveByPath(creep.memory.path);
-			if(code && code != ERR_BUSY && code != ERR_TIRED) {
+			if(code
+			&&
+			(  code == ERR_NOT_OWNER
+			|| code == ERR_BUSY
+			|| code == ERR_NOT_FOUND
+			|| code == INVALID_ARGS
+			|| code == ERR_NO_BODYPART
+			)) {
 				creep.memory.path = undefined;
-				return ERR_NO_PATH;
+				return code;
 			} //fi
-			code = undefined;
 			// Parse the given color
 			switch(color) {
 				case COLOR_RED:
@@ -276,7 +282,7 @@ const DEFINES = {
 			}; //struct
 			// Draw the creep's path
 			new RoomVisual(creep.room.name).poly(Room.deserializePath(creep.memory.path), lineOpts);
-			return OK;
+			return code;
 		} else return ERR_INVALID_TARGET;
 	}, //function
 
@@ -504,7 +510,7 @@ const DEFINES = {
 				partCount.tough--;
 				continue;
 			}
-			
+
 			// Henceforth, decrement each part-type evenly, according to the order used in the sorting section (below).
 			// '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 			// WORK
