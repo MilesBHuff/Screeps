@@ -204,12 +204,11 @@ const DEFINES = {
 			// Try to move the creep to the new location.  If this fails, reset the path and return an error.
 			//NOTE:  In the past, I simply recalculated the path once;  but this frequently resulted in neverending creep path-loops.
 			var code = creep.moveByPath(creep.memory.path);
-			if(code
-			&&
+			if(code &&
 			(  code == ERR_NOT_OWNER
 			|| code == ERR_BUSY
 			|| code == ERR_NOT_FOUND
-			|| code == INVALID_ARGS
+			|| code == ERR_INVALID_ARGS
 			|| code == ERR_NO_BODYPART
 			)) {
 				creep.memory.path = undefined;
