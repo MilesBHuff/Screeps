@@ -208,6 +208,19 @@ var roleWorker  = {
 					if(targets && targets.length) break;
 				} //fi
 
+				// 50% chance of refilling miscellaneous resource-using structures
+				// =============================================================
+				task = DEFINES.TASKS.TRANSFER;
+				if(Math.round(Math.random())) {
+					targets = rooms[0].find(FIND_MY_STRUCTURES, {filter: (structure) =>
+					       structure.structureType == STRUCTURE_LAB
+					    || structure.structureType == STRUCTURE_NUKER
+					    || structure.structureType == STRUCTURE_POWER_SPAWN
+					});
+					targets = DEFINES.filterTargets(targets, badTargets);
+					if(targets && targets.length) break;
+				} //fi
+
 				// 50% chance of upgrading the controller, if it's not already at max
 				// =============================================================
 				task = DEFINES.TASKS.UPGRADE;
