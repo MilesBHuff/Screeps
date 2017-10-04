@@ -13,7 +13,7 @@ module.exports.loop = function () {
 	// =========================================================================
 	for(var name in Game.rooms) {
 		var room = Game.rooms[name];
-		if(!room || !room.controller || !room.controller.my) break;
+		if(!room && !room.controller && !room.controller.my) break;
 
 		// Condemned structures
 		// ---------------------------------------------------------------------
