@@ -1,0 +1,4 @@
+## Needed for compatibility with the in-game editor
+[*]
+indent_size  = 4
+indent_style = space
