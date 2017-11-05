@@ -218,7 +218,7 @@ const DEFINES = {
             && !(code && code == ERR_NOT_FOUND)
             ) {
                 var path = Room.deserializePath(creep.memory.path);
-                if(path[0] != creep.pos) {
+                if(path[0] == creep.pos) {
                     path.shift();
                 } //fi
                 creep.memory.path = Room.serializePath(path);
@@ -292,9 +292,10 @@ const DEFINES = {
             new RoomVisual(creep.room.name).poly(Room.deserializePath(creep.memory.path), lineOpts);
             // HACK:  Reset the paths of tired creeps
             if(code
-            || code == ERR_TIRED
+            &&(
+//          || code == ERR_TIRED
             || code == ERR_NOT_FOUND
-            ) {
+            )) {
                 creep.memory.path = undefined;
             } //fi
             return code;
