@@ -510,7 +510,7 @@ var roleWorker  = {
 			// -----------------------------------------------------------------
 			if(!rooms.length) break;
 		} //done
-		DEFINES.wander(creep);
+		if(canWander) DEFINES.wander(creep);
 	} //function
 }; //struct
 
