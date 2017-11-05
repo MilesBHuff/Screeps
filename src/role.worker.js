@@ -469,6 +469,7 @@ var roleWorker  = {
 			if(code
 			&& code != OK
 			&& code != ERR_TIRED
+			&& code != ERR_NOT_FOUND
 			) {
 				badTargets.push(creep.memory.target);
 				creep.memory.target = undefined;
