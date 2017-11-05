@@ -125,7 +125,12 @@ const DEFINES = {
 	**/
 	move: function (creep, color, cache) {
 		// Verify arguments
-		if(!creep || !creep.name || !Game.creeps[creep.name] || color == undefined || cache == undefined) {
+		if(!creep
+        || !creep.name
+        || !Game.creeps[creep.name]
+        || color == undefined
+        || cache == undefined
+        ) {
 			return ERR_INVALID_ARGS;
 		} //fi
 		// If we aren't using cached paths, clear any cached path.
@@ -198,11 +203,12 @@ const DEFINES = {
 			//NOTE:  In the past, I simply recalculated the path once;  but this frequently resulted in neverending creep path-loops.
 			var code = creep.moveByPath(creep.memory.path);
 			if(code &&
-			(  code == ERR_NOT_OWNER
+			(  code == ERR_INVALID_ARGS
+//			|| code == ERR_NOT_FOUND
 			|| code == ERR_BUSY
-			|| code == ERR_NOT_FOUND
-			|| code == ERR_INVALID_ARGS
+			|| code == ERR_NOT_OWNER
 			|| code == ERR_NO_BODYPART
+			|| code == ERR_NO_PATH
 			)) {
 				creep.memory.path = undefined;
 				return code;
