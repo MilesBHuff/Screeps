@@ -170,7 +170,8 @@ const DEFINES = {
                                 var pos = new RoomPosition(target.pos.x + x,
                                                            target.pos.y + y,
                                                            target.pos.roomName);
-								if(pos == path[path.length - 1]
+								if(pos.x == path[path.length - 1].x
+                                && pos.y == path[path.length - 1].y
                                 && pos.lookFor(LOOK_CREEPS).length <= 0
                                 ) {
 									validPath = true;
