@@ -187,7 +187,7 @@ var roleWorker  = {
 				if(Math.round(Math.random() * 3)) {
 					// Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
 					// It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
-					targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) =>
+					targets = rooms[0].find(FIND_MY_STRUCTURES, {filter: (structure) =>
 						   structure.hits < (structure.hitsMax * 0.75)
 						&& structure.hits < (repairLimit * 0.75)
 						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
