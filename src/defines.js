@@ -156,7 +156,7 @@ const DEFINES = {
 					ignoreDestructibleStructures: false,
 					ignoreRoads:  false,
 					maxOps:        1000,
-					maxRooms:         3,
+					maxRooms:         4,
 					serialize:    false,
 				}; //struct
 				// Find a path
