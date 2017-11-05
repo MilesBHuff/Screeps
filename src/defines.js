@@ -203,7 +203,7 @@ const DEFINES = {
 			//NOTE:  In the past, I simply recalculated the path once;  but this frequently resulted in neverending creep path-loops.
 			var code = creep.moveByPath(creep.memory.path);
 			if(code
-            && code == ERR_INVALID_ARGS
+            &&(code == ERR_INVALID_ARGS
             || code == ERR_BUSY
             || code == ERR_NOT_OWNER
             || code == ERR_NO_BODYPART
