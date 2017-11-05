@@ -57,11 +57,11 @@ var roleWorker  = {
 					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
 
-					// Withdraw resources from enemy structures
-					// ---------------------------------------------------------
-					targets = rooms[0].find(FIND_HOSTILE_STRUCTURES);
-					targets = DEFINES.filterTargets(targets, badTargets);
-					if(targets && targets.length) break;
+//					// Withdraw resources from enemy structures
+//					// ---------------------------------------------------------
+//					targets = rooms[0].find(FIND_HOSTILE_STRUCTURES);
+//					targets = DEFINES.filterTargets(targets, badTargets);
+//					if(targets && targets.length) break;
 
 //					// Get energy from a full retrieval link
 //					// ---------------------------------------------------------
