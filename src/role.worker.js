@@ -422,7 +422,7 @@ var roleWorker  = {
 				} //fi
 			} //fi
 		} else {
-            return ERR_INVALID_TARGET;
+            return OK; // This only happens when there are no valid targets in the room
 		} //fi
 
 		// If the creep found a target, say what it is.
