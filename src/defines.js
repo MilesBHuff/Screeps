@@ -222,6 +222,8 @@ const DEFINES = {
                     path.shift();
                 } //fi
                 creep.memory.path = Room.serializePath(path);
+            } else {
+                creep.memory.path = undefined;
             } //fi
             // Parse the given color
             switch(color) {
