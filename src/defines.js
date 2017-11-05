@@ -222,8 +222,6 @@ const DEFINES = {
                     path.shift();
                 } //fi
                 creep.memory.path = Room.serializePath(path);
-            } else {
-                creep.memory.path = undefined;
             } //fi
             // Parse the given color
             switch(color) {
@@ -292,6 +290,13 @@ const DEFINES = {
             }; //struct
             // Draw the creep's path
             new RoomVisual(creep.room.name).poly(Room.deserializePath(creep.memory.path), lineOpts);
+            // HACK:  Reset the paths of tired creeps
+            if(code
+            || code == ERR_TIRED
+            || code == ERR_NOT_FOUND
+            ) {
+                creep.memory.path = undefined;
+            } //fi
             return code;
         } else return ERR_INVALID_TARGET;
     }, //function
