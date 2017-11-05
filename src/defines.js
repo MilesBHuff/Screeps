@@ -201,7 +201,8 @@ const DEFINES = {
             } //fi
             // Try to move the creep to the new location.  If this fails, reset the path and return an error.
             //NOTE:  In the past, I simply recalculated the path once;  but this frequently resulted in neverending creep path-loops.
-            var code = creep.moveByPath(creep.memory.path);
+            var oldPos = creep.pos;
+            var code   = creep.moveByPath(creep.memory.path);
             if(code
             &&(code == ERR_INVALID_ARGS
             || code == ERR_BUSY
@@ -218,7 +219,7 @@ const DEFINES = {
             && !(code && code == ERR_NOT_FOUND)
             ) {
                 var path = Room.deserializePath(creep.memory.path);
-                if(path[0] == creep.pos) {
+                if(path[0] && oldPos && path[0] == oldPos) {
                     path.shift();
                 } //fi
                 creep.memory.path = Room.serializePath(path);
