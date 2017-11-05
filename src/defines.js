@@ -134,6 +134,10 @@ const DEFINES = {
 		} //fi
 		if(creep.memory && creep.memory.target) {
 			var target = Game.getObjectById(creep.memory.target);
+            if(!target) {
+			    creep.memory.target = undefined;
+                return ERR_INVALID_TARGET;
+            } //fi
 			// If the creep's position is equal to the target's position, delete the path and return.
 			if(creep.pos == target.pos) {
 				creep.memory.path = undefined;
