@@ -330,7 +330,7 @@ var roleWorker  = {
 			// If the array of rooms has not yet been sorted, sort it.
 			if(rooms[0] != creep.room) {
 				rooms = DEFINES.sortRooms(creep.pos, rooms);
-			}
+			} //fi
 			// Remove the current room from the array.
 			rooms.shift();
 		} //done
@@ -429,7 +429,12 @@ var roleWorker  = {
 
 		// If the creep found a target, say what it is.
 		// =====================================================================
-		if(creep.memory.say) {
+		if(creep.memory.say
+        && (
+           code == OK
+        || code == ERR_TIRED
+        || code == ERR_NOT_FOUND
+        )) {
 			creep.say(creep.memory.say);
 			creep.memory.say = undefined;
 		} //fi
