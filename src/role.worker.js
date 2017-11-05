@@ -471,7 +471,7 @@ var roleWorker  = {
 				creep.memory.path   = undefined;
 			} //fi
 		} else {
-			if(creep.carry.energy <= 0) {
+			if(_.sum(creep.carry) <= 0) {
 				creep.memory.harvesting = true;
 				creep.memory.target = undefined;
 				creep.memory.path   = undefined;
@@ -496,8 +496,8 @@ var roleWorker  = {
 
 			// Affect the target
 			// -----------------------------------------------------------------
-			// If an error ocurred during pathfinding, reset the current target.
 			var code = roleWorker.affectTarget(creep);
+			// If an error ocurred during pathfinding, reset the current target.
 			if(code
 			&& code != OK
 			&& code != ERR_TIRED
@@ -506,7 +506,7 @@ var roleWorker  = {
 				badTargets.push(creep.memory.target);
 				creep.memory.target = undefined;
 				creep.memory.path   = undefined;
-			} else return;
+			} else return code;
 
 			// If we're out of rooms, give up.
 			// -----------------------------------------------------------------
