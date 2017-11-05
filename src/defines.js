@@ -219,7 +219,11 @@ const DEFINES = {
             && !(code && code == ERR_NOT_FOUND)
             ) {
                 var path = Room.deserializePath(creep.memory.path);
-                if(path[0] && oldPos && path[0] == oldPos) {
+                if(path[0]
+                && oldPos
+                && path[0].x == oldPos.x
+                && path[0].y == oldPos.y
+                ) {
                     path.shift();
                 } //fi
                 creep.memory.path = Room.serializePath(path);
