@@ -426,8 +426,10 @@ var roleWorker  = {
                     return ERR_INVALID_TARGET;
                 } //fi
             } //fi
+        // This only happens when there are no valid targets in the room
         } else {
-            return OK; // This only happens when there are no valid targets in the room
+            if(canWander) DEFINES.wander(creep);
+            return OK;
         } //fi
 
         // If the creep found a target, say what it is.
