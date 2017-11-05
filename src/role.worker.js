@@ -192,8 +192,8 @@ var roleWorker  = {
 						&& structure.hits < (repairLimit * 0.75)
 						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
                         && !(
-						   site.structureType == STRUCTURE_WALL
-						|| site.structureType == STRUCTURE_RAMPART
+						   structure.structureType == STRUCTURE_WALL
+						|| structure.structureType == STRUCTURE_RAMPART
 					)});
 					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
@@ -235,8 +235,8 @@ var roleWorker  = {
 						&& structure.hits < (repairLimit * 0.75)
 						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
                         && (
-						   site.structureType == STRUCTURE_WALL
-						|| site.structureType == STRUCTURE_RAMPART
+						   structure.structureType == STRUCTURE_WALL
+						|| structure.structureType == STRUCTURE_RAMPART
 					)});
 					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
