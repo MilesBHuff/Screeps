@@ -433,8 +433,7 @@ var roleWorker  = {
         // If the creep found a target, say what it is.
         // =====================================================================
         if(creep.memory.say
-        && (
-           code == OK
+        &&(code == OK
         || code == ERR_TIRED
         || code == ERR_NOT_FOUND
         )) {
@@ -507,7 +506,7 @@ var roleWorker  = {
                 badTargets.push(creep.memory.target);
                 creep.memory.target = undefined;
                 creep.memory.path   = undefined;
-            } else return code;
+            } else break;
 
             // If we're out of rooms, give up.
             // -----------------------------------------------------------------
