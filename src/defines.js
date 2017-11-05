@@ -167,23 +167,18 @@ const DEFINES = {
 					if(target.room == creep.room) {
 						for(var x = -1; x < 1; x++) {
 							for(var y = -1; y < 1; y++) {
-								if(path[path.length - 1].x == target.pos.x + x
-								|| path[path.length - 1].y == target.pos.y + y
-								){
+                                var pos = new RoomPosition(target.pos.x + x,
+                                                           target.pos.y + y,
+                                                           target.pos.roomName);
+								if(pos == path[path.length - 1]
+                                && pos.lookFor(LOOK_CREEPS).length <= 0
+                                ) {
 									validPath = true;
 								} //fi
 							} //done
 						} //done
 					} else {
-//							for(var x = -1; x < 1; x++) {
-//								for(var y = -1; y < 1; y++) {
-//									if(path[path.length - 1].x == target.x + x
-//									|| path[path.length - 1].y == target.y + y
-//									){
-									validPath = true;
-//									} //fi
-//								} //done
-//							} //done
+                        validPath = true;
 					} //fi
 				} //fi
 				// If the path is invalid, then the target cannot be reached.  Find a new target.
