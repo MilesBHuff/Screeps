@@ -356,68 +356,73 @@ var roleWorker  = {
 			// Harvest
 			// -------------------------------------------------------------
 			if(creep.memory.harvesting) {
-				/*//*/ if(!target
-					   ||
-					   (( !(target.store  && _.sum(target.store) > 0)
-					   && !(target.energy &&       target.energy > 0)
-					    )
-					   &&
-					   !(   target.room.memory
-					   &&   target.room.memory.dismantle
-					   &&   target.room.memory.dismantle.indexOf(creep.memory.target) != -1
-					   ))
+				if(!target
+				||
+				(( !(target.store  && _.sum(target.store) > 0)
+				&& !(target.energy &&       target.energy > 0)
+				)
+				&&
+				!(   target.room.memory
+				&&   target.room.memory.dismantle
+				&&   target.room.memory.dismantle.indexOf(creep.memory.target) != -1
+				))
 				) {	return ERR_INVALID_TARGET;
-				} else if( creep.harvest( target)
-					   &&  creep.pickup(  target)
-					   &&  creep.withdraw(target, RESOURCE_ENERGY)
-					   &&
-					   ((( target.room.controller.owner
-					   &&  target.room.controller.owner != DEFINES.USERNAME
-					     )
-					   ||
-					     ( target.room.memory
-					   &&  target.room.memory.dismantle
-					   &&  target.room.memory.dismantle.indexOf(creep.memory.target) != -1
-					    ))
-					   &&  creep.dismantle(target)
-					   )
-				) {	code = DEFINES.move(creep, COLOR_YELLOW, true);
+				} else
+                if( creep.harvest( target)
+                &&  creep.pickup(  target)
+                &&  creep.withdraw(target, RESOURCE_ENERGY)
+                &&
+                ((( target.room.controller.owner
+                &&  target.room.controller.owner != DEFINES.USERNAME
+                )
+                ||
+                (   target.room.memory
+                &&  target.room.memory.dismantle
+                &&  target.room.memory.dismantle.indexOf(creep.memory.target) != -1
+                ))
+                &&  creep.dismantle(target)
+                )) {
+                    code = DEFINES.move(creep, COLOR_YELLOW, true);
 				} //fi
 			} else {
 
 				// Upgrade
 				// ---------------------------------------------------------
-				/*//*/  if(target.structureType == STRUCTURE_CONTROLLER) {
+				if(target.structureType == STRUCTURE_CONTROLLER) {
 					if(creep.upgradeController(target)) {
 						code = DEFINES.move(creep, COLOR_CYAN, true);
 					} //fi
+				} else
 
 				// Build
 				// ---------------------------------------------------------
-				} else  if(target.progressTotal) {
+                if(target.progressTotal) {
 					if(creep.build(target)) {
 						code = DEFINES.move(creep, COLOR_WHITE, true);
 					} //fi
+				} else
 
 				// Repair
 				// ---------------------------------------------------------
-				} else  if(target.hits < target.hitsMax
-					&& target.hits < repairLimit
-					){
+                if(target.hits < target.hitsMax
+			    && target.hits < repairLimit
+				){
 					if(creep.repair(target)) {
 						code = DEFINES.move(creep, COLOR_PURPLE, true);
 					} //fi
+				} else
 
 				// Transfer
 				// ---------------------------------------------------------
-				} else  if(target.energy < target.energyCapacity) {
+                if(target.energy < target.energyCapacity) {
 					if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY)) {
 						code = DEFINES.move(creep, DEFINES.COLOR_BLACK, true);
 					} //fi
+                } //else
 
 				// Invalid target
 				// ---------------------------------------------------------
-				} else {
+				else {
 					return ERR_INVALID_TARGET;
 				} //fi
 			} //fi
