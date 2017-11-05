@@ -164,7 +164,7 @@ const DEFINES = {
 				// Validate the path
 				var validPath = false;
 				if(path.length) {
-					if(target == Game.getObjectById(creep.memory.target)) {
+					if(target.room == creep.room) {
 						for(var x = -1; x < 1; x++) {
 							for(var y = -1; y < 1; y++) {
 								if(path[path.length - 1].x == target.pos.x + x
