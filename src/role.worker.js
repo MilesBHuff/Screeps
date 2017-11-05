@@ -227,7 +227,7 @@ var roleWorker  = {
 				// 50% chance of repairing constructions that start at 0 health
 				// =============================================================
 				task = DEFINES.TASKS.REPAIR;
-				if(Math.round(Math.random()) {
+				if(Math.round(Math.random())) {
 					// Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
 					// It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
 					targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) =>
