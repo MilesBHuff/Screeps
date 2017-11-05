@@ -191,7 +191,10 @@ var roleWorker  = {
 						   structure.hits < (structure.hitsMax * 0.75)
 						&& structure.hits < (repairLimit * 0.75)
 						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
-					});
+                        && !(
+						   site.structureType == STRUCTURE_WALL
+						|| site.structureType == STRUCTURE_RAMPART
+					)});
 					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
 				} //fi
@@ -217,6 +220,24 @@ var roleWorker  = {
 					    || structure.structureType == STRUCTURE_NUKER
 					    || structure.structureType == STRUCTURE_POWER_SPAWN
 					});
+					targets = DEFINES.filterTargets(targets, badTargets);
+					if(targets && targets.length) break;
+				} //fi
+                    
+				// 50% chance of repairing constructions that start at 0 health
+				// =============================================================
+				task = DEFINES.TASKS.REPAIR;
+				if(Math.round(Math.random()) {
+					// Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
+					// It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
+					targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) =>
+						   structure.hits < (structure.hitsMax * 0.75)
+						&& structure.hits < (repairLimit * 0.75)
+						&& structure.room.memory.dismantle.indexOf(structure.id) === -1
+                        && (
+						   site.structureType == STRUCTURE_WALL
+						|| site.structureType == STRUCTURE_RAMPART
+					)});
 					targets = DEFINES.filterTargets(targets, badTargets);
 					if(targets && targets.length) break;
 				} //fi
