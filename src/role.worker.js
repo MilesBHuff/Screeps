@@ -347,9 +347,11 @@ var roleWorker  = {
 
 		// Move towards the target
 		// =================================================================
-		if(creep.memory && creep.memory.target) {
-			var target = Game.getObjectById(creep.memory.target);
-			if(!target) return ERR_INVALID_TARGET;
+        var target;
+		if(creep.memory
+        && creep.memory.target
+        && target = Game.getObjectById(creep.memory.target)
+        && target) {
 
 			// Harvest
 			// -------------------------------------------------------------
@@ -424,7 +426,8 @@ var roleWorker  = {
 		// =====================================================================
 		} else {
 			if(canWander) DEFINES.wander(creep);
-			return OK;
+			if(!target) return ERR_INVALID_TARGET;
+            return OK;
 		} //fi
 
 		// If the creep found a target, say what it is.
