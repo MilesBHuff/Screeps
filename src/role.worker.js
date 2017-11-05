@@ -347,11 +347,11 @@ var roleWorker  = {
 
 		// Move towards the target
 		// =================================================================
-        var target;
 		if(creep.memory
         && creep.memory.target
-        &&(target = Game.getObjectById(creep.memory.target))
-        && target) {
+        ) {
+            var target = Game.getObjectById(creep.memory.target);
+            if(!target) return ERR_INVALID_TARGET;
 
 			// Harvest
 			// -------------------------------------------------------------
