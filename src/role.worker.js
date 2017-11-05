@@ -421,11 +421,7 @@ var roleWorker  = {
 					return ERR_INVALID_TARGET;
 				} //fi
 			} //fi
-
-		// If the creep wasn't able to find a target, it wanders.
-		// =====================================================================
 		} else {
-			if(canWander) DEFINES.wander(creep);
             return ERR_INVALID_TARGET;
 		} //fi
 
