@@ -214,11 +214,15 @@ const DEFINES = {
                 return code;
             } //fi
             // Delete path elements that have already been traversed.
-            var path = Room.deserializePath(creep.memory.path);
-            if(path[0] != creep.pos) {
-                path.shift();
+            if(!(code && code == ERR_TIRED)
+            && !(code && code == ERR_NOT_FOUND)
+            ) {
+                var path = Room.deserializePath(creep.memory.path);
+                if(path[0] != creep.pos) {
+                    path.shift();
+                } //fi
+                creep.memory.path = Room.serializePath(path);
             } //fi
-            creep.memory.path = Room.serializePath(path);
             // Parse the given color
             switch(color) {
                 case COLOR_RED:
