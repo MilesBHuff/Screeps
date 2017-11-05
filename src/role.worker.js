@@ -343,6 +343,7 @@ var roleWorker  = {
 	 * @return OK, ERR_NO_PATH, ERR_INVALID_TARGET
 	**/
 	affectTarget: function (creep) {
+        code = OK;
 
 		// Move towards the target
 		// =================================================================
@@ -378,7 +379,7 @@ var roleWorker  = {
 					    ))
 					   &&  creep.dismantle(target)
 					   )
-				) {	return DEFINES.move(creep, COLOR_YELLOW, true);
+				) {	code = DEFINES.move(creep, COLOR_YELLOW, true);
 				} //fi
 			} else {
 
@@ -386,14 +387,14 @@ var roleWorker  = {
 				// ---------------------------------------------------------
 				/*//*/  if(target.structureType == STRUCTURE_CONTROLLER) {
 					if(creep.upgradeController(target)) {
-						return DEFINES.move(creep, COLOR_CYAN, true);
+						code = DEFINES.move(creep, COLOR_CYAN, true);
 					} //fi
 
 				// Build
 				// ---------------------------------------------------------
 				} else  if(target.progressTotal) {
 					if(creep.build(target)) {
-						return DEFINES.move(creep, COLOR_WHITE, true);
+						code = DEFINES.move(creep, COLOR_WHITE, true);
 					} //fi
 
 				// Repair
@@ -402,15 +403,18 @@ var roleWorker  = {
 					&& target.hits < repairLimit
 					){
 					if(creep.repair(target)) {
-						return DEFINES.move(creep, COLOR_PURPLE, true);
+						code = DEFINES.move(creep, COLOR_PURPLE, true);
 					} //fi
 
 				// Transfer
 				// ---------------------------------------------------------
 				} else  if(target.energy < target.energyCapacity) {
 					if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY)) {
-						return DEFINES.move(creep, DEFINES.COLOR_BLACK, true);
+						code = DEFINES.move(creep, DEFINES.COLOR_BLACK, true);
 					} //fi
+
+				// Invalid target
+				// ---------------------------------------------------------
 				} else {
 					return ERR_INVALID_TARGET;
 				} //fi
@@ -429,7 +433,7 @@ var roleWorker  = {
 			creep.say(creep.memory.say);
 			creep.memory.say = undefined;
 		} //fi
-		return OK;
+		return code;
 	}, //function
 
 	// Run
