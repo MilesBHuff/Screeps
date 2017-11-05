@@ -197,13 +197,6 @@ const DEFINES = {
 				// Clear unneeded memory.
 				     path = undefined;
 				validPath = undefined;
-			} else {
-				// If the creep already had a path, delete path elements that have already been traversed.
-				var path = Room.deserializePath(creep.memory.path);
-				if(path[0] != creep.pos) {
-					path.shift();
-				} //fi
-				creep.memory.path = Room.serializePath(path);
 			} //fi
 			// Try to move the creep to the new location.  If this fails, reset the path and return an error.
 			//NOTE:  In the past, I simply recalculated the path once;  but this frequently resulted in neverending creep path-loops.
@@ -218,6 +211,12 @@ const DEFINES = {
 				creep.memory.path = undefined;
 				return code;
 			} //fi
+            // Delete path elements that have already been traversed.
+            var path = Room.deserializePath(creep.memory.path);
+            if(path[0] != creep.pos) {
+                path.shift();
+            } //fi
+            creep.memory.path = Room.serializePath(path);
 			// Parse the given color
 			switch(color) {
 				case COLOR_RED:
