@@ -19,6 +19,7 @@ Workers
 + Get rid of the harvest variable.  Instead, simply have creeps harvest whenever
   they have no energy.  If they have energy when they have no target, their
   target should always be an energy-expending task.
++ Structures should generally pass isActive() in order to be valid targets.
 
 Combat
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
