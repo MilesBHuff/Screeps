@@ -90,13 +90,13 @@ var roleWorker  = {
                         if(targets && targets.length) break;
                     } //fi
 
-//                    // 50% chance to harvest minerals
-//                    // ---------------------------------------------------------
-//                    if(Math.floor(Math.random())) {
-//                        targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) => {return(structure.structureType == STRUCTURE_EXTRACTOR);}});
-//                        targets = DEFINES.filterTargets(targets, badTargets);
-//                        if((targets && targets.length) || rooms[0].find(FIND_MINERALS, {filter: (mineral) => mineral.mineralAmount > 0}).length) break;
-//                    } //fi
+//                  // 50% chance to harvest minerals
+//                  // ---------------------------------------------------------
+//                  if(Math.floor(Math.random())) {
+//                      targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) => {return(structure.structureType == STRUCTURE_EXTRACTOR);}});
+//                      targets = DEFINES.filterTargets(targets, badTargets);
+//                      if((targets && targets.length) || rooms[0].find(FIND_MINERALS, {filter: (mineral) => mineral.mineralAmount > 0}).length) break;
+//                  } //fi
 
                     // Get resources from storage
                     // ---------------------------------------------------------
@@ -181,7 +181,7 @@ var roleWorker  = {
                     if(targets && targets.length) break;
                 } //fi
 
-                // 75% chance of repairing constructions that don't start at 1 health
+                // 75% chance of repairing most constructions
                 // =============================================================
                 task = DEFINES.TASKS.REPAIR;
                 if(Math.round(Math.random() * 3)) {
@@ -191,9 +191,9 @@ var roleWorker  = {
                            structure.hits < (structure.hitsMax * 0.75)
                         && structure.hits < (repairLimit * 0.75)
                         && structure.room.memory.dismantle.indexOf(structure.id) === -1
-                        && !(
-                           structure.structureType == STRUCTURE_WALL
-                        || structure.structureType == STRUCTURE_RAMPART
+                        &&!(
+                           (structure.structureType == STRUCTURE_WALL    && structure.hits > repairLimit * 0.125)
+                        || (structure.structureType == STRUCTURE_RAMPART && structure.hits > repairLimit * 0.125)
                     )});
                     targets = DEFINES.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
