@@ -243,9 +243,13 @@ var roleWorker  = {
                 } //fi
 
                 // 50% chance of upgrading the controller, if it's not already at max
+                // If the controller *is* already at max, upgrade it if it's less than 3/4 degraded.
                 // =============================================================
                 task = DEFINES.TASKS.UPGRADE;
-                if(rooms[0].controller.level < 8 && Math.round(Math.random())) {
+                if(Math.round(Math.random())
+                && rooms[0].controller.level < 8
+                || rooms[0].controller.ticksToDowngrade < (3 / 4) * CONTROLLER_DOWNGRADE[rooms[0].controller.level]
+                ) {
                     targets = [rooms[0].controller];
                     targets = DEFINES.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
