@@ -14,11 +14,10 @@ Copyright, LGPL 3.0, AGPL 3.0, CC BY-SA 4.0.  The LGPL 3.0, AGPL 3.0, and
 CC BY-SA 4.0 are provided in-full and verbatim, with each in its own section.
 
 Except where otherwise stated, all source-code files (defined as any files with
-extensions of 'xhtml', 'coffeescript', 'sass', or 'bash') in this project are
-Copyright © to the developer(s) of this project (defined as all sentient
-beings who have git blame for a commit in this project's git history), from the
-date of the most recent edit to this project, per the terms of the the LAGPL 3.0
-(the GNU Lesser Affero General Public License 3.0).
+extensions of 'js') in this project are Copyright © to the developer(s) of
+this project (defined as all sentient beings who have git blame for a commit in
+this project's git history), from the date of the most recent edit to this project,
+per the terms of the the LAGPL 3.0 (the GNU Lesser Affero General Public License 3.0).
 
 Except where otherwise stated, all non-source-code files (defined as any files lacking
 extensions of 'xhtml', 'coffeescript', 'sass', or 'bash') in this project are

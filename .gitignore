@@ -1,0 +1,17 @@
+# Version control
+.git/
+package-lock.json
+
+# Files sourced from other projects
+node_modules/
+.gitattributes
+
+# Tempfiles
+*.swp
+tmp/
+
+# Minified/binary files
+bin/*
+
+# Keep .keep files
+!.keep
