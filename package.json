@@ -1,0 +1,27 @@
+{
+	"name": "Screeps",
+	"version": "0.0.0",
+	"license": "LGPL-3.0",
+	"author": "Miles Huff",
+	"description": "My current Screeps scripts. Screeps is an MMORTS for programmers; it's played entirely in JavaScript.",
+	"keywords": [
+		"Screeps"
+	],
+	"homepage": "https://Screeps.com/a/#!/profile/MilesBHuff",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/MilesBHuff/Screeps"
+	},
+	"engines": {
+		"npm": "latest"
+	},
+	"scripts": {
+		"clean": "build/Makefile.bash clean",
+		"make": "build/Makefile.bash make",
+		"update": "build/Makefile.bash update"
+	},
+	"devDependencies": {
+		"grunt": "latest",
+		"uglify-es": "latest"
+	}
+}
