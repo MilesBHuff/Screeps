@@ -4,7 +4,6 @@ package-lock.json
 
 # Files sourced from other projects
 node_modules/
-.gitattributes
 
 # Tempfiles
 *.swp
@@ -12,6 +11,9 @@ tmp/
 
 # Minified/binary files
 bin/*
+
+# Files with sensitive information
+Gruntfile.js
 
 # Keep .keep files
 !.keep
