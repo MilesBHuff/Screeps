@@ -48,8 +48,8 @@ for F in $(find -type f); do
 	case "$F" in
 		*".$SCRIPTS")
 			../node_modules/uglify-es/bin/uglifyjs --config-file "../build/conf/mini-js.json" -o "$NEWPATH" "$F"
-			;;
 			chmod 0755 "$NEWPATH"
+			;;
 		*)
 			cp "$F" "$NEWPATH"
 			chmod 0644 "$NEWPATH"

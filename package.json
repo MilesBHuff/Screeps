@@ -18,6 +18,7 @@
 	},
 	"scripts": {
 		"clean": "build/Makefile.bash clean",
+		"deploy": "build/Makefile.bash deploy",
 		"make": "build/Makefile.bash make",
 		"update": "build/Makefile.bash update"
 	},

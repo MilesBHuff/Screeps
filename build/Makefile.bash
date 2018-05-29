@@ -33,6 +33,12 @@ function clean {
 	meta 'clean.d'
 }
 
+## deploy
+## -----------------------------------------------------------------------------
+function deploy {
+	meta 'deploy.d'
+}
+
 ## make
 ## -----------------------------------------------------------------------------
 function make {
@@ -50,18 +56,15 @@ function update {
 if [[ $1 ]]; then
 	INPUT="$1"
 else
-	echo "Type 'clean', 'make', or 'update':"
+	echo "Type 'clean', 'deploy', 'make', or 'update':"
 	read INPUT
 fi
 case "$INPUT" in
-	'clean')
-		clean
-		;;
-	'make')
-		make
-		;;
-	'update')
-		update
+	'clean'  |\
+	'deploy' |\
+	'make'   |\
+	'update' )
+		eval $INPUT
 		;;
 	*)
 		echo 'ERROR:  Invalid command!' >&2
