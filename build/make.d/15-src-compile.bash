@@ -49,11 +49,12 @@ for F in $(find -type f); do
 		*".$SCRIPTS")
 			../node_modules/uglify-es/bin/uglifyjs --config-file "../build/conf/mini-js.json" -o "$NEWPATH" "$F"
 			;;
+			chmod 0755 "$NEWPATH"
 		*)
 			cp "$F" "$NEWPATH"
+			chmod 0644 "$NEWPATH"
 			;;
 	esac
-	chmod 0664 "$NEWPATH"
 
 ## Cleanup
 ## -----------------------------------------------------------------------------
