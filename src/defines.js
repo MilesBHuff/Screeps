@@ -54,10 +54,10 @@ const DEFINES = {
      * @return targets without badTargets.
     **/
     filterTargets: function (targets, badTargets) {
-        var badTargetsCopy = badTargets;
+        let badTargetsCopy = badTargets;
         if(targets.length && badTargets.length) {
             for(let i = 0; targets[i]; i++) {
-                for(var j = 0; badTargets[j]; j++) {
+                for(let j = 0; badTargets[j]; j++) {
                     if(targets[i].id && targets[i].id === badTargets[j]) {
                         targets.splice(i, 1);
                         i--;
@@ -80,21 +80,21 @@ const DEFINES = {
      * @return the given room and its neighbours.
     **/
     findRooms: function (roomName) {
-        var rooms = Array();
+        let rooms = Array();
         // Push the creep's current room.
         rooms.push(roomName);
         // Find all the rooms connected to the current room.
-        var roomsTmp = Game.map.describeExits(roomName);
+        let roomsTmp = Game.map.describeExits(roomName);
         for(let i = 0; i < 4; i++) {
-            var index = ((2 * i) + 1).toString();
+            let index = ((2 * i) + 1).toString();
             if(roomsTmp[index] !== undefined) {
                 rooms.push(roomsTmp[index]);
             } //fi
         } //done
         // Convert the array of strings into an array of objects.  This also trims rooms that we can't see.
         roomsTmp = Array();
-        for(var name in rooms) {
-            var room = Game.rooms[rooms[name]];
+        for(let name in rooms) {
+            let room = Game.rooms[rooms[name]];
             if(room) roomsTmp.push(room);
         } //done
         // Return the array.
@@ -218,7 +218,7 @@ const DEFINES = {
             if(!(code && code === ERR_TIRED)
             && !(code && code === ERR_NOT_FOUND)
             ) {
-                var path = Room.deserializePath(creep.memory.path);
+                let path = Room.deserializePath(creep.memory.path);
                 if(path[0]
                 && oldPos
                 && path[0].x === oldPos.x
@@ -337,13 +337,13 @@ const DEFINES = {
      * @return the sorted array.
     **/
     sortRooms: function (pos, rooms) {
-        var roomsTmp = Array();
+        let roomsTmp = Array();
         for(let i = 0; 0 < rooms.length; i++) {
             // Find the nearest room that hasn't been found yet.
             roomsTmp.push(Game.rooms[pos.findClosestByRange(FIND_EXIT, {filter: (room) => function(room) {return rooms.indexOf(room) !== -1;}}).roomName]);
             // Find its index.
-            var index = 0;
-            for(var j = 0; rooms[j]; j++) {
+            let index = 0;
+            for(let j = 0; rooms[j]; j++) {
                 if(rooms[j] === roomsTmp[i]) {
                     index = j;
                     break;
@@ -369,7 +369,7 @@ const DEFINES = {
         || creep.pos.y > 46
         ){ creep.moveTo(24, 24);
         } else {
-            var direction = Math.round(Math.random() * 8);
+            let direction = Math.round(Math.random() * 8);
             if(direction) {
                 creep.move(direction);
             } //fi
@@ -397,10 +397,10 @@ const DEFINES = {
     createCreep: function (spawn, rawParts, name, role) {
         // Variables
         // -------------------------------------------------------------------------
-        var bodyParts   = Array();
-        var energyCost  = 0;
-        var energyTotal = spawn.room.energyAvailable;
-        var partCount   = {
+        let bodyParts   = Array();
+        let energyCost  = 0;
+        let energyTotal = spawn.room.energyAvailable;
+        let partCount   = {
             attack: 0,
             carry:  0,
             claim:  0,
@@ -410,7 +410,7 @@ const DEFINES = {
             tough:  0,
             work:   0
         }; //struct
-        for(var currentPart = 0, failCount = 0; true; currentPart++) {
+        for(let currentPart = 0, failCount = 0; true; currentPart++) {
             // Stop once we've used up as much energy as possible
             if(failCount >= rawParts.length) {
                 break;
