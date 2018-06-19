@@ -1,26 +1,26 @@
 // commands.js
 // #############################################################################
-/** This file lists various prewritten commands for manual use at the console.
+/** This file lists letious prewritten commands for manual use at the console.
  *  Make sure to include it before trying to use its functions!
 **/
 
-// Variables
+// letiables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES = require("defines");
-var commands = {
-	
+let commands = {
+
 	// Check progress
 	// =========================================================================
 	// require("commands").checkProgress("StructureID");
 	/** Check the exact progress of a controller or construction site.  If the
-	 *  specified structure does not have a progress variable, use its repair
-	 *  variable.
+	 *  specified structure does not have a progress letiable, use its repair
+	 *  letiable.
 	 * @param  structureId
 	 * @return An exit-code.
 	**/
 	checkProgress: function (structureId) {
-		var message   = "";
-		var structure = Game.getObjectById(structureId);
+		let message   = "";
+		let structure = Game.getObjectById(structureId);
 		/*//*/ if(structure.progress && structure.progressTotal) {
 			message = structure.progress + " / " + structure.progressTotal;
 		} else if(structure.hits && structure.hitsMax) {
@@ -44,7 +44,7 @@ var commands = {
 	createCreep: function (spawnName, partTypes, creepName, role) {
 		return DEFINES.createCreep(Game.spawns[spawnName], partTypes, creepName, role);
 	}, //function;
-	
+
 	// Dismantle
 	// =========================================================================
 	// require("commands").dismantle("StructureID");
@@ -55,7 +55,7 @@ var commands = {
 	dismantle: function (structureId) {
 		return Game.getObjectById(structureId).room.memory.dismantle.push(structureId);
 	}, //function
-	
+
 	// Move creep to
 	// =========================================================================
 	// require("commands").moveCreepTo("CreepName", "TargetID");
@@ -68,7 +68,7 @@ var commands = {
 		Game.creeps[creepName].memory.target = target;
 		return DEFINES.move(Game.creeps[creepName], COLOR_GREY, false);
 	}, //function
-	
+
 	// Remove construction
 	// =========================================================================
 	// require("commands").removeConstruction();
@@ -76,12 +76,12 @@ var commands = {
 	 * @return An exit-code.
 	**/
 	removeConstruction: function () {
-		for(var name in Game.constructionSites) {
+		for(let name in Game.constructionSites) {
 			Game.constructionSites[name].remove();
 		}
 		return OK;
 	}, //function
-	
+
 	// Sign controller
 	// =========================================================================
 	// require("commands").signController("CreepName", "ControllerID", "Message");

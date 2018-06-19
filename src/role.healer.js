@@ -6,9 +6,9 @@
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES   = require("defines");
-var badTargets  = Array();
-var rooms       = Array();
-var roleHealer  = {
+let badTargets  = Array();
+let rooms       = Array();
+let roleHealer  = {
 
 	// Find target
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -61,7 +61,7 @@ var roleHealer  = {
 			// =================================================================
 rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES.move supports other rooms.
 			// If the array of rooms has not yet been sorted, sort it.
-			if(rooms[0] != creep.room) {
+			if(rooms[0] !== creep.room) {
 				rooms = DEFINES.sortRooms(creep.pos, rooms);
 			}
 			// Remove the current room from the array.
@@ -82,9 +82,9 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 		if(creep.memory && creep.memory.target) {
 			var target = Game.getObjectById(creep.memory.target);
 			if(!target) return ERR_INVALID_TARGET;
-			if(creep.heal(target) == ERR_NOT_IN_RANGE) {
+			if(creep.heal(target) === ERR_NOT_IN_RANGE) {
 				creep.rangedHeal(target);
-				if(DEFINES.move(creep, COLOR_GREEN, false) == ERR_NO_PATH) {
+				if(DEFINES.move(creep, COLOR_GREEN, false) === ERR_NO_PATH) {
 					creep.memory.target = undefined;
 					creep.memory.path   = undefined;
 					return ERR_NO_PATH;

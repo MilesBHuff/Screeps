@@ -3,12 +3,12 @@
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const DEFINES = require('defines');
+const DEFINES = require("defines");
 
 // Main loop
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 module.exports.loop = function () {
-    'use strict';
+    "use strict";
 
     updateRooms();
     manageEntities();
@@ -223,7 +223,7 @@ module.exports.loop = function () {
                     if(creepsLocal.workers.length    < spawn.room.memory.workerLimit
                     && creepsGlobal.workers.length < creepLimitsGlobal.workers
                     ){
-                        DEFINES.createCreep(spawn, [CARRY, MOVE, WORK], 'Worker', DEFINES.ROLES.WORKER);
+                        DEFINES.createCreep(spawn, [CARRY, MOVE, WORK], "Worker", DEFINES.ROLES.WORKER);
                         break;
                     }
                     if(i === 0) break;
@@ -232,7 +232,7 @@ module.exports.loop = function () {
                     if(creepsLocal.fighters.length    < spawn.room.memory.fighterLimit
                     && creepsGlobal.fighters.length < creepLimitsGlobal.fighters
                     ){
-                        DEFINES.createCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], 'Fighter', DEFINES.ROLES.FIGHTER);
+                        DEFINES.createCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Fighter", DEFINES.ROLES.FIGHTER);
                         break;
                     }
                     if(i === 0) break;
@@ -241,7 +241,7 @@ module.exports.loop = function () {
                     if(creepsLocal.healers.length    < spawn.room.memory.healerLimit
                     && creepsGlobal.healers.length < creepLimitsGlobal.healers
                     ){
-                        DEFINES.createCreep(spawn, [HEAL, MOVE, TOUGH], 'Healer', DEFINES.ROLES.HEALER);
+                        DEFINES.createCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", DEFINES.ROLES.HEALER);
                         break;
                     } //fi
                     if(i === 0) break;
@@ -259,7 +259,7 @@ module.exports.loop = function () {
                 newCreep.memory.role.charAt(0).toUpperCase() + newCreep.memory.role.slice(1),
                 spawn.pos.x,
                 spawn.pos.y,
-                {align: 'left', opacity: 0.7}
+                {align: "left", opacity: 0.7}
             );
 		} //determineRole
 
@@ -318,19 +318,19 @@ module.exports.loop = function () {
                 switch(creep.memory.role) {
 
                     case DEFINES.ROLES.WORKER:
-                    require('role.worker' ).run(creep);
+                    require("role.worker" ).run(creep);
                     break;
 
                     case DEFINES.ROLES.FIGHTER:
-                    require('role.fighter').run(creep);
+                    require("role.fighter").run(creep);
                     break;
 
                     case DEFINES.ROLES.HEALER:
-                    require('role.healer' ).run(creep);
+                    require("role.healer" ).run(creep);
                     break;
 
                     default:
-                    require('role.manual' ).run(creep);
+                    require("role.manual" ).run(creep);
                     break;
                 } //esac
             } //done
@@ -343,7 +343,7 @@ module.exports.loop = function () {
                 let structure = Game.structures[name];
                 switch(structure.structureType) {
                     case STRUCTURE_TOWER:
-                    require('role.tower').run(structure);
+                    require("role.tower").run(structure);
                     break;
                 } //esac
             } //done

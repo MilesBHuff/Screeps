@@ -13,11 +13,11 @@
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES   = require("defines");
-var badTargets  = Array();
-var canWander   = true;
-var repairLimit = undefined;
-var rooms       = Array();
-var roleWorker  = {
+let badTargets  = Array();
+let canWander   = true;
+let repairLimit;
+let rooms       = Array();
+let roleWorker  = {
 
     // Find target
     // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -67,7 +67,7 @@ var roleWorker  = {
 //                    // ---------------------------------------------------------
 //                    targets = rooms[0].find(FIND_STRUCTURES, {
 //                        filter: (structure) => {return(
-//                               structure.structureType == STRUCTURE_LINK
+//                               structure.structureType === STRUCTURE_LINK
 //                            && structure.energy        >= structure.energyCapacity
 //                        );}
 //                    });
@@ -93,7 +93,7 @@ var roleWorker  = {
 //                  // 50% chance to harvest minerals
 //                  // ---------------------------------------------------------
 //                  if(Math.floor(Math.random())) {
-//                      targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) => {return(structure.structureType == STRUCTURE_EXTRACTOR);}});
+//                      targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) => {return(structure.structureType === STRUCTURE_EXTRACTOR);}});
 //                      targets = DEFINES.filterTargets(targets, badTargets);
 //                      if((targets && targets.length) || rooms[0].find(FIND_MINERALS, {filter: (mineral) => mineral.mineralAmount > 0}).length) break;
 //                  } //fi
@@ -102,8 +102,8 @@ var roleWorker  = {
                     // ---------------------------------------------------------
                     targets = rooms[0].find(FIND_STRUCTURES, {
                         filter: (structure) => {return(
-                            (  structure.structureType == STRUCTURE_CONTAINER
-                            || structure.structureType == STRUCTURE_STORAGE
+                            (  structure.structureType === STRUCTURE_CONTAINER
+                            || structure.structureType === STRUCTURE_STORAGE
                             )
                             && _.sum(structure.store) >  0
                         );}
@@ -136,7 +136,7 @@ var roleWorker  = {
                 // Fill extensions
                 targets = rooms[0].find(FIND_MY_STRUCTURES, {
                     filter: (structure) => {return(
-                           structure.structureType == STRUCTURE_EXTENSION
+                           structure.structureType === STRUCTURE_EXTENSION
                         && structure.energy        <  structure.energyCapacity
                         && structure.room.memory.dismantle.indexOf(structure.id) === -1
                     );}
@@ -146,7 +146,7 @@ var roleWorker  = {
                 // Fill spawns
                 targets = rooms[0].find(FIND_MY_STRUCTURES, {
                     filter: (structure) => {return(
-                           structure.structureType == STRUCTURE_SPAWN
+                           structure.structureType === STRUCTURE_SPAWN
                         && structure.energy        <  structure.energyCapacity
                         && structure.room.memory.dismantle.indexOf(structure.id) === -1
                     );}
@@ -160,7 +160,7 @@ var roleWorker  = {
                 if(Math.round(Math.random() * 3)) {
                     targets = rooms[0].find(FIND_MY_STRUCTURES, {
                         filter: (structure) => {return(
-                               structure.structureType == STRUCTURE_TOWER
+                               structure.structureType === STRUCTURE_TOWER
                             && structure.energy        <  structure.energyCapacity * 0.75
                             && structure.room.memory.dismantle.indexOf(structure.id) === -1
                         );}
@@ -174,8 +174,8 @@ var roleWorker  = {
                 task = DEFINES.TASKS.BUILD;
                 if(Math.round(Math.random() * 2)) {
                     targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
-                           site.structureType == STRUCTURE_WALL
-                        || site.structureType == STRUCTURE_RAMPART
+                           site.structureType === STRUCTURE_WALL
+                        || site.structureType === STRUCTURE_RAMPART
                     });
                     targets = DEFINES.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
@@ -192,8 +192,8 @@ var roleWorker  = {
                         && structure.hits < (repairLimit * 0.75)
                         && structure.room.memory.dismantle.indexOf(structure.id) === -1
                         &&!(
-                           (structure.structureType == STRUCTURE_WALL    && structure.hits > repairLimit * 0.125)
-                        || (structure.structureType == STRUCTURE_RAMPART && structure.hits > repairLimit * 0.125)
+                           (structure.structureType === STRUCTURE_WALL    && structure.hits > repairLimit * 0.125)
+                        || (structure.structureType === STRUCTURE_RAMPART && structure.hits > repairLimit * 0.125)
                     )});
                     targets = DEFINES.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
@@ -204,8 +204,8 @@ var roleWorker  = {
                 task = DEFINES.TASKS.BUILD;
                 if(Math.round(Math.random())) {
                     targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
-                           site.structureType == STRUCTURE_SPAWN
-                        || site.structureType == STRUCTURE_ROAD
+                           site.structureType === STRUCTURE_SPAWN
+                        || site.structureType === STRUCTURE_ROAD
                     });
                     targets = DEFINES.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
@@ -216,14 +216,14 @@ var roleWorker  = {
                 task = DEFINES.TASKS.TRANSFER;
                 if(Math.round(Math.random())) {
                     targets = rooms[0].find(FIND_MY_STRUCTURES, {filter: (structure) =>
-                           structure.structureType == STRUCTURE_LAB
-                        || structure.structureType == STRUCTURE_NUKER
-                        || structure.structureType == STRUCTURE_POWER_SPAWN
+                           structure.structureType === STRUCTURE_LAB
+                        || structure.structureType === STRUCTURE_NUKER
+                        || structure.structureType === STRUCTURE_POWER_SPAWN
                     });
                     targets = DEFINES.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
                 } //fi
-                    
+
                 // 50% chance of repairing constructions that start at 1 health
                 // =============================================================
                 task = DEFINES.TASKS.REPAIR;
@@ -235,8 +235,8 @@ var roleWorker  = {
                         && structure.hits < (repairLimit * 0.75)
                         && structure.room.memory.dismantle.indexOf(structure.id) === -1
                         && (
-                           structure.structureType == STRUCTURE_WALL
-                        || structure.structureType == STRUCTURE_RAMPART
+                           structure.structureType === STRUCTURE_WALL
+                        || structure.structureType === STRUCTURE_RAMPART
                     )});
                     targets = DEFINES.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
@@ -276,10 +276,10 @@ var roleWorker  = {
                 task = DEFINES.TASKS.TRANSFER;
                 targets = rooms[0].find(FIND_MY_STRUCTURES, {
                     filter: (structure) => {return(
-                        (  structure.structureType == STRUCTURE_CONTAINER
-                        || structure.structureType == STRUCTURE_LINK
-                        || structure.structureType == STRUCTURE_STORAGE
-                        || structure.structureType == STRUCTURE_TERMINAL
+                        (  structure.structureType === STRUCTURE_CONTAINER
+                        || structure.structureType === STRUCTURE_LINK
+                        || structure.structureType === STRUCTURE_STORAGE
+                        || structure.structureType === STRUCTURE_TERMINAL
                         )
                         &&
                         (( structure.energy && structure.energyCapacity
@@ -332,7 +332,7 @@ var roleWorker  = {
             // If we reach this line, the current room had no valid targets.  Try another one.
             // =================================================================
             // If the array of rooms has not yet been sorted, sort it.
-            if(rooms[0] != creep.room) {
+            if(rooms[0] !== creep.room) {
                 rooms = DEFINES.sortRooms(creep.pos, rooms);
             } //fi
             // Remove the current room from the array.
@@ -347,7 +347,7 @@ var roleWorker  = {
      * @return OK, ERR_NO_PATH, ERR_INVALID_TARGET
     **/
     affectTarget: function (creep) {
-        code = OK;
+        var code = OK;
 
         // Move towards the target
         // =================================================================
@@ -368,7 +368,7 @@ var roleWorker  = {
                 &&
                 !(   target.room.memory
                 &&   target.room.memory.dismantle
-                &&   target.room.memory.dismantle.indexOf(creep.memory.target) != -1
+                &&   target.room.memory.dismantle.indexOf(creep.memory.target) !== -1
                 ))
                 ) {    return ERR_INVALID_TARGET;
                 } else
@@ -377,12 +377,12 @@ var roleWorker  = {
                 &&  creep.withdraw(target, RESOURCE_ENERGY)
                 &&
                 ((( target.room.controller.owner
-                &&  target.room.controller.owner != DEFINES.USERNAME
+                &&  target.room.controller.owner !== DEFINES.USERNAME
                 )
                 ||
                 (   target.room.memory
                 &&  target.room.memory.dismantle
-                &&  target.room.memory.dismantle.indexOf(creep.memory.target) != -1
+                &&  target.room.memory.dismantle.indexOf(creep.memory.target) !== -1
                 ))
                 &&  creep.dismantle(target)
                 )) {
@@ -392,7 +392,7 @@ var roleWorker  = {
 
                 // Upgrade
                 // ---------------------------------------------------------
-                if(target.structureType == STRUCTURE_CONTROLLER) {
+                if(target.structureType === STRUCTURE_CONTROLLER) {
                     if(creep.upgradeController(target)) {
                         code = DEFINES.move(creep, COLOR_CYAN, true);
                     } //fi
@@ -439,9 +439,9 @@ var roleWorker  = {
         // If the creep found a target, say what it is.
         // =====================================================================
         if(creep.memory.say
-        &&(code == OK
-        || code == ERR_TIRED
-        || code == ERR_NOT_FOUND
+        &&(code === OK
+        || code === ERR_TIRED
+        || code === ERR_NOT_FOUND
         )) {
             creep.say(creep.memory.say);
             creep.memory.say = undefined;
@@ -505,9 +505,9 @@ var roleWorker  = {
             var code = roleWorker.affectTarget(creep);
             // If an error ocurred during pathfinding, reset the current target.
             if(code
-            && code != OK
-            && code != ERR_TIRED
-            && code != ERR_NOT_FOUND
+            && code !== OK
+            && code !== ERR_TIRED
+            && code !== ERR_NOT_FOUND
             ) {
                 badTargets.push(creep.memory.target);
                 creep.memory.target = undefined;

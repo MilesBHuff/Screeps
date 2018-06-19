@@ -56,9 +56,9 @@ const DEFINES = {
     filterTargets: function (targets, badTargets) {
         var badTargetsCopy = badTargets;
         if(targets.length && badTargets.length) {
-            for(var i = 0; targets[i]; i++) {
+            for(let i = 0; targets[i]; i++) {
                 for(var j = 0; badTargets[j]; j++) {
-                    if(targets[i].id && targets[i].id == badTargets[j]) {
+                    if(targets[i].id && targets[i].id === badTargets[j]) {
                         targets.splice(i, 1);
                         i--;
                         badTargets.splice(j, 1);
@@ -85,9 +85,9 @@ const DEFINES = {
         rooms.push(roomName);
         // Find all the rooms connected to the current room.
         var roomsTmp = Game.map.describeExits(roomName);
-        for(var i = 0; i < 4; i++) {
+        for(let i = 0; i < 4; i++) {
             var index = ((2 * i) + 1).toString();
-            if(roomsTmp[index] != undefined) {
+            if(roomsTmp[index] !== undefined) {
                 rooms.push(roomsTmp[index]);
             } //fi
         } //done
@@ -108,7 +108,7 @@ const DEFINES = {
     * @param maxCreeps The number to cull to.
     **/
     killOff: function (creeps, maxCreeps) {
-        for(var i = 0; creeps.length > maxCreeps; i++) {
+        for(let i = 0; creeps.length > maxCreeps; i++) {
             creeps[i].suicide();
         } //done
     }, //function
@@ -128,8 +128,8 @@ const DEFINES = {
         if(!creep
         || !creep.name
         || !Game.creeps[creep.name]
-        || color == undefined
-        || cache == undefined
+        || color === undefined
+        || cache === undefined
         ) {
             return ERR_INVALID_ARGS;
         } //fi
@@ -144,13 +144,13 @@ const DEFINES = {
                 return ERR_INVALID_TARGET;
             } //fi
             // If the creep's position is equal to the target's position, delete the path and return.
-            if(creep.pos == target.pos) {
+            if(creep.pos === target.pos) {
                 creep.memory.path = undefined;
                 return OK;
             } //fi
             // If the target is in a different room, find the nearest exit to that room
             //TODO:  Check to see if the stated exit is even accessible.
-            if(creep.room.name != target.room.name) {
+            if(creep.room.name !== target.room.name) {
                 target = creep.pos.findClosestByRange(creep.room.find(creep.room.findExitTo(target.room)));
             }
             // If the creep has no path, create one.  If there is no possible path, reset the creep's target and return.
@@ -169,14 +169,14 @@ const DEFINES = {
                 // Validate the path
                 var validPath = false;
                 if(path.length) {
-                    if(target.room == creep.room) {
+                    if(target.room === creep.room) {
                         for(var x = -1; x <= 1; x++) {
                             for(var y = -1; y <= 1; y++) {
                                 var pos = new RoomPosition(target.pos.x + x,
                                                            target.pos.y + y,
                                                            target.pos.roomName);
-                                if(pos.x == path[path.length - 1].x
-                                && pos.y == path[path.length - 1].y
+                                if(pos.x === path[path.length - 1].x
+                                && pos.y === path[path.length - 1].y
                                 && pos.lookFor(LOOK_CREEPS).length <= 0
                                 ) {
                                     validPath = true;
@@ -204,25 +204,25 @@ const DEFINES = {
             var oldPos = creep.pos;
             var code   = creep.moveByPath(creep.memory.path);
             if(code
-            &&(code == ERR_INVALID_ARGS
-            || code == ERR_BUSY
-            || code == ERR_NOT_OWNER
-            || code == ERR_NO_BODYPART
-            || code == ERR_NO_PATH
+            &&(code === ERR_INVALID_ARGS
+            || code === ERR_BUSY
+            || code === ERR_NOT_OWNER
+            || code === ERR_NO_BODYPART
+            || code === ERR_NO_PATH
             )) {
 //              creep.memory.target = undefined;
                 creep.memory.path   = undefined;
                 return code;
             } //fi
             // Delete path elements that have already been traversed.
-            if(!(code && code == ERR_TIRED)
-            && !(code && code == ERR_NOT_FOUND)
+            if(!(code && code === ERR_TIRED)
+            && !(code && code === ERR_NOT_FOUND)
             ) {
                 var path = Room.deserializePath(creep.memory.path);
                 if(path[0]
                 && oldPos
-                && path[0].x == oldPos.x
-                && path[0].y == oldPos.y
+                && path[0].x === oldPos.x
+                && path[0].y === oldPos.y
                 ) {
                     path.shift();
                 } //fi
@@ -297,8 +297,8 @@ const DEFINES = {
             new RoomVisual(creep.room.name).poly(Room.deserializePath(creep.memory.path), lineOpts);
             // HACK:  Reset the paths of tired creeps
             if(code
-            &&(code == ERR_NOT_FOUND
-//          || code == ERR_TIRED
+            &&(code === ERR_NOT_FOUND
+//          || code === ERR_TIRED
             )) {
                 creep.memory.path = undefined;
             } //fi
@@ -315,7 +315,7 @@ const DEFINES = {
     **/
     say: function (text, object) {
         if(!text || !text[0] || !object || !object.room || !object.room.pos) {
-            return ERR_INVALID_ARGS
+            return ERR_INVALID_ARGS;
         } //fi
         new RoomVisual(object.room).text(
             text,
@@ -338,13 +338,13 @@ const DEFINES = {
     **/
     sortRooms: function (pos, rooms) {
         var roomsTmp = Array();
-        for(var i = 0; 0 < rooms.length; i++) {
+        for(let i = 0; 0 < rooms.length; i++) {
             // Find the nearest room that hasn't been found yet.
-            roomsTmp.push(Game.rooms[pos.findClosestByRange(FIND_EXIT, {filter: (room) => function(room) {return rooms.indexOf(room) != -1;}}).roomName]);
+            roomsTmp.push(Game.rooms[pos.findClosestByRange(FIND_EXIT, {filter: (room) => function(room) {return rooms.indexOf(room) !== -1;}}).roomName]);
             // Find its index.
             var index = 0;
             for(var j = 0; rooms[j]; j++) {
-                if(rooms[j] == roomsTmp[i]) {
+                if(rooms[j] === roomsTmp[i]) {
                     index = j;
                     break;
                 } //fi
@@ -353,7 +353,7 @@ const DEFINES = {
             rooms.splice(index, 1);
         } //done
         // Return the sorted array.
-        return roomsTmp
+        return roomsTmp;
     }, //function
 
     // Wander
@@ -506,7 +506,7 @@ const DEFINES = {
             } else {
                 failCount++;
                 // If this is the absolute first part and we are unable to construct it, there is no point in building this creep.
-                if(currentPart == 0 && energyCost == 0) {
+                if(currentPart === 0 && energyCost === 0) {
                     return;
                 } else continue;
             } //if
@@ -589,28 +589,28 @@ const DEFINES = {
 
         // Sort the parts in order to make the creep more resilient in combat
         // -------------------------------------------------------------------------
-        for(var i = 0; i < partCount.tough; i++) {
+        for(let i = 0; i < partCount.tough; i++) {
             bodyParts.push(TOUGH);
         } //done
-        for(var i = 0; i < partCount.work; i++) {
+        for(let i = 0; i < partCount.work; i++) {
             bodyParts.push(WORK);
         } //done
-        for(var i = 0; i < partCount.claim; i++) {
+        for(let i = 0; i < partCount.claim; i++) {
             bodyParts.push(CLAIM);
         } //done
-        for(var i = 0; i < partCount.attack; i++) {
+        for(let i = 0; i < partCount.attack; i++) {
             bodyParts.push(ATTACK);
         } //done
-        for(var i = 0; i < partCount.rangedAttack; i++) {
+        for(let i = 0; i < partCount.rangedAttack; i++) {
             bodyParts.push(RANGED_ATTACK);
         } //done
-        for(var i = 0; i < partCount.heal; i++) {
+        for(let i = 0; i < partCount.heal; i++) {
             bodyParts.push(HEAL);
         } //done
-        for(var i = 0; i < partCount.carry; i++) {
+        for(let i = 0; i < partCount.carry; i++) {
             bodyParts.push(CARRY);
         } //done
-        for(var i = 0; i < partCount.move; i++) {
+        for(let i = 0; i < partCount.move; i++) {
             bodyParts.push(MOVE);
         } //done
 
@@ -632,14 +632,14 @@ const DEFINES = {
 
         // If any neighbouring owned room lacks spawners, 50% chance of sending this creep to it.
         // -------------------------------------------------------------------------
-        var target = undefined;
+        var target;
         if(Math.round(Math.random())) {
             var exits = Game.map.describeExits(spawn.room.name);
             for(var index in exits) {
                 var room = Game.rooms[exits[index]];
                 if( room && room.controller && room.controller.my
                 && !room.find(FIND_MY_STRUCTURES, {filter: (structure) => {
-                    return(structure.structureType == STRUCTURE_SPAWN)
+                    return(structure.structureType === STRUCTURE_SPAWN);
                     }}).length
                 ){
                     target = room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
@@ -651,7 +651,7 @@ const DEFINES = {
         // If we have parts, create the creep.
         // -------------------------------------------------------------------------
         if(bodyParts[0]) {
-            for(var i = 0; spawn.createCreep(bodyParts, name + i, {role: role, target: target}) == ERR_NAME_EXISTS; i++) {}
+            for(let i = 0; spawn.createCreep(bodyParts, name + i, {role: role, target: target}) === ERR_NAME_EXISTS; i++) {continue;}
         } //fi
 
         // Display which type of creep is being spawned
