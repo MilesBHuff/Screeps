@@ -6,10 +6,10 @@
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES   = require("defines");
-var badTargets  = Array();
-var hostiles    = Array();
-var rooms       = Array();
-var roleFighter = {
+let badTargets  = Array();
+let hostiles    = Array();
+let rooms       = Array();
+let roleFighter = {
 
 	// Find target
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -33,7 +33,7 @@ var roleFighter = {
 
 			// Variables
 			// =================================================================
-			if(rooms[0] != creep.room.name) {
+			if(rooms[0] !== creep.room.name) {
 				hostiles = Game.rooms[rooms[0]].find(FIND_HOSTILE_CREEPS);
 			} //fi
 			var targets  = Array();
@@ -45,7 +45,7 @@ var roleFighter = {
 //					// Man the ramparts
 //					task = DEFINES.TASKS.DEFEND;
 //					targets = creep.room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(
-//						  structure.structureType == STRUCTURE_RAMPART);}});
+//						  structure.structureType === STRUCTURE_RAMPART);}});
 //					var b = true;
 //					for(var i = 0; targets[i]; i++) {
 //						if(!creep.pos.findPathTo(targets[i]).length) {
@@ -80,7 +80,7 @@ var roleFighter = {
 //				task = DEFINES.TASKS.RENEW;
 //				if(creep.ticksToLivenumber < DEFINES.NEAR_DEATH) {
 //					targets = creep.room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(
-//						structure.structureType == STRUCTURE_SPAWN
+//						structure.structureType === STRUCTURE_SPAWN
 //					);}}););
 //					targets = DEFINES.filterTargets(targets, badTargets);
 //					if(targets.length) break;
@@ -125,7 +125,7 @@ var roleFighter = {
 			// =================================================================
 rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES.move supports other rooms.
 			// If the array of rooms has not yet been sorted, sort it.
-			if(rooms[0] != creep.room) {
+			if(rooms[0] !== creep.room) {
 				rooms = DEFINES.sortRooms(creep.pos, rooms);
 			}
 			// Remove the current room from the array.
@@ -153,24 +153,24 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 			if(
 			(  creep.timeToLive < DEFINES.NEAR_DEATH
 			&& target.structureType
-			&& target.structureType == STRUCTURE_SPAWN
+			&& target.structureType === STRUCTURE_SPAWN
 			&& target.my
-			&& creep.renew(target) == ERR_NOT_IN_RANGE
+			&& creep.renew(target) === ERR_NOT_IN_RANGE
 			)
 			||
 			(  target.structureType
-			&& target.structureType == STRUCTURE_RAMPART
+			&& target.structureType === STRUCTURE_RAMPART
 			&& target.my
 			)
 			||
 			(  creep.getActiveBodyparts(ATTACK) > 0
-			&& creep.attack(      target) == ERR_NOT_IN_RANGE
+			&& creep.attack(      target) === ERR_NOT_IN_RANGE
 			)
 			||
 			(  creep.getActiveBodyparts(RANGED_ATTACK) > 0
-			&& creep.rangedAttack(target) == ERR_NOT_IN_RANGE
+			&& creep.rangedAttack(target) === ERR_NOT_IN_RANGE
 			)) {
-				if(DEFINES.move(creep, COLOR_RED, false) == ERR_NO_PATH) {
+				if(DEFINES.move(creep, COLOR_RED, false) === ERR_NO_PATH) {
 					creep.memory.target = undefined;
 					creep.memory.path   = undefined;
 					return ERR_NO_PATH;
@@ -220,13 +220,13 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 		||
 		(  creep.ticksToLivenumber > DEFINES.NEAR_DEATH
 		&& target.structureType
-		&& target.structureType == STRUCTURE_SPAWN
+		&& target.structureType === STRUCTURE_SPAWN
 		&& target.my
 		)
 		||
 		( !hostiles.length
 		&& target.structureType
-		&& target.structureType == STRUCTURE_RAMPART
+		&& target.structureType === STRUCTURE_RAMPART
 		&& target.my
 		)
 		||!Math.round(Math.random() * 8)

@@ -6,8 +6,8 @@
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES = require("defines");
-var roleTower = {
-	
+let roleTower = {
+
 	// run()
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	/** This function controls the provided structure.
@@ -20,7 +20,7 @@ var roleTower = {
 		var repairLimit = DEFINES.REPAIR_LIMIT * structure.room.controller.level;
 		for(var b = true; b; b = false) {
 			var targets = Array();
-			
+
 			// Heal the closest damaged allied unit
 			// =================================================================
 			targets = structure.room.find(FIND_MY_CREEPS, {filter: (creep) =>
@@ -30,7 +30,7 @@ var roleTower = {
 				structure.heal(structure.pos.findClosestByRange(targets));
 				break;
 			}
-			
+
 			// Attack the closest enemy unit
 			// =================================================================
 			targets = structure.room.find(FIND_HOSTILE_CREEPS);
@@ -38,7 +38,7 @@ var roleTower = {
 				structure.attack(structure.pos.findClosestByRange(targets));
 				break;
 			}
-			
+
 			// Repair the closest damaged structure
 			// =================================================================
 			// Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
@@ -52,7 +52,7 @@ var roleTower = {
 				structure.repair(structure.pos.findClosestByRange(targets));
 				break;
 			}
-			
+
 			// Attack the closest enemy structure
 			// =================================================================
 			targets = structure.room.find(FIND_HOSTILE_STRUCTURES);
