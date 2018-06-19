@@ -23,7 +23,7 @@
 		"update": "build/Makefile.bash update"
 	},
 	"devDependencies": {
-		"grunt": "latest",
+		"grunt": "^1.0.3",
 		"grunt-cli": "latest",
 		"grunt-screeps": "latest",
 		"uglify-es": "latest"
