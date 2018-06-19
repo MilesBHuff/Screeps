@@ -1,7 +1,7 @@
 // main.js
 // #############################################################################
 
-// letiables
+// Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES = require('defines');
 
@@ -134,20 +134,20 @@ module.exports.loop = function () {
     function manageEntities() {
 
 		let creepLimitsGlobal = {
-			fighters = 0,
-			healers  = 0,
-			workers  = 0,
+			fighters: 0,
+			healers:  0,
+			workers:  0,
 		};
 		let creepsGlobal = {
-			fighters = 0,
-			healers  = 0,
-			workers  = 0,
+			fighters: 0,
+			healers:  0,
+			workers:  0,
 		};
 		let creepsLocal = {
-			fighters = 0,
-			healers  = 0,
-			workers  = 0,
-			towers   = 0,
+			fighters: 0,
+			healers:  0,
+			workers:  0,
+			towers:   0,
 		};
 
 		let name, spawn, creeps;
