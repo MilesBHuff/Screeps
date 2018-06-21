@@ -1,4 +1,4 @@
-// role.fighter.js
+// role.room.js
 // #############################################################################
 /** This script provides an AI for rooms.
 **/
@@ -7,7 +7,12 @@
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES = require("defines");
 let roleRoom = {
-	run: function(room) {
+
+	// Main
+    // *****************************************************************************
+	run: function (room) {
+		"use strict";
+
 		// Every tick
 		condemnedStructures();
 
@@ -112,3 +117,7 @@ let roleRoom = {
 	    } //creepLimits
 	}, //run
 }; //roleRoom
+
+// Export this file for use in others.
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+module.exports = roleRoom;

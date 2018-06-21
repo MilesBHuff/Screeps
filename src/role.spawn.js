@@ -7,7 +7,11 @@
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES = require("defines");
 let roleSpawn = {
+
+	// Main
+    // *****************************************************************************
 	run: function(spawn) {
+		"use strict";
 
 		let creepLimitsGlobal = {
 			fighters: 0,
@@ -35,23 +39,27 @@ let roleSpawn = {
 		//dieOff();
 
 		// Count creeps, buildings, etc
-		// ---------------------------------------------------------------------
+		// =============================================================================
 		function countEntities() {
 
 			// Creeps in all rooms
+			// -----------------------------------------------------------------------------
 			creepsGlobal.fighters = _.filter(Game.creeps,     (creep)     => creep.memory.role       === DEFINES.ROLES.FIGHTER);
 			creepsGlobal.healers  = _.filter(Game.creeps,     (creep)     => creep.memory.role       === DEFINES.ROLES.HEALER );
 			creepsGlobal.workers  = _.filter(Game.creeps,     (creep)     => creep.memory.role       === DEFINES.ROLES.WORKER );
 
 			// Creeps in the current room
+			// -----------------------------------------------------------------------------
 			creepsLocal.fighters  = _.filter(     creeps,     (creep)     => creep.memory.role       === DEFINES.ROLES.FIGHTER);
 			creepsLocal.healers   = _.filter(     creeps,     (creep)     => creep.memory.role       === DEFINES.ROLES.HEALER );
 			creepsLocal.workers   = _.filter(     creeps,     (creep)     => creep.memory.role       === DEFINES.ROLES.WORKER );
 
 			// Structures in the current room
+			// -----------------------------------------------------------------------------
 			creepsLocal.towers    = _.filter(Game.structures, (structure) => structure.structureType === STRUCTURE_TOWER       && structure.room === spawn.room);
 
 			// The total creep limits across all owned rooms (this is needed to prevent rooms from respawning all their creeps during an expedition to another room)
+			// -----------------------------------------------------------------------------
 			for(let roleCount in creepLimitsGlobal) {
 				roleCount = 0;
 			} //done
@@ -64,12 +72,13 @@ let roleSpawn = {
 		} //countEntities
 
 		// Create creeps
-		// ---------------------------------------------------------------------
+		// =============================================================================
 		function createCreeps() {
 			for(let i = 0; i < 2; i++) {
 				let creepRole = 0;
 
 				// Figure out what kind of creep to spawn
+				// -----------------------------------------------------------------------------
 				switch(i) {
 					case 0:
 					/*//*/ if(creepsLocal.workers.length  < spawn.room.memory.workerLimit  / 2) {
@@ -89,6 +98,7 @@ let roleSpawn = {
 				} //esac
 
 				// Spawn the creep
+				// -----------------------------------------------------------------------------
 				switch(creepRole) {
 					case DEFINES.ROLES.WORKER:
 					if(creepsLocal.workers.length    < spawn.room.memory.workerLimit
@@ -126,6 +136,7 @@ let roleSpawn = {
 			let newCreep = Game.creeps[spawn.spawning.name];
 
 			// Display text
+			// -----------------------------------------------------------------------------
 			spawn.room.visual.text(
 				newCreep.memory.role.charAt(0).toUpperCase() + newCreep.memory.role.slice(1),
 				spawn.pos.x,
@@ -143,3 +154,7 @@ let roleSpawn = {
 		} //dieOff
 	}, //run
 }; //roleSpawn
+
+// Export this file for use in others.
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+module.exports = roleSpawn;
