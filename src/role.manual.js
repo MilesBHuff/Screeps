@@ -8,20 +8,20 @@
 const DEFINES = require("defines");
 let roleManual = {
 
-	// run()
-	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	// Main
+    // *****************************************************************************
 	/** This function controls the provided creep.
 	 * @param creep The creep to control.
 	**/
 	run: function (creep) {
 
 		// Move to the provided destination, if there is one.
-		// ====================================================================
+		// =============================================================================
 		if(creep.memory && creep.memory.target) {
     			DEFINES.move(creep, COLOR_BLUE, false);
 		} //fi
-	}, //function
-}; //struct
+	}, //run
+}; //roleManual
 
 // Export this file for use in others.
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
