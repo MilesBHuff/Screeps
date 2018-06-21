@@ -4,7 +4,7 @@
  *  Make sure to include it before trying to use its functions!
 **/
 
-// letiables
+// Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const DEFINES = require("defines");
 let commands = {
