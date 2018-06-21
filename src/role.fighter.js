@@ -17,7 +17,7 @@ let roleFighter = {
 	 * @return a valid target.
 	**/
 	findTarget: function (creep) {
-		for(var l = 0; l < DEFINES.LOOP_LIMIT; l++) {
+		for(let l = 0; l < DEFINES.LOOP_LIMIT; l++) {
 
 			// Cleanup
 			// =================================================================
@@ -47,7 +47,7 @@ let roleFighter = {
 //					targets = creep.room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(
 //						  structure.structureType === STRUCTURE_RAMPART);}});
 //					var b = true;
-//					for(var i = 0; targets[i]; i++) {
+//					for(let i = 0; targets[i]; i++) {
 //						if(!creep.pos.findPathTo(targets[i]).length) {
 //							b = false;
 //						}
@@ -93,7 +93,7 @@ let roleFighter = {
 				// Attack condemned structures
 				if(creep.room.memory && creep.room.memory.dismantle) {
 					targets = Array();
-					for(var a = 0; creep.room.memory.dismantle[a]; a++) {
+					for(let a = 0; creep.room.memory.dismantle[a]; a++) {
 						targets.push(Game.getObjectById(creep.room.memory.dismantle[a]));
 					} //done
 					targets = DEFINES.filterTargets(targets, badTargets);
@@ -236,7 +236,7 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 
 		// If currently next to a hostile, retreat
 		// ====================================================================
-		for(var hostile in creep.room.find(FIND_HOSTILE_CREEPS)) {
+		for(let hostile in creep.room.find(FIND_HOSTILE_CREEPS)) {
 			if(creep.pos.isNearTo(hostile)) {
 				creep.moveTo(creep.pos.x + (creep.pos.x - hostile.pos.x),
 					     creep.pos.y + (creep.pos.y - hostile.pos.y));
@@ -246,7 +246,7 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 		// Find and affect a target
 		// =====================================================================
 		var loopLimit = Math.ceil(Math.random() * DEFINES.LOOP_LIMIT);
-		for(var l = 0; l < loopLimit; l++) {
+		for(let l = 0; l < loopLimit; l++) {
 
 			// Find a target
 			// -----------------------------------------------------------------

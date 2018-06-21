@@ -16,7 +16,7 @@ let roleHealer  = {
 	 * @return a valid target.
 	**/
 	findTarget: function (creep) {
-		for(var l = 0; l < DEFINES.LOOP_LIMIT; l++) {
+		for(let l = 0; l < DEFINES.LOOP_LIMIT; l++) {
 
 			// Cleanup
 			// =================================================================
@@ -123,7 +123,7 @@ rooms = Array(); return undefined; //TODO:  This line is only here until DEFINES
 		// Find and affect a target
 		// =====================================================================
 		var loopLimit = Math.ceil(Math.random() * DEFINES.LOOP_LIMIT);
-		for(var l = 0; l < loopLimit; l++) {
+		for(let l = 0; l < loopLimit; l++) {
 
 			// Find a target
 			// -----------------------------------------------------------------

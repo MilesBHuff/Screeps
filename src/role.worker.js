@@ -25,7 +25,7 @@ let roleWorker  = {
      * @return a valid target.
     **/
     findTarget: function (creep) {
-        for(var l = 0; l < DEFINES.LOOP_LIMIT; l++) {
+        for(let l = 0; l < DEFINES.LOOP_LIMIT; l++) {
 
             // Cleanup
             // =================================================================
@@ -83,7 +83,7 @@ let roleWorker  = {
                     // Withdraw resources from condemned structures
                     // ---------------------------------------------------------
                     if(rooms[0].memory && rooms[0].memory.dismantle && Math.round(Math.random())) {
-                        for(var a = 0; rooms[0].memory.dismantle[a]; a++) {
+                        for(let a = 0; rooms[0].memory.dismantle[a]; a++) {
                             targets.push(Game.getObjectById(rooms[0].memory.dismantle[a]));
                         } //done
                         targets = DEFINES.filterTargets(targets, badTargets);
@@ -487,7 +487,7 @@ let roleWorker  = {
         // Find and affect a target
         // =====================================================================
         var loopLimit = Math.ceil(Math.random() * DEFINES.LOOP_LIMIT);
-        for(var l = 0; l < loopLimit; l++) {
+        for(let l = 0; l < loopLimit; l++) {
 
             // Find a target
             // -----------------------------------------------------------------

@@ -170,8 +170,8 @@ const DEFINES = {
                 var validPath = false;
                 if(path.length) {
                     if(target.room === creep.room) {
-                        for(var x = -1; x <= 1; x++) {
-                            for(var y = -1; y <= 1; y++) {
+                        for(let x = -1; x <= 1; x++) {
+                            for(let y = -1; y <= 1; y++) {
                                 var pos = new RoomPosition(target.pos.x + x,
                                                            target.pos.y + y,
                                                            target.pos.roomName);
@@ -635,7 +635,7 @@ const DEFINES = {
         var target;
         if(Math.round(Math.random())) {
             var exits = Game.map.describeExits(spawn.room.name);
-            for(var index in exits) {
+            for(let index in exits) {
                 var room = Game.rooms[exits[index]];
                 if( room && room.controller && room.controller.my
                 && !room.find(FIND_MY_STRUCTURES, {filter: (structure) => {
