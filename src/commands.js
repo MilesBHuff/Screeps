@@ -3,6 +3,7 @@
 /** This file lists letious prewritten commands for manual use at the console.
  *  Make sure to include it before trying to use its functions!
 **/
+"use strict";
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

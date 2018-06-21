@@ -2,6 +2,7 @@
 // #############################################################################
 /** This script provides an AI for rooms.
 **/
+"use strict";
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -10,8 +11,10 @@ let roleRoom = {
 
 	// Main
     // *****************************************************************************
+	/** This function controls the provided room.
+	 * @param room The room to control.
+	**/
 	run: function (room) {
-		"use strict";
 
 		// Every tick
 		condemnedStructures();
