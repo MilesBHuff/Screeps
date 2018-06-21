@@ -17,9 +17,9 @@ let roleTower = {
 
 		// Variables
 		// =====================================================================
-		var repairLimit = DEFINES.REPAIR_LIMIT * structure.room.controller.level;
-		for(var b = true; b; b = false) {
-			var targets = Array();
+		let repairLimit = DEFINES.REPAIR_LIMIT * structure.room.controller.level;
+		for(let b = true; b; b = false) {
+			let targets = Array();
 
 			// Heal the closest damaged allied unit
 			// =================================================================
