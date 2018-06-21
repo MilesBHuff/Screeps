@@ -22,7 +22,7 @@ module.exports.loop = function () {
         } //fi
 
         // Delete the memories of dead entities
-        // -------------------------------------------------------------------------
+		// =============================================================================
         function cleanMemories() {
             // Creeps
             for(let name in Memory.creeps) {
