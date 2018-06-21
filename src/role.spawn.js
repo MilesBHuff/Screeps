@@ -2,6 +2,7 @@
 // #############################################################################
 /** This script provides an AI for spawns.
 **/
+"use strict";
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -10,8 +11,10 @@ let roleSpawn = {
 
 	// Main
     // *****************************************************************************
+	/** This function controls the provided spawn.
+	 * @param spawn The spawn to control.
+	**/
 	run: function(spawn) {
-		"use strict";
 
 		let creepLimitsGlobal = {
 			fighters: 0,
