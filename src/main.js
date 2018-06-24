@@ -4,7 +4,7 @@
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const DEFINES = require("defines");
+const LIB_COMMON = require("lib.common");
 
 // Main loop
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -91,15 +91,15 @@ module.exports.loop = function () {
                 let creep = Game.creeps[name];
                 switch(creep.memory.role) {
 
-                    case DEFINES.ROLES.WORKER:
+                    case LIB_COMMON.ROLES.WORKER:
                     require("role.worker" ).run(creep);
                     break;
 
-                    case DEFINES.ROLES.FIGHTER:
+                    case LIB_COMMON.ROLES.FIGHTER:
                     require("role.fighter").run(creep);
                     break;
 
-                    case DEFINES.ROLES.HEALER:
+                    case LIB_COMMON.ROLES.HEALER:
                     require("role.healer" ).run(creep);
                     break;
 

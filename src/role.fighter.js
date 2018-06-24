@@ -6,7 +6,7 @@
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const DEFINES   = require("defines");
+const LIB_COMMON   = require("lib.common");
 let badTargets  = Array();
 let hostiles    = Array();
 let rooms       = Array();
@@ -18,7 +18,7 @@ let roleFighter = {
      * @return a valid target.
     **/
     findTarget: function (creep) {
-        for(let l = 0; l < DEFINES.LOOP_LIMIT; l++) {
+        for(let l = 0; l < LIB_COMMON.LOOP_LIMIT; l++) {
 
             // Cleanup
             // =================================================================
@@ -38,13 +38,13 @@ let roleFighter = {
                 hostiles = Game.rooms[rooms[0]].find(FIND_HOSTILE_CREEPS);
             } //fi
             let targets  = Array();
-            let task     = DEFINES.TASKS.WAIT;
+            let task     = LIB_COMMON.TASKS.WAIT;
             switch(true) {
                 default:
                 // If there are hostiles
                 if(hostiles.length) {
 //                    // Man the ramparts
-//                    task = DEFINES.TASKS.DEFEND;
+//                    task = LIB_COMMON.TASKS.DEFEND;
 //                    targets = creep.room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(
 //                          structure.structureType === STRUCTURE_RAMPART);}});
 //                    var b = true;
@@ -53,43 +53,43 @@ let roleFighter = {
 //                            b = false;
 //                        }
 //                    }
-//                    targets = DEFINES.filterTargets(targets, badTargets);
+//                    targets = LIB_COMMON.filterTargets(targets, badTargets);
 //                    if(targets.length && b) break;
-                    task = DEFINES.TASKS.ATTACK;
+                    task = LIB_COMMON.TASKS.ATTACK;
                     // Attack enemy healers
                     targets = _.filter(hostiles, (hostile) => {return(hostile.getActiveBodyparts(HEAL) > 0);});
-                    targets = DEFINES.filterTargets(targets, badTargets);
+                    targets = LIB_COMMON.filterTargets(targets, badTargets);
                     if(targets.length) break;
                     // Attack enemy rangers
                     targets = _.filter(hostiles, (hostile) => {return(hostile.getActiveBodyparts(RANGED_ATTACK) > 0);});
-                    targets = DEFINES.filterTargets(targets, badTargets);
+                    targets = LIB_COMMON.filterTargets(targets, badTargets);
                     if(targets.length) break;
                     // Attack enemy brawlers
                     targets = _.filter(hostiles, (hostile) => {return(hostile.getActiveBodyparts(ATTACK) > 0);});
-                    targets = DEFINES.filterTargets(targets, badTargets);
+                    targets = LIB_COMMON.filterTargets(targets, badTargets);
                     if(targets.length) break;
                     // Attack enemy claimers
                     targets = _.filter(hostiles, (hostile) => {return(hostile.getActiveBodyparts(CLAIM) > 0);});
-                    targets = DEFINES.filterTargets(targets, badTargets);
+                    targets = LIB_COMMON.filterTargets(targets, badTargets);
                     if(targets.length) break;
                     // Attack other enemy units
                     targets = hostiles;
-                    targets = DEFINES.filterTargets(targets, badTargets);
+                    targets = LIB_COMMON.filterTargets(targets, badTargets);
                     if(targets.length) break;
                 } //fi
 //                // Renew if near to a natural death
-//                task = DEFINES.TASKS.RENEW;
-//                if(creep.ticksToLivenumber < DEFINES.NEAR_DEATH) {
+//                task = LIB_COMMON.TASKS.RENEW;
+//                if(creep.ticksToLivenumber < LIB_COMMON.NEAR_DEATH) {
 //                    targets = creep.room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(
 //                        structure.structureType === STRUCTURE_SPAWN
 //                    );}}););
-//                    targets = DEFINES.filterTargets(targets, badTargets);
+//                    targets = LIB_COMMON.filterTargets(targets, badTargets);
 //                    if(targets.length) break;
 //                } //fi
-                task = DEFINES.TASKS.HARVEST;
+                task = LIB_COMMON.TASKS.HARVEST;
                 // Attack enemy structures
                 targets = creep.room.find(FIND_HOSTILE_STRUCTURES);
-                targets = DEFINES.filterTargets(targets, badTargets);
+                targets = LIB_COMMON.filterTargets(targets, badTargets);
                 if(targets.length) break;
                 // Attack condemned structures
                 if(creep.room.memory && creep.room.memory.dismantle) {
@@ -97,7 +97,7 @@ let roleFighter = {
                     for(let a = 0; creep.room.memory.dismantle[a]; a++) {
                         targets.push(Game.getObjectById(creep.room.memory.dismantle[a]));
                     } //done
-                    targets = DEFINES.filterTargets(targets, badTargets);
+                    targets = LIB_COMMON.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
                 } //fi
             } //esac
@@ -108,13 +108,13 @@ let roleFighter = {
                 let target = creep.pos.findClosestByRange(targets);
                 if(target && target.id) {
                     switch(task) {
-                        case DEFINES.TASKS.ATTACK:
+                        case LIB_COMMON.TASKS.ATTACK:
                         creep.memory.say = "Attack";
                         break;
-                        case DEFINES.TASKS.DEFEND:
+                        case LIB_COMMON.TASKS.DEFEND:
                         creep.memory.say = "Defend";
                         break;
-                        case DEFINES.TASKS.HARVEST:
+                        case LIB_COMMON.TASKS.HARVEST:
                         creep.memory.say = "Harvest";
                         break;
                     } //esac
@@ -124,11 +124,11 @@ let roleFighter = {
 
             // If we reach this line, the current room had no valid targets.  Try another one.
             // =================================================================
-            //TODO:  This line is only here until DEFINES.move supports other rooms.
+            //TODO:  This line is only here until LIB_COMMON.move supports other rooms.
             rooms = Array();
 //            // If the array of rooms has not yet been sorted, sort it.
 //            if(rooms[0] !== creep.room) {
-//                rooms = DEFINES.sortRooms(creep.pos, rooms);
+//                rooms = LIB_COMMON.sortRooms(creep.pos, rooms);
 //            }
 //            // Remove the current room from the array.
 //            rooms.shift();
@@ -153,7 +153,7 @@ let roleFighter = {
                 return ERR_INVALID_TARGET;
             } //fi
             if(
-            (  creep.timeToLive < DEFINES.NEAR_DEATH
+            (  creep.timeToLive < LIB_COMMON.NEAR_DEATH
             && target.structureType
             && target.structureType === STRUCTURE_SPAWN
             && target.my
@@ -172,7 +172,7 @@ let roleFighter = {
             (  creep.getActiveBodyparts(RANGED_ATTACK) > 0
             && creep.rangedAttack(target) === ERR_NOT_IN_RANGE
             )) {
-                if(DEFINES.move(creep, COLOR_RED, false) === ERR_NO_PATH) {
+                if(LIB_COMMON.move(creep, COLOR_RED, false) === ERR_NO_PATH) {
                     creep.memory.target = undefined;
                     creep.memory.path   = undefined;
                     return ERR_NO_PATH;
@@ -182,7 +182,7 @@ let roleFighter = {
         // If the creep wasn't able to find a target, it wanders.
         // =================================================================
         } else {
-            DEFINES.wander(creep);
+            LIB_COMMON.wander(creep);
             return OK;
         } //fi
 
@@ -221,7 +221,7 @@ let roleFighter = {
         && (target = Game.getObjectById(creep.memory.target))
         )
         ||
-        (  creep.ticksToLivenumber > DEFINES.NEAR_DEATH
+        (  creep.ticksToLivenumber > LIB_COMMON.NEAR_DEATH
         && target.structureType
         && target.structureType === STRUCTURE_SPAWN
         && target.my
@@ -248,7 +248,7 @@ let roleFighter = {
 
         // Find and affect a target
         // =====================================================================
-        let loopLimit = Math.ceil(Math.random() * DEFINES.LOOP_LIMIT);
+        let loopLimit = Math.ceil(Math.random() * LIB_COMMON.LOOP_LIMIT);
         for(let l = 0; l < loopLimit; l++) {
 
             // Find a target
@@ -277,7 +277,7 @@ let roleFighter = {
             // -----------------------------------------------------------------
             if(!rooms.length) break;
         } //done
-        DEFINES.wander(creep);
+        LIB_COMMON.wander(creep);
     } //function
 }; //struct
 

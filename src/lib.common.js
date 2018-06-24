@@ -5,7 +5,7 @@
 **/
 "use strict";
 
-const DEFINES = {
+const LIB_COMMON = {
 
     // Variables
     // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -383,7 +383,7 @@ const DEFINES = {
 
     // Create creep
     // =========================================================================
-    // Depends: DEFINES.say()
+    // Depends: LIB_COMMON.say()
     /** The idea behind this function, is to create each creep with as many parts as
     *  possible, given the room's current energy total.  It cycles through the
     *  given parts array, and continues until there is no more energy to spend.  It
@@ -657,10 +657,10 @@ const DEFINES = {
 
         // Display which type of creep is being spawned
         // -------------------------------------------------------------------------
-        DEFINES.say(name[0].toUpperCase() + name.slice(1), spawn);
+        LIB_COMMON.say(name[0].toUpperCase() + name.slice(1), spawn);
     }, //function
 }; //struct
 
 // Export this file for use in others.
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-module.exports = DEFINES;
+module.exports = LIB_COMMON;

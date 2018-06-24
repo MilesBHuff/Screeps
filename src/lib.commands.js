@@ -7,12 +7,12 @@
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const DEFINES = require("defines");
-let commands = {
+const LIB_COMMON = require("lib.common");
+const LIB_COMMANDS = {
 
     // Check progress
     // =========================================================================
-    // require("commands").checkProgress("StructureID");
+    // require("lib.commands").checkProgress("StructureID");
     /** Check the exact progress of a controller or construction site.  If the
      *  specified structure does not have a progress letiable, use its repair
      *  letiable.
@@ -27,13 +27,13 @@ let commands = {
         } else if(structure.hits && structure.hitsMax) {
             message = structure.hits + " / " + structure.hitsMax;
         } else return ERR_INVALID_TARGET;
-        DEFINES.say(structure, message)
+        LIB_COMMON.say(structure, message);
         return message;
     }, //function
 
     // Create creep
     // =========================================================================
-    // require("commands").createCreep("SpawnName", [MOVE], "CreepName", require("defines").ROLES.MANUAL);
+    // require("lib.commands").createCreep("SpawnName", [MOVE], "CreepName", require("lib.common").ROLES.MANUAL);
     /** This function spawns a creep at the desired spawn, using the same
      *  creep-generation function as main().
      * @param  spawnName The name of the spawn to use.
@@ -43,12 +43,12 @@ let commands = {
      * @return An exit-code.
     **/
     createCreep: function (spawnName, partTypes, creepName, role) {
-        return DEFINES.createCreep(Game.spawns[spawnName], partTypes, creepName, role);
+        return LIB_COMMON.createCreep(Game.spawns[spawnName], partTypes, creepName, role);
     }, //function;
 
     // Dismantle
     // =========================================================================
-    // require("commands").dismantle("StructureID");
+    // require("lib.commands").dismantle("StructureID");
     /** Marks the specified structure for demolition.
      * @param  structureId The ID of the structure to dismantle.
      * @return An exit-code.
@@ -59,7 +59,7 @@ let commands = {
 
     // Move creep to
     // =========================================================================
-    // require("commands").moveCreepTo("CreepName", "TargetID");
+    // require("lib.commands").moveCreepTo("CreepName", "TargetID");
     /** Order a creep to move to a particular target.
      * @param  creepName The name of the creep to use.
      * @param  target    The ID of the target to move towards.
@@ -67,12 +67,12 @@ let commands = {
     **/
     moveCreepTo: function (creepName, target) {
         Game.creeps[creepName].memory.target = target;
-        return DEFINES.move(Game.creeps[creepName], COLOR_GREY, false);
+        return LIB_COMMON.move(Game.creeps[creepName], COLOR_GREY, false);
     }, //function
 
     // Remove construction
     // =========================================================================
-    // require("commands").removeConstruction();
+    // require("lib.commands").removeConstruction();
     /** Remove all construction sites
      * @return An exit-code.
     **/
@@ -85,7 +85,7 @@ let commands = {
 
     // Sign controller
     // =========================================================================
-    // require("commands").signController("CreepName", "ControllerID", "Message");
+    // require("lib.commands").signController("CreepName", "ControllerID", "Message");
     /** Signs the specified controller with the specified creep.
      * @param  creepName    The name of the creep to use.
      * @param  controllerId The ID of the controller to sign.
@@ -98,4 +98,4 @@ let commands = {
 
 // Export this file for use in others.
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-module.exports = commands;
+module.exports = LIB_COMMANDS;
