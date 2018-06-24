@@ -16,7 +16,7 @@ const LIB_COMMON = {
     // This is the remaining repair amount at which you will receive an email about your controller degrading.
     CONTROLLER_NEAR_DEGRADE: 3000,
     // The maximum number of times to run a loop that would otherwise be while(true).
-    LOOP_LIMIT: 6,
+    LOOP_LIMIT: 12,
     // This is the number of ticksToLive below which a creep is considered near-death.
     NEAR_DEATH: 150,
     // This is the base limit to which things should be repaired.  It should be multiplied by the room in-question's current control level.

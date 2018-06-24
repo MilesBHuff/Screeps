@@ -270,7 +270,7 @@ let roleWorker   = {
                     targets = LIB_COMMON.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
                 } //fi
-
+/*
                 // Store excess resources
                 // =============================================================
                 task = LIB_COMMON.TASKS.TRANSFER;
@@ -294,7 +294,7 @@ let roleWorker   = {
                 });
                 targets = LIB_COMMON.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
-
+*/
                 // Upgrade the controller.
                 // =============================================================
                 task = LIB_COMMON.TASKS.UPGRADE;
@@ -302,6 +302,8 @@ let roleWorker   = {
                 targets = LIB_COMMON.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
 
+				// Give up
+				// =============================================================
                 task = LIB_COMMON.TASKS.WAIT;
                 break;
             } //esac
@@ -437,10 +439,6 @@ let roleWorker   = {
                     return ERR_INVALID_TARGET;
                 } //fi
             } //fi
-        // This only happens when there are no valid targets in the room
-        } else {
-            if(canWander) LIB_COMMON.wander(creep);
-            return OK;
         } //fi
 
         // If the creep found a target, say what it is.
@@ -493,8 +491,7 @@ let roleWorker   = {
 
         // Find and affect a target
         // =====================================================================
-        let loopLimit = Math.ceil(Math.random() * LIB_COMMON.LOOP_LIMIT);
-        for(let l = 0; l < loopLimit; l++) {
+        for(let l = 0; l < LIB_COMMON.LOOP_LIMIT; l++) {
 
             // Find a target
             // -----------------------------------------------------------------

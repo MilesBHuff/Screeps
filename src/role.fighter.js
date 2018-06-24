@@ -248,8 +248,7 @@ let roleFighter = {
 
         // Find and affect a target
         // =====================================================================
-        let loopLimit = Math.ceil(Math.random() * LIB_COMMON.LOOP_LIMIT);
-        for(let l = 0; l < loopLimit; l++) {
+        for(let l = 0; l < LIB_COMMON.LOOP_LIMIT; l++) {
 
             // Find a target
             // -----------------------------------------------------------------
