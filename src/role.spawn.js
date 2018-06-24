@@ -6,7 +6,7 @@
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const DEFINES = require("defines");
+const LIB_COMMON = require("lib.common");
 let roleSpawn = {
 
     // Main
@@ -47,15 +47,15 @@ let roleSpawn = {
 
             // Creeps in all rooms
             // -----------------------------------------------------------------------------
-            creepsGlobal.fighters = _.filter(Game.creeps,     (creep)     => creep.memory.role       === DEFINES.ROLES.FIGHTER);
-            creepsGlobal.healers  = _.filter(Game.creeps,     (creep)     => creep.memory.role       === DEFINES.ROLES.HEALER );
-            creepsGlobal.workers  = _.filter(Game.creeps,     (creep)     => creep.memory.role       === DEFINES.ROLES.WORKER );
+            creepsGlobal.fighters = _.filter(Game.creeps,     (creep)     => creep.memory.role       === LIB_COMMON.ROLES.FIGHTER);
+            creepsGlobal.healers  = _.filter(Game.creeps,     (creep)     => creep.memory.role       === LIB_COMMON.ROLES.HEALER );
+            creepsGlobal.workers  = _.filter(Game.creeps,     (creep)     => creep.memory.role       === LIB_COMMON.ROLES.WORKER );
 
             // Creeps in the current room
             // -----------------------------------------------------------------------------
-            creepsLocal.fighters  = _.filter(     creeps,     (creep)     => creep.memory.role       === DEFINES.ROLES.FIGHTER);
-            creepsLocal.healers   = _.filter(     creeps,     (creep)     => creep.memory.role       === DEFINES.ROLES.HEALER );
-            creepsLocal.workers   = _.filter(     creeps,     (creep)     => creep.memory.role       === DEFINES.ROLES.WORKER );
+            creepsLocal.fighters  = _.filter(     creeps,     (creep)     => creep.memory.role       === LIB_COMMON.ROLES.FIGHTER);
+            creepsLocal.healers   = _.filter(     creeps,     (creep)     => creep.memory.role       === LIB_COMMON.ROLES.HEALER );
+            creepsLocal.workers   = _.filter(     creeps,     (creep)     => creep.memory.role       === LIB_COMMON.ROLES.WORKER );
 
             // Structures in the current room
             // -----------------------------------------------------------------------------
@@ -85,13 +85,13 @@ let roleSpawn = {
                 switch(i) {
                     case 0:
                     /*//*/ if(creepsLocal.workers.length  < spawn.room.memory.workerLimit  / 2) {
-                        creepRole = DEFINES.ROLES.WORKER;
+                        creepRole = LIB_COMMON.ROLES.WORKER;
                     } else if(creepsLocal.healers.length  < spawn.room.memory.healerLimit  / 2 && creepsLocal.healers.length < creepsLocal.fighters.length / 4) {
-                        creepRole = DEFINES.ROLES.HEALER;
+                        creepRole = LIB_COMMON.ROLES.HEALER;
                     } else if(creepsLocal.fighters.length < spawn.room.memory.fighterLimit / 2) {
-                        creepRole = DEFINES.ROLES.FIGHTER;
+                        creepRole = LIB_COMMON.ROLES.FIGHTER;
                     } else {
-                        creepRole = Math.floor(Math.random() * DEFINES.ROLES.length);
+                        creepRole = Math.floor(Math.random() * LIB_COMMON.ROLES.length);
                     }
                     break;
 
@@ -103,29 +103,29 @@ let roleSpawn = {
                 // Spawn the creep
                 // -----------------------------------------------------------------------------
                 switch(creepRole) {
-                    case DEFINES.ROLES.WORKER:
+                    case LIB_COMMON.ROLES.WORKER:
                     if(creepsLocal.workers.length    < spawn.room.memory.workerLimit
                     && creepsGlobal.workers.length < creepLimitsGlobal.workers
                     ){
-                        DEFINES.createCreep(spawn, [CARRY, MOVE, WORK], "Worker", DEFINES.ROLES.WORKER);
+                        LIB_COMMON.createCreep(spawn, [CARRY, MOVE, WORK], "Worker", LIB_COMMON.ROLES.WORKER);
                         break;
                     }
                     if(i === 0) break;
 
-                    case DEFINES.ROLES.FIGHTER:
+                    case LIB_COMMON.ROLES.FIGHTER:
                     if(creepsLocal.fighters.length    < spawn.room.memory.fighterLimit
                     && creepsGlobal.fighters.length < creepLimitsGlobal.fighters
                     ){
-                        DEFINES.createCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Fighter", DEFINES.ROLES.FIGHTER);
+                        LIB_COMMON.createCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Fighter", LIB_COMMON.ROLES.FIGHTER);
                         break;
                     }
                     if(i === 0) break;
 
-                    case DEFINES.ROLES.HEALER:
+                    case LIB_COMMON.ROLES.HEALER:
                     if(creepsLocal.healers.length    < spawn.room.memory.healerLimit
                     && creepsGlobal.healers.length < creepLimitsGlobal.healers
                     ){
-                        DEFINES.createCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", DEFINES.ROLES.HEALER);
+                        LIB_COMMON.createCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", LIB_COMMON.ROLES.HEALER);
                         break;
                     } //fi
                     if(i === 0) break;
@@ -151,9 +151,9 @@ let roleSpawn = {
         // Kill off unneeded creeps
         // =============================================================================
         function dieOff() {
-            DEFINES.killOff(creepsLocal.fighters, spawn.room.memory.fighterLimit);
-            DEFINES.killOff(creepsLocal.healers,  spawn.room.memory.healerLimit );
-            DEFINES.killOff(creepsLocal.workers,  spawn.room.memory.workerLimit );
+            LIB_COMMON.killOff(creepsLocal.fighters, spawn.room.memory.fighterLimit);
+            LIB_COMMON.killOff(creepsLocal.healers,  spawn.room.memory.healerLimit );
+            LIB_COMMON.killOff(creepsLocal.workers,  spawn.room.memory.workerLimit );
         } //dieOff
     }, //run
 }; //roleSpawn

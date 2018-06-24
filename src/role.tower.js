@@ -6,7 +6,7 @@
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const DEFINES = require("defines");
+const LIB_COMMON = require("lib.common");
 let roleTower = {
 
     // run()
@@ -18,7 +18,7 @@ let roleTower = {
 
         // Variables
         // =====================================================================
-        let repairLimit = DEFINES.REPAIR_LIMIT * structure.room.controller.level;
+        let repairLimit = LIB_COMMON.REPAIR_LIMIT * structure.room.controller.level;
         for(let b = true; b; b = false) {
             let targets = Array();
 

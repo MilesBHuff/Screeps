@@ -6,7 +6,7 @@
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const DEFINES = require("defines");
+const LIB_COMMON = require("lib.common");
 let roleManual = {
 
     // Main
@@ -19,7 +19,7 @@ let roleManual = {
         // Move to the provided destination, if there is one.
         // =============================================================================
         if(creep.memory && creep.memory.target) {
-                DEFINES.move(creep, COLOR_BLUE, false);
+                LIB_COMMON.move(creep, COLOR_BLUE, false);
         } //fi
     }, //run
 }; //roleManual
