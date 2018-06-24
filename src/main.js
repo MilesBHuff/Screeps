@@ -10,40 +10,38 @@ const LIB_COMMON = require("lib.common");
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 module.exports.loop = function () {
 
-    cleanup();
+	// Every 8 ticks
+	if(LIB_COMMON.gamble(1 / 8)) {
+		cleanMemories();
+	} //fi
+
+	// Every tick
     setAis();
 
-    // Cleanup
+    // Delete the memories of dead entities
     // *****************************************************************************
-    function cleanup() {
-        // Every 8 ticks
-        if(LIB_COMMON.gamble(1 / 8)) {
-            cleanMemories();
-        } //fi
+    function cleanMemories() {
+        // Creeps
+        for(let name in Memory.creeps) {
+            if(!Game.creeps[name]) {
+                delete Memory.creeps[name];
+            } //fi
+        } //done
 
-        // Delete the memories of dead entities
-        // =============================================================================
-        function cleanMemories() {
-            // Creeps
-            for(let name in Memory.creeps) {
-                if(!Game.creeps[name]) {
-                    delete Memory.creeps[name];
-                } //fi
-            } //done
-            // Structures
-            for(let name in Memory.structures) {
-                if(!Game.structures[name]) {
-                    delete Memory.structures[name];
-                } //fi
-            } //done
-            // Rooms
-            for(let name in Memory.rooms) {
-                if(!Game.rooms[name]) {
-                    delete Memory.rooms[name];
-                } //fi
-            } //done
-        } //cleanMemories
-    } //cleanup
+        // Structures
+        for(let name in Memory.structures) {
+            if(!Game.structures[name]) {
+                delete Memory.structures[name];
+            } //fi
+        } //done
+
+        // Rooms
+        for(let name in Memory.rooms) {
+            if(!Game.rooms[name]) {
+                delete Memory.rooms[name];
+            } //fi
+        } //done
+    } //cleanMemories
 
     // AIs
     // *****************************************************************************

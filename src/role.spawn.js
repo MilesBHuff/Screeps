@@ -16,6 +16,7 @@ let roleSpawn = {
     **/
     run: function(spawn) {
 
+		// Variables
         let creepLimitsGlobal = {
             fighters: 0,
             healers:  0,
@@ -32,11 +33,15 @@ let roleSpawn = {
             workers:  0,
             towers:   0,
         };
-        let creeps = _.filter(Game.creeps, (creep) => creep.room === spawn.room);
+        let creeps = _.filter(Game.creeps, (creep) => creep.room === spawn.room); // All creeps in the room
+
+		// If already spawning or not at full energy, return.
+		// Exception:  If there are no creeps left, spawn even if not at full energy.
         if(spawn.spawning || (spawn.energy < spawn.energyCapacity && creeps.length > 0)) {
             return;
         } //fi
 
+		// Every tick
         countEntities();
         createCreeps();
         //dieOff();
@@ -104,7 +109,7 @@ let roleSpawn = {
                 // -----------------------------------------------------------------------------
                 switch(creepRole) {
                     case LIB_COMMON.ROLES.WORKER:
-                    if(creepsLocal.workers.length    < spawn.room.memory.workerLimit
+                    if(creepsLocal.workers.length  < spawn.room.memory.workerLimit
                     && creepsGlobal.workers.length < creepLimitsGlobal.workers
                     ){
                         LIB_COMMON.createCreep(spawn, [CARRY, MOVE, WORK], "Worker", LIB_COMMON.ROLES.WORKER);
@@ -113,7 +118,7 @@ let roleSpawn = {
                     if(i === 0) break;
 
                     case LIB_COMMON.ROLES.FIGHTER:
-                    if(creepsLocal.fighters.length    < spawn.room.memory.fighterLimit
+                    if(creepsLocal.fighters.length  < spawn.room.memory.fighterLimit
                     && creepsGlobal.fighters.length < creepLimitsGlobal.fighters
                     ){
                         LIB_COMMON.createCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Fighter", LIB_COMMON.ROLES.FIGHTER);
@@ -122,7 +127,7 @@ let roleSpawn = {
                     if(i === 0) break;
 
                     case LIB_COMMON.ROLES.HEALER:
-                    if(creepsLocal.healers.length    < spawn.room.memory.healerLimit
+                    if(creepsLocal.healers.length  < spawn.room.memory.healerLimit
                     && creepsGlobal.healers.length < creepLimitsGlobal.healers
                     ){
                         LIB_COMMON.createCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", LIB_COMMON.ROLES.HEALER);
