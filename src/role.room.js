@@ -17,12 +17,12 @@ let roleRoom = {
     run: function (room) {
 
         // Every tick
+		setCreepLimits();
         condemnedStructures();
 
         // Every 8 ticks
         if(LIB_COMMON.gamble(1 / 8)) {
             savedStructures();
-            setCreepLimits();
         } //fi
 
         // Condemned structures
