@@ -17,7 +17,7 @@ module.exports.loop = function () {
     // *****************************************************************************
     function cleanup() {
         // Every 8 ticks
-        if(!Math.floor(Math.random() * 8)) {
+        if(LIB_COMMON.gamble(1 / 8)) {
             cleanMemories();
         } //fi
 

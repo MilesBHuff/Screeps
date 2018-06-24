@@ -82,7 +82,7 @@ let roleWorker   = {
 
                     // Withdraw resources from condemned structures
                     // ---------------------------------------------------------
-                    if(rooms[0].memory && rooms[0].memory.dismantle && Math.round(Math.random())) {
+                    if(rooms[0].memory && rooms[0].memory.dismantle && LIB_COMMON.gamble(1 / 2)) {
                         for(let a = 0; rooms[0].memory.dismantle[a]; a++) {
                             targets.push(Game.getObjectById(rooms[0].memory.dismantle[a]));
                         } //done
@@ -92,7 +92,7 @@ let roleWorker   = {
 
 //                  // 50% chance to harvest minerals
 //                  // ---------------------------------------------------------
-//                  if(Math.floor(Math.random())) {
+//                  if(LIB_COMMON.gamble(1 / 2)) {
 //                      targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) => {return(structure.structureType === STRUCTURE_EXTRACTOR);}});
 //                      targets = LIB_COMMON.filterTargets(targets, badTargets);
 //                      if((targets && targets.length) || rooms[0].find(FIND_MINERALS, {filter: (mineral) => mineral.mineralAmount > 0}).length) break;
@@ -157,7 +157,7 @@ let roleWorker   = {
                 // 75% chance of maintaining towers
                 // =============================================================
                 task = LIB_COMMON.TASKS.TRANSFER;
-                if(Math.round(Math.random() * 3)) {
+                if(LIB_COMMON.gamble(3 / 4)) {
                     targets = rooms[0].find(FIND_MY_STRUCTURES, {
                         filter: (structure) => {return(
                                structure.structureType === STRUCTURE_TOWER
@@ -172,7 +172,7 @@ let roleWorker   = {
                 // 25% chance to build things that complete instantaneously
                 // =============================================================
                 task = LIB_COMMON.TASKS.BUILD;
-                if(Math.round(Math.random() * 2)) {
+                if(LIB_COMMON.gamble(1 / 4)) {
                     targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
                            site.structureType === STRUCTURE_WALL
                         || site.structureType === STRUCTURE_RAMPART
@@ -184,7 +184,7 @@ let roleWorker   = {
                 // 75% chance of repairing most constructions
                 // =============================================================
                 task = LIB_COMMON.TASKS.REPAIR;
-                if(Math.round(Math.random() * 3)) {
+                if(LIB_COMMON.gamble(3 / 4)) {
                     // Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
                     // It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
                     targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) =>
@@ -202,7 +202,7 @@ let roleWorker   = {
                 // 50% chance of building cheap / important structures.
                 // =============================================================
                 task = LIB_COMMON.TASKS.BUILD;
-                if(Math.round(Math.random())) {
+                if(LIB_COMMON.gamble(1 / 2)) {
                     targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
                            site.structureType === STRUCTURE_SPAWN
                         || site.structureType === STRUCTURE_ROAD
@@ -214,7 +214,7 @@ let roleWorker   = {
                 // 50% chance of refilling miscellaneous resource-using structures
                 // =============================================================
                 task = LIB_COMMON.TASKS.TRANSFER;
-                if(Math.round(Math.random())) {
+                if(LIB_COMMON.gamble(1 / 2)) {
                     targets = rooms[0].find(FIND_MY_STRUCTURES, {filter: (structure) =>
                            structure.structureType === STRUCTURE_LAB
                         || structure.structureType === STRUCTURE_NUKER
@@ -227,7 +227,7 @@ let roleWorker   = {
                 // 50% chance of repairing constructions that start at 1 health
                 // =============================================================
                 task = LIB_COMMON.TASKS.REPAIR;
-                if(Math.round(Math.random())) {
+                if(LIB_COMMON.gamble(1 / 2)) {
                     // Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
                     // It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
                     targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) =>
@@ -246,7 +246,7 @@ let roleWorker   = {
                 // If the controller *is* already at max, upgrade it if it's less than 3/4 degraded.
                 // =============================================================
                 task = LIB_COMMON.TASKS.UPGRADE;
-                if(Math.round(Math.random())
+                if(LIB_COMMON.gamble(1 / 2)
                 && rooms[0].controller.level < 8
                 || rooms[0].controller.ticksToDowngrade < (3 / 4) * CONTROLLER_DOWNGRADE[rooms[0].controller.level]
                 ) {
@@ -292,6 +292,13 @@ let roleWorker   = {
                         && structure.room.memory.dismantle.indexOf(structure.id) === -1
                     );}
                 });
+                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                if(targets && targets.length) break;
+
+                // Upgrade the controller.
+                // =============================================================
+                task = LIB_COMMON.TASKS.UPGRADE;
+                targets = [rooms[0].controller];
                 targets = LIB_COMMON.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
 

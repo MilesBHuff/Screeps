@@ -232,7 +232,7 @@ let roleFighter = {
         && target.structureType === STRUCTURE_RAMPART
         && target.my
         )
-        ||!Math.round(Math.random() * 8)
+        || LIB_COMMON.gamble(1 / 8)
         )) {
             creep.memory.target = undefined;
         }
