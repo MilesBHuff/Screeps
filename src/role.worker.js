@@ -41,8 +41,8 @@ let roleWorker   = {
 
             // Variables
             // =================================================================
-            var targets = Array();
-            var task    = LIB_COMMON.TASKS.WAIT;
+            let targets = Array();
+            let task    = LIB_COMMON.TASKS.WAIT;
             switch(true) {
                 default:
 
@@ -302,7 +302,7 @@ let roleWorker   = {
             // Pick a target from the array of targets
             // =================================================================
             if(targets.length) {
-                var target = creep.pos.findClosestByRange(targets);
+                let target = creep.pos.findClosestByRange(targets);
                 if(target && target.id) {
                     switch(task) {
                         case LIB_COMMON.TASKS.HARVEST:
@@ -347,14 +347,14 @@ let roleWorker   = {
      * @return OK, ERR_NO_PATH, ERR_INVALID_TARGET
     **/
     affectTarget: function (creep) {
-        var code = OK;
+        let code = OK;
 
         // Move towards the target
         // =================================================================
         if(creep.memory
         && creep.memory.target
         ) {
-            var target = Game.getObjectById(creep.memory.target);
+            let target = Game.getObjectById(creep.memory.target);
             if(!target) return ERR_INVALID_TARGET;
 
             // Harvest
@@ -486,7 +486,7 @@ let roleWorker   = {
 
         // Find and affect a target
         // =====================================================================
-        var loopLimit = Math.ceil(Math.random() * LIB_COMMON.LOOP_LIMIT);
+        let loopLimit = Math.ceil(Math.random() * LIB_COMMON.LOOP_LIMIT);
         for(let l = 0; l < loopLimit; l++) {
 
             // Find a target
@@ -502,7 +502,7 @@ let roleWorker   = {
 
             // Affect the target
             // -----------------------------------------------------------------
-            var code = roleWorker.affectTarget(creep);
+            let code = roleWorker.affectTarget(creep);
             // If an error ocurred during pathfinding, reset the current target.
             if(code
             && code !== OK
