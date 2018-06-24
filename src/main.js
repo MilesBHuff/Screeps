@@ -10,12 +10,12 @@ const LIB_COMMON = require("lib.common");
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 module.exports.loop = function () {
 
-	// Every 8 ticks
-	if(LIB_COMMON.gamble(1 / 8)) {
-		cleanMemories();
-	} //fi
+    // Every 8 ticks
+    if(LIB_COMMON.gamble(1 / 8)) {
+        cleanMemories();
+    } //fi
 
-	// Every tick
+    // Every tick
     setAis();
 
     // Delete the memories of dead entities
@@ -56,6 +56,7 @@ module.exports.loop = function () {
             let name, room;
             for(name in Game.rooms) {
                 room = Game.rooms[name];
+                if(!room.controller) continue;
                 switch(room.controller.my) {
                     case true:
                     require("role.room").run(room);
@@ -87,6 +88,7 @@ module.exports.loop = function () {
         function upliftCreeps() {
             for(let name in Game.creeps) {
                 let creep = Game.creeps[name];
+                if(!creep.memory) continue;
                 switch(creep.memory.role) {
 
                     case LIB_COMMON.ROLES.WORKER:
