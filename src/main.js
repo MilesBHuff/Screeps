@@ -22,7 +22,7 @@ module.exports.loop = function () {
         } //fi
 
         // Delete the memories of dead entities
-		// =============================================================================
+        // =============================================================================
         function cleanMemories() {
             // Creeps
             for(let name in Memory.creeps) {
@@ -48,23 +48,23 @@ module.exports.loop = function () {
     // AIs
     // *****************************************************************************
     function setAis() {
-		upliftRooms();
+        upliftRooms();
         upliftStructures();
         upliftCreeps();
 
-		// Rooms
-		// =============================================================================
+        // Rooms
+        // =============================================================================
         function upliftRooms() {
-			let name, room;
-	        for(name in Game.rooms) {
-	            room = Game.rooms[name];
+            let name, room;
+            for(name in Game.rooms) {
+                room = Game.rooms[name];
                 switch(room.controller.my) {
-					case true:
+                    case true:
                     require("role.room").run(room);
-					break;
-				} //esac
-			} //done
-		} //upliftRooms
+                    break;
+                } //esac
+            } //done
+        } //upliftRooms
 
         // Structures
         // =============================================================================

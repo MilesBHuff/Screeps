@@ -88,6 +88,7 @@
 		"Memory": true,
         "Room": true,
         "RoomPosition": true,
+        "RoomVisual": true,
         "Source": true,
         "Spawn": true,
         "Structure": true,
@@ -145,6 +146,8 @@
         "FIND_STRUCTURES": true,
         "FIND_MY_STRUCTURES": true,
         "FIND_HOSTILE_STRUCTURES": true,
+
+		"LOOK_CREEPS": true,
 
         "OK": true,
         "ERR_NOT_OWNER": true,

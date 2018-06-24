@@ -3,6 +3,7 @@
 /** This file contains constant variables and functions that are used across
  *  multiple files.
 **/
+"use strict";
 
 const DEFINES = {
 
@@ -138,7 +139,7 @@ const DEFINES = {
             creep.memory.path = undefined;
         } //fi
         if(creep.memory && creep.memory.target) {
-            var target = Game.getObjectById(creep.memory.target);
+            let target = Game.getObjectById(creep.memory.target);
             if(!target) {
 //              creep.memory.target = undefined;
                 return ERR_INVALID_TARGET;
@@ -156,7 +157,7 @@ const DEFINES = {
             // If the creep has no path, create one.  If there is no possible path, reset the creep's target and return.
             if(!creep.memory.path) {
                 // Configure the pathfinder
-                var pathOpts = {
+                let pathOpts = {
                     ignoreCreeps: false,
                     ignoreDestructibleStructures: false,
                     ignoreRoads:  false,
@@ -165,14 +166,14 @@ const DEFINES = {
                     serialize:    false,
                 }; //struct
                 // Find a path
-                var path = creep.pos.findPathTo(target, pathOpts);
+                let path = creep.pos.findPathTo(target, pathOpts);
                 // Validate the path
-                var validPath = false;
+                let validPath = false;
                 if(path.length) {
                     if(target.room === creep.room) {
                         for(let x = -1; x <= 1; x++) {
                             for(let y = -1; y <= 1; y++) {
-                                var pos = new RoomPosition(target.pos.x + x,
+                                let pos = new RoomPosition(target.pos.x + x,
                                                            target.pos.y + y,
                                                            target.pos.roomName);
                                 if(pos.x === path[path.length - 1].x
@@ -201,8 +202,8 @@ const DEFINES = {
             } //fi
             // Try to move the creep to the new location.  If this fails, reset the path and return an error.
             //NOTE:  In the past, I simply recalculated the path once;  but this frequently resulted in neverending creep path-loops.
-            var oldPos = creep.pos;
-            var code   = creep.moveByPath(creep.memory.path);
+            let oldPos = creep.pos;
+            let code   = creep.moveByPath(creep.memory.path);
             if(code
             &&(code === ERR_INVALID_ARGS
             || code === ERR_BUSY
@@ -286,7 +287,7 @@ const DEFINES = {
                 break;
             } //esac
             // Path-drawing settings
-            var lineOpts = {
+            let lineOpts = {
                 fill: "transparent",
                 lineStyle: "dashed",
                 opacity:       0.25,
@@ -422,7 +423,7 @@ const DEFINES = {
 
             // Find out how expensive the current part is
             // ---------------------------------------------------------------------
-            var partCost = 0;
+            let partCost = 0;
             switch(rawParts[currentPart]) {
                 case ATTACK:
                 partCost = BODYPART_COST[ATTACK];
@@ -632,11 +633,11 @@ const DEFINES = {
 
         // If any neighbouring owned room lacks spawners, 50% chance of sending this creep to it.
         // -------------------------------------------------------------------------
-        var target;
+        let target;
         if(Math.round(Math.random())) {
-            var exits = Game.map.describeExits(spawn.room.name);
+            let exits = Game.map.describeExits(spawn.room.name);
             for(let index in exits) {
-                var room = Game.rooms[exits[index]];
+                let room = Game.rooms[exits[index]];
                 if( room && room.controller && room.controller.my
                 && !room.find(FIND_MY_STRUCTURES, {filter: (structure) => {
                     return(structure.structureType === STRUCTURE_SPAWN);
