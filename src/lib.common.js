@@ -102,6 +102,17 @@ const LIB_COMMON = {
         return roomsTmp;
     }, //function
 
+    // Gamble
+    // =========================================================================
+    /** This function rolls the dice at the odds specified, and returns whether
+	 *  you won.
+     * @param  odds The odds of winning, out of 1.
+     * @return whether you won.
+    **/
+    gamble: function (odds) {
+		return !Math.floor(Math.random() * (1 / odds));
+	}, //gamble
+
     // Kill off
     // =========================================================================
     /** This function kills off excess creeps.
