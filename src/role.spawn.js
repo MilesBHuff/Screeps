@@ -16,7 +16,7 @@ let roleSpawn = {
     **/
     run: function(spawn) {
 
-		// Variables
+        // Variables
         let creepLimitsGlobal = {
             fighters: 999,
             healers:  999,
@@ -32,13 +32,13 @@ let roleSpawn = {
             healers:  0,
             workers:  0,
         };
-		countCreeps();
+        countCreeps();
 
-		// Unless already spawning or not at full energy.
-		// Exception:  If there are no workers left, spawn even if not at full energy.
+        // Unless already spawning or not at full energy.
+        // Exception:  If there are no workers left, spawn even if not at full energy.
         if(!spawn.spawning && (spawn.energy >= spawn.energyCapacity || creepsLocal.workers.length <= 0)) {
-        	trySpawnCreep();
-		} //fi
+            trySpawnCreep();
+        } //fi
 
         //dieOff();
 
