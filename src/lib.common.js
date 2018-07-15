@@ -105,13 +105,13 @@ const LIB_COMMON = {
     // Gamble
     // =========================================================================
     /** This function rolls the dice at the odds specified, and returns whether
-	 *  you won.
+     *  you won.
      * @param  odds The odds of winning, out of 1.
      * @return whether you won.
     **/
     gamble: function (odds) {
-		return !Math.floor(Math.random() * (1 / odds));
-	}, //gamble
+        return !Math.floor(Math.random() * (1 / odds));
+    }, //gamble
 
     // Kill off
     // =========================================================================

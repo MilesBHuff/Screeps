@@ -302,8 +302,8 @@ let roleWorker   = {
                 targets = LIB_COMMON.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
 
-				// Give up
-				// =============================================================
+                // Give up
+                // =============================================================
                 task = LIB_COMMON.TASKS.WAIT;
                 break;
             } //esac
