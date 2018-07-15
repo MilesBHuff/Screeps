@@ -8,6 +8,7 @@
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 const LIB_COMMON = require("lib.common");
+const ROLE_SPAWN = require("role.spawn");
 const LIB_COMMANDS = {
 
     // Check progress
@@ -43,7 +44,7 @@ const LIB_COMMANDS = {
      * @return An exit-code.
     **/
     createCreep: function (spawnName, partTypes, creepName, role) {
-        return LIB_COMMON.createCreep(Game.spawns[spawnName], partTypes, creepName, role);
+        return ROLE_SPAWN.spawnCreep(Game.spawns[spawnName], partTypes, creepName, role);
     }, //function;
 
     // Dismantle
