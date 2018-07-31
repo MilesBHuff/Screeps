@@ -35,7 +35,7 @@ let roleWorker   = {
 
             // If we've already tried all the nearby rooms, return.
             // =================================================================
-            if(!rooms.length) {
+            if(!rooms || !rooms.length) {
                     return;
             } //fi
 
@@ -246,10 +246,14 @@ let roleWorker   = {
                 // If the controller *is* already at max, upgrade it if it's less than 3/4 degraded.
                 // =============================================================
                 task = LIB_COMMON.TASKS.UPGRADE;
-                if(LIB_COMMON.gamble(1 / 2)
+                if(rooms[0].controller
+				&& rooms[0].controller.level
+				&& ((
+				   LIB_COMMON.gamble(1 / 2)
                 && rooms[0].controller.level < 8
+				   )
                 || rooms[0].controller.ticksToDowngrade < (3 / 4) * CONTROLLER_DOWNGRADE[rooms[0].controller.level]
-                ) {
+				)) {
                     targets = [rooms[0].controller];
                     targets = LIB_COMMON.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
@@ -265,7 +269,9 @@ let roleWorker   = {
                 // Upgrade the controller if it's not already at max.
                 // =============================================================
                 task = LIB_COMMON.TASKS.UPGRADE;
-                if(rooms[0].controller.level < 8) {
+                if(rooms[0].controller
+				&& rooms[0].controller.level
+				&& rooms[0].controller.level < 8) {
                     targets = [rooms[0].controller];
                     targets = LIB_COMMON.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
@@ -470,7 +476,13 @@ let roleWorker   = {
 
         // Variables
         // =====================================================================
-        repairLimit = LIB_COMMON.REPAIR_LIMIT * creep.room.controller.level;
+		repairLimit = 0;
+		if(creep && creep.room && creep.room.controller && creep.room.controller.level) {
+        	repairLimit = LIB_COMMON.REPAIR_LIMIT * creep.room.controller.level;
+		} //fi
+		if(!repairLimit) {
+			repairLimit = LIB_COMMON.REPAIR_LIMIT;
+		} //fi
         if(creep.memory && creep.memory.target) canWander = false;
 
         // Decide whether to harvest
