@@ -55,13 +55,17 @@ module.exports.loop = function () {
         function upliftRooms() {
             let name, room;
             for(name in Game.rooms) {
-                room = Game.rooms[name];
-                if(!room.controller) continue;
-                switch(room.controller.my) {
-                    case true:
-                    require("role.room").run(room);
-                    break;
-                } //esac
+				try {
+		            room = Game.rooms[name];
+		            if(!room.controller) continue;
+		            switch(room.controller.my) {
+		                case true:
+		                require("role.room").run(room);
+		                break;
+		            } //esac
+				} catch(err) {
+					console.log(err.stack);
+				} //finally
             } //done
         } //upliftRooms
 
@@ -69,17 +73,21 @@ module.exports.loop = function () {
         // =============================================================================
         function upliftStructures() {
             for(let name in Game.structures) {
-                let structure = Game.structures[name];
-                switch(structure.structureType) {
+				try {
+	                let structure = Game.structures[name];
+	                switch(structure.structureType) {
 
-                    case STRUCTURE_SPAWN:
-                    require("role.spawn").run(structure);
-                    break;
+	                    case STRUCTURE_SPAWN:
+	                    require("role.spawn").run(structure);
+	                    break;
 
-                    case STRUCTURE_TOWER:
-                    require("role.tower").run(structure);
-                    break;
-                } //esac
+	                    case STRUCTURE_TOWER:
+	                    require("role.tower").run(structure);
+	                    break;
+	                } //esac
+				} catch(err) {
+					console.log(err.stack);
+				} //finally
             } //done
         } //upliftStructures
 
@@ -87,26 +95,30 @@ module.exports.loop = function () {
         // =============================================================================
         function upliftCreeps() {
             for(let name in Game.creeps) {
-                let creep = Game.creeps[name];
-                if(!creep.memory) continue;
-                switch(creep.memory.role) {
+				try {
+	                let creep = Game.creeps[name];
+	                if(!creep.memory) continue;
+	                switch(creep.memory.role) {
 
-                    case LIB_COMMON.ROLES.WORKER:
-                    require("role.worker" ).run(creep);
-                    break;
+	                    case LIB_COMMON.ROLES.WORKER:
+	                    require("role.worker" ).run(creep);
+	                    break;
 
-                    case LIB_COMMON.ROLES.FIGHTER:
-                    require("role.fighter").run(creep);
-                    break;
+	                    case LIB_COMMON.ROLES.FIGHTER:
+	                    require("role.fighter").run(creep);
+	                    break;
 
-                    case LIB_COMMON.ROLES.HEALER:
-                    require("role.healer" ).run(creep);
-                    break;
+	                    case LIB_COMMON.ROLES.HEALER:
+	                    require("role.healer" ).run(creep);
+	                    break;
 
-                    default:
-                    require("role.manual" ).run(creep);
-                    break;
-                } //esac
+	                    default:
+	                    require("role.manual" ).run(creep);
+	                    break;
+	                } //esac
+				} catch(err) {
+					console.log(err.stack);
+				} //finally
             } //done
         } //upliftCreeps
     } //setAis
