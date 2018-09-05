@@ -74,6 +74,12 @@ let roleWorker   = {
 //                    targets = LIB_COMMON.filterTargets(targets, badTargets);
 //                    if(targets && targets.length) break;
 
+					// Dig up graves
+					// ---------------------------------------------------------
+					targets = rooms[0].find(FIND_TOMBSTONES);
+					targets = LIB_COMMON.filterTargets(targets, badTargets);
+					if(targets && targets.length) break;
+
                     // Harvest new energy
                     // ---------------------------------------------------------
                     targets = rooms[0].find(FIND_SOURCES, {filter: (source) => source.energy > 0});
