@@ -146,6 +146,7 @@
         "FIND_STRUCTURES": true,
         "FIND_MY_STRUCTURES": true,
         "FIND_HOSTILE_STRUCTURES": true,
+		"FIND_TOMBSTONES": true,
 
 		"LOOK_CREEPS": true,
 
