@@ -49,29 +49,26 @@ const LIB_COMMON = {
 
     // Filter targets
     // =========================================================================
-    /** This function removes any element in badTargets from targets.
-     * @param  targets    The array whose items to check.
-     * @param  badTargets The IDs of the items to filter out.
+    /** This function removes any element in badTargets from newTargets.
+     * @param  newTargets The array whose IDs to check.
+     * @param  badTargets The array whose IDs to filter out.
      * @return targets without badTargets.
     **/
-    filterTargets: function (targets, badTargets) {
-        let badTargetsCopy = badTargets;
-        if(targets.length && badTargets.length) {
-            for(let i = 0; targets[i]; i++) {
-                for(let j = 0; badTargets[j]; j++) {
-                    if(targets[i].id && targets[i].id === badTargets[j]) {
-                        targets.splice(i, 1);
-                        i--;
-                        badTargets.splice(j, 1);
-                        j--;
+    filterTargets: function (newTargets, badTargets) {
+        if(newTargets.length && badTargets.length) {
+            for(let nt = 0; newTargets[nt]; nt++) {
+                for(let bt = 0; badTargets[bt]; bt++) {
+                    if(newTargets[nt].id && newTargets[nt].id === badTargets[bt]) {
+                        newTargets.splice(nt, 1);
+                        nt--;
+                        badTargets.splice(bt, 1);
+                        bt--;
                         break;
                     } //fi
                 } //done
             } //done
         } //fi
-        badTargets = badTargetsCopy;
-        badTargetsCopy = undefined;
-        return targets;
+        return newTargets;
     }, //function
 
     // Find rooms
