@@ -15,8 +15,12 @@ General
 + Store a tower tasklist in the memory of the room, so that only the nearest
   tower performs repairs, and so that multiple towers don't repair the same
   thing (unless that thing's a wall).
-+ Equalize the contents of all links in each room.
-+ Equalize the contents of all terminals.
++ Equalize the contents of all links in each room.  Empty any terminals that are
+  marked for deconstruction.
++ Equalize the contents of all terminals.  Empty any terminals that are marked
+  for deconstruction.
++ When counting the numbers of existing creeps, don't consider creeps with less
+  than ??? ticks to live.
 
 Workers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
