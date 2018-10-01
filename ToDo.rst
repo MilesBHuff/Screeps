@@ -31,6 +31,8 @@ Workers
   they have no energy.  If they have energy when they have no target, their
   target should always be an energy-expending task.
 + Structures should generally pass isActive() in order to be valid targets.
++ Add a 50% chance of storing energy before upgrading a controller, if that
+  controller is already at the maximal level.
 
 Combat
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
