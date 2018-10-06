@@ -18,7 +18,7 @@ const LIB_COMMON = {
     // The maximum number of times to run a loop that would otherwise be while(true).
     LOOP_LIMIT: 12,
     // This is the number of ticksToLive below which a creep is considered near-death.
-    NEAR_DEATH: 150,
+    NEAR_DEATH: CREEP_SPAWN_TIME * MAX_CREEP_SIZE, // Set to the maximal amount of time it can take to spawn a creep.
     // This is the base limit to which things should be repaired.  It should be multiplied by the room in-question's current control level.
     REPAIR_LIMIT: 62500,
     // These are all the roles available for creeps

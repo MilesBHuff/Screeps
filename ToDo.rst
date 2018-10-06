@@ -6,8 +6,6 @@ General
 + DEFINES.wander() should avoid swamps and paths wherever possible, and should
   not position a creep adjacent to a source.
 + Toy with the idea of renewing boosted creeps.
-+ When counting the numbers of existing creeps, don't consider creeps with less
-  than ??? ticks to live.
 + Figure out how to get creeps of all types to bolster neighbouring owned maps.
 + Cheap scout creeps should be sent to neighbouring unowned maps in order to get
   vision on them.  They should not enter hostile rooms.
