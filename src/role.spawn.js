@@ -10,7 +10,7 @@ const LIB_COMMON = require("lib.common");
 let roleSpawn = {
 
     // Main
-    // *****************************************************************************
+    // *************************************************************************
     /** This function controls the provided spawn.
      * @param spawn The spawn to control.
     **/
@@ -23,14 +23,14 @@ let roleSpawn = {
             workers:  999,
         };
         let creepsGlobal = {
-            fighters: 0,
-            healers:  0,
-            workers:  0,
+            fighters: Array(),
+            healers:  Array(),
+            workers:  Array(),
         };
         let creepsLocal = {
-            fighters: 0,
-            healers:  0,
-            workers:  0,
+            fighters: Array(),
+            healers:  Array(),
+            workers:  Array(),
         };
         countCreeps();
 
@@ -43,23 +43,27 @@ let roleSpawn = {
         //dieOff();
 
         // Count creeps, buildings, etc
-        // =============================================================================
+        // =====================================================================
         function countCreeps() {
 
+			// Only count creeps that aren't close to death
+            // -----------------------------------------------------------------
+			let livelyCreeps = findLivelyCreeps();
+
             // Creeps in all rooms
-            // -----------------------------------------------------------------------------
-            creepsGlobal.fighters = _.filter(Game.creeps, (creep) => creep.memory.role === LIB_COMMON.ROLES.FIGHTER);
-            creepsGlobal.healers  = _.filter(Game.creeps, (creep) => creep.memory.role === LIB_COMMON.ROLES.HEALER );
-            creepsGlobal.workers  = _.filter(Game.creeps, (creep) => creep.memory.role === LIB_COMMON.ROLES.WORKER );
+            // -----------------------------------------------------------------
+            creepsGlobal.fighters = _.filter(livelyCreeps, (creep) => creep.memory.role === LIB_COMMON.ROLES.FIGHTER);
+            creepsGlobal.healers  = _.filter(livelyCreeps, (creep) => creep.memory.role === LIB_COMMON.ROLES.HEALER );
+            creepsGlobal.workers  = _.filter(livelyCreeps, (creep) => creep.memory.role === LIB_COMMON.ROLES.WORKER );
 
             // Creeps in the current room
-            // -----------------------------------------------------------------------------
-            creepsLocal.fighters  = _.filter(creepsGlobal.fighters, (creep) => creep.room === spawn.room);
-            creepsLocal.healers   = _.filter(creepsGlobal.healers,  (creep) => creep.room === spawn.room);
-            creepsLocal.workers   = _.filter(creepsGlobal.workers,  (creep) => creep.room === spawn.room);
+            // -----------------------------------------------------------------
+            creepsLocal.fighters  = _.filter(creepsGlobal.fighters, (creep) => creep.room === spawn.room).length;
+            creepsLocal.healers   = _.filter(creepsGlobal.healers,  (creep) => creep.room === spawn.room).length;
+            creepsLocal.workers   = _.filter(creepsGlobal.workers,  (creep) => creep.room === spawn.room).length;
 
             // The total creep limits across all owned rooms (this is needed to prevent rooms from respawning all their creeps during an expedition to another room)
-            // -----------------------------------------------------------------------------
+            // -----------------------------------------------------------------
             for(let roleLimit in creepLimitsGlobal) {
                 roleLimit = 0;
             } //done
@@ -69,16 +73,42 @@ let roleSpawn = {
                 creepLimitsGlobal.healers  += room.memory.healerLimit;
                 creepLimitsGlobal.workers  += room.memory.workerLimit;
             } //done
+
+			// Find lively creeps
+			// =================================================================
+			function findLivelyCreeps(algorithm) {
+				switch(algorithm) {
+					case 1:
+						// Calculates how long it would take to spawn an identical creep, and considers the creep to be near-death if it has less time to live than it would take to create a new copy of it.
+						return _.filter(Game.creeps, (creep) => function() {
+							let timeToRegrow;
+							for(timeToRegrow = 0; timeToRegrow < creep.body.length; timeToRegrow++) {
+								timeToRegrow+= CREEP_SPAWN_TIME;
+							} //done
+							if(creep.ticksToLive <= timeToRegrow) {
+								return false;
+							} //fi
+							return true;
+						});
+					//break;
+
+					case 0:
+					default:
+						// Considers any creeps with less than a certain amount of time to live, to be near-death.
+						return _.filter(Game.creeps, (creep) => creep.ticksToLive >= LIB_COMMON.NEAR_DEATH);
+					//break;
+				} //esac
+			} //findLivelyCreeps
         } //countCreeps
 
         // Create creep
-        // =============================================================================
+        // =====================================================================
         function trySpawnCreep() {
             for(let i = 0; i < 2; i++) {
                 let creepRole = 0;
 
                 // Figure out what kind of creep to spawn
-                // -----------------------------------------------------------------------------
+                // -------------------------------------------------------------
                 switch(i) {
                     case 0:
                     /*//*/ if(creepsLocal.workers.length  < Math.ceil(spawn.room.memory.workerLimit  / 2)) {
@@ -98,7 +128,7 @@ let roleSpawn = {
                 } //esac
 
                 // Spawn the creep
-                // -----------------------------------------------------------------------------
+                // -------------------------------------------------------------
                 switch(creepRole) {
                     case LIB_COMMON.ROLES.WORKER:
                     if(creepsLocal.workers.length  < spawn.room.memory.workerLimit
@@ -136,7 +166,7 @@ let roleSpawn = {
         } //trySpawnCreep
 
         // Kill off unneeded creeps
-        // =============================================================================
+        // =====================================================================
         function dieOff() {
             LIB_COMMON.killOff(creepsLocal.fighters, spawn.room.memory.fighterLimit);
             LIB_COMMON.killOff(creepsLocal.healers,  spawn.room.memory.healerLimit );
@@ -160,7 +190,7 @@ let roleSpawn = {
     **/
     spawnCreep: function (spawn, rawParts, name, role) {
         // Variables
-        // -------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
         let bodyParts   = Array();
         let energyCost  = 0;
         let energyTotal = spawn.room.energyAvailable;
@@ -185,7 +215,7 @@ let roleSpawn = {
             } //fi
 
             // Find out how expensive the current part is
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
             let partCost = 0;
             switch(rawParts[currentPart]) {
                 case ATTACK:
@@ -226,7 +256,7 @@ let roleSpawn = {
             } //esac
 
             // See whether we can afford the part.  If so, count it.
-            // ---------------------------------------------------------------------
+            // -----------------------------------------------------------------
             if(energyCost + partCost <= energyTotal) {
                 failCount = 0;
                 energyCost += partCost;
@@ -352,7 +382,7 @@ let roleSpawn = {
         } //done
 
         // Sort the parts in order to make the creep more resilient in combat
-        // -------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
         for(let i = 0; i < partCount.tough; i++) {
             bodyParts.push(TOUGH);
         } //done
@@ -379,7 +409,7 @@ let roleSpawn = {
         } //done
 
         // If the creep is only partially formed, there's no point in spawning it.
-        // -------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
         if(
         !( partCount.move   > 0
         //    &&
@@ -395,7 +425,7 @@ let roleSpawn = {
         } //fi
 
         // If any neighbouring owned room lacks spawners, 50% chance of sending this creep to it.
-        // -------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
         let target;
         if(Math.round(Math.random())) {
             let exits = Game.map.describeExits(spawn.room.name);
@@ -413,13 +443,13 @@ let roleSpawn = {
         } //fi
 
         // If we have parts, create the creep.
-        // -------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
         if(bodyParts[0]) {
             for(let i = 0; spawn.createCreep(bodyParts, name + i, {role: role, target: target}) === ERR_NAME_EXISTS; i++) {continue;}
         } //fi
 
         // Display which type of creep is being spawned
-        // -------------------------------------------------------------------------
+        // ---------------------------------------------------------------------
         LIB_COMMON.say(name[0].toUpperCase() + name.slice(1), spawn);
     }, //spawnCreep
 }; //roleSpawn
