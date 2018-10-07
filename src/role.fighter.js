@@ -43,18 +43,18 @@ let roleFighter = {
                 default:
                 // If there are hostiles
                 if(hostiles.length) {
-//                    // Man the ramparts
-//                    task = LIB_COMMON.TASKS.DEFEND;
-//                    targets = creep.room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(
-//                          structure.structureType === STRUCTURE_RAMPART);}});
-//                    var b = true;
-//                    for(let i = 0; targets[i]; i++) {
-//                        if(!creep.pos.findPathTo(targets[i]).length) {
-//                            b = false;
-//                        }
-//                    }
-//                    targets = LIB_COMMON.filterTargets(targets, badTargets);
-//                    if(targets.length && b) break;
+                    // Man the ramparts
+                    task = LIB_COMMON.TASKS.DEFEND;
+                    targets = creep.room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(
+                          structure.structureType === STRUCTURE_RAMPART);}});
+                    let b = true;
+                    for(let i = 0; targets[i]; i++) {
+                        if(!creep.pos.findPathTo(targets[i]).length) {
+                            b = false;
+                        }
+                    }
+                    targets = LIB_COMMON.filterTargets(targets, badTargets);
+                    if(targets.length && b) break;
                     task = LIB_COMMON.TASKS.ATTACK;
                     // Attack enemy healers
                     targets = _.filter(hostiles, (hostile) => {return(hostile.getActiveBodyparts(HEAL) > 0);});
