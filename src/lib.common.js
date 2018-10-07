@@ -175,7 +175,7 @@ const LIB_COMMON = {
                 }; //struct
                 // Find a path
                 let path = creep.pos.findPathTo(target, pathOpts);
-                // Validate the path
+                // Validate the path (Paths aren't guaranteed to make it all the way to the target, so we have to check.)
                 let validPath = false;
                 if(path.length) {
                     if(target.room === creep.room) {
@@ -214,18 +214,24 @@ const LIB_COMMON = {
 			if(!code
 			||(code
 			&& code !== ERR_TIRED
+			//&& code !== ERR_NOT_FOUND
 		    )) {
 				// If movement failed, reset the path and return an error.
 	            if(code && code !== OK) {
 //                  creep.memory.target = undefined;
 	                creep.memory.path   = undefined;
+					console.log(creep.name + ": " + code);
 	                return code;
 	            } else {
 					let path = Room.deserializePath(creep.memory.path);
 					// If there's a creep in the way, recalculate the path
-					if(path[1] && new RoomPosition(path[1].x, path[1].y, creep.room.name).lookFor(LOOK_CREEPS)[0] !== creep) {
-//                      creep.memory.target = undefined;
-		                creep.memory.path   = undefined;
+					let lookCreep;
+					if(path.length >= 1 && path[1] && path[1].x && path[1].y) {
+						lookCreep = new RoomPosition(path[1].x, path[1].y, creep.room.name).lookFor(LOOK_CREEPS)[0]
+					} //fi
+					if(lookCreep && lookCreep !== creep) {
+						console.log(creep.name + ": " + lookCreep);
+		                creep.memory.path = undefined;
 		                return ERR_NOT_FOUND;
 					} //fi
 		            // Delete path elements that have already been traversed.
@@ -305,13 +311,6 @@ const LIB_COMMON = {
             }; //struct
             // Draw the creep's path
             new RoomVisual(creep.room.name).poly(Room.deserializePath(creep.memory.path), lineOpts);
-            // HACK:  Reset the paths of tired creeps
-            if(code
-            &&(code === ERR_NOT_FOUND
-//          || code === ERR_TIRED
-            )) {
-                creep.memory.path = undefined;
-            } //fi
             return code;
         } else return ERR_INVALID_TARGET;
     }, //function
