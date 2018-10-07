@@ -49,7 +49,6 @@ let roleSpawn = {
 			// Only count creeps that aren't close to death
             // -----------------------------------------------------------------
 			let livelyCreeps = findLivelyCreeps();
-			console.log(livelyCreeps);
 
             // Creeps in all rooms
             // -----------------------------------------------------------------
@@ -82,6 +81,9 @@ let roleSpawn = {
 					case 1:
 						// Calculates how long it would take to spawn an identical creep, and considers the creep to be near-death if it has less time to live than it would take to create a new copy of it.
 						return _.filter(Game.creeps, (creep) => function() {
+							if(creep.spawning) {
+								return true;
+							} //fi
 							let timeToRegrow;
 							for(timeToRegrow = 0; timeToRegrow < creep.body.length; timeToRegrow++) {
 								timeToRegrow+= CREEP_SPAWN_TIME;
@@ -96,7 +98,7 @@ let roleSpawn = {
 					case 0:
 					default:
 						// Considers any creeps with less than a certain amount of time to live, to be near-death.
-						return _.filter(Game.creeps, (creep) => creep.ticksToLive >= LIB_COMMON.NEAR_DEATH);
+						return _.filter(Game.creeps, (creep) => creep.spawning || creep.ticksToLive >= LIB_COMMON.NEAR_DEATH);
 					//break;
 				} //esac
 			} //findLivelyCreeps
