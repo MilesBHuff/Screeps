@@ -49,6 +49,7 @@ let roleSpawn = {
 			// Only count creeps that aren't close to death
             // -----------------------------------------------------------------
 			let livelyCreeps = findLivelyCreeps();
+			console.log(livelyCreeps);
 
             // Creeps in all rooms
             // -----------------------------------------------------------------
@@ -58,9 +59,9 @@ let roleSpawn = {
 
             // Creeps in the current room
             // -----------------------------------------------------------------
-            creepsLocal.fighters  = _.filter(creepsGlobal.fighters, (creep) => creep.room === spawn.room).length;
-            creepsLocal.healers   = _.filter(creepsGlobal.healers,  (creep) => creep.room === spawn.room).length;
-            creepsLocal.workers   = _.filter(creepsGlobal.workers,  (creep) => creep.room === spawn.room).length;
+            creepsLocal.fighters  = _.filter(creepsGlobal.fighters, (creep) => creep.room === spawn.room);
+            creepsLocal.healers   = _.filter(creepsGlobal.healers,  (creep) => creep.room === spawn.room);
+            creepsLocal.workers   = _.filter(creepsGlobal.workers,  (creep) => creep.room === spawn.room);
 
             // The total creep limits across all owned rooms (this is needed to prevent rooms from respawning all their creeps during an expedition to another room)
             // -----------------------------------------------------------------
