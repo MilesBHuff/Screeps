@@ -113,6 +113,10 @@ module.exports.loop = function () {
 	                    require("role.healer" ).run(creep);
 	                    break;
 
+	                    case LIB_COMMON.ROLES.CLAIMER:
+	                    require("role.claimer").run(creep);
+	                    break;
+
 	                    default:
 	                    require("role.manual" ).run(creep);
 	                    break;
