@@ -23,9 +23,11 @@ const LIB_COMMON = {
     REPAIR_LIMIT: 62500,
     // These are all the roles available for creeps
     ROLES: Object.freeze({
-        "WORKER":  0,
-        "FIGHTER": 1,
-        "HEALER":  2,
+        "MANUEL":  -1,
+        "WORKER":   0,
+        "FIGHTER":  1,
+        "HEALER":   2,
+        "CLAIMER":  3,
     }),
     // These are all the cannonical tasks that can be assigned to a creep
     TASKS: Object.freeze({
@@ -220,7 +222,6 @@ const LIB_COMMON = {
 	            if(code && code !== OK) {
 //                  creep.memory.target = undefined;
 	                creep.memory.path   = undefined;
-					console.log(creep.name + ": " + code);
 	                return code;
 	            } else {
 					let path = Room.deserializePath(creep.memory.path);
@@ -230,7 +231,6 @@ const LIB_COMMON = {
 						lookCreep = new RoomPosition(path[1].x, path[1].y, creep.room.name).lookFor(LOOK_CREEPS)[0]
 					} //fi
 					if(lookCreep && lookCreep !== creep) {
-						console.log(creep.name + ": " + lookCreep);
 		                creep.memory.path = undefined;
 		                return ERR_NOT_FOUND;
 					} //fi
