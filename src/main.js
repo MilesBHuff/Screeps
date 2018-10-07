@@ -97,7 +97,8 @@ module.exports.loop = function () {
             for(let name in Game.creeps) {
 				try {
 	                let creep = Game.creeps[name];
-	                if(!creep.memory) continue;
+	                //if(!creep.memory) continue;
+	                if(creep.spawning) continue;
 	                switch(creep.memory.role) {
 
 	                    case LIB_COMMON.ROLES.WORKER:
