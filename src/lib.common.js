@@ -223,10 +223,10 @@ const LIB_COMMON = {
 	            } else {
 					let path = Room.deserializePath(creep.memory.path);
 					// If there's a creep in the way, recalculate the path
-					if(path[1] && new RoomPosition(path[1].x, path[1].y, creep.room.name).lookFor(LOOK_CREEPS)[0]) {
+					if(path[1] && new RoomPosition(path[1].x, path[1].y, creep.room.name).lookFor(LOOK_CREEPS)[0] !== creep) {
 //                      creep.memory.target = undefined;
 		                creep.memory.path   = undefined;
-		                return ERR_NO_PATH;
+		                return ERR_NOT_FOUND;
 					} //fi
 		            // Delete path elements that have already been traversed.
 	                if(path[0]
