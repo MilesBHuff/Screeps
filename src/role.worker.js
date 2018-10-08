@@ -25,37 +25,35 @@ let roleWorker   = {
      * @return a valid target.
     **/
     findTarget: function (creep) {
-        for(let l = 0; l < LIB_COMMON.LOOP_LIMIT; l++) {
+        // Cleanup
+        // =================================================================
+        creep.memory.target = undefined;
+        creep.memory.path   = undefined;
+        creep.memory.say    = undefined;
 
-            // Cleanup
-            // =================================================================
-            creep.memory.target = undefined;
-            creep.memory.path   = undefined;
-            creep.memory.say    = undefined;
+        // If we've already tried all the nearby rooms, return.
+        // =================================================================
+        if(!rooms || !rooms.length) {
+                return;
+        } //fi
 
-            // If we've already tried all the nearby rooms, return.
-            // =================================================================
-            if(!rooms || !rooms.length) {
-                    return;
-            } //fi
+        // Variables
+        // =================================================================
+        let targets = Array();
+        let task    = LIB_COMMON.TASKS.WAIT;
+        switch(true) {
+            default:
 
-            // Variables
-            // =================================================================
-            let targets = Array();
-            let task    = LIB_COMMON.TASKS.WAIT;
-            switch(true) {
-                default:
+            // If harvesting, harvest.
+            // =============================================================
+            task = LIB_COMMON.TASKS.HARVEST;
+            if(creep.memory.harvesting) {
 
-                // If harvesting, harvest.
-                // =============================================================
-                task = LIB_COMMON.TASKS.HARVEST;
-                if(creep.memory.harvesting) {
-
-                    // Pick up dropped resources
-                    // ---------------------------------------------------------
-                    targets = rooms[0].find(FIND_DROPPED_RESOURCES);
-                    targets = LIB_COMMON.filterTargets(targets, badTargets);
-                    if(targets && targets.length) break;
+                // Pick up dropped resources
+                // ---------------------------------------------------------
+                targets = rooms[0].find(FIND_DROPPED_RESOURCES);
+                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                if(targets && targets.length) break;
 
 //                    // Withdraw resources from enemy structures
 //                    // ---------------------------------------------------------
@@ -74,27 +72,27 @@ let roleWorker   = {
 //                    targets = LIB_COMMON.filterTargets(targets, badTargets);
 //                    if(targets && targets.length) break;
 
-					// Dig up graves
-					// ---------------------------------------------------------
-					targets = rooms[0].find(FIND_TOMBSTONES);
-					targets = LIB_COMMON.filterTargets(targets, badTargets);
-					if(targets && targets.length) break;
+				// Dig up graves
+				// ---------------------------------------------------------
+				targets = rooms[0].find(FIND_TOMBSTONES);
+				targets = LIB_COMMON.filterTargets(targets, badTargets);
+				if(targets && targets.length) break;
 
-                    // Harvest new energy
-                    // ---------------------------------------------------------
-                    targets = rooms[0].find(FIND_SOURCES, {filter: (source) => source.energy > 0});
+                // Harvest new energy
+                // ---------------------------------------------------------
+                targets = rooms[0].find(FIND_SOURCES, {filter: (source) => source.energy > 0});
+                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                if(targets && targets.length) break;
+
+                // Withdraw resources from condemned structures
+                // ---------------------------------------------------------
+                if(rooms[0].memory && rooms[0].memory.dismantle && LIB_COMMON.gamble(1 / 2)) {
+                    for(let a = 0; rooms[0].memory.dismantle[a]; a++) {
+                        targets.push(Game.getObjectById(rooms[0].memory.dismantle[a]));
+                    } //done
                     targets = LIB_COMMON.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
-
-                    // Withdraw resources from condemned structures
-                    // ---------------------------------------------------------
-                    if(rooms[0].memory && rooms[0].memory.dismantle && LIB_COMMON.gamble(1 / 2)) {
-                        for(let a = 0; rooms[0].memory.dismantle[a]; a++) {
-                            targets.push(Game.getObjectById(rooms[0].memory.dismantle[a]));
-                        } //done
-                        targets = LIB_COMMON.filterTargets(targets, badTargets);
-                        if(targets && targets.length) break;
-                    } //fi
+                } //fi
 
 //                  // 50% chance to harvest minerals
 //                  // ---------------------------------------------------------
@@ -104,261 +102,260 @@ let roleWorker   = {
 //                      if((targets && targets.length) || rooms[0].find(FIND_MINERALS, {filter: (mineral) => mineral.mineralAmount > 0}).length) break;
 //                  } //fi
 
-                    // Get resources from storage
-                    // ---------------------------------------------------------
-                    targets = rooms[0].find(FIND_STRUCTURES, {
-                        filter: (structure) => {return(
-                            (  structure.structureType === STRUCTURE_CONTAINER
-                            || structure.structureType === STRUCTURE_STORAGE
-                            )
-                            && _.sum(structure.store) >  0
-                        );}
-                    });
-                    targets = LIB_COMMON.filterTargets(targets, badTargets);
-                    if(targets && targets.length) break;
-
-                    // If there's no new energy available, use what you're already carrying, if anything.
-                    // ---------------------------------------------------------
-                    if(creep.carry.energy > 0) {
-                        creep.memory.harvesting = false;
-                    } else {
-                        task = LIB_COMMON.TASKS.WAIT;
-                        break;
-                    }
-                } //fi
-
-                // If the controller is about to degrade, contribute to it
-                // =============================================================
-                task = LIB_COMMON.TASKS.UPGRADE;
-                if(rooms[0].controller.ticksToDowngrade < LIB_COMMON.CONTROLLER_NEAR_DEGRADE) {
-                    targets = [rooms[0].controller];
-                    targets = LIB_COMMON.filterTargets(targets, badTargets);
-                    if(targets && targets.length) break;
-                } //fi
-
-                // Always keep spawns and extensions filled up to max.
-                // =============================================================
-                task = LIB_COMMON.TASKS.TRANSFER;
-                // Fill extensions
-                targets = rooms[0].find(FIND_MY_STRUCTURES, {
-                    filter: (structure) => {return(
-                           structure.structureType === STRUCTURE_EXTENSION
-                        && structure.energy        <  structure.energyCapacity
-                        && structure.room.memory.dismantle.indexOf(structure.id) === -1
-                    );}
-                });
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
-                if(targets && targets.length) break;
-                // Fill spawns
-                targets = rooms[0].find(FIND_MY_STRUCTURES, {
-                    filter: (structure) => {return(
-                           structure.structureType === STRUCTURE_SPAWN
-                        && structure.energy        <  structure.energyCapacity
-                        && structure.room.memory.dismantle.indexOf(structure.id) === -1
-                    );}
-                });
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
-                if(targets && targets.length) break;
-
-                // 75% chance of maintaining towers
-                // =============================================================
-                task = LIB_COMMON.TASKS.TRANSFER;
-                if(LIB_COMMON.gamble(3 / 4)) {
-                    targets = rooms[0].find(FIND_MY_STRUCTURES, {
-                        filter: (structure) => {return(
-                               structure.structureType === STRUCTURE_TOWER
-                            && structure.energy        <  structure.energyCapacity * 0.75
-                            && structure.room.memory.dismantle.indexOf(structure.id) === -1
-                        );}
-                    });
-                    targets = LIB_COMMON.filterTargets(targets, badTargets);
-                    if(targets && targets.length) break;
-                } //fi
-
-                // 25% chance to build things that complete instantaneously
-                // =============================================================
-                task = LIB_COMMON.TASKS.BUILD;
-                if(LIB_COMMON.gamble(1 / 4)) {
-                    targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
-                           site.structureType === STRUCTURE_WALL
-                        || site.structureType === STRUCTURE_RAMPART
-                    });
-                    targets = LIB_COMMON.filterTargets(targets, badTargets);
-                    if(targets && targets.length) break;
-                } //fi
-
-                // 75% chance of repairing most constructions
-                // =============================================================
-                task = LIB_COMMON.TASKS.REPAIR;
-                if(LIB_COMMON.gamble(3 / 4)) {
-                    // Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
-                    // It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
-                    targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) =>
-                           structure.hits < (structure.hitsMax * 0.75)
-                        && structure.hits < (repairLimit * 0.75)
-                        && structure.room.memory.dismantle.indexOf(structure.id) === -1
-                        &&!(
-                           (structure.structureType === STRUCTURE_WALL    && structure.hits > repairLimit * 0.125)
-                        || (structure.structureType === STRUCTURE_RAMPART && structure.hits > repairLimit * 0.125)
-                    )});
-                    targets = LIB_COMMON.filterTargets(targets, badTargets);
-                    if(targets && targets.length) break;
-                } //fi
-
-                // 50% chance of building cheap / important structures.
-                // =============================================================
-                task = LIB_COMMON.TASKS.BUILD;
-                if(LIB_COMMON.gamble(1 / 2)) {
-                    targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
-                           site.structureType === STRUCTURE_SPAWN
-                        || site.structureType === STRUCTURE_ROAD
-                    });
-                    targets = LIB_COMMON.filterTargets(targets, badTargets);
-                    if(targets && targets.length) break;
-                } //fi
-
-                // 50% chance of refilling miscellaneous resource-using structures
-                // =============================================================
-                task = LIB_COMMON.TASKS.TRANSFER;
-                if(LIB_COMMON.gamble(1 / 2)) {
-                    targets = rooms[0].find(FIND_MY_STRUCTURES, {filter: (structure) =>
-                           structure.structureType === STRUCTURE_LAB
-                        || structure.structureType === STRUCTURE_NUKER
-                        || structure.structureType === STRUCTURE_POWER_SPAWN
-                    });
-                    targets = LIB_COMMON.filterTargets(targets, badTargets);
-                    if(targets && targets.length) break;
-                } //fi
-
-                // 50% chance of repairing constructions that start at 1 health
-                // =============================================================
-                task = LIB_COMMON.TASKS.REPAIR;
-                if(LIB_COMMON.gamble(1 / 2)) {
-                    // Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
-                    // It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
-                    targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) =>
-                           structure.hits < (structure.hitsMax * 0.75)
-                        && structure.hits < (repairLimit * 0.75)
-                        && structure.room.memory.dismantle.indexOf(structure.id) === -1
-                        && (
-                           structure.structureType === STRUCTURE_WALL
-                        || structure.structureType === STRUCTURE_RAMPART
-                    )});
-                    targets = LIB_COMMON.filterTargets(targets, badTargets);
-                    if(targets && targets.length) break;
-                } //fi
-
-                // 50% chance of upgrading the controller, if it's not already at max
-                // If the controller *is* already at max, upgrade it if it's less than 3/4 degraded.
-                // =============================================================
-                task = LIB_COMMON.TASKS.UPGRADE;
-                if(rooms[0].controller
-				&& rooms[0].controller.level
-				&& ((
-				   LIB_COMMON.gamble(1 / 2)
-                && rooms[0].controller.level < 8
-				   )
-                || rooms[0].controller.ticksToDowngrade < (3 / 4) * CONTROLLER_DOWNGRADE[rooms[0].controller.level]
-				)) {
-                    targets = [rooms[0].controller];
-                    targets = LIB_COMMON.filterTargets(targets, badTargets);
-                    if(targets && targets.length) break;
-                } //fi
-
-                // Build new things
-                // =============================================================
-                task = LIB_COMMON.TASKS.BUILD;
-                targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES);
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
-                if(targets && targets.length) break;
-
-                // Upgrade the controller if it's not already at max.
-                // =============================================================
-                task = LIB_COMMON.TASKS.UPGRADE;
-                if(rooms[0].controller
-				&& rooms[0].controller.level
-				&& rooms[0].controller.level < 8) {
-                    targets = [rooms[0].controller];
-                    targets = LIB_COMMON.filterTargets(targets, badTargets);
-                    if(targets && targets.length) break;
-                } //fi
-/*
-                // Store excess resources
-                // =============================================================
-                task = LIB_COMMON.TASKS.TRANSFER;
-                targets = rooms[0].find(FIND_MY_STRUCTURES, {
+                // Get resources from storage
+                // ---------------------------------------------------------
+                targets = rooms[0].find(FIND_STRUCTURES, {
                     filter: (structure) => {return(
                         (  structure.structureType === STRUCTURE_CONTAINER
-                        || structure.structureType === STRUCTURE_LINK
                         || structure.structureType === STRUCTURE_STORAGE
-                        || structure.structureType === STRUCTURE_TERMINAL
                         )
-                        &&
-                        (( structure.energy && structure.energyCapacity
-                        && structure.energy <  structure.energyCapacity
-                        )
-                        ||
-                        (        structure.store && structure.storeCapacity
-                        && _.sum(structure.store) < structure.storeCapacity
-                        ))
-                        && structure.room.memory.dismantle.indexOf(structure.id) === -1
+                        && _.sum(structure.store) >  0
                     );}
                 });
                 targets = LIB_COMMON.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
-*/
-                // Upgrade the controller.
-                // =============================================================
-                task = LIB_COMMON.TASKS.UPGRADE;
+
+                // If there's no new energy available, use what you're already carrying, if anything.
+                // ---------------------------------------------------------
+                if(creep.carry.energy > 0) {
+                    creep.memory.harvesting = false;
+                } else {
+                    task = LIB_COMMON.TASKS.WAIT;
+                    break;
+                }
+            } //fi
+
+            // If the controller is about to degrade, contribute to it
+            // =============================================================
+            task = LIB_COMMON.TASKS.UPGRADE;
+            if(rooms[0].controller.ticksToDowngrade < LIB_COMMON.CONTROLLER_NEAR_DEGRADE) {
                 targets = [rooms[0].controller];
                 targets = LIB_COMMON.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
-
-                // Give up
-                // =============================================================
-                task = LIB_COMMON.TASKS.WAIT;
-                break;
-            } //esac
-
-            // Pick a target from the array of targets
-            // =================================================================
-            if(targets.length) {
-                let target = creep.pos.findClosestByRange(targets);
-                if(target && target.id) {
-                    switch(task) {
-                        case LIB_COMMON.TASKS.HARVEST:
-                        creep.memory.say = "Harvest";
-                        break;
-
-                        case LIB_COMMON.TASKS.TRANSFER:
-                        creep.memory.say = "Transfer";
-                        break;
-
-                        case LIB_COMMON.TASKS.UPGRADE:
-                        creep.memory.say = "Upgrade";
-                        break;
-
-                        case LIB_COMMON.TASKS.BUILD:
-                        creep.memory.say = "Build";
-                        break;
-
-                        case LIB_COMMON.TASKS.REPAIR:
-                        creep.memory.say = "Repair";
-                        break;
-                    } //esac
-                    return target.id;
-                } //fi
             } //fi
 
-            // If we reach this line, the current room had no valid targets.  Try another one.
-            // =================================================================
-            // If the array of rooms has not yet been sorted, sort it.
-            if(rooms[0] !== creep.room) {
-                rooms = LIB_COMMON.sortRooms(creep.pos, rooms);
+            // Always keep spawns and extensions filled up to max.
+            // =============================================================
+            task = LIB_COMMON.TASKS.TRANSFER;
+            // Fill extensions
+            targets = rooms[0].find(FIND_MY_STRUCTURES, {
+                filter: (structure) => {return(
+                       structure.structureType === STRUCTURE_EXTENSION
+                    && structure.energy        <  structure.energyCapacity
+                    && structure.room.memory.dismantle.indexOf(structure.id) === -1
+                );}
+            });
+            targets = LIB_COMMON.filterTargets(targets, badTargets);
+            if(targets && targets.length) break;
+            // Fill spawns
+            targets = rooms[0].find(FIND_MY_STRUCTURES, {
+                filter: (structure) => {return(
+                       structure.structureType === STRUCTURE_SPAWN
+                    && structure.energy        <  structure.energyCapacity
+                    && structure.room.memory.dismantle.indexOf(structure.id) === -1
+                );}
+            });
+            targets = LIB_COMMON.filterTargets(targets, badTargets);
+            if(targets && targets.length) break;
+
+            // 75% chance of maintaining towers
+            // =============================================================
+            task = LIB_COMMON.TASKS.TRANSFER;
+            if(LIB_COMMON.gamble(3 / 4)) {
+                targets = rooms[0].find(FIND_MY_STRUCTURES, {
+                    filter: (structure) => {return(
+                           structure.structureType === STRUCTURE_TOWER
+                        && structure.energy        <  structure.energyCapacity * 0.75
+                        && structure.room.memory.dismantle.indexOf(structure.id) === -1
+                    );}
+                });
+                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                if(targets && targets.length) break;
             } //fi
-            // Remove the current room from the array.
-            rooms.shift();
-        } //done
+
+            // 25% chance to build things that complete instantaneously
+            // =============================================================
+            task = LIB_COMMON.TASKS.BUILD;
+            if(LIB_COMMON.gamble(1 / 4)) {
+                targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
+                       site.structureType === STRUCTURE_WALL
+                    || site.structureType === STRUCTURE_RAMPART
+                });
+                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                if(targets && targets.length) break;
+            } //fi
+
+            // 75% chance of repairing most constructions
+            // =============================================================
+            task = LIB_COMMON.TASKS.REPAIR;
+            if(LIB_COMMON.gamble(3 / 4)) {
+                // Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
+                // It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
+                targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) =>
+                       structure.hits < (structure.hitsMax * 0.75)
+                    && structure.hits < (repairLimit * 0.75)
+                    && structure.room.memory.dismantle.indexOf(structure.id) === -1
+                    &&!(
+                       (structure.structureType === STRUCTURE_WALL    && structure.hits > repairLimit * 0.125)
+                    || (structure.structureType === STRUCTURE_RAMPART && structure.hits > repairLimit * 0.125)
+                )});
+                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                if(targets && targets.length) break;
+            } //fi
+
+            // 50% chance of building cheap / important structures.
+            // =============================================================
+            task = LIB_COMMON.TASKS.BUILD;
+            if(LIB_COMMON.gamble(1 / 2)) {
+                targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
+                       site.structureType === STRUCTURE_SPAWN
+                    || site.structureType === STRUCTURE_ROAD
+                });
+                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                if(targets && targets.length) break;
+            } //fi
+
+            // 50% chance of refilling miscellaneous resource-using structures
+            // =============================================================
+            task = LIB_COMMON.TASKS.TRANSFER;
+            if(LIB_COMMON.gamble(1 / 2)) {
+                targets = rooms[0].find(FIND_MY_STRUCTURES, {filter: (structure) =>
+                       structure.structureType === STRUCTURE_LAB
+                    || structure.structureType === STRUCTURE_NUKER
+                    || structure.structureType === STRUCTURE_POWER_SPAWN
+                });
+                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                if(targets && targets.length) break;
+            } //fi
+
+            // 50% chance of repairing constructions that start at 1 health
+            // =============================================================
+            task = LIB_COMMON.TASKS.REPAIR;
+            if(LIB_COMMON.gamble(1 / 2)) {
+                // Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
+                // It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
+                targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) =>
+                       structure.hits < (structure.hitsMax * 0.75)
+                    && structure.hits < (repairLimit * 0.75)
+                    && structure.room.memory.dismantle.indexOf(structure.id) === -1
+                    && (
+                       structure.structureType === STRUCTURE_WALL
+                    || structure.structureType === STRUCTURE_RAMPART
+                )});
+                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                if(targets && targets.length) break;
+            } //fi
+
+            // 50% chance of upgrading the controller, if it's not already at max
+            // If the controller *is* already at max, upgrade it if it's less than 3/4 degraded.
+            // =============================================================
+            task = LIB_COMMON.TASKS.UPGRADE;
+            if(rooms[0].controller
+			&& rooms[0].controller.level
+			&& ((
+			   LIB_COMMON.gamble(1 / 2)
+            && rooms[0].controller.level < 8
+			   )
+            || rooms[0].controller.ticksToDowngrade < (3 / 4) * CONTROLLER_DOWNGRADE[rooms[0].controller.level]
+			)) {
+                targets = [rooms[0].controller];
+                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                if(targets && targets.length) break;
+            } //fi
+
+            // Build new things
+            // =============================================================
+            task = LIB_COMMON.TASKS.BUILD;
+            targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES);
+            targets = LIB_COMMON.filterTargets(targets, badTargets);
+            if(targets && targets.length) break;
+
+            // Upgrade the controller if it's not already at max.
+            // =============================================================
+            task = LIB_COMMON.TASKS.UPGRADE;
+            if(rooms[0].controller
+			&& rooms[0].controller.level
+			&& rooms[0].controller.level < 8) {
+                targets = [rooms[0].controller];
+                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                if(targets && targets.length) break;
+            } //fi
+/*
+            // Store excess resources
+            // =============================================================
+            task = LIB_COMMON.TASKS.TRANSFER;
+            targets = rooms[0].find(FIND_MY_STRUCTURES, {
+                filter: (structure) => {return(
+                    (  structure.structureType === STRUCTURE_CONTAINER
+                    || structure.structureType === STRUCTURE_LINK
+                    || structure.structureType === STRUCTURE_STORAGE
+                    || structure.structureType === STRUCTURE_TERMINAL
+                    )
+                    &&
+                    (( structure.energy && structure.energyCapacity
+                    && structure.energy <  structure.energyCapacity
+                    )
+                    ||
+                    (        structure.store && structure.storeCapacity
+                    && _.sum(structure.store) < structure.storeCapacity
+                    ))
+                    && structure.room.memory.dismantle.indexOf(structure.id) === -1
+                );}
+            });
+            targets = LIB_COMMON.filterTargets(targets, badTargets);
+            if(targets && targets.length) break;
+*/
+            // Upgrade the controller.
+            // =============================================================
+            task = LIB_COMMON.TASKS.UPGRADE;
+            targets = [rooms[0].controller];
+            targets = LIB_COMMON.filterTargets(targets, badTargets);
+            if(targets && targets.length) break;
+
+            // Give up
+            // =============================================================
+            task = LIB_COMMON.TASKS.WAIT;
+            break;
+        } //esac
+
+        // Pick a target from the array of targets
+        // =================================================================
+        if(targets.length) {
+            let target = creep.pos.findClosestByRange(targets);
+            if(target && target.id) {
+                switch(task) {
+                    case LIB_COMMON.TASKS.HARVEST:
+                    creep.memory.say = "Harvest";
+                    break;
+
+                    case LIB_COMMON.TASKS.TRANSFER:
+                    creep.memory.say = "Transfer";
+                    break;
+
+                    case LIB_COMMON.TASKS.UPGRADE:
+                    creep.memory.say = "Upgrade";
+                    break;
+
+                    case LIB_COMMON.TASKS.BUILD:
+                    creep.memory.say = "Build";
+                    break;
+
+                    case LIB_COMMON.TASKS.REPAIR:
+                    creep.memory.say = "Repair";
+                    break;
+                } //esac
+                return target.id;
+            } //fi
+        } //fi
+
+        // If we reach this line, the current room had no valid targets.  Try another one.
+        // =================================================================
+        // If the array of rooms has not yet been sorted, sort it.
+        if(rooms[0] !== creep.room) {
+            rooms = LIB_COMMON.sortRooms(creep.pos, rooms);
+        } //fi
+        // Remove the current room from the array.
+        rooms.shift();
     }, //function
 
     // Affect target
@@ -473,13 +470,6 @@ let roleWorker   = {
     **/
     run: function (creep) {
 
-        // Debug
-        // =====================================================================
-        if(false) {
-            creep.memory.target = undefined; // Useful when you need to reset everyone's tasks.
-            creep.memory.path   = undefined; // Useful when you need to reset everyone's paths.
-        } //fi
-
         // Variables
         // =====================================================================
 		repairLimit = 0;
@@ -519,7 +509,7 @@ let roleWorker   = {
                     rooms = LIB_COMMON.findRooms(creep.room.name);
                 } //fi
                 // Find a target
-                creep.memory.target = roleWorker.findTarget(creep, rooms, badTargets);
+                creep.memory.target = roleWorker.findTarget(creep);
             } //fi
 
             // Affect the target

@@ -40,15 +40,13 @@ let roleSpawn = {
             trySpawnCreep();
         } //fi
 
-        //dieOff();
-
         // Count creeps, buildings, etc
         // =====================================================================
         function countCreeps() {
 
 			// Only count creeps that aren't close to death
             // -----------------------------------------------------------------
-			let livelyCreeps = findLivelyCreeps();
+			let livelyCreeps = findLivelyCreeps(0);
 
             // Creeps in all rooms
             // -----------------------------------------------------------------
@@ -95,7 +93,7 @@ let roleSpawn = {
 						});
 					//break;
 
-					case 0:
+					//case 0:
 					default:
 						// Considers any creeps with less than a certain amount of time to live, to be near-death.
 						return _.filter(Game.creeps, (creep) => creep.spawning || creep.ticksToLive >= LIB_COMMON.NEAR_DEATH);
@@ -140,7 +138,7 @@ let roleSpawn = {
                         roleSpawn.spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker", LIB_COMMON.ROLES.WORKER);
                         break;
                     }
-                    if(i === 0) break;
+                    if(i === 0) continue;
 
                     case LIB_COMMON.ROLES.FIGHTER:
                     if(creepsLocal.fighters.length  < spawn.room.memory.fighterLimit
@@ -149,7 +147,7 @@ let roleSpawn = {
                         roleSpawn.spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Fighter", LIB_COMMON.ROLES.FIGHTER);
                         break;
                     }
-                    if(i === 0) break;
+                    if(i === 0) continue;
 
                     case LIB_COMMON.ROLES.HEALER:
                     if(creepsLocal.healers.length  < spawn.room.memory.healerLimit
@@ -158,8 +156,8 @@ let roleSpawn = {
                         roleSpawn.spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", LIB_COMMON.ROLES.HEALER);
                         break;
                     } //fi
-                    if(i === 0) break;
-                    break;
+                    if(i === 0) continue;
+					break;
                 } //esac
                 if(spawn.spawning) break;
             } //done
@@ -167,14 +165,6 @@ let roleSpawn = {
                 return;
             } //fi
         } //trySpawnCreep
-
-        // Kill off unneeded creeps
-        // =====================================================================
-        function dieOff() {
-            LIB_COMMON.killOff(creepsLocal.fighters, spawn.room.memory.fighterLimit);
-            LIB_COMMON.killOff(creepsLocal.healers,  spawn.room.memory.healerLimit );
-            LIB_COMMON.killOff(creepsLocal.workers,  spawn.room.memory.workerLimit );
-        } //dieOff
     }, //run
 
     // Spawn creep
@@ -415,14 +405,14 @@ let roleSpawn = {
         // ---------------------------------------------------------------------
         if(
         !( partCount.move   > 0
-        //    &&
-        //    (  partCount.attack > 0
-        //    || partCount.carry  > 0
-        //    || partCount.claim  > 0
-        //    || partCount.heal   > 0
-        //    || partCount.rangedAttack > 0
-        //    || partCount.work   > 0
-        //    )
+  //    &&
+  //    (  partCount.attack > 0
+  //    || partCount.carry  > 0
+  //    || partCount.claim  > 0
+  //    || partCount.heal   > 0
+  //    || partCount.rangedAttack > 0
+  //    || partCount.work   > 0
+  //    )
         )) {
             return;
         } //fi

@@ -92,12 +92,29 @@ module.exports.loop = function () {
         } //upliftStructures
 
         // Creeps
-        // =============================================================================
+        // =====================================================================
         function upliftCreeps() {
             for(let name in Game.creeps) {
 				try {
+
+					// Setup
+					// ---------------------------------------------------------
 	                let creep = Game.creeps[name];
-	                //if(!creep.memory) continue;
+	                if(!creep.memory) {
+						creep.memory = {
+							role: LIB_COMMON.ROLES.MANUAL,
+						};
+					} //fi
+
+			        // Debug
+			        // ---------------------------------------------------------
+			        if(false) {
+			            creep.memory.target = undefined; // Useful when you need to reset everyone's tasks.
+			            creep.memory.path   = undefined; // Useful when you need to reset everyone's paths.
+			        } //fi
+
+			        // Load AIs
+			        // ---------------------------------------------------------
 	                if(creep.spawning) continue;
 	                switch(creep.memory.role) {
 
@@ -117,6 +134,7 @@ module.exports.loop = function () {
 	                    require("role.claimer").run(creep);
 	                    break;
 
+	                    //case LIB_COMMON.ROLES.MANUAL:
 	                    default:
 	                    require("role.manual" ).run(creep);
 	                    break;
