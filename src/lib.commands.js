@@ -35,7 +35,7 @@ const LIB_COMMANDS = {
 
     // Create creep
     // =========================================================================
-    // require("lib.commands").createCreep("SpawnName", [MOVE], "CreepName", require("lib.common").ROLES.MANUAL);
+    // require("lib.commands").createCreep("SpawnName", [MOVE], "CreepName", require("lib.misc").ROLES.MANUAL);
     /** This function spawns a creep at the desired spawn, using the same
      *  creep-generation function as main().
      * @param  spawnName The name of the spawn to use.
