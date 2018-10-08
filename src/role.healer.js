@@ -115,13 +115,6 @@ let roleHealer  = {
     **/
     run: function (creep) {
 
-        // Debug
-        // =====================================================================
-        if(false) {
-            creep.memory.target = undefined; // Useful when you need to reset everyone's tasks.
-            creep.memory.path   = undefined; // Useful when you need to reset everyone's paths.
-        } //fi
-
         // Find and affect a target
         // =====================================================================
         for(let l = 0; l < LIB_COMMON.LOOP_LIMIT; l++) {
