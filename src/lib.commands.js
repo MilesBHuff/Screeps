@@ -1,4 +1,4 @@
-// commands.js
+// lib.commands.js
 // #############################################################################
 /** This file lists letious prewritten commands for manual use at the console.
  *  Make sure to include it before trying to use its functions!
@@ -7,7 +7,8 @@
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const LIB_COMMON = require("lib.common");
+const LIB_MISC = require("lib.misc");
+const LIB_MOVE = require("lib.move");
 const ROLE_SPAWN = require("role.spawn");
 const LIB_COMMANDS = {
 
@@ -28,7 +29,7 @@ const LIB_COMMANDS = {
         } else if(structure.hits && structure.hitsMax) {
             message = structure.hits + " / " + structure.hitsMax;
         } else return ERR_INVALID_TARGET;
-        LIB_COMMON.say(structure, message);
+        LIB_MISC.say(structure, message);
         return message;
     }, //function
 
@@ -68,7 +69,7 @@ const LIB_COMMANDS = {
     **/
     moveCreepTo: function (creepName, target) {
         Game.creeps[creepName].memory.target = target;
-        return LIB_COMMON.move(Game.creeps[creepName], COLOR_GREY, false);
+        return LIB_MOVE.move(Game.creeps[creepName], COLOR_GREY, false);
     }, //function
 
     // Remove construction

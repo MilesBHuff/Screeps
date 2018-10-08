@@ -6,8 +6,8 @@
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const LIB_COMMON = require("lib.common");
-let roleSpawn = {
+const LIB_MISC = require("lib.misc");
+let roleSpawn  = {
 
     // Main
     // *************************************************************************
@@ -50,9 +50,9 @@ let roleSpawn = {
 
             // Creeps in all rooms
             // -----------------------------------------------------------------
-            creepsGlobal.fighters = _.filter(livelyCreeps, (creep) => creep.memory.role === LIB_COMMON.ROLES.FIGHTER);
-            creepsGlobal.healers  = _.filter(livelyCreeps, (creep) => creep.memory.role === LIB_COMMON.ROLES.HEALER );
-            creepsGlobal.workers  = _.filter(livelyCreeps, (creep) => creep.memory.role === LIB_COMMON.ROLES.WORKER );
+            creepsGlobal.fighters = _.filter(livelyCreeps, (creep) => creep.memory.role === LIB_MISC.ROLES.FIGHTER);
+            creepsGlobal.healers  = _.filter(livelyCreeps, (creep) => creep.memory.role === LIB_MISC.ROLES.HEALER );
+            creepsGlobal.workers  = _.filter(livelyCreeps, (creep) => creep.memory.role === LIB_MISC.ROLES.WORKER );
 
             // Creeps in the current room
             // -----------------------------------------------------------------
@@ -96,7 +96,7 @@ let roleSpawn = {
 					//case 0:
 					default:
 						// Considers any creeps with less than a certain amount of time to live, to be near-death.
-						return _.filter(Game.creeps, (creep) => creep.spawning || creep.ticksToLive >= LIB_COMMON.NEAR_DEATH);
+						return _.filter(Game.creeps, (creep) => creep.spawning || creep.ticksToLive >= LIB_MISC.NEAR_DEATH);
 					//break;
 				} //esac
 			} //findLivelyCreeps
@@ -113,47 +113,47 @@ let roleSpawn = {
                 switch(i) {
                     case 0:
                     /*//*/ if(creepsLocal.workers.length  < Math.ceil(spawn.room.memory.workerLimit  / 2)) {
-                        creepRole = LIB_COMMON.ROLES.WORKER;
+                        creepRole = LIB_MISC.ROLES.WORKER;
                     } else if(creepsLocal.healers.length  < Math.ceil(spawn.room.memory.healerLimit  / 2) && creepsLocal.healers.length < Math.ceil(creepsLocal.fighters.length / 4)) {
-                        creepRole = LIB_COMMON.ROLES.HEALER;
+                        creepRole = LIB_MISC.ROLES.HEALER;
                     } else if(creepsLocal.fighters.length < Math.ceil(spawn.room.memory.fighterLimit / 2)) {
-                        creepRole = LIB_COMMON.ROLES.FIGHTER;
+                        creepRole = LIB_MISC.ROLES.FIGHTER;
                     } else {
-                        creepRole = Math.floor(Math.random() * LIB_COMMON.ROLES.length);
+                        creepRole = Math.floor(Math.random() * LIB_MISC.ROLES.length);
                     }
                     break;
 
                     case 1:
-                    creepRole = LIB_COMMON.ROLES.WORKER;
+                    creepRole = LIB_MISC.ROLES.WORKER;
                     break;
                 } //esac
 
                 // Spawn the creep
                 // -------------------------------------------------------------
                 switch(creepRole) {
-                    case LIB_COMMON.ROLES.WORKER:
+                    case LIB_MISC.ROLES.WORKER:
                     if(creepsLocal.workers.length  < spawn.room.memory.workerLimit
                     && creepsGlobal.workers.length < creepLimitsGlobal.workers
                     ){
-                        roleSpawn.spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker", LIB_COMMON.ROLES.WORKER);
+                        roleSpawn.spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker", LIB_MISC.ROLES.WORKER);
                         break;
                     }
                     if(i === 0) continue;
 
-                    case LIB_COMMON.ROLES.FIGHTER:
+                    case LIB_MISC.ROLES.FIGHTER:
                     if(creepsLocal.fighters.length  < spawn.room.memory.fighterLimit
                     && creepsGlobal.fighters.length < creepLimitsGlobal.fighters
                     ){
-                        roleSpawn.spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Fighter", LIB_COMMON.ROLES.FIGHTER);
+                        roleSpawn.spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Fighter", LIB_MISC.ROLES.FIGHTER);
                         break;
                     }
                     if(i === 0) continue;
 
-                    case LIB_COMMON.ROLES.HEALER:
+                    case LIB_MISC.ROLES.HEALER:
                     if(creepsLocal.healers.length  < spawn.room.memory.healerLimit
                     && creepsGlobal.healers.length < creepLimitsGlobal.healers
                     ){
-                        roleSpawn.spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", LIB_COMMON.ROLES.HEALER);
+                        roleSpawn.spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", LIB_MISC.ROLES.HEALER);
                         break;
                     } //fi
                     if(i === 0) continue;
@@ -169,7 +169,7 @@ let roleSpawn = {
 
     // Spawn creep
     // =========================================================================
-    // Depends: LIB_COMMON.say()
+    // Depends: LIB_MISC.say()
     /** The idea behind this function, is to create each creep with as many parts as
     *  possible, given the room's current energy total.  It cycles through the
     *  given parts array, and continues until there is no more energy to spend.  It
@@ -443,7 +443,7 @@ let roleSpawn = {
 
         // Display which type of creep is being spawned
         // ---------------------------------------------------------------------
-        LIB_COMMON.say(name[0].toUpperCase() + name.slice(1), spawn);
+        LIB_MISC.say(name[0].toUpperCase() + name.slice(1), spawn);
     }, //spawnCreep
 }; //roleSpawn
 

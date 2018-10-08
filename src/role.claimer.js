@@ -7,7 +7,7 @@
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const LIB_COMMON = require("lib.common");
+const LIB_MOVE = require("lib.move");
 let roleClaimer = {
 
     // Main
@@ -33,7 +33,7 @@ let roleClaimer = {
 
 	        // Move to its target
 	        // =============================================================================
-	        LIB_COMMON.move(creep, COLOR_BLUE, false);
+	        LIB_MOVE.move(creep, COLOR_BLUE, false);
 
 	        // Attempt to claim the target
 	        // =============================================================================
@@ -47,7 +47,7 @@ let roleClaimer = {
 		// If no target, wander
 		// =============================================================================
 		if(!target) {
-        	LIB_COMMON.wander(creep);
+        	LIB_MOVE.wander(creep);
 		}
     }, //run
 }; //roleManual
