@@ -6,7 +6,8 @@
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const LIB_COMMON   = require("lib.common");
+const LIB_MISC  = require("lib.misc");
+const LIB_MOVE  = require("lib.move");
 let badTargets  = Array();
 let rooms       = Array();
 let roleHealer  = {
@@ -17,7 +18,7 @@ let roleHealer  = {
      * @return a valid target.
     **/
     findTarget: function (creep) {
-        for(let l = 0; l < LIB_COMMON.LOOP_LIMIT; l++) {
+        for(let l = 0; l < LIB_MISC.LOOP_LIMIT; l++) {
 
             // Cleanup
             // =================================================================
@@ -34,13 +35,13 @@ let roleHealer  = {
             // Variables
             // =================================================================
             let targets = Array();
-            let task    = LIB_COMMON.TASKS.WAIT;
+            let task    = LIB_MISC.TASKS.WAIT;
             switch(true) {
                 default:
                 targets = creep.room.find(FIND_MY_CREEPS, {filter: (creepEach) =>
                     creepEach.hits < creepEach.hitsMax
                 });
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets.length) break;
             } //esac
 
@@ -50,7 +51,7 @@ let roleHealer  = {
                 let target = creep.pos.findClosestByRange(targets);
                 if(target && target.id) {
                     switch(task) {
-                        case LIB_COMMON.TASKS.HEAL:
+                        case LIB_MISC.TASKS.HEAL:
                         creep.memory.say = "Heal";
                         break;
                     } //esac
@@ -60,11 +61,11 @@ let roleHealer  = {
 
             // If we reach this line, the current room had no valid targets.  Try another one.
             // =================================================================
-            //TODO:  This line is only here until LIB_COMMON.move supports other rooms.
+            //TODO:  This line is only here until LIB_MOVE.move supports other rooms.
             rooms = Array();
 //            // If the array of rooms has not yet been sorted, sort it.
 //            if(rooms[0] !== creep.room) {
-//                rooms = LIB_COMMON.sortRooms(creep.pos, rooms);
+//                rooms = LIB_MISC.sortRooms(creep.pos, rooms);
 //            }
 //            // Remove the current room from the array.
 //            rooms.shift();
@@ -86,7 +87,7 @@ let roleHealer  = {
             if(!target) return ERR_INVALID_TARGET;
             if(creep.heal(target) === ERR_NOT_IN_RANGE) {
                 creep.rangedHeal(target);
-                if(LIB_COMMON.move(creep, COLOR_GREEN, false) === ERR_NO_PATH) {
+                if(LIB_MOVE.move(creep, COLOR_GREEN, false) === ERR_NO_PATH) {
                     creep.memory.target = undefined;
                     creep.memory.path   = undefined;
                     return ERR_NO_PATH;
@@ -95,7 +96,7 @@ let roleHealer  = {
         // If the creep wasn't able to find a target, it wanders.
         // =====================================================================
         } else {
-            LIB_COMMON.wander(creep);
+            LIB_MOVE.wander(creep);
             return OK;
         } //fi
 
@@ -117,14 +118,14 @@ let roleHealer  = {
 
         // Find and affect a target
         // =====================================================================
-        for(let l = 0; l < LIB_COMMON.LOOP_LIMIT; l++) {
+        for(let l = 0; l < LIB_MISC.LOOP_LIMIT; l++) {
 
             // Find a target
             // -----------------------------------------------------------------
             if(!creep.memory || !creep.memory.target) {
                 //If the array of rooms has not already been populated, populate it.
                 if(!rooms.length) {
-                    rooms = LIB_COMMON.findRooms(creep.room.name);
+                    rooms = LIB_MISC.findRooms(creep.room.name);
                 } //fi
                 // Find a target
                 creep.memory.target = roleHealer.findTarget(creep, rooms, badTargets);
@@ -145,7 +146,7 @@ let roleHealer  = {
             // -----------------------------------------------------------------
             if(!rooms.length) break;
         } //done
-        LIB_COMMON.wander(creep);
+        LIB_MOVE.wander(creep);
     } //function
 }; //struct
 

@@ -12,7 +12,8 @@
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const LIB_COMMON = require("lib.common");
+const LIB_MISC   = require("lib.misc");
+const LIB_MOVE   = require("lib.move");
 let badTargets   = Array();
 let canWander    = true;
 let repairLimit;
@@ -40,25 +41,25 @@ let roleWorker   = {
         // Variables
         // =================================================================
         let targets = Array();
-        let task    = LIB_COMMON.TASKS.WAIT;
+        let task    = LIB_MISC.TASKS.WAIT;
         switch(true) {
             default:
 
             // If harvesting, harvest.
             // =============================================================
-            task = LIB_COMMON.TASKS.HARVEST;
+            task = LIB_MISC.TASKS.HARVEST;
             if(creep.memory.harvesting) {
 
                 // Pick up dropped resources
                 // ---------------------------------------------------------
                 targets = rooms[0].find(FIND_DROPPED_RESOURCES);
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
 
 //                    // Withdraw resources from enemy structures
 //                    // ---------------------------------------------------------
 //                    targets = rooms[0].find(FIND_HOSTILE_STRUCTURES);
-//                    targets = LIB_COMMON.filterTargets(targets, badTargets);
+//                    targets = LIB_MISC.filterTargets(targets, badTargets);
 //                    if(targets && targets.length) break;
 
 //                    // Get energy from a full retrieval link
@@ -69,36 +70,36 @@ let roleWorker   = {
 //                            && structure.energy        >= structure.energyCapacity
 //                        );}
 //                    });
-//                    targets = LIB_COMMON.filterTargets(targets, badTargets);
+//                    targets = LIB_MISC.filterTargets(targets, badTargets);
 //                    if(targets && targets.length) break;
 
 				// Dig up graves
 				// ---------------------------------------------------------
 				targets = rooms[0].find(FIND_TOMBSTONES);
-				targets = LIB_COMMON.filterTargets(targets, badTargets);
+				targets = LIB_MISC.filterTargets(targets, badTargets);
 				if(targets && targets.length) break;
 
                 // Harvest new energy
                 // ---------------------------------------------------------
                 targets = rooms[0].find(FIND_SOURCES, {filter: (source) => source.energy > 0});
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
 
                 // Withdraw resources from condemned structures
                 // ---------------------------------------------------------
-                if(rooms[0].memory && rooms[0].memory.dismantle && LIB_COMMON.gamble(1 / 2)) {
+                if(rooms[0].memory && rooms[0].memory.dismantle && LIB_MISC.gamble(1 / 2)) {
                     for(let a = 0; rooms[0].memory.dismantle[a]; a++) {
                         targets.push(Game.getObjectById(rooms[0].memory.dismantle[a]));
                     } //done
-                    targets = LIB_COMMON.filterTargets(targets, badTargets);
+                    targets = LIB_MISC.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
                 } //fi
 
 //                  // 50% chance to harvest minerals
 //                  // ---------------------------------------------------------
-//                  if(LIB_COMMON.gamble(1 / 2)) {
+//                  if(LIB_MISC.gamble(1 / 2)) {
 //                      targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) => {return(structure.structureType === STRUCTURE_EXTRACTOR);}});
-//                      targets = LIB_COMMON.filterTargets(targets, badTargets);
+//                      targets = LIB_MISC.filterTargets(targets, badTargets);
 //                      if((targets && targets.length) || rooms[0].find(FIND_MINERALS, {filter: (mineral) => mineral.mineralAmount > 0}).length) break;
 //                  } //fi
 
@@ -112,7 +113,7 @@ let roleWorker   = {
                         && _.sum(structure.store) >  0
                     );}
                 });
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
 
                 // If there's no new energy available, use what you're already carrying, if anything.
@@ -120,23 +121,23 @@ let roleWorker   = {
                 if(creep.carry.energy > 0) {
                     creep.memory.harvesting = false;
                 } else {
-                    task = LIB_COMMON.TASKS.WAIT;
+                    task = LIB_MISC.TASKS.WAIT;
                     break;
                 }
             } //fi
 
             // If the controller is about to degrade, contribute to it
             // =============================================================
-            task = LIB_COMMON.TASKS.UPGRADE;
-            if(rooms[0].controller.ticksToDowngrade < LIB_COMMON.CONTROLLER_NEAR_DEGRADE) {
+            task = LIB_MISC.TASKS.UPGRADE;
+            if(rooms[0].controller.ticksToDowngrade < LIB_MISC.CONTROLLER_NEAR_DEGRADE) {
                 targets = [rooms[0].controller];
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
             } //fi
 
             // Always keep spawns and extensions filled up to max.
             // =============================================================
-            task = LIB_COMMON.TASKS.TRANSFER;
+            task = LIB_MISC.TASKS.TRANSFER;
             // Fill extensions
             targets = rooms[0].find(FIND_MY_STRUCTURES, {
                 filter: (structure) => {return(
@@ -145,7 +146,7 @@ let roleWorker   = {
                     && structure.room.memory.dismantle.indexOf(structure.id) === -1
                 );}
             });
-            targets = LIB_COMMON.filterTargets(targets, badTargets);
+            targets = LIB_MISC.filterTargets(targets, badTargets);
             if(targets && targets.length) break;
             // Fill spawns
             targets = rooms[0].find(FIND_MY_STRUCTURES, {
@@ -155,13 +156,13 @@ let roleWorker   = {
                     && structure.room.memory.dismantle.indexOf(structure.id) === -1
                 );}
             });
-            targets = LIB_COMMON.filterTargets(targets, badTargets);
+            targets = LIB_MISC.filterTargets(targets, badTargets);
             if(targets && targets.length) break;
 
             // 75% chance of maintaining towers
             // =============================================================
-            task = LIB_COMMON.TASKS.TRANSFER;
-            if(LIB_COMMON.gamble(3 / 4)) {
+            task = LIB_MISC.TASKS.TRANSFER;
+            if(LIB_MISC.gamble(3 / 4)) {
                 targets = rooms[0].find(FIND_MY_STRUCTURES, {
                     filter: (structure) => {return(
                            structure.structureType === STRUCTURE_TOWER
@@ -169,26 +170,26 @@ let roleWorker   = {
                         && structure.room.memory.dismantle.indexOf(structure.id) === -1
                     );}
                 });
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
             } //fi
 
             // 25% chance to build things that complete instantaneously
             // =============================================================
-            task = LIB_COMMON.TASKS.BUILD;
-            if(LIB_COMMON.gamble(1 / 4)) {
+            task = LIB_MISC.TASKS.BUILD;
+            if(LIB_MISC.gamble(1 / 4)) {
                 targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
                        site.structureType === STRUCTURE_WALL
                     || site.structureType === STRUCTURE_RAMPART
                 });
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
             } //fi
 
             // 75% chance of repairing most constructions
             // =============================================================
-            task = LIB_COMMON.TASKS.REPAIR;
-            if(LIB_COMMON.gamble(3 / 4)) {
+            task = LIB_MISC.TASKS.REPAIR;
+            if(LIB_MISC.gamble(3 / 4)) {
                 // Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
                 // It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
                 targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) =>
@@ -199,39 +200,39 @@ let roleWorker   = {
                        (structure.structureType === STRUCTURE_WALL    && structure.hits > repairLimit * 0.125)
                     || (structure.structureType === STRUCTURE_RAMPART && structure.hits > repairLimit * 0.125)
                 )});
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
             } //fi
 
             // 50% chance of building cheap / important structures.
             // =============================================================
-            task = LIB_COMMON.TASKS.BUILD;
-            if(LIB_COMMON.gamble(1 / 2)) {
+            task = LIB_MISC.TASKS.BUILD;
+            if(LIB_MISC.gamble(1 / 2)) {
                 targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
                        site.structureType === STRUCTURE_SPAWN
                     || site.structureType === STRUCTURE_ROAD
                 });
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
             } //fi
 
             // 50% chance of refilling miscellaneous resource-using structures
             // =============================================================
-            task = LIB_COMMON.TASKS.TRANSFER;
-            if(LIB_COMMON.gamble(1 / 2)) {
+            task = LIB_MISC.TASKS.TRANSFER;
+            if(LIB_MISC.gamble(1 / 2)) {
                 targets = rooms[0].find(FIND_MY_STRUCTURES, {filter: (structure) =>
                        structure.structureType === STRUCTURE_LAB
                     || structure.structureType === STRUCTURE_NUKER
                     || structure.structureType === STRUCTURE_POWER_SPAWN
                 });
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
             } //fi
 
             // 50% chance of repairing constructions that start at 1 health
             // =============================================================
-            task = LIB_COMMON.TASKS.REPAIR;
-            if(LIB_COMMON.gamble(1 / 2)) {
+            task = LIB_MISC.TASKS.REPAIR;
+            if(LIB_MISC.gamble(1 / 2)) {
                 // Only repair structures that are at least 25% of the way damaged, either from their repair maximum, or the global repair maximum.
                 // It would seem that walls cannot be owned, so we have to search through all targets in the room, not just our own.
                 targets = rooms[0].find(FIND_STRUCTURES, {filter: (structure) =>
@@ -242,48 +243,48 @@ let roleWorker   = {
                        structure.structureType === STRUCTURE_WALL
                     || structure.structureType === STRUCTURE_RAMPART
                 )});
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
             } //fi
 
             // 50% chance of upgrading the controller, if it's not already at max
             // If the controller *is* already at max, upgrade it if it's less than 3/4 degraded.
             // =============================================================
-            task = LIB_COMMON.TASKS.UPGRADE;
+            task = LIB_MISC.TASKS.UPGRADE;
             if(rooms[0].controller
 			&& rooms[0].controller.level
 			&& ((
-			   LIB_COMMON.gamble(1 / 2)
+			   LIB_MISC.gamble(1 / 2)
             && rooms[0].controller.level < 8
 			   )
             || rooms[0].controller.ticksToDowngrade < (3 / 4) * CONTROLLER_DOWNGRADE[rooms[0].controller.level]
 			)) {
                 targets = [rooms[0].controller];
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
             } //fi
 
             // Build new things
             // =============================================================
-            task = LIB_COMMON.TASKS.BUILD;
+            task = LIB_MISC.TASKS.BUILD;
             targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES);
-            targets = LIB_COMMON.filterTargets(targets, badTargets);
+            targets = LIB_MISC.filterTargets(targets, badTargets);
             if(targets && targets.length) break;
 
             // Upgrade the controller if it's not already at max.
             // =============================================================
-            task = LIB_COMMON.TASKS.UPGRADE;
+            task = LIB_MISC.TASKS.UPGRADE;
             if(rooms[0].controller
 			&& rooms[0].controller.level
 			&& rooms[0].controller.level < 8) {
                 targets = [rooms[0].controller];
-                targets = LIB_COMMON.filterTargets(targets, badTargets);
+                targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
             } //fi
 /*
             // Store excess resources
             // =============================================================
-            task = LIB_COMMON.TASKS.TRANSFER;
+            task = LIB_MISC.TASKS.TRANSFER;
             targets = rooms[0].find(FIND_MY_STRUCTURES, {
                 filter: (structure) => {return(
                     (  structure.structureType === STRUCTURE_CONTAINER
@@ -302,19 +303,19 @@ let roleWorker   = {
                     && structure.room.memory.dismantle.indexOf(structure.id) === -1
                 );}
             });
-            targets = LIB_COMMON.filterTargets(targets, badTargets);
+            targets = LIB_MISC.filterTargets(targets, badTargets);
             if(targets && targets.length) break;
 */
             // Upgrade the controller.
             // =============================================================
-            task = LIB_COMMON.TASKS.UPGRADE;
+            task = LIB_MISC.TASKS.UPGRADE;
             targets = [rooms[0].controller];
-            targets = LIB_COMMON.filterTargets(targets, badTargets);
+            targets = LIB_MISC.filterTargets(targets, badTargets);
             if(targets && targets.length) break;
 
             // Give up
             // =============================================================
-            task = LIB_COMMON.TASKS.WAIT;
+            task = LIB_MISC.TASKS.WAIT;
             break;
         } //esac
 
@@ -324,23 +325,23 @@ let roleWorker   = {
             let target = creep.pos.findClosestByRange(targets);
             if(target && target.id) {
                 switch(task) {
-                    case LIB_COMMON.TASKS.HARVEST:
+                    case LIB_MISC.TASKS.HARVEST:
                     creep.memory.say = "Harvest";
                     break;
 
-                    case LIB_COMMON.TASKS.TRANSFER:
+                    case LIB_MISC.TASKS.TRANSFER:
                     creep.memory.say = "Transfer";
                     break;
 
-                    case LIB_COMMON.TASKS.UPGRADE:
+                    case LIB_MISC.TASKS.UPGRADE:
                     creep.memory.say = "Upgrade";
                     break;
 
-                    case LIB_COMMON.TASKS.BUILD:
+                    case LIB_MISC.TASKS.BUILD:
                     creep.memory.say = "Build";
                     break;
 
-                    case LIB_COMMON.TASKS.REPAIR:
+                    case LIB_MISC.TASKS.REPAIR:
                     creep.memory.say = "Repair";
                     break;
                 } //esac
@@ -352,7 +353,7 @@ let roleWorker   = {
         // =================================================================
         // If the array of rooms has not yet been sorted, sort it.
         if(rooms[0] !== creep.room) {
-            rooms = LIB_COMMON.sortRooms(creep.pos, rooms);
+            rooms = LIB_MISC.sortRooms(creep.pos, rooms);
         } //fi
         // Remove the current room from the array.
         rooms.shift();
@@ -395,7 +396,7 @@ let roleWorker   = {
                 &&  creep.withdraw(target, RESOURCE_ENERGY)
                 &&
                 ((( target.room.controller.owner
-                &&  target.room.controller.owner !== LIB_COMMON.USERNAME
+                &&  target.room.controller.owner !== LIB_MISC.USERNAME
                 )
                 ||
                 (   target.room.memory
@@ -404,7 +405,7 @@ let roleWorker   = {
                 ))
                 &&  creep.dismantle(target)
                 )) {
-                    code = LIB_COMMON.move(creep, COLOR_YELLOW, true);
+                    code = LIB_MOVE.move(creep, COLOR_YELLOW, true);
                 } //fi
             } else {
 
@@ -412,7 +413,7 @@ let roleWorker   = {
                 // ---------------------------------------------------------
                 if(target.structureType === STRUCTURE_CONTROLLER) {
                     if(creep.upgradeController(target)) {
-                        code = LIB_COMMON.move(creep, COLOR_CYAN, true);
+                        code = LIB_MOVE.move(creep, COLOR_CYAN, true);
                     } //fi
                 } else
 
@@ -420,7 +421,7 @@ let roleWorker   = {
                 // ---------------------------------------------------------
                 if(target.progressTotal) {
                     if(creep.build(target)) {
-                        code = LIB_COMMON.move(creep, COLOR_WHITE, true);
+                        code = LIB_MOVE.move(creep, COLOR_WHITE, true);
                     } //fi
                 } else
 
@@ -430,7 +431,7 @@ let roleWorker   = {
                 && target.hits < repairLimit
                 ){
                     if(creep.repair(target)) {
-                        code = LIB_COMMON.move(creep, COLOR_PURPLE, true);
+                        code = LIB_MOVE.move(creep, COLOR_PURPLE, true);
                     } //fi
                 } else
 
@@ -438,7 +439,7 @@ let roleWorker   = {
                 // ---------------------------------------------------------
                 if(target.energy < target.energyCapacity) {
                     if(creep.transfer(Game.getObjectById(creep.memory.target), RESOURCE_ENERGY)) {
-                        code = LIB_COMMON.move(creep, LIB_COMMON.COLOR_BLACK, true);
+                        code = LIB_MOVE.move(creep, LIB_MISC.COLOR_BLACK, true);
                     } //fi
                 } //else
 
@@ -474,10 +475,10 @@ let roleWorker   = {
         // =====================================================================
 		repairLimit = 0;
 		if(creep && creep.room && creep.room.controller && creep.room.controller.level) {
-        	repairLimit = LIB_COMMON.REPAIR_LIMIT * creep.room.controller.level;
+        	repairLimit = LIB_MISC.REPAIR_LIMIT * creep.room.controller.level;
 		} //fi
 		if(!repairLimit) {
-			repairLimit = LIB_COMMON.REPAIR_LIMIT;
+			repairLimit = LIB_MISC.REPAIR_LIMIT;
 		} //fi
         if(creep.memory && creep.memory.target) canWander = false;
 
@@ -499,14 +500,14 @@ let roleWorker   = {
 
         // Find and affect a target
         // =====================================================================
-        for(let l = 0; l < LIB_COMMON.LOOP_LIMIT; l++) {
+        for(let l = 0; l < LIB_MISC.LOOP_LIMIT; l++) {
 
             // Find a target
             // -----------------------------------------------------------------
             if(!creep.memory || !creep.memory.target) {
                 //If the array of rooms has not already been populated, populate it.
                 if(!rooms.length) {
-                    rooms = LIB_COMMON.findRooms(creep.room.name);
+                    rooms = LIB_MISC.findRooms(creep.room.name);
                 } //fi
                 // Find a target
                 creep.memory.target = roleWorker.findTarget(creep);
@@ -530,7 +531,7 @@ let roleWorker   = {
             // -----------------------------------------------------------------
             if(!rooms.length) break;
         } //done
-        if(canWander) LIB_COMMON.wander(creep);
+        if(canWander) LIB_MOVE.wander(creep);
     } //function
 }; //struct
 

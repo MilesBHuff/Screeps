@@ -4,14 +4,14 @@
 
 // Variables
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const LIB_COMMON = require("lib.common");
+const LIB_MISC = require("lib.misc");
 
 // Main loop
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 module.exports.loop = function () {
 
     // Every 8 ticks
-    if(LIB_COMMON.gamble(1 / 8)) {
+    if(LIB_MISC.gamble(1 / 8)) {
         cleanMemories();
     } //fi
 
@@ -102,7 +102,7 @@ module.exports.loop = function () {
 	                let creep = Game.creeps[name];
 	                if(!creep.memory) {
 						creep.memory = {
-							role: LIB_COMMON.ROLES.MANUAL,
+							role: LIB_MISC.ROLES.MANUAL,
 						};
 					} //fi
 
@@ -118,23 +118,23 @@ module.exports.loop = function () {
 	                if(creep.spawning) continue;
 	                switch(creep.memory.role) {
 
-	                    case LIB_COMMON.ROLES.WORKER:
+	                    case LIB_MISC.ROLES.WORKER:
 	                    require("role.worker" ).run(creep);
 	                    break;
 
-	                    case LIB_COMMON.ROLES.FIGHTER:
+	                    case LIB_MISC.ROLES.FIGHTER:
 	                    require("role.fighter").run(creep);
 	                    break;
 
-	                    case LIB_COMMON.ROLES.HEALER:
+	                    case LIB_MISC.ROLES.HEALER:
 	                    require("role.healer" ).run(creep);
 	                    break;
 
-	                    case LIB_COMMON.ROLES.CLAIMER:
+	                    case LIB_MISC.ROLES.CLAIMER:
 	                    require("role.claimer").run(creep);
 	                    break;
 
-	                    //case LIB_COMMON.ROLES.MANUAL:
+	                    //case LIB_MISC.ROLES.MANUAL:
 	                    default:
 	                    require("role.manual" ).run(creep);
 	                    break;
