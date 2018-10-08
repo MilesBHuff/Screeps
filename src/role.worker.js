@@ -174,18 +174,6 @@ let roleWorker   = {
                 if(targets && targets.length) break;
             } //fi
 
-            // 25% chance to build things that complete instantaneously
-            // =================================================================
-            task = LIB_MISC.TASKS.BUILD;
-            if(LIB_MISC.gamble(1 / 4)) {
-                targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
-                       site.structureType === STRUCTURE_WALL
-                    || site.structureType === STRUCTURE_RAMPART
-                });
-                targets = LIB_MISC.filterTargets(targets, badTargets);
-                if(targets && targets.length) break;
-            } //fi
-
             // 75% chance of repairing most constructions
             // =================================================================
             task = LIB_MISC.TASKS.REPAIR;
@@ -211,6 +199,18 @@ let roleWorker   = {
                 targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
                        site.structureType === STRUCTURE_SPAWN
                     || site.structureType === STRUCTURE_ROAD
+                });
+                targets = LIB_MISC.filterTargets(targets, badTargets);
+                if(targets && targets.length) break;
+            } //fi
+
+            // 25% chance to build things that complete instantaneously
+            // =================================================================
+            task = LIB_MISC.TASKS.BUILD;
+            if(LIB_MISC.gamble(1 / 4)) {
+                targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES, {filter: (site) =>
+                       site.structureType === STRUCTURE_WALL
+                    || site.structureType === STRUCTURE_RAMPART
                 });
                 targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
