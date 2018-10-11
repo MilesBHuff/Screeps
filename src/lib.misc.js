@@ -14,7 +14,7 @@ const LIB_MISC = {
     // This constant is missing from the global game defines.
     CONTROLLER_LEVEL_MAX: 8,
     // This is the remaining repair amount at which you will receive an email about your controller degrading.
-    CONTROLLER_NEAR_DEGRADE: 3000,
+    CONTROLLER_NEAR_DEGRADE: 4500, //3000 is when you get an email, and 1500 is how long a normal creep lives.
     // The maximum number of times to run a loop that would otherwise be while(true).
     LOOP_LIMIT: 12,
     // This is the number of ticksToLive below which a creep is considered near-death.
