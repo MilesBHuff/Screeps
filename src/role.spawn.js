@@ -135,7 +135,7 @@ let roleSpawn  = {
                     if(creepsLocal.workers.length  < spawn.room.memory.workerLimit
                     && creepsGlobal.workers.length < creepLimitsGlobal.workers
                     ){
-                        roleSpawn.spawnCreep(spawn, [MOVE, CARRY, WORK], "Worker", LIB_MISC.ROLES.WORKER);
+                        roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.WORKER);
                         break;
                     }
                     if(i === 0) continue;
@@ -144,7 +144,7 @@ let roleSpawn  = {
                     if(creepsLocal.fighters.length  < spawn.room.memory.fighterLimit
                     && creepsGlobal.fighters.length < creepLimitsGlobal.fighters
                     ){
-                        roleSpawn.spawnCreep(spawn, [MOVE, RANGED_ATTACK, HEAL, ATTACK, TOUGH], "Fighter", LIB_MISC.ROLES.FIGHTER);
+                        roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.FIGHTER);
                         break;
                     }
                     if(i === 0) continue;
@@ -153,7 +153,7 @@ let roleSpawn  = {
                     if(creepsLocal.claimers.length  < spawn.room.memory.claimerLimit
                     && creepsGlobal.claimers.length < creepLimitsGlobal.claimers
                     ){
-                        roleSpawn.spawnCreep(spawn, [MOVE, CLAIM, TOUGH], "Claimer", LIB_MISC.ROLES.CLAIMER);
+                        roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.CLAIMER);
                         break;
                     } //fi
                     if(i === 0) continue;
@@ -254,7 +254,7 @@ let roleSpawn  = {
 			if(partRatios[mainPartTypes[p]] > 0) {
 				partCounts.total++;
 				partCounts[mainPartTypes[p]]++;
-				energyCost+= BODYPART_COST[[mainPartTypes[p]]];
+				energyCost+= BODYPART_COST[mainPartTypes[p]];
 			} //fi
 		} //done
 		while(partRatios.movesPerPart < partCounts[MOVE]  /  partCounts.total - partCounts[MOVE])
