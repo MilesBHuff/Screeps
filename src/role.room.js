@@ -66,12 +66,17 @@ let roleRoom   = {
 
             // Workers
             // -----------------------------------------------------------------------------
+			//NOTE:  While this could be made more accurate by actually calculating a new worker creep, it is extremely unlikely to be worth the CPU.
             function setWorkerLimit() {
-                // Modify the number of workers per the level of the controller.
-                room.memory.workerLimit += (Math.round((CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][LIB_MISC.CONTROLLER_LEVEL_MAX] - room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(structure.structureType === STRUCTURE_EXTENSION);}}).length) / 10)) / 2;
+				// Get the extension limit at the highest controller level
+				let maxExtensions = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][LIB_MISC.CONTROLLER_LEVEL_MAX];
+				// Get the number of extensions actually in the room
+				let actualExtensions = room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(structure.structureType === STRUCTURE_EXTENSION);}}).length;
+                // Set the number of workers per the number of extensions in the room (This effectively results in 3 per source at 0 extensions.)
+                room.memory.workerLimit = (maxExtensions - actualExtensions) / (maxExtensions / 3);
                 if(room.memory.workerLimit <= 0) room.memory.workerLimit = 1;
                 // Multiply the number of workers by the number of sources and mineral extractors in the room.
-                room.memory.workerLimit *= room.find(FIND_SOURCES).length; // + room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(structure.structureType === STRUCTURE_EXTRACTOR);}}).length;
+                room.memory.workerLimit*= room.find(FIND_SOURCES).length; // + room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(structure.structureType === STRUCTURE_EXTRACTOR);}}).length;
                 if(room.memory.workerLimit <= 0) room.memory.workerLimit = 1;
             } //setWorkerLimit
 
@@ -118,7 +123,7 @@ let roleRoom   = {
             function roundLimits() {
 				room.memory.workerLimit  = Math.round(room.memory.workerLimit );
                 room.memory.fighterLimit = Math.round(room.memory.fighterLimit);
-                room.memory.claimerLimit = Math.round(room.memory.claimerLimit );
+                room.memory.claimerLimit = Math.round(room.memory.claimerLimit);
             } //roundLimits
         } //creepLimits
     }, //run
