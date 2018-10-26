@@ -126,10 +126,6 @@ module.exports.loop = function () {
 	                    require("role.fighter").run(creep);
 	                    break;
 
-	                    case LIB_MISC.ROLES.HEALER:
-	                    require("role.healer" ).run(creep);
-	                    break;
-
 	                    case LIB_MISC.ROLES.CLAIMER:
 	                    require("role.claimer").run(creep);
 	                    break;

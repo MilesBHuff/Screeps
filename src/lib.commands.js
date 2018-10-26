@@ -35,17 +35,15 @@ const LIB_COMMANDS = {
 
     // Create creep
     // =========================================================================
-    // require("lib.commands").createCreep("SpawnName", [MOVE], "CreepName", require("lib.misc").ROLES.MANUAL);
+    // require("lib.commands").createCreep("SpawnName", "MANUAL");
     /** This function spawns a creep at the desired spawn, using the same
      *  creep-generation function as main().
      * @param  spawnName The name of the spawn to use.
-     * @param  partTypes The types of parts to use.
-     * @param  creepName The name of the creep to use.
-     * @param  role      The role to use, if any.
+     * @param  roleName  The role to use, if any.
      * @return An exit-code.
     **/
-    createCreep: function (spawnName, partTypes, creepName, role) {
-        return ROLE_SPAWN.spawnCreep(Game.spawns[spawnName], partTypes, creepName, role);
+    createCreep: function (spawnName, roleName) {
+        return ROLE_SPAWN.spawnCreep(Game.spawns[spawnName], LIB_MISC.ROLES[roleName]);
     }, //function;
 
     // Dismantle

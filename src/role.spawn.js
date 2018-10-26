@@ -18,25 +18,25 @@ let roleSpawn  = {
 
         // Variables
         let creepLimitsGlobal = {
-            fighters: 999,
-            healers:  999,
-            workers:  999,
+			workers:  999,
+			fighters: 999,
+			claimers: 999,
         };
         let creepsGlobal = {
+			workers:  Array(),
             fighters: Array(),
-            healers:  Array(),
-            workers:  Array(),
+			claimers: Array(),
         };
         let creepsLocal = {
-            fighters: Array(),
-            healers:  Array(),
             workers:  Array(),
+			fighters: Array(),
+			claimers: Array(),
         };
         countCreeps();
 
         // Unless already spawning or not at full energy.
         // Exception:  If there are no workers left, spawn even if not at full energy.
-        if(!spawn.spawning && (spawn.energy >= spawn.energyCapacity || creepsLocal.workers.length <= 0)) {
+        if(!spawn.spawning && (spawn.room.energy >= spawn.room.energyCapacity || creepsLocal.workers.length <= 0)) {
             trySpawnCreep();
         } //fi
 
@@ -50,15 +50,15 @@ let roleSpawn  = {
 
             // Creeps in all rooms
             // -----------------------------------------------------------------
+			creepsGlobal.workers  = _.filter(livelyCreeps, (creep) => creep.memory.role === LIB_MISC.ROLES.WORKER );
             creepsGlobal.fighters = _.filter(livelyCreeps, (creep) => creep.memory.role === LIB_MISC.ROLES.FIGHTER);
-            creepsGlobal.healers  = _.filter(livelyCreeps, (creep) => creep.memory.role === LIB_MISC.ROLES.HEALER );
-            creepsGlobal.workers  = _.filter(livelyCreeps, (creep) => creep.memory.role === LIB_MISC.ROLES.WORKER );
+			creepsGlobal.claimers = _.filter(livelyCreeps, (creep) => creep.memory.role === LIB_MISC.ROLES.CLAIMER );
 
             // Creeps in the current room
             // -----------------------------------------------------------------
+			creepsLocal.workers   = _.filter(creepsGlobal.workers,  (creep) => creep.room === spawn.room);
             creepsLocal.fighters  = _.filter(creepsGlobal.fighters, (creep) => creep.room === spawn.room);
-            creepsLocal.healers   = _.filter(creepsGlobal.healers,  (creep) => creep.room === spawn.room);
-            creepsLocal.workers   = _.filter(creepsGlobal.workers,  (creep) => creep.room === spawn.room);
+            creepsLocal.claimers  = _.filter(creepsGlobal.claimers, (creep) => creep.room === spawn.room);
 
             // The total creep limits across all owned rooms (this is needed to prevent rooms from respawning all their creeps during an expedition to another room)
             // -----------------------------------------------------------------
@@ -67,9 +67,9 @@ let roleSpawn  = {
             } //done
             for(let roomName in Game.rooms) {
                 let room = Game.rooms[roomName];
+				creepLimitsGlobal.workers  += room.memory.workerLimit;
                 creepLimitsGlobal.fighters += room.memory.fighterLimit;
-                creepLimitsGlobal.healers  += room.memory.healerLimit;
-                creepLimitsGlobal.workers  += room.memory.workerLimit;
+				creepLimitsGlobal.claimers += room.memory.claimerLimit;
             } //done
 
 			// Find lively creeps
@@ -114,10 +114,10 @@ let roleSpawn  = {
                     case 0:
                     /*//*/ if(creepsLocal.workers.length  < Math.ceil(spawn.room.memory.workerLimit  / 2)) {
                         creepRole = LIB_MISC.ROLES.WORKER;
-                    } else if(creepsLocal.healers.length  < Math.ceil(spawn.room.memory.healerLimit  / 2) && creepsLocal.healers.length < Math.ceil(creepsLocal.fighters.length / 4)) {
-                        creepRole = LIB_MISC.ROLES.HEALER;
                     } else if(creepsLocal.fighters.length < Math.ceil(spawn.room.memory.fighterLimit / 2)) {
                         creepRole = LIB_MISC.ROLES.FIGHTER;
+					} else if(creepsLocal.claimers.length < Math.ceil(spawn.room.memory.claimerLimit / 2)) {
+						creepRole = LIB_MISC.ROLES.CLAIMER;
                     } else {
                         creepRole = Math.floor(Math.random() * LIB_MISC.ROLES.length);
                     }
@@ -135,7 +135,7 @@ let roleSpawn  = {
                     if(creepsLocal.workers.length  < spawn.room.memory.workerLimit
                     && creepsGlobal.workers.length < creepLimitsGlobal.workers
                     ){
-                        roleSpawn.spawnCreep(spawn, [CARRY, MOVE, WORK], "Worker", LIB_MISC.ROLES.WORKER);
+                        roleSpawn.spawnCreep(spawn, [MOVE, CARRY, WORK], "Worker", LIB_MISC.ROLES.WORKER);
                         break;
                     }
                     if(i === 0) continue;
@@ -144,16 +144,16 @@ let roleSpawn  = {
                     if(creepsLocal.fighters.length  < spawn.room.memory.fighterLimit
                     && creepsGlobal.fighters.length < creepLimitsGlobal.fighters
                     ){
-                        roleSpawn.spawnCreep(spawn, [RANGED_ATTACK, MOVE, TOUGH], "Fighter", LIB_MISC.ROLES.FIGHTER);
+                        roleSpawn.spawnCreep(spawn, [MOVE, RANGED_ATTACK, HEAL, ATTACK, TOUGH], "Fighter", LIB_MISC.ROLES.FIGHTER);
                         break;
                     }
                     if(i === 0) continue;
 
-                    case LIB_MISC.ROLES.HEALER:
-                    if(creepsLocal.healers.length  < spawn.room.memory.healerLimit
-                    && creepsGlobal.healers.length < creepLimitsGlobal.healers
+                    case LIB_MISC.ROLES.CLAIMER:
+                    if(creepsLocal.claimers.length  < spawn.room.memory.claimerLimit
+                    && creepsGlobal.claimers.length < creepLimitsGlobal.claimers
                     ){
-                        roleSpawn.spawnCreep(spawn, [HEAL, MOVE, TOUGH], "Healer", LIB_MISC.ROLES.HEALER);
+                        roleSpawn.spawnCreep(spawn, [MOVE, CLAIM, TOUGH], "Claimer", LIB_MISC.ROLES.CLAIMER);
                         break;
                     } //fi
                     if(i === 0) continue;
@@ -176,273 +176,185 @@ let roleSpawn  = {
     *  then sorts the parts in such a way that maximises each creep's
     *  survivability.
     * @param spawn    The spawner to use
-    * @param rawParts This is an array of body parts;  this function reduplicates
-    *                 it infinitely.
-    * @param name     The name of the new creep.
     * @param role     The role the new creep should have.
     **/
-    spawnCreep: function (spawn, rawParts, name, role) {
-        // Variables
+    spawnCreep: function (spawn, role) {
+
+        // Determine what kind of creep to build
         // ---------------------------------------------------------------------
-        let bodyParts   = Array();
-        let energyCost  = 0;
-        let energyTotal = spawn.room.energyAvailable;
-        let partCount   = {
-            attack: 0,
-            carry:  0,
-            claim:  0,
-            heal:   0,
-            move:   0,
-            rangedAttack: 0,
-            tough:  0,
-            work:   0
-        }; //struct
-        for(let currentPart = 0, failCount = 0; true; currentPart++) {
-            // Stop once we've used up as much energy as possible
-            if(failCount >= rawParts.length) {
-                break;
-            } //fi
-            // Start over once we finish the parts array
-            if(currentPart >= rawParts.length) {
-                currentPart = 0;
-            } //fi
+		let name = "";
 
-            // Find out how expensive the current part is
-            // -----------------------------------------------------------------
-            let partCost = 0;
-            switch(rawParts[currentPart]) {
-                case ATTACK:
-                partCost = BODYPART_COST[ATTACK];
-                break;
+		// Define the order of preference for the main part types.
+        // `````````````````````````````````````````````````````````````````````
+		//NOTE:  MOVE and TOUGH are to be handled separately.
+	    // We can't just use a spliced BODYPARTS_ALL, since I need the parts to be in a specific order:  namely, how important they are for a given creep to have.
+		let mainPartTypes = [ // These are stored on separate lines in order to make rearrangement easier.
+			WORK,
+			CARRY,
+			RANGED_ATTACK,
+			HEAL,
+			ATTACK,
+			CLAIM,
+		];
 
-                case CARRY:
-                partCost = BODYPART_COST[CARRY];
-                break;
+		// Set up the partRatios object
+		// `````````````````````````````````````````````````````````````````````
+		let partRatios = {
+			movesPerPart:  0.00, // How many MOVEs to add per each normal body part
+			useTough:     false, // Whether to use TOUGH when we can't afford a normal body part, or when normal body part ratios don't sum to 1
+		};
+		for(let p = 0; p < mainPartTypes.length; p++) {
+			partRatios[mainPartTypes[p]] = 0.00;
+		} //done
 
-                case CLAIM:
-                partCost = BODYPART_COST[CLAIM];
-                break;
+		// Fill-in the partRatios object
+		// `````````````````````````````````````````````````````````````````````
+		switch(role) {
+			case LIB_MISC.ROLES.WORKER:
+			name = "Worker";
+			partRatios.movesPerPart = 0.50; // Ideal for roads
+			partRatios[CARRY]       = 0.50;
+			partRatios[WORK]        = 0.50;
+			break;
 
-                case HEAL:
-                partCost = BODYPART_COST[HEAL];
-                break;
+			case LIB_MISC.ROLES.FIGHTER:
+			name = "Fighter";
+			partRatios.useTough       = true;
+			partRatios.movesPerPart   = 1.00; // Ideal for plains
+			partRatios[HEAL]          = 0.50;
+			partRatios[RANGED_ATTACK] = 0.49;
+			partRatios[ATTACK]        = 0.01;
+			break;
 
-                case MOVE:
-                partCost = BODYPART_COST[MOVE];
-                break;
+			case LIB_MISC.ROLES.CLAIMER:
+			name = "Claimer";
+			partRatios.useTough     = true;
+			partRatios.movesPerPart = 5.00; // Ideal for swamps
+			partRatios[CLAIM]       = 0.01;
+			break;
+		} //esac
+		if(spawn.room.controller.level < LIB_MISC.DEVELOPED_CTRL_LVL) {
+			// When the controller level is below this value, movesPerPart is ignored, and all creeps spawn with a 1:1 ratio of MOVE:*.  Controller level is used as a proxy for infrastructure development, as 1:1 for everyone only makes sense when there are no roads.
+			partRatios.movesPerPart = 1.00;
+		} //fi
 
-                case RANGED_ATTACK:
-                partCost = BODYPART_COST[RANGED_ATTACK];
-                break;
-
-                case TOUGH:
-                partCost = BODYPART_COST[TOUGH];
-                break;
-
-                case WORK:
-                partCost = BODYPART_COST[WORK];
-                break;
-
-                default:
-                console.log("ERROR:  Spawn:  Part doesn't exist!");
-                return;
-            } //esac
-
-            // See whether we can afford the part.  If so, count it.
-            // -----------------------------------------------------------------
-            if(energyCost + partCost <= energyTotal) {
-                failCount = 0;
-                energyCost += partCost;
-                switch(rawParts[currentPart]) {
-                    case ATTACK:
-                    partCount.attack++;
-                    break;
-
-                    case CARRY:
-                    partCount.carry++;
-                    break;
-
-                    case CLAIM:
-                    partCount.claim++;
-                    break;
-
-                    case HEAL:
-                    partCount.heal++;
-                    break;
-
-                    case MOVE:
-                    partCount.move++;
-                    break;
-
-                    case RANGED_ATTACK:
-                    partCount.rangedAttack++;
-                    break;
-
-                    case TOUGH:
-                    partCount.tough++;
-                    break;
-
-                    case WORK:
-                    partCount.work++;
-                    break;
-
-                    default:
-                    console.log("ERROR:  Spawn:  Part doesn't exist!");
-                    return;
-                } //esac
-            } else {
-                failCount++;
-                // If this is the absolute first part and we are unable to construct it, there is no point in building this creep.
-                if(currentPart === 0 && energyCost === 0) {
-                    return;
-                } else continue;
-            } //if
-        } //done
-
-        // Remove excess body parts
+        // Declare calculation variables
         // ---------------------------------------------------------------------
-        //TODO:  If energy remains, replace TOUGH parts with non-TOUGH parts.
-        while((partCount.attack
-             + partCount.carry
-             + partCount.claim
-             + partCount.heal
-             + partCount.move
-             + partCount.rangedAttack
-             + partCount.tough
-             + partCount.work
-           ) > MAX_CREEP_SIZE
-        ) {
-            // TOUGH parts are useless when we can affort non-TOUGH parts to replace them.
-            if(partCount.tough > 0) {
-                partCount.tough--;
-                continue;
-            }
+		let energyCost  = 0;
+		let energyTotal = spawn.room.energyAvailable;
+		let partCounts   = {
+			attack:       0,
+			carry:        0,
+			claim:        0,
+			heal:         0,
+			move:         0,
+			rangedAttack: 0,
+			tough:        0,
+			work:         0,
+			total:		  0,
+		};
 
-            // Henceforth, decrement each part-type evenly, according to the order used in the sorting section (below).
-            // '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            // WORK
-            if(partCount.work >= partCount.attack
-            && partCount.work >= partCount.carry
-            && partCount.work >= partCount.claim
-            && partCount.work >= partCount.heal
-            && partCount.work >= partCount.move
-            && partCount.work >= partCount.rangedAttack
-            ) {
-                partCount.work--;
-                continue;
-            } //fi
-            // CLAIM
-            if(partCount.claim >= partCount.attack
-            && partCount.claim >= partCount.carry
-            && partCount.claim >= partCount.heal
-            && partCount.claim >= partCount.move
-            && partCount.claim >= partCount.rangedAttack
-            ) {
-                partCount.claim--;
-                continue;
-            } //fi
-            // ATTACK
-            if(partCount.attack >= partCount.carry
-            && partCount.attack >= partCount.heal
-            && partCount.attack >= partCount.move
-            && partCount.attack >= partCount.rangedAttack
-            ) {
-                partCount.attack--;
-                continue;
-            } //fi
-            // RANGED_ATTACK
-            if(partCount.rangedAttack >= partCount.carry
-            && partCount.rangedAttack >= partCount.heal
-            && partCount.rangedAttack >= partCount.move
-            ) {
-                partCount.rangedAttack--;
-                continue;
-            } //fi
-            // HEAL
-            if(partCount.heal >= partCount.carry
-            && partCount.heal >= partCount.move
-            ) {
-                partCount.heal--;
-                continue;
-            } //fi
-            // CARRY
-            if(partCount.carry >= partCount.move) {
-                partCount.carry--;
-                continue;
-            } //fi
-            // MOVE
-            partCount.move--;
-        } //done
-
-        // Sort the parts in order to make the creep more resilient in combat
+        // Calculate a minimal creep, and make sure we can even afford it.
         // ---------------------------------------------------------------------
-        for(let i = 0; i < partCount.tough; i++) {
-            bodyParts.push(TOUGH);
-        } //done
-        for(let i = 0; i < partCount.work; i++) {
-            bodyParts.push(WORK);
-        } //done
-        for(let i = 0; i < partCount.claim; i++) {
-            bodyParts.push(CLAIM);
-        } //done
-        for(let i = 0; i < partCount.attack; i++) {
-            bodyParts.push(ATTACK);
-        } //done
-        for(let i = 0; i < partCount.rangedAttack; i++) {
-            bodyParts.push(RANGED_ATTACK);
-        } //done
-        for(let i = 0; i < partCount.heal; i++) {
-            bodyParts.push(HEAL);
-        } //done
-        for(let i = 0; i < partCount.carry; i++) {
-            bodyParts.push(CARRY);
-        } //done
-        for(let i = 0; i < partCount.move; i++) {
-            bodyParts.push(MOVE);
-        } //done
+		//NOTE:  While this may seem unnecessary, it actually flattens the part ratios at the outset, and ensures that every nonzero part is used at least once.
+		for(let p = 0; p < mainPartTypes.length; p++) {
+			if(partRatios[mainPartTypes[p]] > 0) {
+				partCounts.total++;
+				partCounts[mainPartTypes[p]]++;
+				energyCost+= BODYPART_COST[[mainPartTypes[p]]];
+			} //fi
+		} //done
+		while(partRatios.movesPerPart < partCounts[MOVE]  /  partCounts.total - partCounts[MOVE])
+			{partCounts.total++; partCounts[MOVE]++; energyCost+= BODYPART_COST[MOVE];}
+		if(energyCost > energyTotal) {return;}
 
-        // If the creep is only partially formed, there's no point in spawning it.
+		// Build the creep until there's no energy left in the room
         // ---------------------------------------------------------------------
-        if(
-        !( partCount.move   > 0
-  //    &&
-  //    (  partCount.attack > 0
-  //    || partCount.carry  > 0
-  //    || partCount.claim  > 0
-  //    || partCount.heal   > 0
-  //    || partCount.rangedAttack > 0
-  //    || partCount.work   > 0
-  //    )
-        )) {
-            return;
-        } //fi
+		// Auto-stop once we hit energyTotal or MAX_CREEP_SIZE.
+		while(energyCost < energyTotal && partCounts.total < MAX_CREEP_SIZE) {
 
-        // If any neighbouring owned room lacks spawners, 50% chance of sending this creep to it.
-        // ---------------------------------------------------------------------
-        let target;
-        if(Math.round(Math.random())) {
-            let exits = Game.map.describeExits(spawn.room.name);
-            for(let index in exits) {
-                let room = Game.rooms[exits[index]];
-                if( room && room.controller && room.controller.my
-                && !room.find(FIND_MY_STRUCTURES, {filter: (structure) => {
-                    return(structure.structureType === STRUCTURE_SPAWN);
-                    }}).length
-                ){
-                    target = room.find(FIND_SOURCES, {filter: (source) => source.energy > 0});
-                    break;
-                } //fi
-            } //done
-        } //fi
+			// Variables
+	        // `````````````````````````````````````````````````````````````````
+			let movelessParts = partCounts.total - partCounts.move;
 
-        // If we have parts, create the creep.
-        // ---------------------------------------------------------------------
-        if(bodyParts[0]) {
-            for(let i = 0; spawn.createCreep(bodyParts, name + i, {role: role, target: target}) === ERR_NAME_EXISTS; i++) {continue;}
-        } //fi
+			// If we're short on MOVEs, add a MOVE.
+	        // `````````````````````````````````````````````````````````````````
+			if(partRatios.movesPerPart < partCounts[MOVE] / movelessParts
+			//NOTE:  Given all the checks related to MOVE's energy costs up above and down below, we don't actually need to check them here.
+			) {
+				partCounts[MOVE]++;
+				energyCost+= BODYPART_COST[MOVE];
+				continue;
+			} //fi
 
-        // Display which type of creep is being spawned
+			// If adding an extra part would take us over our MOVE ratio...
+	        // `````````````````````````````````````````````````````````````````
+			let neededMovesCost = 0;
+			if(partRatios.movesPerPart < partCounts[MOVE] / movelessParts + 1) {
+				let neededMoves = 0;
+				// Calculate how many MOVEs it would cost to reattain balance
+				while(partRatios.movesPerPart < partCounts[MOVE] + neededMoves / movelessParts + 1) {
+					neededMoves++;
+					// If we can't fit enough MOVEs in before reaching MAX_CREEP_SIZE, then this creep is finished.
+					if(movelessParts + neededMoves > MAX_CREEP_SIZE) {
+						break;
+					} //fi
+				} //done
+				// Calculate how much energy needs to be in the room in order to reattain balance
+				neededMovesCost = neededMoves * BODYPART_COST[MOVE];
+				//NOTE:  The checks for this will come when we add regular parts.
+			} //fi
+
+			// If any other parts are below their ratios, add them.
+	        // `````````````````````````````````````````````````````````````````
+			let addedPart = false;
+			for(let p = 0; p < mainPartTypes.length; p++) {
+				if(partRatios[mainPartTypes[p]] < movelessParts / partCounts[mainPartTypes[p]]
+				&& energyTotal >= energyCost + BODYPART_COST[mainPartTypes[p]] + neededMovesCost
+				) {
+					partCounts[mainPartTypes[p]]++;
+					energyCost+= BODYPART_COST[mainPartTypes[p]];
+					addedPart = true;
+					break;
+				} //fi
+			} //done
+			if(addedPart) continue;
+
+			// Add TOUGH parts if they have been enabled in the current creep build.
+	        // `````````````````````````````````````````````````````````````````
+			if(partRatios.useTough
+			&& energyTotal >= energyCost + BODYPART_COST[TOUGH] + neededMovesCost
+			) {
+				partCounts[TOOUGH]++;
+				energyCost+= BODYPART_COST[TOUGH];
+				continue;
+			} //fi
+		} //done
+
+		// Assemble the pre-calculated creep, making sure to sort its parts in a way that maximises combat survivability
+		// ---------------------------------------------------------------------
+		let bodyParts = [];
+	    // We can't just use BODYPARTS_ALL, since I need the parts to be in a specific order:  namely, how important they are for a given creep to not lose during combat.
+		mainPartTypes = [ // These are stored on separate lines in order to make rearrangement easier.
+			TOUGH,
+			WORK,
+			CARRY,
+			MOVE,
+			CLAIM,
+			RANGED_ATTACK,
+			ATTACK,
+			HEAL,
+		];
+		for(let p = 0; p < mainPartTypes.length; p++) {
+			while(partCounts[mainPartTypes[p]]) {
+				partCounts[mainPartTypes[p]]--;
+				bodyParts.push(mainPartTypes[p]);
+			} //done
+		} //done
+
+        // Create the creep.
         // ---------------------------------------------------------------------
+        for(let i = 0; spawn.createCreep(bodyParts, name + i, {role: role, /*target: target*/}) === ERR_NAME_EXISTS; i++) {continue;}
         LIB_MISC.say(name[0].toUpperCase() + name.slice(1), spawn);
     }, //spawnCreep
 }; //roleSpawn

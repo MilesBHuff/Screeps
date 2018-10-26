@@ -55,9 +55,9 @@ let roleRoom   = {
         // Set limits for creeps in each room
         // =============================================================================
         function setCreepLimits() {
+			room.memory.workerLimit  = 1.0;
             room.memory.fighterLimit = 1.5;
-            room.memory.healerLimit  = 0.0;
-            room.memory.workerLimit  = 1.0;
+            room.memory.claimerLimit = 0.0;
 
             setWorkerLimit();
             setFighterLimit();
@@ -103,11 +103,10 @@ let roleRoom   = {
             // When hostiles are present
             // -----------------------------------------------------------------------------
             function setIfHostiles() {
-                // Increment fighterLimit by the number of hostiles, and set healerLimit to fighterLimit / 4.
+                // Increment fighterLimit by the number of hostiles
                 let hostileCount = room.find(FIND_HOSTILE_CREEPS).length;
                 if(hostileCount) {
                     room.memory.fighterLimit += hostileCount;
-                    room.memory.healerLimit   = Math.ceil(room.memory.fighterLimit / 4);
                 } //fi
                 hostileCount = undefined;
             } //setIfHostiles
@@ -115,9 +114,9 @@ let roleRoom   = {
             // Round off the creep limits
             // -----------------------------------------------------------------------------
             function roundLimits() {
+				room.memory.workerLimit  = Math.round(room.memory.workerLimit );
                 room.memory.fighterLimit = Math.round(room.memory.fighterLimit);
-                room.memory.healerLimit  = Math.round(room.memory.healerLimit );
-                room.memory.workerLimit  = Math.round(room.memory.workerLimit );
+                room.memory.claimerLimit = Math.round(room.memory.claimerLimit );
             } //roundLimits
         } //creepLimits
     }, //run
