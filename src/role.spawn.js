@@ -306,7 +306,7 @@ let roleSpawn  = {
 	        // `````````````````````````````````````````````````````````````````
 			let addedPart = false;
 			for(let p = 0; p < mainPartTypes.length; p++) {
-				if(partRatios[mainPartTypes[p]] < movelessParts / partCounts[mainPartTypes[p]]
+				if(partRatios[mainPartTypes[p]] > Math.abs(movelessParts / partCounts[mainPartTypes[p]])
 				&& energyTotal >= energyCost + BODYPART_COST[mainPartTypes[p]] + neededMovesCost
 				) {
 					partCounts[mainPartTypes[p]]++;
