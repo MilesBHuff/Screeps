@@ -242,17 +242,10 @@ let roleSpawn  = {
         // ---------------------------------------------------------------------
 		let energyCost  = 0;
 		let energyTotal = spawn.room.energyAvailable;
-		let partCounts   = {
-			attack:       0,
-			carry:        0,
-			claim:        0,
-			heal:         0,
-			move:         0,
-			rangedAttack: 0,
-			tough:        0,
-			work:         0,
-			total:		  0,
-		};
+		let partCounts  = {total: 0,};
+		for(let p = 0; p < BODYPARTS_ALL.length; p++) {
+			partCounts[BODYPARTS_ALL[p]] = 0;
+		} //done
 
         // Calculate a minimal creep, and make sure we can even afford it.
         // ---------------------------------------------------------------------
