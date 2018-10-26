@@ -14,7 +14,7 @@ const LIB_MISC = {
     // This constant is missing from the global game defines.
     CONTROLLER_LEVEL_MAX: 8,
     // This is the remaining repair amount at which you will receive an email about your controller degrading.
-    CONTROLLER_NEAR_DEGRADE: 3000,
+    CONTROLLER_NEAR_DEGRADE: 3000 + CREEP_LIFE_TIME,
     // The maximum number of times to run a loop that would otherwise be while(true).
     LOOP_LIMIT: 12,
     // This is the number of ticksToLive below which a creep is considered near-death.
@@ -23,11 +23,10 @@ const LIB_MISC = {
     REPAIR_LIMIT: 62500,
     // These are all the roles available for creeps
     ROLES: Object.freeze({
-        "MANUEL":  -1,
+        "MANUAL":  -1,
         "WORKER":   0,
         "FIGHTER":  1,
-        "HEALER":   2,
-        "CLAIMER":  3,
+        "CLAIMER":  2,
     }),
     // These are all the cannonical tasks that can be assigned to a creep
     TASKS: Object.freeze({
@@ -43,6 +42,8 @@ const LIB_MISC = {
         RENEW:    8,
         DEFEND:   9,
     }),
+	// This is the controller level by which a room is expected to be "developed" -- ie, have enough roads to benefit from MOVE skewing.
+	DEVELOPED_CTRL_LVL: 3,
     // The player's username
     USERNAME: "MilesBHuff",
 

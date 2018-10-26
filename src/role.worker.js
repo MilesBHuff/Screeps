@@ -88,7 +88,7 @@ let roleWorker   = {
             if(!rooms.length) break;
         } //done
         if(canWander) LIB_MOVE.wander(creep);
-        
+
 
         // Find target
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -101,37 +101,37 @@ let roleWorker   = {
             creep.memory.target = undefined;
             creep.memory.path   = undefined;
             creep.memory.say    = undefined;
-    
+
             // If we've already tried all the nearby rooms, return.
             // =====================================================================
             if(!rooms || !rooms.length) {
                     return;
             } //fi
-    
+
             // Variables
             // =====================================================================
             let targets = Array();
             let task    = LIB_MISC.TASKS.WAIT;
             switch(true) {
                 default:
-    
+
                 // If harvesting, harvest.
                 // =================================================================
                 task = LIB_MISC.TASKS.HARVEST;
                 if(creep.memory.harvesting) {
-    
+
                     // Pick up dropped resources
                     // -------------------------------------------------------------
                     targets = rooms[0].find(FIND_DROPPED_RESOURCES);
                     targets = LIB_MISC.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
-    
+
     //              // Withdraw resources from enemy structures
     //              // -------------------------------------------------------------
     //              targets = rooms[0].find(FIND_HOSTILE_STRUCTURES);
     //              targets = LIB_MISC.filterTargets(targets, badTargets);
     //              if(targets && targets.length) break;
-    
+
     //              // Get energy from a full retrieval link
     //              // -------------------------------------------------------------
     //              targets = rooms[0].find(FIND_STRUCTURES, {
@@ -142,19 +142,19 @@ let roleWorker   = {
     //              });
     //              targets = LIB_MISC.filterTargets(targets, badTargets);
     //              if(targets && targets.length) break;
-    
+
     				// Dig up graves
     				// -------------------------------------------------------------
     				targets = rooms[0].find(FIND_TOMBSTONES);
     				targets = LIB_MISC.filterTargets(targets, badTargets);
     				if(targets && targets.length) break;
-    
+
                     // Harvest new energy
                     // -------------------------------------------------------------
                     targets = rooms[0].find(FIND_SOURCES, {filter: (source) => source.energy > 0});
                     targets = LIB_MISC.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
-    
+
                     // Withdraw resources from condemned structures
                     // -------------------------------------------------------------
                     if(rooms[0].memory && rooms[0].memory.dismantle && LIB_MISC.gamble(1 / 2)) {
@@ -164,7 +164,7 @@ let roleWorker   = {
                         targets = LIB_MISC.filterTargets(targets, badTargets);
                         if(targets && targets.length) break;
                     } //fi
-    
+
     //                  // 50% chance to harvest minerals
     //                  // ---------------------------------------------------------
     //                  if(LIB_MISC.gamble(1 / 2)) {
@@ -172,7 +172,7 @@ let roleWorker   = {
     //                      targets = LIB_MISC.filterTargets(targets, badTargets);
     //                      if((targets && targets.length) || rooms[0].find(FIND_MINERALS, {filter: (mineral) => mineral.mineralAmount > 0}).length) break;
     //                  } //fi
-    
+
                     // Get resources from storage
                     // -------------------------------------------------------------
                     targets = rooms[0].find(FIND_STRUCTURES, {
@@ -185,7 +185,7 @@ let roleWorker   = {
                     });
                     targets = LIB_MISC.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
-    
+
                     // If there's no new energy available, use what you're already carrying, if anything.
                     // -------------------------------------------------------------
                     if(creep.carry.energy > 0) {
@@ -195,16 +195,16 @@ let roleWorker   = {
                         break;
                     }
                 } //fi
-    
+
                 // If the controller is about to degrade, contribute to it
                 // =================================================================
                 task = LIB_MISC.TASKS.UPGRADE;
-                if(rooms[0].controller.ticksToDowngrade < LIB_MISC.CONTROLLER_NEAR_DEGRADE) {
+                if(rooms[0].controller && rooms[0].controller.ticksToDowngrade < LIB_MISC.CONTROLLER_NEAR_DEGRADE) {
                     targets = [rooms[0].controller];
                     targets = LIB_MISC.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
                 } //fi
-    
+
                 // Always keep spawns and extensions filled up to max.
                 // =================================================================
                 task = LIB_MISC.TASKS.TRANSFER;
@@ -228,7 +228,7 @@ let roleWorker   = {
                 });
                 targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
-    
+
                 // 75% chance of maintaining towers
                 // =================================================================
                 task = LIB_MISC.TASKS.TRANSFER;
@@ -243,7 +243,7 @@ let roleWorker   = {
                     targets = LIB_MISC.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
                 } //fi
-    
+
                 // 75% chance of repairing most constructions
                 // =================================================================
                 task = LIB_MISC.TASKS.REPAIR;
@@ -261,7 +261,7 @@ let roleWorker   = {
                     targets = LIB_MISC.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
                 } //fi
-    
+
                 // 50% chance of building cheap / important structures.
                 // =================================================================
                 task = LIB_MISC.TASKS.BUILD;
@@ -273,7 +273,7 @@ let roleWorker   = {
                     targets = LIB_MISC.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
                 } //fi
-    
+
                 // 25% chance to build things that complete instantaneously
                 // =================================================================
                 task = LIB_MISC.TASKS.BUILD;
@@ -285,7 +285,7 @@ let roleWorker   = {
                     targets = LIB_MISC.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
                 } //fi
-    
+
                 // 50% chance of refilling miscellaneous resource-using structures
                 // =================================================================
                 task = LIB_MISC.TASKS.TRANSFER;
@@ -298,7 +298,7 @@ let roleWorker   = {
                     targets = LIB_MISC.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
                 } //fi
-    
+
                 // 50% chance of repairing constructions that start at 1 health
                 // =================================================================
                 task = LIB_MISC.TASKS.REPAIR;
@@ -316,7 +316,7 @@ let roleWorker   = {
                     targets = LIB_MISC.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
                 } //fi
-    
+
                 // 75% chance to build new things
                 // =================================================================
     			if(LIB_MISC.gamble(3 / 4)) {
@@ -325,7 +325,7 @@ let roleWorker   = {
     	            targets = LIB_MISC.filterTargets(targets, badTargets);
     	            if(targets && targets.length) break;
     			} //fi
-    
+
                 // Upgrade the controller, if it's not already at max
                 // If the controller *is* already at max, upgrade it if it's less than 3/4 degraded.
                 // =================================================================
@@ -339,7 +339,7 @@ let roleWorker   = {
                     targets = LIB_MISC.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
                 } //fi
-    
+
                 // Store excess resources in links and terminals
                 // =================================================================
     			task = LIB_MISC.TASKS.TRANSFER;
@@ -361,20 +361,20 @@ let roleWorker   = {
                 });
                 targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
-    
+
                 // Upgrade the controller (This can only be reached when there are no empty containers left)
                 // =================================================================
                 task = LIB_MISC.TASKS.UPGRADE;
                 targets = [rooms[0].controller];
                 targets = LIB_MISC.filterTargets(targets, badTargets);
                 if(targets && targets.length) break;
-    
+
                 // Give up
                 // =================================================================
                 task = LIB_MISC.TASKS.WAIT;
                 break;
             } //esac
-    
+
             // Pick a target from the array of targets
             // =====================================================================
             if(targets.length) {
@@ -384,19 +384,19 @@ let roleWorker   = {
                         case LIB_MISC.TASKS.HARVEST:
                         creep.memory.say = "Harvest";
                         break;
-    
+
                         case LIB_MISC.TASKS.TRANSFER:
                         creep.memory.say = "Transfer";
                         break;
-    
+
                         case LIB_MISC.TASKS.UPGRADE:
                         creep.memory.say = "Upgrade";
                         break;
-    
+
                         case LIB_MISC.TASKS.BUILD:
                         creep.memory.say = "Build";
                         break;
-    
+
                         case LIB_MISC.TASKS.REPAIR:
                         creep.memory.say = "Repair";
                         break;
@@ -404,7 +404,7 @@ let roleWorker   = {
                     return target.id;
                 } //fi
             } //fi
-    
+
             // If we reach this line, the current room had no valid targets.  Try another one.
             // =====================================================================
             // If the array of rooms has not yet been sorted, sort it.
@@ -414,7 +414,7 @@ let roleWorker   = {
             // Remove the current room from the array.
             rooms.shift();
         } //function
-    
+
         // Affect target
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         /** This function makes the given creep interact with its target.
@@ -423,7 +423,7 @@ let roleWorker   = {
         **/
         function affectTarget(creep) {
             let code = OK;
-    
+
             // Move towards the target
             // =================================================================
             if(creep.memory
@@ -431,7 +431,7 @@ let roleWorker   = {
             ) {
                 let target = Game.getObjectById(creep.memory.target);
                 if(!target) return ERR_INVALID_TARGET;
-    
+
                 // Harvest
                 // -------------------------------------------------------------
                 if(creep.memory.harvesting) {
@@ -464,7 +464,7 @@ let roleWorker   = {
                         code = LIB_MOVE.move(creep, COLOR_YELLOW, true);
                     } //fi
                 } else {
-    
+
                     // Upgrade
                     // ---------------------------------------------------------
                     if(target.structureType === STRUCTURE_CONTROLLER) {
@@ -472,7 +472,7 @@ let roleWorker   = {
                             code = LIB_MOVE.move(creep, COLOR_CYAN, true);
                         } //fi
                     } else
-    
+
                     // Build
                     // ---------------------------------------------------------
                     if(target.progressTotal) {
@@ -480,7 +480,7 @@ let roleWorker   = {
                             code = LIB_MOVE.move(creep, COLOR_WHITE, true);
                         } //fi
                     } else
-    
+
                     // Repair
                     // ---------------------------------------------------------
                     if(target.hits < target.hitsMax
@@ -490,7 +490,7 @@ let roleWorker   = {
                             code = LIB_MOVE.move(creep, COLOR_PURPLE, true);
                         } //fi
                     } else
-    
+
                     // Transfer
                     // ---------------------------------------------------------
                     if(target.energy < target.energyCapacity) {
@@ -498,7 +498,7 @@ let roleWorker   = {
                             code = LIB_MOVE.move(creep, LIB_MISC.COLOR_BLACK, true);
                         } //fi
                     } //else
-    
+
                     // Invalid target
                     // ---------------------------------------------------------
                     else {
@@ -506,7 +506,7 @@ let roleWorker   = {
                     } //fi
                 } //fi
             } //fi
-    
+
             // If the creep found a target, say what it is.
             // =====================================================================
             if(creep.memory.say
