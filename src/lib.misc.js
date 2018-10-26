@@ -14,7 +14,11 @@ const LIB_MISC = {
     // This constant is missing from the global game defines.
     CONTROLLER_LEVEL_MAX: 8,
     // This is the remaining repair amount at which you will receive an email about your controller degrading.
+<<<<<<< HEAD
     CONTROLLER_NEAR_DEGRADE: 3000 + CREEP_LIFE_TIME,
+=======
+    CONTROLLER_NEAR_DEGRADE: 4500, //3000 is when you get an email, and 1500 is how long a normal creep lives.
+>>>>>>> 328b837f4761fd5ea733ef6125689ab4c75a3dac
     // The maximum number of times to run a loop that would otherwise be while(true).
     LOOP_LIMIT: 12,
     // This is the number of ticksToLive below which a creep is considered near-death.
@@ -99,9 +103,9 @@ const LIB_MISC = {
         rooms.push(roomName);
         // Find all the rooms connected to the current room.
         let roomsTmp = Game.map.describeExits(roomName);
-        for(let i = 0; i < 4; i++) {
+        for(let i = 0; i < roomsTmp.length; i++) {
             let index = ((2 * i) + 1).toString();
-            if(roomsTmp[index] !== undefined) {
+            if(roomsTmp[index]) {
                 rooms.push(roomsTmp[index]);
             } //fi
         } //done
