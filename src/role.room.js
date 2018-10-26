@@ -82,17 +82,19 @@ let roleRoom   = {
                 // Count the number of exits to uncontrolled rooms
                 let exits      = Game.map.describeExits(room.name);
                 let exitsCount = 0;
-                for(let i = 0; i < 4; i++) {
-                    let index = ((2 * i) + 1).toString();
-                    if(exits[index]
-                    &&  !( Game.rooms[exits[index]]
-                        && Game.rooms[exits[index]].controller
-                        && Game.rooms[exits[index]].controller.my
-                        )
-                    ) {
-                        exitsCount++;
-                    } //fi
-                } //done
+				if(exits) {
+					for(let i = 0; i < exits.length; i++) {
+						let index = ((2 * i) + 1).toString();
+						if(exits[index]
+							&&  !( Game.rooms[exits[index]]
+								&& Game.rooms[exits[index]].controller
+								&& Game.rooms[exits[index]].controller.my
+							)
+						) {
+							exitsCount++;
+						} //fi
+					} //done
+				} //fi
                 exits = undefined;
 
                 // Multiply fighterLimit by the number of exits
