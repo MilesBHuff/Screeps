@@ -272,7 +272,7 @@ let roleSpawn  = {
 
 			// Variables
 	        // `````````````````````````````````````````````````````````````````
-			let movelessParts = partCounts.total - partCounts.move;
+			let movelessParts = partCounts.total - partCounts[MOVE];
 
 			// If we're short on MOVEs, add a MOVE.
 	        // `````````````````````````````````````````````````````````````````
