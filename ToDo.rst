@@ -19,6 +19,7 @@ General
   marked for deconstruction.
 + Equalize the contents of all terminals.  Empty any terminals that are marked
   for deconstruction.
++ Change how many MOVE parts get used per creep.  Workers have their MOVE parts calculated to give no delay when full and on a road.  Fighters have their MOVE parts calculated to give no delay when on plains.  Claimers have their MOVE parts calculated to give no delay when in swamps.
 
 Workers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
