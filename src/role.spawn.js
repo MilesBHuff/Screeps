@@ -263,7 +263,7 @@ let roleSpawn  = {
 			partCounts[MOVE]++;
 			energyCost+= BODYPART_COST[MOVE];
 		} //done
-		if(energyCost > energyTotal) {return;}
+		if(energyCost > energyTotal) return;
 
 		// Build the creep until there's no energy left in the room
         // ---------------------------------------------------------------------
@@ -279,6 +279,7 @@ let roleSpawn  = {
 			if(partRatios.movesPerPart > Math.abs(partCounts[MOVE] / movelessParts)
 			//NOTE:  Given all the checks related to MOVE's energy costs up above and down below, we don't actually need to check them here.
 			) {
+				partCounts.total++;
 				partCounts[MOVE]++;
 				energyCost+= BODYPART_COST[MOVE];
 				continue;
@@ -309,6 +310,7 @@ let roleSpawn  = {
 				if(partRatios[mainPartTypes[p]] > Math.abs(movelessParts / partCounts[mainPartTypes[p]])
 				&& energyTotal >= energyCost + BODYPART_COST[mainPartTypes[p]] + neededMovesCost
 				) {
+					partCounts.total++;
 					partCounts[mainPartTypes[p]]++;
 					energyCost+= BODYPART_COST[mainPartTypes[p]];
 					addedPart = true;
