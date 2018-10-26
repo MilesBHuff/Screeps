@@ -233,7 +233,7 @@ let roleSpawn  = {
 			partRatios[CLAIM]       = 0.01;
 			break;
 		} //esac
-		if(spawn.room.controller.level < LIB_MISC.DEVELOPED_CTRL_LVL) {
+		if(spawn.room.controller && spawn.room.controller.level < LIB_MISC.DEVELOPED_CTRL_LVL) {
 			// When the controller level is below this value, movesPerPart is ignored, and all creeps spawn with a 1:1 ratio of MOVE:*.  Controller level is used as a proxy for infrastructure development, as 1:1 for everyone only makes sense when there are no roads.
 			partRatios.movesPerPart = 1.00;
 		} //fi
