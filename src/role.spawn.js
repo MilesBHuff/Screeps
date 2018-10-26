@@ -258,7 +258,7 @@ let roleSpawn  = {
 			} //fi
 		} //done
 		if(partCounts.total <= 0) return; // Avoids a divide-by-zero error
-		while(partRatios.movesPerPart > Math.abs(partCounts[MOVE] / partCounts.total - partCounts[MOVE])) {
+		while(partRatios.movesPerPart > partCounts[MOVE] / partCounts.total - partCounts[MOVE]) {
 			partCounts.total++;
 			partCounts[MOVE]++;
 			energyCost+= BODYPART_COST[MOVE];
@@ -276,7 +276,7 @@ let roleSpawn  = {
 
 			// If we're short on MOVEs, add a MOVE.
 	        // `````````````````````````````````````````````````````````````````
-			if(partRatios.movesPerPart > Math.abs(partCounts[MOVE] / movelessParts)
+			if(partRatios.movesPerPart > partCounts[MOVE] / movelessParts
 			//NOTE:  Given all the checks related to MOVE's energy costs up above and down below, we don't actually need to check them here.
 			) {
 				partCounts.total++;
@@ -288,10 +288,10 @@ let roleSpawn  = {
 			// If adding an extra part would take us over our MOVE ratio...
 	        // `````````````````````````````````````````````````````````````````
 			let neededMovesCost = 0;
-			if(partRatios.movesPerPart > Math.abs(partCounts[MOVE] / movelessParts + 1)) {
+			if(partRatios.movesPerPart > partCounts[MOVE] / movelessParts + 1) {
 				let neededMoves = 0;
 				// Calculate how many MOVEs it would cost to reattain balance
-				while(partRatios.movesPerPart > Math.abs(partCounts[MOVE] + neededMoves / movelessParts + 1)) {
+				while(partRatios.movesPerPart > partCounts[MOVE] + neededMoves / movelessParts + 1) {
 					neededMoves++;
 					// If we can't fit enough MOVEs in before reaching MAX_CREEP_SIZE, then this creep is finished.
 					if(movelessParts + neededMoves > MAX_CREEP_SIZE) {
@@ -307,7 +307,7 @@ let roleSpawn  = {
 	        // `````````````````````````````````````````````````````````````````
 			let addedPart = false;
 			for(let p = 0; p < mainPartTypes.length; p++) {
-				if(partRatios[mainPartTypes[p]] > Math.abs(movelessParts / partCounts[mainPartTypes[p]])
+				if(partRatios[mainPartTypes[p]] > movelessParts / partCounts[mainPartTypes[p]]
 				&& energyTotal >= energyCost + BODYPART_COST[mainPartTypes[p]] + neededMovesCost
 				) {
 					partCounts.total++;
@@ -324,7 +324,7 @@ let roleSpawn  = {
 			if(partRatios.useTough
 			&& energyTotal >= energyCost + BODYPART_COST[TOUGH] + neededMovesCost
 			) {
-				partCounts[TOOUGH]++;
+				partCounts[TOUGH]++;
 				energyCost+= BODYPART_COST[TOUGH];
 				continue;
 			} //fi
