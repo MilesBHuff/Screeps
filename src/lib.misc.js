@@ -95,7 +95,7 @@ const LIB_MISC = {
      * @return the given room and its neighbours.
     **/
     findRooms: function(roomName) {
-        let rooms = Array();
+        let rooms = [];
         // Push the creep's current room.
         rooms.push(roomName);
         // Find all the rooms connected to the current room.
@@ -109,7 +109,7 @@ const LIB_MISC = {
 	        } //done
 		} //fi
         // Convert the array of strings into an array of objects.  This also trims rooms that we can't see.
-        roomsTmp = Array();
+        roomsTmp = [];
         for(let name in rooms) {
             let room = Game.rooms[rooms[name]];
             if(room) roomsTmp.push(room);
@@ -172,10 +172,12 @@ const LIB_MISC = {
      * @return the sorted array.
     **/
     sortRooms: function(pos, rooms) {
-        let roomsTmp = Array();
+        let roomsTmp = [];
         for(let i = 0; 0 < rooms.length; i++) {
             // Find the nearest room that hasn't been found yet.
-            roomsTmp.push(Game.rooms[pos.findClosestByRange(FIND_EXIT, {filter: (room) => function(room) {return rooms.indexOf(room) !== -1;}}).roomName]);
+			let testRooms = Game.rooms[pos.findClosestByRange(FIND_EXIT, {filter: (room) => function(room) {return rooms.indexOf(room) !== -1;}})];
+			if(!testRooms) return roomsTmp;
+            roomsTmp.push(testRooms.roomName);
             // Find its index.
             let index = 0;
             for(let j = 0; rooms[j]; j++) {
