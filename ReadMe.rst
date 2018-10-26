@@ -15,9 +15,9 @@ Goals
   every single worker would need to be killed, rather than just the harvesters),
   but also allows for a more even distribution of labour, by using each worker
   wherever needed, instead of limiting each one to a specific task.
-  Likewise, where the military is concerned, I have chosen to only use ranged
-  attacks;  so only a single role is needed.  I also have a healer;  these only
-  spawn when the room is under attack.
+  Likewise, where the military is concerned, I have merged fighters and healers,
+  and focused on ranged attacks;  as such, each fighter is a fully self-
+  contained unit.
 | Generally speaking, I leave construction site placement up to the player, as
   while some aspects of it are algorithmic, most take true intelligence to do
   right.  Plus, it's fun manually laying out a fort.  I have included functions
