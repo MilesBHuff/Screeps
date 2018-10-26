@@ -358,7 +358,7 @@ let roleSpawn  = {
         // Create the creep.
         // ---------------------------------------------------------------------
         for(let i = 0; spawn.createCreep(bodyParts, name + i, {role: role, /*target: target*/}) === ERR_NAME_EXISTS; i++) {continue;}
-        LIB_MISC.say(name[0].toUpperCase() + name.slice(1), spawn);
+        LIB_MISC.say(name.charAt(0).toUpperCase() + name.slice(1), spawn);
     }, //spawnCreep
 }; //roleSpawn
 
