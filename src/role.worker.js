@@ -451,7 +451,8 @@ let roleWorker   = {
                     &&  creep.pickup(  target)
                     &&  creep.withdraw(target, RESOURCE_ENERGY)
                     &&
-                    ((( target.room.controller.owner
+                    ((( target.room.controller
+					&&  target.room.controller.owner
                     &&  target.room.controller.owner !== LIB_MISC.USERNAME
                     )
                     ||
