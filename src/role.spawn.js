@@ -36,7 +36,7 @@ let roleSpawn  = {
 
         // Unless already spawning or not at full energy.
         // Exception:  If there are no workers left, spawn even if not at full energy.
-        if(!spawn.spawning && (spawn.room.energy >= spawn.room.energyCapacity || creepsLocal.workers.length <= 0)) {
+        if(!spawn.spawning && (spawn.room.energyAvailable >= spawn.room.energyCapacityAvailable || creepsLocal.workers.length <= 0)) {
             trySpawnCreep();
         } //fi
 
