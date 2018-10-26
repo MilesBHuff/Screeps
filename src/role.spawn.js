@@ -329,6 +329,9 @@ let roleSpawn  = {
 				energyCost+= BODYPART_COST[TOUGH];
 				continue;
 			} //fi
+
+			// If we reach this point, then nothing more can be added to the creep.
+			break;
 		} //done
 
 		// Assemble the pre-calculated creep, making sure to sort its parts in a way that maximises combat survivability
