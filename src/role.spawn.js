@@ -188,7 +188,7 @@ let roleSpawn  = {
         // `````````````````````````````````````````````````````````````````````
 		//NOTE:  MOVE and TOUGH are to be handled separately.
 	    // We can't just use a spliced BODYPARTS_ALL, since I need the parts to be in a specific order:  namely, how important they are for a given creep to have.
-		let mainPartTypes = [ // These are stored on separate lines in order to make rearrangement easier.
+		let partTypes = [ // These are stored on separate lines in order to make rearrangement easier.
 			WORK,
 			CARRY,
 			RANGED_ATTACK,
@@ -203,8 +203,8 @@ let roleSpawn  = {
 			movesPerPart:  0.00, // How many MOVEs to add per each normal body part
 			useTough:     false, // Whether to use TOUGH when we can't afford a normal body part, or when normal body part ratios don't sum to 1
 		};
-		for(let p = 0; p < mainPartTypes.length; p++) {
-			partRatios[mainPartTypes[p]] = 0.00;
+		for(let p = 0; p < partTypes.length; p++) {
+			partRatios[partTypes[p]] = 0.00;
 		} //done
 
 		// Fill-in the partRatios object
@@ -250,11 +250,11 @@ let roleSpawn  = {
         // Calculate a minimal creep, and make sure we can even afford it.
         // ---------------------------------------------------------------------
 		//NOTE:  While this may seem unnecessary, it actually flattens the part ratios at the outset, and ensures that every nonzero part is used at least once.
-		for(let p = 0; p < mainPartTypes.length; p++) {
-			if(partRatios[mainPartTypes[p]] > 0) {
+		for(let p = 0; p < partTypes.length; p++) {
+			if(partRatios[partTypes[p]] > 0) {
 				partCounts.total++;
-				partCounts[mainPartTypes[p]]++;
-				energyCost+= BODYPART_COST[mainPartTypes[p]];
+				partCounts[partTypes[p]]++;
+				energyCost+= BODYPART_COST[partTypes[p]];
 			} //fi
 		} //done
 
@@ -294,7 +294,7 @@ let roleSpawn  = {
 				while(partRatios.movesPerPart > (partCounts[MOVE] + neededMoves) / (movelessParts + 1)) {
 					neededMoves++;
 					// If we can't fit enough MOVEs in before reaching MAX_CREEP_SIZE, then this creep is finished.
-					if(movelessParts + neededMoves > MAX_CREEP_SIZE) {
+					if(movelessParts + 1 + neededMoves > MAX_CREEP_SIZE) {
 						break;
 					} //fi
 				} //done
@@ -306,13 +306,13 @@ let roleSpawn  = {
 			// If any other parts are below their ratios, add them.
 	        // `````````````````````````````````````````````````````````````````
 			let addedPart = false;
-			for(let p = 0; p < mainPartTypes.length; p++) {
-				if(partRatios[mainPartTypes[p]] > movelessParts / partCounts[mainPartTypes[p]]
-				&& energyTotal >= energyCost + BODYPART_COST[mainPartTypes[p]] + neededMovesCost
+			for(let p = 0; p < partTypes.length; p++) {
+				if(partRatios[partTypes[p]] > partCounts[partTypes[p]] / movelessParts
+				&& energyTotal >= energyCost + BODYPART_COST[partTypes[p]] + neededMovesCost
 				) {
 					partCounts.total++;
-					partCounts[mainPartTypes[p]]++;
-					energyCost+= BODYPART_COST[mainPartTypes[p]];
+					partCounts[partTypes[p]]++;
+					energyCost+= BODYPART_COST[partTypes[p]];
 					addedPart = true;
 					break;
 				} //fi
@@ -335,9 +335,8 @@ let roleSpawn  = {
 
 		// Assemble the pre-calculated creep, making sure to sort its parts in a way that maximises combat survivability
 		// ---------------------------------------------------------------------
-		let bodyParts = [];
 	    // We can't just use BODYPARTS_ALL, since I need the parts to be in a specific order:  namely, how important they are for a given creep to not lose during combat.
-		mainPartTypes = [ // These are stored on separate lines in order to make rearrangement easier.
+		partTypes = [ // These are stored on separate lines in order to make rearrangement easier.
 			TOUGH,
 			WORK,
 			CARRY,
@@ -347,10 +346,11 @@ let roleSpawn  = {
 			ATTACK,
 			HEAL,
 		];
-		for(let p = 0; p < mainPartTypes.length; p++) {
-			while(partCounts[mainPartTypes[p]]) {
-				partCounts[mainPartTypes[p]]--;
-				bodyParts.push(mainPartTypes[p]);
+		let bodyParts = [];
+		for(let p = 0; p < partTypes.length; p++) {
+			while(partCounts[partTypes[p]]) {
+				partCounts[partTypes[p]]--;
+				bodyParts.push(partTypes[p]);
 			} //done
 		} //done
 
