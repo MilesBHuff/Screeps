@@ -178,7 +178,7 @@ let roleSpawn  = {
     * @param spawn    The spawner to use
     * @param role     The role the new creep should have.
     **/
-    spawnCreep: function (spawn, role) {
+    spawnCreep: function(spawn, role) {
 
         // Determine what kind of creep to build
         // ---------------------------------------------------------------------

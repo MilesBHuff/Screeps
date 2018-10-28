@@ -15,7 +15,7 @@ let roleClaimer = {
     /** This function controls the provided creep.
      * @param creep The creep to control
     **/
-    run: function (creep) {
+    run: function(creep) {
 		let target;
 
         // Check the creep's target

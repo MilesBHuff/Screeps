@@ -28,7 +28,7 @@ let roleLink = {
 		if(targets.length < 1) return OK;
 
 		// Equalize with the lowest-energy link
-		targets = _.orderBy(targets, "energy", "asc");
+		//targets = _.orderBy(targets, "energy", "asc");
 		let transferAmount = link.energy - ((link.energy + targets[0].energy) / 2);
 		link.transferEnergy(targets[0], transferAmount);
 		return OK;

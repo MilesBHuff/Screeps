@@ -14,7 +14,7 @@ let roleRoom   = {
     /** This function controls the provided room.
      * @param room The room to control
     **/
-    run: function (room) {
+    run: function(room) {
 
         // Every tick
         setCreepLimits();

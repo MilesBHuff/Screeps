@@ -14,7 +14,7 @@ let roleManual = {
     /** This function controls the provided creep.
      * @param creep The creep to control
     **/
-    run: function (creep) {
+    run: function(creep) {
 
         // Move to the provided destination, if there is one.
         // =============================================================================
