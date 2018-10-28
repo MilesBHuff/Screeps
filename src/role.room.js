@@ -12,7 +12,7 @@ let roleRoom   = {
     // Main
     // *****************************************************************************
     /** This function controls the provided room.
-     * @param room The room to control.
+     * @param room The room to control
     **/
     run: function (room) {
 

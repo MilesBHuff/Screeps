@@ -54,8 +54,8 @@ const LIB_MISC = {
     // Filter targets
     // =========================================================================
     /** This function removes any element in badTargets from newTargets.
-     * @param  newTargets The array whose IDs to check.
-     * @param  badTargets The array whose IDs to filter out.
+     * @param  newTargets The array whose IDs to check
+     * @param  badTargets The array whose IDs to filter out
      * @return targets without badTargets.
     **/
     filterTargets: function(newTargets, badTargets) {
@@ -91,7 +91,7 @@ const LIB_MISC = {
     // Find rooms
     // =========================================================================
     /** This function finds and returns the given room and its neighbours.
-     * @param  roomName The name of the room whose neighbours to find.
+     * @param  roomName The name of the room whose neighbours to find
      * @return the given room and its neighbours.
     **/
     findRooms: function(roomName) {
@@ -122,7 +122,7 @@ const LIB_MISC = {
     // =========================================================================
     /** This function rolls the dice at the odds specified, and returns whether
      *  you won.
-     * @param  odds The odds of winning, out of 1.
+     * @param  odds The odds of winning, out of 1
      * @return whether you won.
     **/
     gamble: function(odds) {
@@ -132,8 +132,8 @@ const LIB_MISC = {
     // Kill off
     // =========================================================================
     /** This function kills off excess creeps.
-    * @param creeps    The creeps to use.
-    * @param maxCreeps The number to cull to.
+    * @param creeps    The creeps to use
+    * @param maxCreeps The number to cull to
     **/
     killOff: function(creeps, maxCreeps) {
         for(let i = 0; creeps.length > maxCreeps; i++) {
@@ -144,9 +144,9 @@ const LIB_MISC = {
     // Say
     // =========================================================================
     /** Spawns text above the given object, similarly to creep.say().
-     * @param  text   The text to display.
-     * @param  object The thing that will display the text.
-     * @return OK, ERR_INVALID_ARGS
+     * @param  text   The text to display
+     * @param  object The thing that will display the text
+     * @return OK, ERR_INVALID_ARGS.
     **/
     say: function(text, object) {
         if(!text || !text[0] || !object || !object.room || !object.room.pos) {
@@ -167,8 +167,8 @@ const LIB_MISC = {
     // Sort rooms
     // =========================================================================
     /** This function sorts the given rooms by distance from the given position.
-     * @param  pos   The position to use.
-     * @param  rooms The array to sort.
+     * @param  pos   The position to use
+     * @param  rooms The array to sort
      * @return the sorted array.
     **/
     sortRooms: function(pos, rooms) {

@@ -19,7 +19,7 @@ const LIB_COMMANDS = {
      *  specified structure does not have a progress letiable, use its repair
      *  letiable.
      * @param  structureId
-     * @return An exit-code.
+     * @return an exit-code.
     **/
     checkProgress: function (structureId) {
         let message   = "";
@@ -38,9 +38,9 @@ const LIB_COMMANDS = {
     // require("lib.commands").createCreep("SpawnName", "MANUAL");
     /** This function spawns a creep at the desired spawn, using the same
      *  creep-generation function as main().
-     * @param  spawnName The name of the spawn to use.
-     * @param  roleName  The role to use, if any.
-     * @return An exit-code.
+     * @param  spawnName The name of the spawn to use
+     * @param  roleName  The role to use, if any
+     * @return an exit-code.
     **/
     createCreep: function (spawnName, roleName) {
         return ROLE_SPAWN.spawnCreep(Game.spawns[spawnName], LIB_MISC.ROLES[roleName]);
@@ -61,9 +61,9 @@ const LIB_COMMANDS = {
     // =========================================================================
     // require("lib.commands").moveCreepTo("CreepName", "TargetID");
     /** Order a creep to move to a particular target.
-     * @param  creepName The name of the creep to use.
-     * @param  target    The ID of the target to move towards.
-     * @return An exit-code.
+     * @param  creepName The name of the creep to use
+     * @param  target    The ID of the target to move towards
+     * @return an exit-code.
     **/
     moveCreepTo: function (creepName, target) {
         Game.creeps[creepName].memory.target = target;
@@ -74,7 +74,7 @@ const LIB_COMMANDS = {
     // =========================================================================
     // require("lib.commands").removeConstruction();
     /** Remove all construction sites
-     * @return An exit-code.
+     * @return an exit-code.
     **/
     removeConstruction: function () {
         for(let name in Game.constructionSites) {
@@ -87,9 +87,9 @@ const LIB_COMMANDS = {
     // =========================================================================
     // require("lib.commands").signController("CreepName", "ControllerID", "Message");
     /** Signs the specified controller with the specified creep.
-     * @param  creepName    The name of the creep to use.
-     * @param  controllerId The ID of the controller to sign.
-     * @param  message      The message to sign the controller with.
+     * @param  creepName    The name of the creep to use
+     * @param  controllerId The ID of the controller to sign
+     * @param  message      The message to sign the controller with
     **/
     signController: function (creepName, controllerId, message) {
         return Game.creeps[creepName].signController(Game.getObjectById(controllerId), message);

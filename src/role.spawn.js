@@ -269,10 +269,9 @@ let roleSpawn  = {
 		// Build the creep until there's no energy left in the room
         // ---------------------------------------------------------------------
 		// Auto-stop once we hit energyTotal or MAX_CREEP_SIZE.
-		while(energyCost < energyTotal && partCounts.total < MAX_CREEP_SIZE) {
-
-			// Variables
-	        // `````````````````````````````````````````````````````````````````
+		//NOTE:  Shouldn't be necessary, but can help avoid endless loops in the event of a bug.
+//		while(energyCost < energyTotal && partCounts.total < MAX_CREEP_SIZE) {
+		while(true) {
 			let movelessParts = partCounts.total - partCounts[MOVE];
 
 			// If we're short on MOVEs, add a MOVE.
