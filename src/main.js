@@ -8,7 +8,7 @@ const LIB_MISC = require("lib.misc");
 
 // Main loop
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-module.exports.loop = function () {
+module.exports.loop = function() {
 
     // Every 8 ticks
     if(LIB_MISC.gamble(1 / 8)) {
@@ -85,12 +85,12 @@ module.exports.loop = function () {
 	                    require("role.tower").run(structure);
 	                    break;
 
-	                    case STRUCTURE_LINK:
-	                    require("role.link").run(structure);
-	                    break;
-
 	                    case STRUCTURE_TERMINAL:
 	                    require("role.terminal").run(structure);
+	                    break;
+
+	                    case STRUCTURE_LINK:
+	                    require("role.link").run(structure);
 	                    break;
 	                } //esac
 				} catch(err) {

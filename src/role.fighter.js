@@ -16,7 +16,7 @@ let roleFighter = {
     /** This function controls the provided creep.
      * @param creep The creep to control
     **/
-    run: function (creep) {
+    run: function(creep) {
 
         // Validate the current target (with a small chance of having to find a new target no matter what)
         // ====================================================================

@@ -12,7 +12,7 @@ let roleTerminal = {
     /** This function controls the provided terminal.
      * @param terminal The terminal to control
     **/
-    run: function (terminal) {
+    run: function(terminal) {
     }, //run
 }; //roleTerminal
 

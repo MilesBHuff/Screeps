@@ -14,7 +14,7 @@ let roleTower  = {
     /** This function controls the provided structure.
      * @param structure The structure to control
     **/
-    run: function (structure) {
+    run: function(structure) {
 
         // Variables
         // =====================================================================

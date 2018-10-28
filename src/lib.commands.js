@@ -21,7 +21,7 @@ const LIB_COMMANDS = {
      * @param  structureId
      * @return an exit-code.
     **/
-    checkProgress: function (structureId) {
+    checkProgress: function(structureId) {
         let message   = "";
         let structure = Game.getObjectById(structureId);
         /*//*/ if(structure.progress && structure.progressTotal) {
@@ -42,7 +42,7 @@ const LIB_COMMANDS = {
      * @param  roleName  The role to use, if any
      * @return an exit-code.
     **/
-    createCreep: function (spawnName, roleName) {
+    createCreep: function(spawnName, roleName) {
         return ROLE_SPAWN.spawnCreep(Game.spawns[spawnName], LIB_MISC.ROLES[roleName]);
     }, //function;
 
@@ -53,7 +53,7 @@ const LIB_COMMANDS = {
      * @param  structureId The ID of the structure to dismantle.
      * @return An exit-code.
     **/
-    dismantle: function (structureId) {
+    dismantle: function(structureId) {
         return Game.getObjectById(structureId).room.memory.dismantle.push(structureId);
     }, //function
 
@@ -65,7 +65,7 @@ const LIB_COMMANDS = {
      * @param  target    The ID of the target to move towards
      * @return an exit-code.
     **/
-    moveCreepTo: function (creepName, target) {
+    moveCreepTo: function(creepName, target) {
         Game.creeps[creepName].memory.target = target;
         return LIB_MOVE.move(Game.creeps[creepName], COLOR_GREY, false);
     }, //function
@@ -76,7 +76,7 @@ const LIB_COMMANDS = {
     /** Remove all construction sites
      * @return an exit-code.
     **/
-    removeConstruction: function () {
+    removeConstruction: function() {
         for(let name in Game.constructionSites) {
             Game.constructionSites[name].remove();
         }
@@ -91,7 +91,7 @@ const LIB_COMMANDS = {
      * @param  controllerId The ID of the controller to sign
      * @param  message      The message to sign the controller with
     **/
-    signController: function (creepName, controllerId, message) {
+    signController: function(creepName, controllerId, message) {
         return Game.creeps[creepName].signController(Game.getObjectById(controllerId), message);
     }, //function
 }; //struct
