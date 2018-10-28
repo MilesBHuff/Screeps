@@ -13,6 +13,7 @@ let roleTerminal = {
      * @param terminal The terminal to control
     **/
     run: function(terminal) {
+		//TODO
     }, //run
 }; //roleTerminal
 
