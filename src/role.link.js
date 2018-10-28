@@ -20,19 +20,15 @@ let roleLink = {
 		// Find other links
 		let targets = link.room.find(FIND_MY_STRUCTURES, {
 			filter: (newLink) => {return(
-				   newLink.room.memory.dismantle.indexOf(newLink.id) < 0
-				&& newLink.structureType === STRUCTURE_LINK
-				&&(link.energy && newLink.energy
-				&& link.energy >  newLink.energy
-				)
+			    newLink.room.memory.dismantle.indexOf(newLink.id) < 0
+			 && newLink.structureType === STRUCTURE_LINK
+			 && link.energy > newLink.energy
 			);}
 		});
 		if(targets.length < 1) return OK;
 
-		// Sort them by energy
-		//TODO
-
 		// Equalize with the lowest-energy link
+		targets = _.orderBy(targets, "energy", "asc");
 		let transferAmount = link.energy - ((link.energy + targets[0].energy) / 2);
 		link.transferEnergy(targets[0], transferAmount);
 		return OK;
