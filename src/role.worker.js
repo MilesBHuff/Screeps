@@ -105,7 +105,7 @@ let roleWorker   = {
             // If we've already tried all the nearby rooms, return.
             // =====================================================================
             if(!rooms || !rooms.length) {
-                    return;
+                    return ERR_NOT_FOUND;
             } //fi
 
             // Variables
