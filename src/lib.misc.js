@@ -100,8 +100,8 @@ const LIB_MISC = {
         rooms.push(roomName);
         // Find all the rooms connected to the current room.
         let roomsTmp = Game.map.describeExits(roomName);
-        if(roomsTmp) {
-            for(let i = 0; i < roomsTmp.length; i++) {
+		if(roomsTmp && roomsTmp.length && roomsTmp.length === 4) {
+			for(let i = 0; i < 4; i++) {
                 let index = ((2 * i) + 1).toString();
                 if(roomsTmp[index]) {
                     rooms.push(roomsTmp[index]);
