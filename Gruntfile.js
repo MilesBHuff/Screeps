@@ -1,3 +1,5 @@
+//git update-index --skip-worktree Gruntfile.js
+//NOTE:  Make sure to run the above command before saving an email or password in this file!
 module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-screeps");
     grunt.initConfig({
