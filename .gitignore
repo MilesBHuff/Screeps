@@ -13,7 +13,7 @@ tmp/
 bin/*
 
 # Files with sensitive information
-Gruntfile.js
+#Gruntfile.js
 
 # Keep .keep files
 !.keep

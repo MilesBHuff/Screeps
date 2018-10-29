@@ -14,7 +14,7 @@ const LIB_MISC = {
     // This constant is missing from the global game defines.
     CONTROLLER_LEVEL_MAX: 8,
     // This is the remaining repair amount at which you will receive an email about your controller degrading.
-	// 3000 is when you get an email, and CREEP_LIFE_TIME is how long a normal creep lives.
+    // 3000 is when you get an email, and CREEP_LIFE_TIME is how long a normal creep lives.
     CONTROLLER_NEAR_DEGRADE: 3000 + CREEP_LIFE_TIME,
     // The maximum number of times to run a loop that would otherwise be while(true).
     LOOP_LIMIT: 12,
@@ -43,8 +43,8 @@ const LIB_MISC = {
         RENEW:    8,
         DEFEND:   9,
     }),
-	// This is the controller level by which a room is expected to be "developed" -- ie, have enough roads to benefit from MOVE skewing.
-	DEVELOPED_CTRL_LVL: 3,
+    // This is the controller level by which a room is expected to be "developed" -- ie, have enough roads to benefit from MOVE skewing.
+    DEVELOPED_CTRL_LVL: 3,
     // The player's username
     USERNAME: "MilesBHuff",
 
@@ -78,15 +78,15 @@ const LIB_MISC = {
     // Look and act
     // =========================================================================
     /** This function uses the provided functions to find and perform work with
-	 *  the provided creep
+     *  the provided creep
      * @param  creep The creep to control
      * @param  look  The search
      * @param  act   The performance
      * @return an exit code.
     **/
-	lookAndAct: function(creep, look, act) {
-		//TODO
-	},
+    lookAndAct: function(creep, look, act) {
+        //TODO
+    },
 
     // Find rooms
     // =========================================================================
@@ -100,14 +100,14 @@ const LIB_MISC = {
         rooms.push(roomName);
         // Find all the rooms connected to the current room.
         let roomsTmp = Game.map.describeExits(roomName);
-		if(roomsTmp) {
-	        for(let i = 0; i < roomsTmp.length; i++) {
-	            let index = ((2 * i) + 1).toString();
-	            if(roomsTmp[index]) {
-	                rooms.push(roomsTmp[index]);
-	            } //fi
-	        } //done
-		} //fi
+        if(roomsTmp) {
+            for(let i = 0; i < roomsTmp.length; i++) {
+                let index = ((2 * i) + 1).toString();
+                if(roomsTmp[index]) {
+                    rooms.push(roomsTmp[index]);
+                } //fi
+            } //done
+        } //fi
         // Convert the array of strings into an array of objects.  This also trims rooms that we can't see.
         roomsTmp = [];
         for(let name in rooms) {
@@ -175,8 +175,8 @@ const LIB_MISC = {
         let roomsTmp = [];
         for(let i = 0; 0 < rooms.length; i++) {
             // Find the nearest room that hasn't been found yet.
-			let testRooms = Game.rooms[pos.findClosestByRange(FIND_EXIT, {filter: (room) => function(room) {return rooms.indexOf(room) !== -1;}})];
-			if(!testRooms) return roomsTmp;
+            let testRooms = Game.rooms[pos.findClosestByRange(FIND_EXIT, {filter: (room) => function(room) {return rooms.indexOf(room) !== -1;}})];
+            if(!testRooms) return roomsTmp;
             roomsTmp.push(testRooms.roomName);
             // Find its index.
             let index = 0;

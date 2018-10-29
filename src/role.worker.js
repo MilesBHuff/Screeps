@@ -29,13 +29,13 @@ let roleWorker   = {
 
         // Variables
         // =====================================================================
-		repairLimit = 0;
-		if(creep && creep.room && creep.room.controller && creep.room.controller.level) {
-        	repairLimit = LIB_MISC.REPAIR_LIMIT * creep.room.controller.level;
-		} //fi
-		if(!repairLimit) {
-			repairLimit = LIB_MISC.REPAIR_LIMIT;
-		} //fi
+        repairLimit = 0;
+        if(creep && creep.room && creep.room.controller && creep.room.controller.level) {
+            repairLimit = LIB_MISC.REPAIR_LIMIT * creep.room.controller.level;
+        } //fi
+        if(!repairLimit) {
+            repairLimit = LIB_MISC.REPAIR_LIMIT;
+        } //fi
         if(creep.memory && creep.memory.target) canWander = false;
 
         // Decide whether to harvest
@@ -143,11 +143,11 @@ let roleWorker   = {
     //              targets = LIB_MISC.filterTargets(targets, badTargets);
     //              if(targets && targets.length) break;
 
-    				// Dig up graves
-    				// -------------------------------------------------------------
-    				targets = rooms[0].find(FIND_TOMBSTONES);
-    				targets = LIB_MISC.filterTargets(targets, badTargets);
-    				if(targets && targets.length) break;
+                    // Dig up graves
+                    // -------------------------------------------------------------
+                    targets = rooms[0].find(FIND_TOMBSTONES);
+                    targets = LIB_MISC.filterTargets(targets, badTargets);
+                    if(targets && targets.length) break;
 
                     // Harvest new energy
                     // -------------------------------------------------------------
@@ -319,22 +319,22 @@ let roleWorker   = {
 
                 // 75% chance to build new things
                 // =================================================================
-    			if(LIB_MISC.gamble(3 / 4)) {
-    	            task = LIB_MISC.TASKS.BUILD;
-    	            targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES);
-    	            targets = LIB_MISC.filterTargets(targets, badTargets);
-    	            if(targets && targets.length) break;
-    			} //fi
+                if(LIB_MISC.gamble(3 / 4)) {
+                    task = LIB_MISC.TASKS.BUILD;
+                    targets = rooms[0].find(FIND_MY_CONSTRUCTION_SITES);
+                    targets = LIB_MISC.filterTargets(targets, badTargets);
+                    if(targets && targets.length) break;
+                } //fi
 
                 // Upgrade the controller, if it's not already at max
                 // If the controller *is* already at max, upgrade it if it's less than 3/4 degraded.
                 // =================================================================
                 task = LIB_MISC.TASKS.UPGRADE;
                 if(rooms[0].controller
-    			&& rooms[0].controller.level
-    			&&(rooms[0].controller.level < 8
+                && rooms[0].controller.level
+                &&(rooms[0].controller.level < 8
                 || rooms[0].controller.ticksToDowngrade < (3 / 4) * CONTROLLER_DOWNGRADE[rooms[0].controller.level]
-    			)) {
+                )) {
                     targets = [rooms[0].controller];
                     targets = LIB_MISC.filterTargets(targets, badTargets);
                     if(targets && targets.length) break;
@@ -342,7 +342,7 @@ let roleWorker   = {
 
                 // Store excess resources in links and terminals
                 // =================================================================
-    			task = LIB_MISC.TASKS.TRANSFER;
+                task = LIB_MISC.TASKS.TRANSFER;
                 targets = rooms[0].find(FIND_MY_STRUCTURES, {
                     filter: (structure) => {return(
                         (  structure.structureType === STRUCTURE_LINK
@@ -452,7 +452,7 @@ let roleWorker   = {
                     &&  creep.withdraw(target, RESOURCE_ENERGY)
                     &&
                     ((( target.room.controller
-					&&  target.room.controller.owner
+                    &&  target.room.controller.owner
                     &&  target.room.controller.owner !== LIB_MISC.USERNAME
                     )
                     ||

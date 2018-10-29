@@ -16,7 +16,7 @@ let roleClaimer = {
      * @param creep The creep to control
     **/
     run: function(creep) {
-		let target;
+        let target;
 
         // Check the creep's target
         // =============================================================================
@@ -26,29 +26,29 @@ let roleClaimer = {
 
         // If the target is not a controller or if it belongs to us, remove it.
         // =============================================================================
-		if(target && (target.structureType !== STRUCTURE_CONTROLLER || target.my)) {
-			target = null;
-			creep.memory.target = null;
-		} else {
+        if(target && (target.structureType !== STRUCTURE_CONTROLLER || target.my)) {
+            target = null;
+            creep.memory.target = null;
+        } else {
 
-	        // Move to its target
-	        // =============================================================================
-	        LIB_MOVE.move(creep, COLOR_BLUE, false);
+            // Move to its target
+            // =============================================================================
+            LIB_MOVE.move(creep, COLOR_BLUE, false);
 
-	        // Attempt to claim the target
-	        // =============================================================================
-	        creep.claimController(target);
+            // Attempt to claim the target
+            // =============================================================================
+            creep.claimController(target);
 
-	        // Attempt to sign the target
-	        // =============================================================================
-	        creep.signController(target, "GitHub.com/MilesBHuff/Screeps");
-		} //fi
+            // Attempt to sign the target
+            // =============================================================================
+            creep.signController(target, "GitHub.com/MilesBHuff/Screeps");
+        } //fi
 
-		// If no target, wander
-		// =============================================================================
-		if(!target) {
-        	LIB_MOVE.wander(creep);
-		}
+        // If no target, wander
+        // =============================================================================
+        if(!target) {
+            LIB_MOVE.wander(creep);
+        }
     }, //run
 }; //roleManual
 

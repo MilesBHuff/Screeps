@@ -19,7 +19,7 @@ let roleTower  = {
         // Variables
         // =====================================================================
         let repairLimit = LIB_MISC.REPAIR_LIMIT;
-		if(structure.room.controller) repairLimit*= structure.room.controller.level;
+        if(structure.room.controller) repairLimit*= structure.room.controller.level;
         for(let b = true; b; b = false) {
             let targets = Array();
 

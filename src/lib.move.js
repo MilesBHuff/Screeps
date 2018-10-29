@@ -98,39 +98,39 @@ const LIB_MOVE = {
                      path = undefined;
                 validPath = undefined;
             } //fi
-			// Try to move the creep to the new location.
+            // Try to move the creep to the new location.
             let code = creep.moveByPath(creep.memory.path); //NOTE:  The creep's location doesn't actually change until the next tick.
-			//If the creep is tired, then it didn't move, so we don't need to evaluate movement.
-			if(!code
-			||(code
-			&& code !== ERR_TIRED
-			//&& code !== ERR_NOT_FOUND
-		    )) {
-				// If movement failed, reset the path and return an error.
-	            if(code && code !== OK) {
+            //If the creep is tired, then it didn't move, so we don't need to evaluate movement.
+            if(!code
+            ||(code
+            && code !== ERR_TIRED
+            //&& code !== ERR_NOT_FOUND
+            )) {
+                // If movement failed, reset the path and return an error.
+                if(code && code !== OK) {
 //                  creep.memory.target = undefined;
-	                creep.memory.path   = undefined;
-	                return code;
-	            } else {
-					let path = Room.deserializePath(creep.memory.path);
-					// If there's a creep in the way, recalculate the path
-					let lookCreep;
-					if(path.length >= 1 && path[1] && path[1].x && path[1].y) {
-						lookCreep = new RoomPosition(path[1].x, path[1].y, creep.room.name).lookFor(LOOK_CREEPS)[0];
-					} //fi
-					if(lookCreep && lookCreep !== creep) {
-		                creep.memory.path = undefined;
-		                return ERR_NOT_FOUND;
-					} //fi
-		            // Delete path elements that have already been traversed.
-	                if(path[0]
-	                && path[0].x === creep.pos.x
-	                && path[0].y === creep.pos.y
-	                ) {
-	                    path.shift();
-	                } //fi
-	                creep.memory.path = Room.serializePath(path);
-	            } //fi
+                    creep.memory.path   = undefined;
+                    return code;
+                } else {
+                    let path = Room.deserializePath(creep.memory.path);
+                    // If there's a creep in the way, recalculate the path
+                    let lookCreep;
+                    if(path.length >= 1 && path[1] && path[1].x && path[1].y) {
+                        lookCreep = new RoomPosition(path[1].x, path[1].y, creep.room.name).lookFor(LOOK_CREEPS)[0];
+                    } //fi
+                    if(lookCreep && lookCreep !== creep) {
+                        creep.memory.path = undefined;
+                        return ERR_NOT_FOUND;
+                    } //fi
+                    // Delete path elements that have already been traversed.
+                    if(path[0]
+                    && path[0].x === creep.pos.x
+                    && path[0].y === creep.pos.y
+                    ) {
+                        path.shift();
+                    } //fi
+                    creep.memory.path = Room.serializePath(path);
+                } //fi
             } //fi
             // Parse the given color
             switch(color) {
