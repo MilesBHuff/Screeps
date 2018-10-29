@@ -8,7 +8,7 @@ module.exports = function(grunt) {
             options: {
                 email: '',
                 password: '',
-                branch: 'uglified',
+                branch: 'minified',
                 ptr: false
             }
         }
