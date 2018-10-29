@@ -268,17 +268,14 @@ let roleSpawn  = {
 
 		// Build the creep until there's no energy left in the room
         // ---------------------------------------------------------------------
-		// Auto-stop once we hit energyTotal or MAX_CREEP_SIZE.
-		//NOTE:  Shouldn't be necessary, but can help avoid endless loops in the event of a bug.
-//		while(energyCost < energyTotal && partCounts.total < MAX_CREEP_SIZE) {
 		while(true) {
+//			if(energyCost >= energyTotal || partCounts.total >= MAX_CREEP_SIZE) break; // Shouldn't be necessary.
 			let movelessParts = partCounts.total - partCounts[MOVE];
 
 			// If we're short on MOVEs, add a MOVE.
 	        // `````````````````````````````````````````````````````````````````
-			if(partRatios.movesPerPart > partCounts[MOVE] / movelessParts
-			//NOTE:  Given all the checks related to MOVE's energy costs up above and down below, we don't actually need to check them here.
-			) {
+			if(partRatios.movesPerPart > partCounts[MOVE] / movelessParts) {
+				//NOTE:  Given all the checks related to MOVE's energy costs up above and down below, we don't actually need to check them here.
 				partCounts.total++;
 				partCounts[MOVE]++;
 				energyCost+= BODYPART_COST[MOVE];
@@ -287,6 +284,7 @@ let roleSpawn  = {
 
 			// If adding an extra part would take us over our MOVE ratio...
 	        // `````````````````````````````````````````````````````````````````
+			let exitLoop = false;
 			let neededMovesCost = 0;
 			if(partRatios.movesPerPart > partCounts[MOVE] / (movelessParts + 1)) {
 				let neededMoves = 0;
@@ -294,30 +292,34 @@ let roleSpawn  = {
 				while(partRatios.movesPerPart > (partCounts[MOVE] + neededMoves) / (movelessParts + 1)) {
 					neededMoves++;
 					// If we can't fit enough MOVEs in before reaching MAX_CREEP_SIZE, then this creep is finished.
-					if(movelessParts + 1 + neededMoves > MAX_CREEP_SIZE) {
+					if(MAX_CREEP_SIZE < partCounts.total + 1 + neededMoves) {
+						exitLoop = true;
 						break;
 					} //fi
 				} //done
 				// Calculate how much energy needs to be in the room in order to reattain balance
 				neededMovesCost = neededMoves * BODYPART_COST[MOVE];
 				//NOTE:  The checks for this will come when we add regular parts.
+			} else if(MAX_CREEP_SIZE < partCounts.total + 1) {
+				exitLoop = true;
 			} //fi
+			if(exitLoop) break;
 
 			// If any other parts are below their ratios, add them.
 	        // `````````````````````````````````````````````````````````````````
-			let addedPart = false;
+			exitLoop = false;
 			for(let p = 0; p < partTypes.length; p++) {
-				if(partRatios[partTypes[p]] > partCounts[partTypes[p]] / movelessParts
+				if(partRatios[partTypes[p]] >= partCounts[partTypes[p]] / movelessParts
 				&& energyTotal >= energyCost + BODYPART_COST[partTypes[p]] + neededMovesCost
 				) {
 					partCounts.total++;
 					partCounts[partTypes[p]]++;
 					energyCost+= BODYPART_COST[partTypes[p]];
-					addedPart = true;
+					exitLoop = true;
 					break;
 				} //fi
 			} //done
-			if(addedPart) continue;
+			if(exitLoop) continue;
 
 			// Add TOUGH parts if they have been enabled in the current creep build.
 	        // `````````````````````````````````````````````````````````````````
@@ -354,10 +356,35 @@ let roleSpawn  = {
 			} //done
 		} //done
 
+		// Figure out spawn direction
+        // ---------------------------------------------------------------------
+		let directions = [BOTTOM, TOP, RIGHT, LEFT, BOTTOM_RIGHT, BOTTOM_LEFT, TOP_RIGHT, TOP_LEFT];
+		//TODO
+
+		// Grab enery from the extensions/spawners nearest a source
+        // ---------------------------------------------------------------------
+		//let energyStructures = [];
+		//TODO
+
         // Create the creep.
         // ---------------------------------------------------------------------
-        for(let i = 0; spawn.createCreep(bodyParts, name + i, {role: role, /*target: target*/}) === ERR_NAME_EXISTS; i++) {continue;}
+        for(let i = 0; true; i++) {
+			let code = spawn.spawnCreep(
+				bodyParts,
+				name + i, {
+					memory: {role: role,},
+//					energyStructures: energyStructures,
+					dryRun: false,
+					directions: directions,
+			});
+			if(code) {
+				if(code === ERR_NAME_EXISTS) continue;
+				return code;
+			} //fi
+			break;
+		} //done
         LIB_MISC.say(name.charAt(0).toUpperCase() + name.slice(1), spawn);
+		return OK;
     }, //spawnCreep
 }; //roleSpawn
 
