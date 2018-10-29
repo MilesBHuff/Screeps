@@ -162,7 +162,7 @@ let roleSpawn  = {
                 if(spawn.spawning) break;
             } //done
             if(!spawn.spawning) {
-                return;
+                return ERR_NOT_FOUND;
             } //fi
         } //trySpawnCreep
     }, //run
@@ -200,7 +200,7 @@ let roleSpawn  = {
         // Set up the partRatios object
         // `````````````````````````````````````````````````````````````````````
         let partRatios = {
-            movesPerPart:  0.00, // How many MOVEs to add per each normal body part
+            movesPerPart:  1.00, // How many MOVEs to add per each normal body part
             useTough:     false, // Whether to use TOUGH when we can't afford a normal body part, or when normal body part ratios don't sum to 1
         };
         for(let p = 0; p < partTypes.length; p++) {
@@ -232,9 +232,12 @@ let roleSpawn  = {
             partRatios.movesPerPart = 5.00; // Ideal for swamps
             partRatios[CLAIM]       = 0.01;
             break;
+
+			default:
+			return ERR_INVALID_ARGS;
         } //esac
         if(spawn.room.controller && spawn.room.controller.level < LIB_MISC.DEVELOPED_CTRL_LVL) {
-            // When the controller level is below this value, movesPerPart is ignored, and all creeps spawn with a 1:1 ratio of MOVE:*.  Controller level is used as a proxy for infrastructure development, as 1:1 for everyone only makes sense when there are no roads.
+            // When the controller level is below this value, movesPerPart is ignored, and all creeps spawn with a 1:1 ratio of MOVEs:ControllerLevels is used as a proxy for infrastructure development, as 1:1 for everyone only makes sense when there are no roads.
             partRatios.movesPerPart = 1.00;
         } //fi
 
@@ -258,13 +261,13 @@ let roleSpawn  = {
             } //fi
         } //done
 
-        if(partCounts.total <= 0) return; // Avoids a divide-by-zero error
+        if(partCounts.total <= 0) return OK; // Avoids a divide-by-zero error
         while(partRatios.movesPerPart > partCounts[MOVE] / (partCounts.total - partCounts[MOVE])) {
             partCounts.total++;
             partCounts[MOVE]++;
             energyCost+= BODYPART_COST[MOVE];
         } //done
-        if(energyCost > energyTotal) return;
+        if(energyCost > energyTotal) return ERR_NOT_ENOUGH_ENERGY;
 
         // Build the creep until there's no energy left in the room
         // ---------------------------------------------------------------------
