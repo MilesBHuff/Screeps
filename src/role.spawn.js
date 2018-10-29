@@ -224,6 +224,8 @@ let roleSpawn  = {
             partRatios[HEAL]          = 0.50;
             partRatios[RANGED_ATTACK] = 0.49;
             partRatios[ATTACK]        = 0.01;
+            partRatios[CARRY]         = 0.00; //NOTE:  Shouldn't be necessary.
+            partRatios[WORK]          = 0.00; //NOTE:  Shouldn't be necessary.
             break;
 
             case LIB_MISC.ROLES.CLAIMER:
@@ -252,7 +254,7 @@ let roleSpawn  = {
 
         // Calculate a minimal creep, and make sure we can even afford it.
         // ---------------------------------------------------------------------
-        //NOTE:  While this may seem unnecessary, it actually flattens the part ratios at the outset, and ensures that every nonzero part is used at least once.
+        //NOTE:  While this may seem unnecessary, it ensures that every nonzero part is used at least once.
         for(let p = 0; p < partTypes.length; p++) {
             if(partRatios[partTypes[p]] > 0) {
                 partCounts.total++;

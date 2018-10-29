@@ -87,7 +87,7 @@ let roleRoom   = {
                 // Count the number of exits to uncontrolled rooms
                 let exits      = Game.map.describeExits(room.name);
                 let exitsCount = 0;
-                if(exits && exits.length && exits.length === 4) {
+                if(exits) {
                     for(let i = 0; i < 4; i++) {
                         let index = ((2 * i) + 1).toString();
                         if(exits[index]
