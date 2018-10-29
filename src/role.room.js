@@ -55,7 +55,7 @@ let roleRoom   = {
         // Set limits for creeps in each room
         // =============================================================================
         function setCreepLimits() {
-			room.memory.workerLimit  = 1.0;
+            room.memory.workerLimit  = 1.0;
             room.memory.fighterLimit = 1.5;
             room.memory.claimerLimit = 0.0;
 
@@ -66,12 +66,12 @@ let roleRoom   = {
 
             // Workers
             // -----------------------------------------------------------------------------
-			//NOTE:  While this could be made more accurate by actually calculating a new worker creep, it is extremely unlikely to be worth the CPU.
+            //NOTE:  While this could be made more accurate by actually calculating a new worker creep, it is extremely unlikely to be worth the CPU.
             function setWorkerLimit() {
-				// Get the extension limit at the highest controller level
-				let maxExtensions = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][LIB_MISC.CONTROLLER_LEVEL_MAX];
-				// Get the number of extensions actually in the room
-				let actualExtensions = room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(structure.structureType === STRUCTURE_EXTENSION);}}).length;
+                // Get the extension limit at the highest controller level
+                let maxExtensions = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][LIB_MISC.CONTROLLER_LEVEL_MAX];
+                // Get the number of extensions actually in the room
+                let actualExtensions = room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(structure.structureType === STRUCTURE_EXTENSION);}}).length;
                 // Set the number of workers per the number of extensions in the room (This effectively results in 3 per source at 0 extensions.)
                 room.memory.workerLimit = (maxExtensions - actualExtensions) / (maxExtensions / 3);
                 if(room.memory.workerLimit <= 0) room.memory.workerLimit = 1;
@@ -87,19 +87,19 @@ let roleRoom   = {
                 // Count the number of exits to uncontrolled rooms
                 let exits      = Game.map.describeExits(room.name);
                 let exitsCount = 0;
-				if(exits) {
-					for(let i = 0; i < exits.length; i++) {
-						let index = ((2 * i) + 1).toString();
-						if(exits[index]
-							&&  !( Game.rooms[exits[index]]
-								&& Game.rooms[exits[index]].controller
-								&& Game.rooms[exits[index]].controller.my
-							)
-						) {
-							exitsCount++;
-						} //fi
-					} //done
-				} //fi
+                if(exits) {
+                    for(let i = 0; i < exits.length; i++) {
+                        let index = ((2 * i) + 1).toString();
+                        if(exits[index]
+                            &&  !( Game.rooms[exits[index]]
+                                && Game.rooms[exits[index]].controller
+                                && Game.rooms[exits[index]].controller.my
+                            )
+                        ) {
+                            exitsCount++;
+                        } //fi
+                    } //done
+                } //fi
                 exits = undefined;
 
                 // Multiply fighterLimit by the number of exits
@@ -121,7 +121,7 @@ let roleRoom   = {
             // Round off the creep limits
             // -----------------------------------------------------------------------------
             function roundLimits() {
-				room.memory.workerLimit  = Math.round(room.memory.workerLimit );
+                room.memory.workerLimit  = Math.round(room.memory.workerLimit );
                 room.memory.fighterLimit = Math.round(room.memory.fighterLimit);
                 room.memory.claimerLimit = Math.round(room.memory.claimerLimit);
             } //roundLimits
