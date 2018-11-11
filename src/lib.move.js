@@ -68,17 +68,22 @@ const LIB_MOVE = {
                 // Validate the path (Paths aren't guaranteed to make it all the way to the target, so we have to check.)
                 let validPath = false;
                 if(path.length) {
-                    if(target.room === creep.room) {
+					// Check to see if a creep is blocking the final node of the path.  There's no need to check this if we're not using cached paths.
+                    if(cache && target.room === creep.room) {
                         for(let x = -1; x <= 1; x++) {
                             for(let y = -1; y <= 1; y++) {
                                 let pos = new RoomPosition(target.pos.x + x,
                                                            target.pos.y + y,
                                                            target.pos.roomName);
-                                if(pos.x === path[path.length - 1].x
-                                && pos.y === path[path.length - 1].y
-                                && pos.lookFor(LOOK_CREEPS).length <= 0
-                                ) {
-                                    validPath = true;
+								let localCreeps = pos.lookFor(LOOK_CREEPS);
+                                if (pos.x === path[path.length - 1].x
+                                &&  pos.y === path[path.length - 1].y
+                                &&!(localCreeps.length > 0
+								&&  creep.memory
+								&&  creep.memory.target
+								&&  creep.memory.target === localCreeps[0]
+								)) {
+									validPath = true;
                                 } //fi
                             } //done
                         } //done
