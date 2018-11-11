@@ -39,3 +39,8 @@ Combat
   target will be a hostile room.  While it is set, military creeps spawn at
   elevated levels, and are all directed to the target map before looking for
   enemies.
++ Watch nearby rooms for enemy presence.  If any nearby rooms experience a flux
+  in enemy combat creeps, increase production of combat creeps.  Don't consider
+  owned enemy rooms, though, since these will always have some combat creeps
+  for defence, and we don't want to risk an endless production loop if they're
+  doing the same kind of thing.
