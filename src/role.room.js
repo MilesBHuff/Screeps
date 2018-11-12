@@ -84,36 +84,38 @@ let roleRoom   = {
             // -----------------------------------------------------------------------------
             function setFighterLimit() {
 
-                // Count the number of exits to uncontrolled rooms
+                // Check whether we border an uncontrolled room
                 let exits      = Game.map.describeExits(room.name);
-                let exitsCount = 0;
+                let isFrontier = false;
                 if(exits) {
                     for(let i = 0; i < 4; i++) {
                         let index = ((2 * i) + 1).toString();
                         if(exits[index]
-                            &&  !( Game.rooms[exits[index]]
-                                && Game.rooms[exits[index]].controller
-                                && Game.rooms[exits[index]].controller.my
-                            )
-                        ) {
-                            exitsCount++;
+                        &&  !( Game.rooms[exits[index]]
+                        && Game.rooms[exits[index]].controller
+                        && Game.rooms[exits[index]].controller.my
+                        )) {
+                            isFrontier = true;
+							break;
                         } //fi
                     } //done
                 } //fi
                 exits = undefined;
 
-                // Multiply fighterLimit by the number of exits
-                room.memory.fighterLimit *= exitsCount;
+                // If so, then we need a guard creep.
+				if(isFrontier) {
+                    room.memory.fighterLimit = 1;
+				}
 
             } //fighterLimit
 
             // When hostiles are present
             // -----------------------------------------------------------------------------
             function setIfHostiles() {
-                // Increment fighterLimit by the number of hostiles
+                // Set fighterLimit to the number of hostiles
                 let hostileCount = room.find(FIND_HOSTILE_CREEPS).length;
-                if(hostileCount) {
-                    room.memory.fighterLimit += hostileCount;
+                if(hostileCount > room.memory.fighterLimit) {
+                    room.memory.fighterLimit = hostileCount;
                 } //fi
                 hostileCount = undefined;
             } //setIfHostiles
