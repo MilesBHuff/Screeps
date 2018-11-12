@@ -146,12 +146,14 @@ let roleSpawn  = {
     *  survivability.
     * @param spawn    The spawner to use
     * @param role     The role the new creep should have.
+    * @param dryRun   Whether to do a dry run.
     **/
-    spawnCreep: function(spawn, role) {
+    spawnCreep: function(spawn, role, dryRun) {
+		dryRun = dryRun ? true : false;
+		let name = "";
 
         // Determine what kind of creep to build
         // ---------------------------------------------------------------------
-        let name = "";
 
         // Define the order of preference for the main part types.
         // `````````````````````````````````````````````````````````````````````
@@ -333,7 +335,7 @@ let roleSpawn  = {
         let directions = [BOTTOM, TOP, RIGHT, LEFT, BOTTOM_RIGHT, BOTTOM_LEFT, TOP_RIGHT, TOP_LEFT];
         //TODO
 
-        // Grab enery from the extensions/spawners nearest a source
+        // Grab energy from the extensions/spawners nearest a source
         // ---------------------------------------------------------------------
         //let energyStructures = [];
         //TODO
@@ -346,7 +348,7 @@ let roleSpawn  = {
                 name + i, {
                     memory: {role: role,},
 //                  energyStructures: energyStructures,
-                    dryRun: false,
+                    dryRun: dryRun,
                     directions: directions,
             });
             if(code) {
@@ -356,6 +358,7 @@ let roleSpawn  = {
             break;
         } //done
         LIB_MISC.say(name.charAt(0).toUpperCase() + name.slice(1), spawn);
+		if(dryRun) console.log(bodyParts);
         return OK;
     }, //spawnCreep
 }; //roleSpawn
