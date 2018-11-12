@@ -36,7 +36,7 @@ let roleSpawn  = {
 
         // Unless already spawning or not at full energy.
         // Exception:  If there are no workers left, spawn even if not at full energy.
-        if(!spawn.spawning && (spawn.room.energyAvailable >= spawn.room.energyCapacityAvailable || creepsLocal.workers.length <= 0)) {
+        if(!spawn.spawning && (spawn.room.energyAvailable >= spawn.room.energyCapacityAvailable || creepsLocal.workers.length <= 0 || (creepsLocal.fighters.length <= 0 && spawn.room.find(FIND_HOSTILE_CREEPS).length > 0))) {
             trySpawnCreep();
         } //fi
 
@@ -105,60 +105,29 @@ let roleSpawn  = {
         // Create creep
         // =====================================================================
         function trySpawnCreep() {
-            for(let i = 0; i < 2; i++) {
-                let creepRole = 0;
-
+            for(let i = 0;
+				    i < spawn.room.memory.workerLimit
+				 || i < spawn.room.memory.fighterLimit
+				 || i < spawn.room.memory.claimerLimit;
+				    i++
+			) {
                 // Figure out what kind of creep to spawn
                 // -------------------------------------------------------------
-                switch(i) {
-                    case 0:
-                    /*//*/ if(creepsLocal.workers.length  < Math.ceil(spawn.room.memory.workerLimit  / 2)) {
-                        creepRole = LIB_MISC.ROLES.WORKER;
-                    } else if(creepsLocal.fighters.length < Math.ceil(spawn.room.memory.fighterLimit / 2)) {
-                        creepRole = LIB_MISC.ROLES.FIGHTER;
-                    } else if(creepsLocal.claimers.length < Math.ceil(spawn.room.memory.claimerLimit / 2)) {
-                        creepRole = LIB_MISC.ROLES.CLAIMER;
-                    } else {
-                        creepRole = Math.floor(Math.random() * LIB_MISC.ROLES.length);
-                    }
-                    break;
-
-                    case 1:
-                    creepRole = LIB_MISC.ROLES.WORKER;
-                    break;
-                } //esac
-
-                // Spawn the creep
-                // -------------------------------------------------------------
-                switch(creepRole) {
-                    case LIB_MISC.ROLES.WORKER:
-                    if(creepsLocal.workers.length  < spawn.room.memory.workerLimit
-                    && creepsGlobal.workers.length < creepLimitsGlobal.workers
-                    ){
-                        roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.WORKER);
-                        break;
-                    }
-                    if(i === 0) continue;
-
-                    case LIB_MISC.ROLES.FIGHTER:
-                    if(creepsLocal.fighters.length  < spawn.room.memory.fighterLimit
-                    && creepsGlobal.fighters.length < creepLimitsGlobal.fighters
-                    ){
-                        roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.FIGHTER);
-                        break;
-                    }
-                    if(i === 0) continue;
-
-                    case LIB_MISC.ROLES.CLAIMER:
-                    if(creepsLocal.claimers.length  < spawn.room.memory.claimerLimit
-                    && creepsGlobal.claimers.length < creepLimitsGlobal.claimers
-                    ){
-                        roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.CLAIMER);
-                        break;
-                    } //fi
-                    if(i === 0) continue;
-                    break;
-                } //esac
+                /*//*/ if(  creepsLocal.workers.length <= i
+				       &&   creepsLocal.workers.length > spawn.room.memory.workerLimit
+					   &&  creepsGlobal.workers.length > spawn.room.memory.workerLimit
+				) { roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.WORKER);
+                } else if( creepsLocal.fighters.length <= i
+					   &&  creepsLocal.fighters.length > spawn.room.memory.fighterLimit
+					   && creepsGlobal.fighters.length > spawn.room.memory.fighterLimit
+				) { roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.FIGHTER);
+                } else if( creepsLocal.claimers.length <= i
+					   &&  creepsLocal.claimers.length > spawn.room.memory.claimerLimit
+					   && creepsGlobal.claimers.length > spawn.room.memory.claimerLimit
+				) { roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.CLAIMER);
+                } else
+				  { continue;
+                } //fi
                 if(spawn.spawning) break;
             } //done
             if(!spawn.spawning) {
