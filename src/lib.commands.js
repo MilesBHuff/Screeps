@@ -40,10 +40,11 @@ const LIB_COMMANDS = {
      *  creep-generation function as main().
      * @param  spawnName The name of the spawn to use
      * @param  roleName  The role to use, if any
+     * @param dryRun   Whether to do a dry run.
      * @return an exit-code.
     **/
-    createCreep: function(spawnName, roleName) {
-        return ROLE_SPAWN.spawnCreep(Game.spawns[spawnName], LIB_MISC.ROLES[roleName]);
+    createCreep: function(spawnName, roleName, dryRun) {
+        return ROLE_SPAWN.spawnCreep(Game.spawns[spawnName], LIB_MISC.ROLES[roleName], dryRun ? true : false);
     }, //function;
 
     // Dismantle
