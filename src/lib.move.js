@@ -72,6 +72,7 @@ const LIB_MOVE = {
                     if(cache && target.room === creep.room) {
                         for(let x = -1; x <= 1; x++) {
                             for(let y = -1; y <= 1; y++) {
+								if(x === 0 || y === 0) continue; // It's okay if a creep is on-top of the goal.
                                 let pos = new RoomPosition(target.pos.x + x,
                                                            target.pos.y + y,
                                                            target.pos.roomName);
