@@ -65,25 +65,25 @@ const LIB_MOVE = {
                 }; //struct
                 // Find a path
                 let path = creep.pos.findPathTo(target, pathOpts);
-                // Validate the path (Paths aren't guaranteed to make it all the way to the target, so we have to check.)
+				/* Check to see if the final node node of the path is the
+				* target.  The pathfinder returns the best possible path,
+				* even if that path doesn't actually reach the target.
+				* Good paths always have the target as their final node.
+				* There's no need to check this if we're not using cached
+				* paths.
+				*TODO:  Validate paths that go to other rooms.
+				*/
                 let validPath = false;
                 if(path.length) {
-					// Check to see if a creep is blocking the final node of the path.  There's no need to check this if we're not using cached paths.
                     if(cache && target.room === creep.room) {
                         for(let x = -1; x <= 1; x++) {
                             for(let y = -1; y <= 1; y++) {
-								if(x === 0 || y === 0) continue; // It's okay if a creep is on-top of the goal.
                                 let pos = new RoomPosition(target.pos.x + x,
                                                            target.pos.y + y,
                                                            target.pos.roomName);
-								let localCreeps = pos.lookFor(LOOK_CREEPS);
                                 if (pos.x === path[path.length - 1].x
                                 &&  pos.y === path[path.length - 1].y
-                                &&!(localCreeps.length > 0
-								&&  creep.memory
-								&&  creep.memory.target
-								&&  creep.memory.target === localCreeps[0]
-								)) {
+								) {
 									validPath = true;
                                 } //fi
                             } //done
@@ -92,6 +92,7 @@ const LIB_MOVE = {
                         validPath = true;
                     } //fi
                 } //fi
+
                 // If the path is invalid, then the target cannot be reached.  Find a new target.
                 if(!validPath) {
 //                  creep.memory.target = undefined;
