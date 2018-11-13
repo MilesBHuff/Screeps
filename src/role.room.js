@@ -56,7 +56,7 @@ let roleRoom   = {
         // =============================================================================
         function setCreepLimits() {
             room.memory.workerLimit  = 1.0;
-            room.memory.fighterLimit = 1.5;
+            room.memory.fighterLimit = 0.0;
             room.memory.claimerLimit = 0.0;
 
             setWorkerLimit();
