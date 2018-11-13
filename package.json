@@ -30,7 +30,7 @@
         "grunt": "^1.0.3",
         "grunt-cli": "^1.3.2",
         "grunt-screeps": "latest",
-        "uglify-es": "latest",
-		"jshint": "latest"
+		"jshint": "latest",
+        "uglify-es": "latest"
     }
 }
