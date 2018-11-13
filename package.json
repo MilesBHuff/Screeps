@@ -20,7 +20,8 @@
         "clean": "build/Makefile.bash clean",
         "deploy": "build/Makefile.bash deploy",
         "make": "build/Makefile.bash make",
-        "update": "build/Makefile.bash update"
+        "update": "build/Makefile.bash update",
+        "validate": "build/Makefile.bash validate"
     },
     "dependencies": {
         "lodash": "^3.10.1"
@@ -29,6 +30,7 @@
         "grunt": "^1.0.3",
         "grunt-cli": "^1.3.2",
         "grunt-screeps": "latest",
-        "uglify-es": "latest"
+        "uglify-es": "latest",
+		"jshint": "latest"
     }
 }
