@@ -104,6 +104,12 @@ let roleSpawn  = {
 
         // Create creep
         // =====================================================================
+		/** Figure out what kind of creep to spawn, and then spawn that creep.
+		 *  The algorithm works like this:  Spawn workers before fighters before
+		 *  claimers, and make sure that none has more that one more than
+		 *  another (within precalculated limits).
+		 * @return an error code.
+		**/
         function trySpawnCreep() {
             for(let i = 0;
 				    i < spawn.room.memory.workerLimit
@@ -113,26 +119,35 @@ let roleSpawn  = {
 			) {
                 // Figure out what kind of creep to spawn
                 // -------------------------------------------------------------
+//				//TODO:  This is a pending refactor;  it can completely replace the rest of the function, below.
+//				for(let role in LIB_MISC.ROLES) {
+//					if(creeps. local[role].length <= i
+//					&& creeps. local[role].length < spawn.room.memory.limits[role]
+//					&& creeps.global[role].length <       creepLimits.global[role]
+//					) {
+//						roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES[role]);
+//						if(spawn.spawning) break;
+//					} //fi
+//				} //done
+//				if(!spawn.spawning) return ERR_NOT_FOUND;
                 /*//*/ if(  creepsLocal.workers.length <= i
-				       &&   creepsLocal.workers.length > spawn.room.memory.workerLimit
-					   &&  creepsGlobal.workers.length > spawn.room.memory.workerLimit
+				       &&   creepsLocal.workers.length < spawn.room.memory.workerLimit
+					   &&  creepsGlobal.workers.length < creepLimitsGlobal.workers
 				) { roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.WORKER);
                 } else if( creepsLocal.fighters.length <= i
-					   &&  creepsLocal.fighters.length > spawn.room.memory.fighterLimit
-					   && creepsGlobal.fighters.length > spawn.room.memory.fighterLimit
+					   &&  creepsLocal.fighters.length < spawn.room.memory.fighterLimit
+					   && creepsGlobal.fighters.length < creepLimitsGlobal.fighters
 				) { roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.FIGHTER);
                 } else if( creepsLocal.claimers.length <= i
-					   &&  creepsLocal.claimers.length > spawn.room.memory.claimerLimit
-					   && creepsGlobal.claimers.length > spawn.room.memory.claimerLimit
+					   &&  creepsLocal.claimers.length < spawn.room.memory.claimerLimit
+					   && creepsGlobal.claimers.length < creepLimitsGlobal.claimers
 				) { roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.CLAIMER);
                 } else
 				  { continue;
                 } //fi
                 if(spawn.spawning) break;
             } //done
-            if(!spawn.spawning) {
-                return ERR_NOT_FOUND;
-            } //fi
+            if(!spawn.spawning) return ERR_NOT_FOUND;
         } //trySpawnCreep
     }, //run
 
@@ -140,13 +155,13 @@ let roleSpawn  = {
     // =========================================================================
     // Depends: LIB_MISC.say()
     /** The idea behind this function, is to create each creep with as many parts as
-    *  possible, given the room's current energy total.  It cycles through the
-    *  given parts array, and continues until there is no more energy to spend.  It
-    *  then sorts the parts in such a way that maximises each creep's
-    *  survivability.
-    * @param spawn    The spawner to use
-    * @param role     The role the new creep should have.
-    * @param dryRun   Whether to do a dry run.
+     *  possible, given the room's current energy total.  It cycles through the
+     *  given parts array, and continues until there is no more energy to spend.  It
+     *  then sorts the parts in such a way that maximises each creep's
+     *  survivability.
+     * @param spawn    The spawner to use
+     * @param role     The role the new creep should have.
+     * @param dryRun   Whether to do a dry run.
     **/
     spawnCreep: function(spawn, role, dryRun) {
 		dryRun = dryRun ? true : false;
