@@ -1,4 +1,14 @@
-## Needed for compatibility with the in-game editor
+## This project uses spaces instead of tabs, per the use-cases below.
 [*]
 indent_size  = 4
+indent_style = space
+
+## Needed for code to work properly with the in-game editor.
+[*.js]
+indent_size  = 4
+indent_style = space
+
+## Needed for reStructuredText to work optimally.
+[*.{rst,txt}]
+indent_size  = 2
 indent_style = space
