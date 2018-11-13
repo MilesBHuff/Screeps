@@ -26,7 +26,7 @@ let roleWorker   = {
      * @param creep The creep to control
     **/
     run: function(creep) {
-creep.memory.debug = undefined;
+
         // Variables
         // =====================================================================
         repairLimit = 0;
@@ -436,7 +436,6 @@ creep.memory.debug = undefined;
             ) {
                 let target = Game.getObjectById(creep.memory.target);
                 if(!target) return ERR_INVALID_TARGET;
-
                 // Harvest
                 // -------------------------------------------------------------
                 if(creep.memory.harvesting) {
