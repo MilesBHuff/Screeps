@@ -73,11 +73,11 @@ let roleRoom   = {
                 // Get the number of extensions actually in the room
                 let actualExtensions = room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(structure.structureType === STRUCTURE_EXTENSION);}}).length;
                 // Set the number of workers per the number of extensions in the room (This effectively results in 3 per source at 0 extensions.)
-                room.memory.workerLimit = (maxExtensions - actualExtensions) / (maxExtensions / 3);
-                if(room.memory.workerLimit <= 0) room.memory.workerLimit = 1;
+                room.memory.workerLimit = (maxExtensions - actualExtensions) / (maxExtensions / 3.0);
+                if(room.memory.workerLimit < 1.0) room.memory.workerLimit = 1.0;
                 // Multiply the number of workers by the number of sources and mineral extractors in the room.
                 room.memory.workerLimit*= room.find(FIND_SOURCES).length; // + room.find(FIND_MY_STRUCTURES, {filter: (structure) => {return(structure.structureType === STRUCTURE_EXTRACTOR);}}).length;
-                if(room.memory.workerLimit <= 0) room.memory.workerLimit = 1;
+                if(room.memory.workerLimit < 1.0) room.memory.workerLimit = 1.0;
             } //setWorkerLimit
 
             // Fighters
@@ -96,16 +96,16 @@ let roleRoom   = {
                         && Game.rooms[exits[index]].controller.my
                         )) {
                             isFrontier = true;
-							break;
+                            break;
                         } //fi
                     } //done
                 } //fi
                 exits = undefined;
 
                 // If so, then we need a guard creep.
-				if(isFrontier) {
+                if(isFrontier) {
                     room.memory.fighterLimit = 1;
-				}
+                }
 
             } //fighterLimit
 
@@ -123,9 +123,10 @@ let roleRoom   = {
             // Round off the creep limits
             // -----------------------------------------------------------------------------
             function roundLimits() {
-                room.memory.workerLimit  = Math.round(room.memory.workerLimit );
+                room.memory.workerLimit  = Math.round(room.memory.workerLimit);
                 room.memory.fighterLimit = Math.round(room.memory.fighterLimit);
                 room.memory.claimerLimit = Math.round(room.memory.claimerLimit);
+                if(room.memory.workerLimit < 1.0) room.memory.workerLimit = 1.0;
             } //roundLimits
         } //creepLimits
     }, //run
