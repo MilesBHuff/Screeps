@@ -27,7 +27,7 @@ Copyright
 | (See ``/Copyright.txt`` for more info)
 + Code is licensed under the GNU Lesser Affero General Public License 3.0 (LAGPL 3).
 + Non-code is licensed under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4) license.
-+ Everything is Copyright (C) 2017-2018 by Miles Bradley Huff.
++ Everything is Copyright (C) 2017-2019 by Miles Bradley Huff.
 
 Paradigms
 ================================================================================
