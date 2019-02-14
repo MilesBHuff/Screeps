@@ -20,6 +20,6 @@ script: npm run clean && npm run make
 before_cache: false
 after_success: false
 after_failure: npm run clean
-#deploy: npm run deploy
+deploy: npm run deploy
 after_deploy: false
 after_script: false
