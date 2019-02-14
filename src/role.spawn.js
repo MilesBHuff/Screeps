@@ -62,8 +62,8 @@ let roleSpawn  = {
 
             // The total creep limits across all owned rooms (this is needed to prevent rooms from respawning all their creeps during an expedition to another room)
             // -----------------------------------------------------------------
-            for(let roleLimit in creepLimitsGlobal) {
-                roleLimit = 0; // lgtm [js/unused-loop-variable] // False positive:  https://discuss.lgtm.com/t/javascript-fase-positive-for-loop-variable-rolelimit-is-not-used-in-the-loop-body/1758
+            for(let roleLimit in creepLimitsGlobal) { // lgtm [js/unused-loop-variable] // LGTM falsely detects this as an unused loop variable instead of a useless assignment:  https://discuss.lgtm.com/t/resolved-javascript-false-positive-for-loop-variable-rolelimit-is-not-used-in-the-loop-body/1758
+                roleLimit = 0; // The assignment may be useless, but I hate leaving variables uninitialized.
             } //done
             for(let roomName in Game.rooms) {
                 let room = Game.rooms[roomName];
