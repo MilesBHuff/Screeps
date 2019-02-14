@@ -4,12 +4,12 @@ Screeps
 
 .. |CI Status| image:: https://travis-ci.com/MilesBHuff/Screeps.svg?branch=master
     :target: https://travis-ci.com/MilesBHuff/Screeps
-.. |LGTM Alerts| image:: https://img.shields.io/lgtm/alerts/g/MilesBHuff/Screeps.svg?logo=lgtm&logoWidth=18
+.. |LGTM Alerts| image:: https://img.shields.io/lgtm/alerts/g/MilesBHuff/Screeps.svg
    :target: https://lgtm.com/projects/g/MilesBHuff/Screeps/alerts
 
 |License| |Project Quality|
 
-.. |License| image:: https://img.shields.io/badge/license-LAGPL3%20%2F%20CC%20BY%20SA%204-brightgreen.svg
+.. |License| image:: https://img.shields.io/badge/license-LAGPL3%C2%A0%2F%C2%A0CC%C2%A0BY%E2%80%91SA%C2%A04-lightgrey.svg
    :target: https://raw.githubusercontent.com/MilesBHuff/Screeps/master/Copyright.txt
 .. |Project Quality| image:: https://bestpractices.coreinfrastructure.org/projects/2525/badge
    :target: https://bestpractices.coreinfrastructure.org/projects/2525
