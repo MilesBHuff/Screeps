@@ -1,25 +1,25 @@
 ## Travis CI configuration file
 ## YAML v1.1
-
 language: node_js
 
+## Version control
 git:
   depth: 1
   #sparse_checkout: skip-worktree-map-file
-
 branches:
   only:
     - master
   except:
     - gh-pages
 
+## Scripts
 before_install: false
 install: npm install
 before_script: false
 script: npm run clean && npm run make
 before_cache: false
-after_success: false
+after_success: npm run deploy
 after_failure: npm run clean
-deploy: npm run deploy
+deploy: false
 after_deploy: false
 after_script: false
