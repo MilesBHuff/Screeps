@@ -13,9 +13,9 @@ export PATH="$(pwd)/node_modules/.bin:$PATH"
 ## Functions
 ## =============================================================================
 
-## meta
+## execdir
 ## -----------------------------------------------------------------------------
-function meta {
+function execdir {
 #	echo
 	PRE='build'
 	if [[ -d "$PRE/$1" ]]; then
@@ -26,33 +26,9 @@ function meta {
 		done
 		cd ../..
 	else
-		echo 'ERROR:  Missing \'build\\' directory!' >&2
+		echo "ERROR:  Missing '$PRE' directory!" >&2
 		exit 2
 	fi
-}
-
-## clean
-## -----------------------------------------------------------------------------
-function clean {
-	meta 'clean.d'
-}
-
-## deploy
-## -----------------------------------------------------------------------------
-function deploy {
-	meta 'deploy.d'
-}
-
-## make
-## -----------------------------------------------------------------------------
-function make {
-	meta 'make.d'
-}
-
-## update
-## -----------------------------------------------------------------------------
-function update {
-	meta 'update.d'
 }
 
 ## main
@@ -60,15 +36,15 @@ function update {
 if [[ $1 ]]; then
 	INPUT="$1"
 else
-	echo "Type 'clean', 'deploy', 'make', or 'update':"
+	echo "Type 'clean', 'deploy', 'make', or 'upkeep':"
 	read INPUT
 fi
 case "$INPUT" in
 	'clean'  |\
 	'deploy' |\
 	'make'   |\
-	'update' )
-		eval $INPUT
+	'upkeep' )
+		execdir "${INPUT}.d"
 		;;
 	*)
 		echo 'ERROR:  Invalid command!' >&2

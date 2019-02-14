@@ -9,6 +9,6 @@ indent_size  = 4
 indent_style = space
 
 ## Needed for reStructuredText to work optimally.
-[*.{rst,txt}]
+[*.{rst,txt,yml}]
 indent_size  = 2
 indent_style = space
