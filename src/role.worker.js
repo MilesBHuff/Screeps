@@ -439,17 +439,15 @@ let roleWorker   = {
                 // Harvest
                 // -------------------------------------------------------------
                 if(creep.memory.harvesting) {
-                    if(!target // lgtm [js/trivial-conditional] // False positive:  https://discuss.lgtm.com/t/javascript-fase-positive-useless-conditional-2/1760
-                    ||
-                    (( !(target.store  && _.sum(target.store) > 0)
+                    if(
+                      (!(target.store  && _.sum(target.store) > 0)
                     && !(target.energy &&       target.energy > 0)
-                    )
+                      )
                     &&
-                    !(   target.room.memory
+                    ! (  target.room.memory
                     &&   target.room.memory.dismantle
                     &&   target.room.memory.dismantle.indexOf(creep.memory.target) !== -1
-                    ))
-                    ) {    return ERR_INVALID_TARGET;
+                     )) { return ERR_INVALID_TARGET;
                     } else
                     if( creep.harvest( target)
                     &&  creep.pickup(  target)
