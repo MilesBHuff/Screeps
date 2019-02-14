@@ -109,9 +109,8 @@ const LIB_MOVE = {
             let code = creep.moveByPath(creep.memory.path); //NOTE:  The creep's location doesn't actually change until the next tick.
             //If the creep is tired, then it didn't move, so we don't need to evaluate movement.
             if(!code
-            ||(code // lgtm [js/trivial-conditional] // False positive:  https://discuss.lgtm.com/t/javascript-fase-positive-useless-conditional/1759
-            && code !== ERR_TIRED
-            //&& code !== ERR_NOT_FOUND
+            ||(code !== ERR_TIRED
+          //&& code !== ERR_NOT_FOUND
             )) {
                 // If movement failed, reset the path and return an error.
                 if(code && code !== OK) {
