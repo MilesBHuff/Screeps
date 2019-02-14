@@ -3,15 +3,19 @@
 --------------------------------------------------------------------------------
 
 Except where otherwise stated, everything in this file is legally binding to
-the greatest extents allowed by law.  Where contradictions occur, certain
-sections (with each "section" defined as the area vertically between two '§'
-signs, and each section's name being the text horizontally between the '§' sign
-immediately above the section.  This definition of "section" does not apply to
-the use of the word "section" in any section except for this section, thee
-"Copyright" section.) will override others per the following pattern, with
-sections coming earlier in the list clobbering sections later in the list:
-Copyright, LGPL 3.0, AGPL 3.0, CC BY-SA 4.0.  The LGPL 3.0, AGPL 3.0, and
-CC BY-SA 4.0 are provided in-full and verbatim, with each in its own section.
+the greatest extents allowed by law.
+
+For the purposes of this file, a "section" is defined as the area vertically
+between two '§' signs, and each section's name being the text horizontally
+between the '§' sign immediately above the section.  This definition of
+"section" does not apply to the use of the word "section" in any section except
+for this section, the "Copyright" section.)
+
+The LGPL3, AGPL3, and CC BY-SA 4 are provided in-full and verbatim, with each
+in its own section.  Where contradictions occur, certain sections will
+override others per the following pattern, with sections coming earlier in the
+list clobbering sections later in the list:  Copyright, LAGPL3, LGPL3, AGPL3,
+CC BY-SA 4.
 
 Except where otherwise stated, all source-code files (defined as any files with
 extensions of 'js') in this project are Copyright © to the developer(s) of
@@ -26,28 +30,37 @@ project's git history), from the date of the most recent edit to this project, p
 terms of the the CC BY-SA 4.0 (the Creative Commons Attribution-ShareAlike 4.0
 International license).
 
-Since the LGPL 3.0 explicitly calls for the GPL 3.0, rather than the AGPL 3.0,
-and since both the AGPL 3.0 and LGPL 3.0 prohibit direct modification, an
-addendum is necessary in order to meld the two together.  This addendum cannot
-be taken as violating the verbatim requirement of the AGPL 3.0 or LGPL 3.0, as
-the LGPL 3.0 itself is designed to act as an addendum to the likewise verbatim-
-locked GPL 3.0, and its application is widely considered legal.
-My specific addendums to the licenses sectioned below, are as-follows:
-* Every instance of "GPL" in the LGPL 3.0 or the CC BY-SA 4.0 is to be taken to
+--------------------------------------------------------------------------------
+                               § LAGPL3 §
+--------------------------------------------------------------------------------
+
+Since the LGPL3 explicitly calls for the GPL3, rather than the AGPL3, and since
+both the AGPL3 and LGPL3 prohibit direct modification, an addendum is necessary
+in order to meld the two together.  This addendum cannot be taken as violating
+the verbatim requirement of the AGPL3 or LGPL3, as section 7 of the AGPL3 and
+GPL3 licenses allow developers to add or remove restrictions at will, and that
+is exactly what is being done here:  the additional permissions of the LGPL are
+being added to the AGPL.  Even without section 7, the fact that the LGPL3 is
+designed to act as an addendum to the likewise verbatim-locked GPL3 and the fact
+that its use in that capacity is widely considered legal, is precedent enough
+for the legal legitimacy of the addendums below.
+
+The following addendums override the relevant portions of the AGPL3 and LGPL3.
+* Every instance of "GPL" in the LGPL3 or the CC BY-SA 4 is to be taken to
   mean "AGPL".
-* Every instance of "GNU General Public License" in the LGPL 3.0 or the
-  CC BY-SA 4.0  is to be interpreted as "GNU Affero General Public License"
+* Every instance of "GNU General Public License" in the LGPL3 or the CC BY-SA 4
+  is to be interpreted as "GNU Affero General Public License"
 * This project's git repo's git blame is to be considered adequate fulfillment
   of any attribution requirements.
 
 The following boilerplate text should, ideally, be included towards the top of
-any qualifying source-code file:
-  "Copyright © from the date of the last git commit to this file in this git
-  branch, by all persons with git blame to this file in this git branch, per the
-  terms of the GNU AGPL 3.0 with the additional allowances of the GNU LGPL 3.0."
+any source-code file licensed as LAGPL3:
+  "Copyright © from the date of the last VCS commit to this file in this VCS
+  branch, by all persons with VCS blame to this file in this VCS branch, per the
+  terms of the GNU AGPL 3 with the additional allowances of the GNU LGPL 3."
 
 --------------------------------------------------------------------------------
-                             § AGPL 3.0 §
+                                § AGPL3 §
 --------------------------------------------------------------------------------
 
                     GNU AFFERO GENERAL PUBLIC LICENSE
@@ -713,7 +726,7 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 <https://www.gnu.org/licenses/>.
 
 --------------------------------------------------------------------------------
-                             § LGPL 3.0 §
+                               § LGPL3 §
 --------------------------------------------------------------------------------
 
                    GNU LESSER GENERAL PUBLIC LICENSE
@@ -883,7 +896,7 @@ permanent authorization for you to choose that version for the
 Library.
 
 --------------------------------------------------------------------------------
-                            § CC BY-SA 4.0 §
+                             § CC BY-SA 4 §
 --------------------------------------------------------------------------------
 
 Attribution-ShareAlike 4.0 International
