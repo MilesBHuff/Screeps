@@ -18,7 +18,7 @@ install: npm install
 before_script: false
 script: npm run clean && npm run make
 before_cache: false
-after_success: npm run deploy
+#after_success: npm run deploy
 after_failure: npm run clean
 deploy: false
 after_deploy: false
