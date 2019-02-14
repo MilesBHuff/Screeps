@@ -63,7 +63,7 @@ let roleSpawn  = {
             // The total creep limits across all owned rooms (this is needed to prevent rooms from respawning all their creeps during an expedition to another room)
             // -----------------------------------------------------------------
             for(let roleLimit in creepLimitsGlobal) {
-                roleLimit = 0;
+                roleLimit = 0; // lgtm [js/unused-loop-variable] // False positive:  https://discuss.lgtm.com/t/javascript-fase-positive-for-loop-variable-rolelimit-is-not-used-in-the-loop-body/1758
             } //done
             for(let roomName in Game.rooms) {
                 let room = Game.rooms[roomName];

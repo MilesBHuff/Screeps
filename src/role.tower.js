@@ -21,7 +21,7 @@ let roleTower  = {
         let repairLimit = LIB_MISC.REPAIR_LIMIT;
         if(structure.room.controller) repairLimit*= structure.room.controller.level;
         for(let b = true; b; b = false) {
-            let targets = Array();
+            let targets = Array(); // lgtm [js/useless-assignment-to-local] // It's cleaner to declare it here, and I don't like leaving variables uninitialized.
 
             // Heal the closest damaged allied unit
             // =================================================================

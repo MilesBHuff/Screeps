@@ -57,7 +57,7 @@ let roleWorker   = {
         // Find and affect a target
         // =====================================================================
         for(let l = 0; l < LIB_MISC.LOOP_LIMIT; l++) {
-			let code = OK;
+			let code = OK; // lgtm [js/useless-assignment-to-local] // It's cleaner to declare it here, and I don't like leaving variables uninitialized.
 
 			// Find nearby rooms
             // -----------------------------------------------------------------
@@ -113,8 +113,8 @@ let roleWorker   = {
 
             // Variables
             // =================================================================
-            let targets = Array();
-            let task    = LIB_MISC.TASKS.WAIT;
+            let targets = Array(); // lgtm [js/useless-assignment-to-local] // It's cleaner to declare it here, and I don't like leaving variables uninitialized.
+            let task    = LIB_MISC.TASKS.WAIT; // lgtm [js/useless-assignment-to-local] // It's cleaner to declare it here, and I don't like leaving variables uninitialized.
             switch(true) {
                 default:
 
@@ -439,7 +439,7 @@ let roleWorker   = {
                 // Harvest
                 // -------------------------------------------------------------
                 if(creep.memory.harvesting) {
-                    if(!target
+                    if(!target // lgtm [js/trivial-conditional] // False positive:  https://discuss.lgtm.com/t/javascript-fase-positive-useless-conditional-2/1760
                     ||
                     (( !(target.store  && _.sum(target.store) > 0)
                     && !(target.energy &&       target.energy > 0)

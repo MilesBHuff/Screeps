@@ -80,7 +80,7 @@ let roleFighter = {
             creep.memory.path   = undefined;
             creep.memory.say    = undefined;
             let targets = Array();
-            let task    = LIB_MISC.TASKS.WAIT;
+            let task    = LIB_MISC.TASKS.WAIT; // lgtm [js/useless-assignment-to-local] // It's cleaner to declare it here, and I don't like leaving variables uninitialized.
 
             switch(true) {
                 default:
@@ -124,7 +124,7 @@ let roleFighter = {
 
                 // Heal allied creeps
                 // =================================================================
-                task = LIB_MISC.TASKS.REPAIR;
+                //task = LIB_MISC.TASKS.REPAIR;
 				//TODO
 
                 // Attack enemy structures
