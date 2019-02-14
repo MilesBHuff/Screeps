@@ -1,5 +1,18 @@
 Screeps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+|CI Status| |LGTM Alerts|
+
+.. |CI Status| image:: https://travis-ci.com/MilesBHuff/Screeps.svg?branch=master
+    :target: https://travis-ci.com/MilesBHuff/Screeps
+.. |LGTM Alerts| image:: https://img.shields.io/lgtm/alerts/g/MilesBHuff/Screeps.svg?logo=lgtm&logoWidth=18
+   :target: https://lgtm.com/projects/g/MilesBHuff/Screeps/alerts/
+
+|Project Quality| |JS Quality|
+
+.. |Project Quality| image:: https://bestpractices.coreinfrastructure.org/projects/2525/badge
+   :target: https://bestpractices.coreinfrastructure.org/projects/2525
+.. |JS Quality| image:: https://img.shields.io/lgtm/grade/javascript/g/MilesBHuff/Screeps.svg?logo=lgtm&logoWidth=18
+   :target: https://lgtm.com/projects/g/MilesBHuff/Screeps/context:javascript
 
 About
 ================================================================================
