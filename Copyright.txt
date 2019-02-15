@@ -18,17 +18,18 @@ list clobbering sections later in the list:  Copyright, LAGPL3, LGPL3, AGPL3,
 CC BY-SA 4.
 
 Except where otherwise stated, all source-code files (defined as any files with
-extensions of 'js') in this project are Copyright © to the developer(s) of
-this project (defined as all sentient beings who have git blame for a commit in
-this project's git history), from the date of the most recent edit to this project,
-per the terms of the the LAGPL 3.0 (the GNU Lesser Affero General Public License 3.0).
+extensions of 'js' or 'bash') in this project are Copyright © to the
+developer(s) of this project (defined as all sentient beings who have git blame
+for a commit in this project's git history), from the date of the most recent
+edit to this project, per the terms of the the LAGPL 3.0 (the GNU Lesser Affero
+General Public License 3.0).
 
-Except where otherwise stated, all non-source-code files (defined as any files lacking
-extension of 'js') in this project are Copyright © to the developer(s) of this
-project (defined as all sentient beings who have git blame for a commit in this
-project's git history), from the date of the most recent edit to this project, per the
-terms of the the CC BY-SA 4.0 (the Creative Commons Attribution-ShareAlike 4.0
-International license).
+Except where otherwise stated, all non-source-code files (defined as any files
+lacking extension of 'js') in this project are Copyright © to the developer(s)
+of this project (defined as all sentient beings who have git blame for a commit
+in this project's git history), from the date of the most recent edit to this
+project, per the terms of the the CC BY-SA 4 (the Creative Commons
+Attribution-ShareAlike 4 International license).
 
 --------------------------------------------------------------------------------
                                § LAGPL3 §
@@ -45,9 +46,9 @@ designed to act as an addendum to the likewise verbatim-locked GPL3 and the fact
 that its use in that capacity is widely considered legal, is precedent enough
 for the legal legitimacy of the addendums below.
 
-The following addendums override the relevant portions of the AGPL3 and LGPL3.
-* Every instance of "GPL" in the LGPL3 or the CC BY-SA 4 is to be taken to
-  mean "AGPL".
+The following addendums override the relevant portions of the AGPL3 and LGPL3:
+* Every instance of "GPL" in the LGPL3 or the CC BY-SA 4 is to be taken to mean
+  "AGPL".
 * Every instance of "GNU General Public License" in the LGPL3 or the CC BY-SA 4
   is to be interpreted as "GNU Affero General Public License"
 * This project's git repo's git blame is to be considered adequate fulfillment
