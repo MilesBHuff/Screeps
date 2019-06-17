@@ -298,7 +298,7 @@ let roleSpawn  = {
             // `````````````````````````````````````````````````````````````````
             exitLoop = false;
             for(let p = 0; p < partTypes.length; p++) {
-                if(partRatios[partTypes[p]] >= partCounts[partTypes[p]] / movelessParts
+                if(partRatios[partTypes[p]] > 0 && partRatios[partTypes[p]] >= partCounts[partTypes[p]] / movelessParts
                 && energyTotal >= energyCost + BODYPART_COST[partTypes[p]] + neededMovesCost
                 ) {
                     partCounts.total++;
@@ -339,7 +339,7 @@ let roleSpawn  = {
         ];
         let bodyParts = [];
         for(let p = 0; p < partTypes.length; p++) {
-            while(partCounts[partTypes[p]]) {
+            while(partCounts[partTypes[p]] > 0) {
                 partCounts[partTypes[p]]--;
                 bodyParts.push(partTypes[p]);
             } //done
@@ -357,6 +357,7 @@ let roleSpawn  = {
 
         // Create the creep.
         // ---------------------------------------------------------------------
+		if(dryRun) console.log(bodyParts);          // Contains ATTACK
         for(let i = 0; true; i++) {
             let code = spawn.spawnCreep(
                 bodyParts,
@@ -373,7 +374,6 @@ let roleSpawn  = {
             break;
         } //done
         LIB_MISC.say(name.charAt(0).toUpperCase() + name.slice(1), spawn);
-		if(dryRun) console.log(bodyParts);
         return OK;
     }, //spawnCreep
 }; //roleSpawn
