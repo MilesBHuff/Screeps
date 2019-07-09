@@ -315,9 +315,10 @@ let roleSpawn  = {
             if(partRatios.useTough
             && energyTotal >= energyCost + BODYPART_COST[TOUGH] + neededMovesCost
             ) {
+                partCounts.total++;
                 partCounts[TOUGH]++;
                 energyCost+= BODYPART_COST[TOUGH];
-                if(partCounts[TOUGH] + partCounts.total < MAX_CREEP_SIZE) continue;
+                continue;
             } //fi
 
             // If we reach this point, then nothing more can be added to the creep.
