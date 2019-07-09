@@ -317,7 +317,7 @@ let roleSpawn  = {
             ) {
                 partCounts[TOUGH]++;
                 energyCost+= BODYPART_COST[TOUGH];
-                continue;
+                if(partCounts[TOUGH] + partCounts.total < MAX_CREEP_SIZE) continue;
             } //fi
 
             // If we reach this point, then nothing more can be added to the creep.
@@ -357,7 +357,7 @@ let roleSpawn  = {
 
         // Create the creep.
         // ---------------------------------------------------------------------
-		if(dryRun) console.log(bodyParts);          // Contains ATTACK
+		if(dryRun) console.log(bodyParts.length, bodyParts);
         for(let i = 0; true; i++) {
             let code = spawn.spawnCreep(
                 bodyParts,
