@@ -7,23 +7,31 @@ Meta
 
 General
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++ Creeps should each have a home room in memory.  This is the room to which they
+  will bring resources.  With this, colonization should become as simple as
+  setting a creep's home room.  This should also make it possible for rooms to
+  mine neighbouring maps.
++ Allow setting a colonization target in the memory of a room, so that I won't
+  have to do it manually anymore.
 + DEFINES.wander() should avoid swamps and paths wherever possible, and should
   not position a creep adjacent to a source.
++ Creep pathfinding should treat roads identically to plains if the creep is
+  50% MOVE parts, and swamps identically to roads if the creep has 80% MOVE parts.
 + Toy with the idea of renewing boosted creeps.
 + Figure out how to get creeps of all types to bolster neighbouring owned maps.
 + Cheap scout creeps should be sent to neighbouring unowned maps in order to get
   vision on them.  They should not enter hostile rooms.
-+ Cache all duplicate find operations to save CPU.
-+ Allow setting a colonization target in the memory of a room, so that I won't
-  have to do it manually anymore (a very time-consuming process).
-+ Store a tower tasklist in the memory of the room, so that only the nearest
-  tower performs repairs, and so that multiple towers don't repair the same
-  thing (unless that thing's a wall).
-+ Equalize the contents of all links in each room.  Empty any links that are
-  marked for deconstruction.
++ Cache all duplicate `find` operations to save CPU.
++ Claimers should have a much-more robust AI.
+
+Buildings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++ Only the nearest towers should repair things -- we shouldn't have all towers
+  repairing all things.  The only exception should be walls and ramparts, which
+  should be repaired by all towers, but which should only receive repairs if
+  there are hostiles in the room.
 + Equalize the contents of all terminals.  Empty any terminals that are marked
   for deconstruction.
-+ Change how many MOVE parts get used per creep.  Workers have their MOVE parts calculated to give no delay when full and on a road.  Fighters have their MOVE parts calculated to give no delay when on plains.  Claimers have their MOVE parts calculated to give no delay when in swamps.
 
 Workers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
