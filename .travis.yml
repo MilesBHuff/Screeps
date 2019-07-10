@@ -13,7 +13,7 @@ branches:
     - gh-pages
 
 ## Scripts
-before_install: nvm install lts/*
+before_install: nvm install && nvm use
 install: npm install
 before_script: false
 script: npm run clean && npm run make
