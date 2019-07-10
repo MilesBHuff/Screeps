@@ -32,13 +32,13 @@
     },
     "engines": {
         "node": "latest",
-        "npm": "latest"
+        "npm": "^6"
     },
     "dependencies": {
         "grunt": "latest",
         "grunt-cli": "latest",
         "grunt-screeps": "latest",
-        "lodash": "latest"
+        "lodash": "^3"
     },
     "devDependencies": {
 		"jshint": "latest",
