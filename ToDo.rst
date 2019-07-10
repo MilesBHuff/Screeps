@@ -1,5 +1,5 @@
 MilesBHuff's Screeps ToDo List
-################################################################################3
+################################################################################
 
 Meta
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -40,6 +40,7 @@ Workers
   they have no energy.  If they have energy when they have no target, their
   target should always be an energy-expending task.
 + Structures should generally pass isActive() in order to be valid targets.
++ Increase the priority of spawns in brand-new rooms.
 
 Combat
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
