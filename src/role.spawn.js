@@ -67,9 +67,9 @@ let roleSpawn  = {
             } //done
             for(let roomName in Game.rooms) {
                 let room = Game.rooms[roomName];
-                creepLimitsGlobal.workers  += room.memory.workerLimit;
-                creepLimitsGlobal.fighters += room.memory.fighterLimit;
-                creepLimitsGlobal.claimers += room.memory.claimerLimit;
+                creepLimitsGlobal.workers  += room.memory.workerLimit  != null ? room.memory.workerLimit  : 1;
+                creepLimitsGlobal.fighters += room.memory.fighterLimit != null ? room.memory.fighterLimit : 0;
+                creepLimitsGlobal.claimers += room.memory.claimerLimit != null ? room.memory.claimerLimit : 0;
             } //done
 
             // Find lively creeps
