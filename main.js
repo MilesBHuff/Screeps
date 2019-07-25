@@ -12,7 +12,7 @@ break
 case STRUCTURE_TERMINAL:require("role.terminal").run(structure)
 break
 case STRUCTURE_LINK:require("role.link").run(structure)}}catch(err){console.log(err.stack)}})(),(function upliftCreeps(){for(let name in Game.creeps)try{let creep=Game.creeps[name]
-if(creep.memory||(creep.memory={role:LIB_MISC.ROLES.MANUAL}),0&&(creep.memory.target=undefined,creep.memory.path=undefined),creep.spawning)continue
+if(creep.memory||(creep.memory={role:LIB_MISC.ROLES.MANUAL}),creep.spawning)continue
 switch(creep.memory.role){case LIB_MISC.ROLES.WORKER:require("role.worker").run(creep)
 break
 case LIB_MISC.ROLES.FIGHTER:require("role.fighter").run(creep)

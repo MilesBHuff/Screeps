@@ -4,11 +4,11 @@ if(cache||(creep.memory.path=undefined),creep.memory&&creep.memory.target){let t
 if(!target)return ERR_INVALID_TARGET
 if(creep.pos===target.pos)return creep.memory.path=undefined,OK
 if(creep.room.name!==target.room.name&&(target=creep.pos.findClosestByRange(creep.room.find(creep.room.findExitTo(target.room)))),!creep.memory.path){let pathOpts={ignoreCreeps:!1,ignoreDestructibleStructures:!1,ignoreRoads:!1,maxOps:1e3,maxRooms:4,serialize:!1},path=creep.pos.findPathTo(target,pathOpts),validPath=!1
-if(path.length)if(target.room===creep.room)for(let x=-1;x<=1;x++)for(let y=-1;y<=1;y++){let pos=new RoomPosition(target.pos.x+x,target.pos.y+y,target.pos.roomName)
-pos.x===path[path.length-1].x&&pos.y===path[path.length-1].y&&pos.lookFor(LOOK_CREEPS).length<=0&&(validPath=!0)}else validPath=!0
+if(path.length)if(cache&&target.room===creep.room)for(let x=-1;x<=1;x++)for(let y=-1;y<=1;y++){let pos=new RoomPosition(target.pos.x+x,target.pos.y+y,target.pos.roomName)
+pos.x===path[path.length-1].x&&pos.y===path[path.length-1].y&&(validPath=!0)}else validPath=!0
 if(!validPath)return creep.memory.path=undefined,ERR_NO_PATH
 creep.memory.path=Room.serializePath(path),path=undefined,validPath=undefined}let code=creep.moveByPath(creep.memory.path)
-if(!code||code&&code!==ERR_TIRED){if(code&&code!==OK)return creep.memory.path=undefined,code
+if(!code||code!==ERR_TIRED){if(code&&code!==OK)return creep.memory.path=undefined,code
 {let lookCreep,path=Room.deserializePath(creep.memory.path)
 if(path.length>=1&&path[1]&&path[1].x&&path[1].y&&(lookCreep=new RoomPosition(path[1].x,path[1].y,creep.room.name).lookFor(LOOK_CREEPS)[0]),lookCreep&&lookCreep!==creep)return creep.memory.path=undefined,ERR_NOT_FOUND
 path[0]&&path[0].x===creep.pos.x&&path[0].y===creep.pos.y&&path.shift(),creep.memory.path=Room.serializePath(path)}}switch(color){case COLOR_RED:color="#EA4034"

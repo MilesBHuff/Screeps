@@ -29,17 +29,17 @@ case LIB_MISC.TASKS.UPGRADE:creep.memory.say="Upgrade"
 break
 case LIB_MISC.TASKS.BUILD:creep.memory.say="Build"
 break
-case LIB_MISC.TASKS.REPAIR:creep.memory.say="Repair"}return target.id}}rooms[0]!==creep.room&&(rooms=LIB_MISC.sortRooms(creep.pos,rooms)),rooms.shift()}function affectTarget(creep){let code=OK
+case LIB_MISC.TASKS.REPAIR:creep.memory.say="Repair"}return creep.memory.target=target.id,OK}}return rooms[0]!==creep.room&&(rooms=LIB_MISC.sortRooms(creep.pos,rooms)),rooms.shift(),ERR_NOT_FOUND}function affectTarget(creep){let code=OK
 if(creep.memory&&creep.memory.target){let target=Game.getObjectById(creep.memory.target)
 if(!target)return ERR_INVALID_TARGET
-if(creep.memory.harvesting){if(!target||!(target.store&&_.sum(target.store)>0||target.energy&&target.energy>0||target.room.memory&&target.room.memory.dismantle&&-1!==target.room.memory.dismantle.indexOf(creep.memory.target)))return ERR_INVALID_TARGET
+if(creep.memory.harvesting){if(!(target.store&&_.sum(target.store)>0||target.energy&&target.energy>0||target.room.memory&&target.room.memory.dismantle&&-1!==target.room.memory.dismantle.indexOf(creep.memory.target)))return ERR_INVALID_TARGET
 creep.harvest(target)&&creep.pickup(target)&&creep.withdraw(target,RESOURCE_ENERGY)&&(target.room.controller&&target.room.controller.owner&&target.room.controller.owner!==LIB_MISC.USERNAME||target.room.memory&&target.room.memory.dismantle&&-1!==target.room.memory.dismantle.indexOf(creep.memory.target))&&creep.dismantle(target)&&(code=LIB_MOVE.move(creep,COLOR_YELLOW,!0))}else if(target.structureType===STRUCTURE_CONTROLLER)creep.upgradeController(target)&&(code=LIB_MOVE.move(creep,COLOR_CYAN,!0))
 else if(target.progressTotal)creep.build(target)&&(code=LIB_MOVE.move(creep,COLOR_WHITE,!0))
 else if(target.hits<target.hitsMax&&target.hits<repairLimit)creep.repair(target)&&(code=LIB_MOVE.move(creep,COLOR_PURPLE,!0))
 else{if(!(target.energy<target.energyCapacity))return ERR_INVALID_TARGET
 creep.transfer(Game.getObjectById(creep.memory.target),RESOURCE_ENERGY)&&(code=LIB_MOVE.move(creep,LIB_MISC.COLOR_BLACK,!0))}}return!creep.memory.say||code!==OK&&code!==ERR_TIRED&&code!==ERR_NOT_FOUND||(creep.say(creep.memory.say),creep.memory.say=undefined),code}repairLimit=0,creep&&creep.room&&creep.room.controller&&creep.room.controller.level&&(repairLimit=LIB_MISC.REPAIR_LIMIT*creep.room.controller.level),repairLimit||(repairLimit=LIB_MISC.REPAIR_LIMIT),creep.memory&&creep.memory.target&&(canWander=!1),creep.memory.harvesting?_.sum(creep.carry)>=creep.carryCapacity&&(creep.memory.harvesting=!1,creep.memory.target=undefined,creep.memory.path=undefined):_.sum(creep.carry)<=0&&(creep.memory.harvesting=!0,creep.memory.target=undefined,creep.memory.path=undefined)
-for(let l=0;l<LIB_MISC.LOOP_LIMIT;l++){creep.memory&&creep.memory.target||(rooms.length||(rooms=LIB_MISC.findRooms(creep.room.name)),creep.memory.target=findTarget(creep))
-let code=affectTarget(creep)
-if(!code||code===OK||code===ERR_TIRED||code===ERR_NOT_FOUND)break
-if(badTargets.push(creep.memory.target),creep.memory.target=undefined,creep.memory.path=undefined,!rooms.length)break}canWander&&LIB_MOVE.wander(creep)}}
+for(let l=0;l<LIB_MISC.LOOP_LIMIT;l++){let code=OK
+if(rooms.length||(rooms=LIB_MISC.findRooms(creep.room.name)),!rooms.length)break
+if(creep.memory&&creep.memory.target||(code=findTarget(creep))!==ERR_NOT_FOUND){if(!(code=affectTarget(creep))||code===OK||code===ERR_TIRED||code===ERR_NOT_FOUND)break
+badTargets.push(creep.memory.target),creep.memory.target=undefined,creep.memory.path=undefined}}canWander&&LIB_MOVE.wander(creep)}}
 module.exports=roleWorker
