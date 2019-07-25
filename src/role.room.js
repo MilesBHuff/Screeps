@@ -25,6 +25,7 @@ let roleRoom   = {
             savedStructures();
         } //fi
 
+
         // Condemned structures
         // =============================================================================
         function condemnedStructures() {

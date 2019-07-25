@@ -57,22 +57,22 @@ let roleWorker   = {
         // Find and affect a target
         // =====================================================================
         for(let l = 0; l < LIB_MISC.LOOP_LIMIT; l++) {
-			let code = OK; // lgtm [js/useless-assignment-to-local] // It's cleaner to declare it here, and I don't like leaving variables uninitialized.
+            let code = OK; // lgtm [js/useless-assignment-to-local] // It's cleaner to declare it here, and I don't like leaving variables uninitialized.
 
-			// Find nearby rooms
+            // Find nearby rooms
             // -----------------------------------------------------------------
-			// If the array of rooms has not already been populated, populate it.
+            // If the array of rooms has not already been populated, populate it.
             if(!rooms.length) {
                 rooms = LIB_MISC.findRooms(creep.room.name);
             } //fi
-			// If we're out of rooms, give up.
+            // If we're out of rooms, give up.
             if(!rooms.length) break;
 
             // Find a target
             // -----------------------------------------------------------------
             if(!creep.memory || !creep.memory.target) {
                 code = findTarget(creep);
-				if(code === ERR_NOT_FOUND) continue;
+                if(code === ERR_NOT_FOUND) continue;
             } //fi
 
             // Affect the target
@@ -95,7 +95,7 @@ let roleWorker   = {
         // Find target
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         /** This function finds a target in range of the current creep, and
-		 *  assigns it to the creep.
+         *  assigns it to the creep.
          * @return an exit code
         **/
         function findTarget(creep) {
@@ -405,7 +405,7 @@ let roleWorker   = {
                         break;
                     } //esac
                     creep.memory.target = target.id;
-					return OK;
+                    return OK;
                 } //fi
             } //fi
 
@@ -417,7 +417,7 @@ let roleWorker   = {
             } //fi
             // Remove the current room from the array.
             rooms.shift();
-			return ERR_NOT_FOUND;
+            return ERR_NOT_FOUND;
         } //function
 
         // Affect target

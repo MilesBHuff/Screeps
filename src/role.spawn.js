@@ -104,46 +104,46 @@ let roleSpawn  = {
 
         // Create creep
         // =====================================================================
-		/** Figure out what kind of creep to spawn, and then spawn that creep.
-		 *  The algorithm works like this:  Spawn workers before fighters before
-		 *  claimers, and make sure that none has more that one more than
-		 *  another (within precalculated limits).
-		 * @return an error code.
-		**/
+        /** Figure out what kind of creep to spawn, and then spawn that creep.
+         *  The algorithm works like this:  Spawn workers before fighters before
+         *  claimers, and make sure that none has more that one more than
+         *  another (within precalculated limits).
+         * @return an error code.
+        **/
         function trySpawnCreep() {
             for(let i = 0;
-				    i < spawn.room.memory.workerLimit
-				 || i < spawn.room.memory.fighterLimit
-				 || i < spawn.room.memory.claimerLimit;
-				    i++
-			) {
+                    i < spawn.room.memory.workerLimit
+                 || i < spawn.room.memory.fighterLimit
+                 || i < spawn.room.memory.claimerLimit;
+                    i++
+            ) {
                 // Figure out what kind of creep to spawn
                 // -------------------------------------------------------------
-//				//TODO:  This is a pending refactor;  it can completely replace the rest of the function, below.
-//				for(let role in LIB_MISC.ROLES) {
-//					if(creeps. local[role].length <= i
-//					&& creeps. local[role].length < spawn.room.memory.limits[role]
-//					&& creeps.global[role].length <       creepLimits.global[role]
-//					) {
-//						roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES[role]);
-//						if(spawn.spawning) break;
-//					} //fi
-//				} //done
-//				if(!spawn.spawning) return ERR_NOT_FOUND;
+//                //TODO:  This is a pending refactor;  it can completely replace the rest of the function, below.
+//                for(let role in LIB_MISC.ROLES) {
+//                    if(creeps. local[role].length <= i
+//                    && creeps. local[role].length < spawn.room.memory.limits[role]
+//                    && creeps.global[role].length <       creepLimits.global[role]
+//                    ) {
+//                        roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES[role]);
+//                        if(spawn.spawning) break;
+//                    } //fi
+//                } //done
+//                if(!spawn.spawning) return ERR_NOT_FOUND;
                 /*//*/ if(  creepsLocal.workers.length <= i
-				       &&   creepsLocal.workers.length < spawn.room.memory.workerLimit
-					   &&  creepsGlobal.workers.length < creepLimitsGlobal.workers
-				) { roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.WORKER);
+                       &&   creepsLocal.workers.length < spawn.room.memory.workerLimit
+                       &&  creepsGlobal.workers.length < creepLimitsGlobal.workers
+                ) { roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.WORKER);
                 } else if( creepsLocal.fighters.length <= i
-					   &&  creepsLocal.fighters.length < spawn.room.memory.fighterLimit
-					   && creepsGlobal.fighters.length < creepLimitsGlobal.fighters
-				) { roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.FIGHTER);
+                       &&  creepsLocal.fighters.length < spawn.room.memory.fighterLimit
+                       && creepsGlobal.fighters.length < creepLimitsGlobal.fighters
+                ) { roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.FIGHTER);
                 } else if( creepsLocal.claimers.length <= i
-					   &&  creepsLocal.claimers.length < spawn.room.memory.claimerLimit
-					   && creepsGlobal.claimers.length < creepLimitsGlobal.claimers
-				) { roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.CLAIMER);
+                       &&  creepsLocal.claimers.length < spawn.room.memory.claimerLimit
+                       && creepsGlobal.claimers.length < creepLimitsGlobal.claimers
+                ) { roleSpawn.spawnCreep(spawn, LIB_MISC.ROLES.CLAIMER);
                 } else
-				  { continue;
+                  { continue;
                 } //fi
                 if(spawn.spawning) break;
             } //done
@@ -164,8 +164,8 @@ let roleSpawn  = {
      * @param dryRun   Whether to do a dry run.
     **/
     spawnCreep: function(spawn, role, dryRun) {
-		dryRun = dryRun ? true : false;
-		let name = "";
+        dryRun = dryRun ? true : false;
+        let name = "";
 
         // Determine what kind of creep to build
         // ---------------------------------------------------------------------
@@ -219,8 +219,8 @@ let roleSpawn  = {
             partRatios[CLAIM]       = 0.01;
             break;
 
-			default:
-			return ERR_INVALID_ARGS;
+            default:
+            return ERR_INVALID_ARGS;
         } //esac
         if(spawn.room.controller && spawn.room.controller.level < LIB_MISC.DEVELOPED_CTRL_LVL) {
             // When the controller level is below this value, movesPerPart is ignored, and all creeps spawn with a 1:1 ratio of MOVEs:ControllerLevels is used as a proxy for infrastructure development, as 1:1 for everyone only makes sense when there are no roads.
@@ -358,7 +358,7 @@ let roleSpawn  = {
 
         // Create the creep.
         // ---------------------------------------------------------------------
-		if(dryRun) console.log(bodyParts.length, bodyParts);
+        if(dryRun) console.log(bodyParts.length, bodyParts);
         for(let i = 0; true; i++) {
             let code = spawn.spawnCreep(
                 bodyParts,

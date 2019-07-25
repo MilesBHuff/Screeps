@@ -18,15 +18,15 @@ let roleFighter = {
     **/
     run: function(creep) {
 
-		// If currently next to a hostile, retreat
-		// =====================================================================
-		hostiles = creep.room.find(FIND_HOSTILE_CREEPS);
-		for(let h = 0; h < hostiles.length; h++) {
-			if(creep.pos.isNearTo(hostiles[h])) {
-			   creep.moveTo(creep.pos.x + (creep.pos.x - hostiles[h].pos.x),
-							creep.pos.y + (creep.pos.y - hostiles[h].pos.y));
-			} //fi
-		} //done
+        // If currently next to a hostile, retreat
+        // =====================================================================
+        hostiles = creep.room.find(FIND_HOSTILE_CREEPS);
+        for(let h = 0; h < hostiles.length; h++) {
+            if(creep.pos.isNearTo(hostiles[h])) {
+               creep.moveTo(creep.pos.x + (creep.pos.x - hostiles[h].pos.x),
+                            creep.pos.y + (creep.pos.y - hostiles[h].pos.y));
+            } //fi
+        } //done
 
         // Validate the current target (with a small chance of having to find a new target no matter what)
         // ====================================================================
@@ -42,14 +42,14 @@ let roleFighter = {
 
             // Find a target
             // -----------------------------------------------------------------
-			if(!creep.memory) {
-				creep.memory = {};
-			} //fi
+            if(!creep.memory) {
+                creep.memory = {};
+            } //fi
             if(!creep.memory.target) {
                 creep.memory.target = findTarget(creep);
-				if(creep.memory.target) {
-					break;
-				} //fi
+                if(creep.memory.target) {
+                    break;
+                } //fi
             } //fi
 
             // Affect the target
@@ -125,7 +125,7 @@ let roleFighter = {
                 // Heal allied creeps
                 // =================================================================
                 //task = LIB_MISC.TASKS.REPAIR;
-				//TODO
+                //TODO
 
                 // Attack enemy structures
                 // =================================================================
@@ -181,43 +181,43 @@ let roleFighter = {
             // Variables
             // =====================================================================
             let target = Game.getObjectById(creep.memory.target);
-			if(!target) {
-				creep.memory.target = undefined;
-				creep.memory.path   = undefined;
-				return ERR_INVALID_TARGET;
-			} //fi
+            if(!target) {
+                creep.memory.target = undefined;
+                creep.memory.path   = undefined;
+                return ERR_INVALID_TARGET;
+            } //fi
             let getCloser = false;
 
-			// Try to heal the target
-			// -----------------------------------------------------------------
-			if(creep.getActiveBodyparts(HEAL) > 0) {
-				if(creep.hits < creep.hitsMax) {
-					creep.heal(creep);
-				} else if(target.my && target.hits < target.hitsMax) {
-					let code = creep.heal(target);
-					if(code !== OK) getCloser = true;
-				} //fi
-			} //fi
+            // Try to heal the target
+            // -----------------------------------------------------------------
+            if(creep.getActiveBodyparts(HEAL) > 0) {
+                if(creep.hits < creep.hitsMax) {
+                    creep.heal(creep);
+                } else if(target.my && target.hits < target.hitsMax) {
+                    let code = creep.heal(target);
+                    if(code !== OK) getCloser = true;
+                } //fi
+            } //fi
 
-			// Try to melee the target
-			// -----------------------------------------------------------------
+            // Try to melee the target
+            // -----------------------------------------------------------------
             if(creep.getActiveBodyparts(ATTACK) > 0) {
                 let code = creep.attack(target);
-				if(code !== OK) getCloser = true;
+                if(code !== OK) getCloser = true;
             } //fi
 
-			// Try to range the target
-			// -----------------------------------------------------------------
+            // Try to range the target
+            // -----------------------------------------------------------------
             if(creep.getActiveBodyparts(RANGED_ATTACK) > 0) {
                 let code = creep.rangedAttack(target);
-				if(code !== OK) getCloser = true;
+                if(code !== OK) getCloser = true;
             } //fi
 
-			// If we're not close enough, get closer.
-			// -----------------------------------------------------------------
+            // If we're not close enough, get closer.
+            // -----------------------------------------------------------------
             if(getCloser) {
                 let code = LIB_MOVE.move(creep, COLOR_RED, false);
-				if(code === ERR_NO_PATH) {
+                if(code === ERR_NO_PATH) {
                     creep.memory.target = undefined;
                     creep.memory.path   = undefined;
                     return ERR_NO_PATH;

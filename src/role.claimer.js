@@ -1,7 +1,7 @@
 // role.claimer.js
 // #############################################################################
-/** This script is designed to streamline claiming new controllers.  Target
- *  acquisition must still be done manually.
+/** This script is designed to streamline claiming new controllers.    Target
+ *    acquisition must still be done manually.
 **/
 "use strict";
 

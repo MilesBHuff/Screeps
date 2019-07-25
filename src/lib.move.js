@@ -65,14 +65,14 @@ const LIB_MOVE = {
                 }; //struct
                 // Find a path
                 let path = creep.pos.findPathTo(target, pathOpts);
-				/* Check to see if the final node node of the path is the
-				* target.  The pathfinder returns the best possible path,
-				* even if that path doesn't actually reach the target.
-				* Good paths always have the target as their final node.
-				* There's no need to check this if we're not using cached
-				* paths.
-				*TODO:  Validate paths that go to other rooms.
-				*/
+                /* Check to see if the final node node of the path is the
+                * target.  The pathfinder returns the best possible path,
+                * even if that path doesn't actually reach the target.
+                * Good paths always have the target as their final node.
+                * There's no need to check this if we're not using cached
+                * paths.
+                *TODO:  Validate paths that go to other rooms.
+                */
                 let validPath = false;
                 if(path.length) {
                     if(cache && target.room === creep.room) {
@@ -83,8 +83,8 @@ const LIB_MOVE = {
                                                            target.pos.roomName);
                                 if (pos.x === path[path.length - 1].x
                                 &&  pos.y === path[path.length - 1].y
-								) {
-									validPath = true;
+                                ) {
+                                    validPath = true;
                                 } //fi
                             } //done
                         } //done
