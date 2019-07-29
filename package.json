@@ -1,7 +1,7 @@
 {
     "name": "Screeps",
     "version": "0.0.0",
-	"private": "true",
+	"private": true,
     "license": "SEE LICENSE IN ./License.txt",
 	"contributors": "./Authors.txt",
 	"man": "ReadMe.rst",
