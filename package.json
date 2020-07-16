@@ -38,7 +38,7 @@
         "grunt": "latest",
         "grunt-cli": "latest",
         "grunt-screeps": "latest",
-        "lodash": "^3"
+        "lodash": "^4"
     },
     "devDependencies": {
 		"jshint": "latest",
