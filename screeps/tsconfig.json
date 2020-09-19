@@ -53,6 +53,9 @@
         "removeComments": true
     },
 
+    "files": [
+        "src/Main.ts"
+    ],
     "include": [
         "**/*.ts",
         "**/*.js",

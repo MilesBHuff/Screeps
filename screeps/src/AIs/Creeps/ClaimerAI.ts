@@ -1,7 +1,7 @@
 /** This script is designed to streamline claiming new controllers.    Target
  *    acquisition must still be done manually.
 **/
-module.exports = class ClaimerRole implements Role {
+module.exports = class ClaimerAI implements AI {
 
     ////////////////////////////////////////////////////////////////////////////////
     constructor(

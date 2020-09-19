@@ -8,7 +8,7 @@ module.exports = grunt => {
 //              expand: true,
 //              filter: "",
 //              cwd: "./",
-                src: "bin/*.js",
+                src: "dist/*.js",
 //              dest: "/dist",
 //              rename: (dest, src) => "",
             },
