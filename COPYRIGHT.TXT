@@ -1,3 +1,10 @@
+Files with the following extensions are to be considered "source-code" for the
+purposes of this document:
+- .js
+- .bash
+All other files are to be considered "non-source-code" for the purposes of this
+document.
+
 --------------------------------------------------------------------------------
                               § Copyright §
 --------------------------------------------------------------------------------
@@ -17,19 +24,18 @@ override others per the following pattern, with sections coming earlier in the
 list clobbering sections later in the list:  Copyright, LAGPL3, LGPL3, AGPL3,
 CC BY-SA 4.
 
-Except where otherwise stated, all source-code files (defined as any files with
-extensions of 'js' or 'bash') in this project are Copyright © to the
-developer(s) of this project (defined as all sentient beings who have git blame
-for a commit in this project's git history), from the date of the most recent
-edit to this project, per the terms of the the LAGPL 3.0 (the GNU Lesser Affero
-General Public License 3.0).
+Except where otherwise stated, all source-code files in this project are
+Copyright © to the developer(s) of this project (defined as all sentient beings
+who have git blame for a commit in this project's git history), from the date of
+the most recent edit to this project, per the terms of the the LAGPL 3.0 (the
+GNU Lesser Affero General Public License 3.0).
 
-Except where otherwise stated, all non-source-code files (defined as any files
-lacking extension of 'js') in this project are Copyright © to the developer(s)
-of this project (defined as all sentient beings who have git blame for a commit
-in this project's git history), from the date of the most recent edit to this
-project, per the terms of the the CC BY-SA 4 (the Creative Commons
-Attribution-ShareAlike 4 International license).
+Except where otherwise stated, all non-source-code files in this project are
+Copyright © to the developer(s) of this project (defined as all sentient beings
+who have git blame for a commit in this project's git history), from the date of
+the most recent edit to this project, per the terms of the the CC BY-SA 4 (the
+Creative Commons Attribution-ShareAlike 4 International license).
+
 
 --------------------------------------------------------------------------------
                                § LAGPL3 §
