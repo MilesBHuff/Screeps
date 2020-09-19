@@ -20,7 +20,8 @@
     "type": "commonjs",
     "main": "./dist/main.js",
     "scripts": {
-        "build": "tsc",
+        "clean": "rm -rf dist/*",
+        "make": "tsc",
         "postinstall": "npm rebuild && npm dedupe"
     },
     "engines": {
