@@ -1,10 +1,7 @@
 {
-    "name": "Screeps",
+    "name": "screeps",
     "version": "0.0.0",
-	"private": "true",
-    "license": "SEE LICENSE IN ./License.txt",
-	"contributors": "./Authors.txt",
-	"man": "ReadMe.rst",
+    "license": "SEE LICENSE IN ../LICENSE.TXT",
     "description": "Miles's current Screeps scripts. Screeps is an MMORTS for programmers; it's played entirely in JavaScript.",
     "keywords": [
         "Screeps"
@@ -15,33 +12,28 @@
         "type": "git",
         "url": "https://github.com/MilesBHuff/Screeps"
     },
+    "private": true,
 	"directories": {
 		"bin": "./bin",
 		"lib": "./src"
 	},
+    "type": "commonjs",
 	"main": "./bin/main.js",
     "scripts": {
-        "clean": "./build/Makefile.bash clean",
-        "deploy": "./build/Makefile.bash deploy",
-        "make": "./build/Makefile.bash make",
-        "upkeep": "./build/Makefile.bash upkeep",
-		"postinstall": "npm run upkeep",
-		"prepublishOnly": "npm run clean && npm run make",
-		"publish": "npm run deploy",
-		"prestart": "npm run clean && npm run make"
+      "postinstall": "npm rebuild && npm dedupe",
+      "build": "npx ng build",
+      "start": "npx ng serve"
     },
     "engines": {
-        "node": "latest",
-        "npm": "^6"
+      "npm": "^6"
     },
     "dependencies": {
+        "screeps": "latest"
+    },
+    "devDependencies": {
         "grunt": "latest",
         "grunt-cli": "latest",
         "grunt-screeps": "latest",
-        "lodash": "^3"
-    },
-    "devDependencies": {
-		"jshint": "latest",
         "uglify-es": "latest"
     }
-}
+  }

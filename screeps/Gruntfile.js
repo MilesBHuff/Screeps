@@ -1,6 +1,6 @@
 //git update-index --skip-worktree Gruntfile.js
 //NOTE:  Make sure to run the above command before saving an email or password in this file!
-module.exports = function(grunt) {
+module.exports = grunt => {
     grunt.loadNpmTasks("grunt-screeps");
     grunt.initConfig({
         screeps: {
@@ -13,8 +13,8 @@ module.exports = function(grunt) {
 //              rename: (dest, src) => "",
             },
             options: {
-                email: "MilesBHuff@Linux.com",
-                password: "LigBryne0#skriips",
+                email: "",
+                password: "",
                 branch: "minified",
                 ptr: false,
             },
