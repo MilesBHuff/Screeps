@@ -7,33 +7,34 @@
         "Screeps"
     ],
     "homepage": "https://Screeps.com/a/#!/profile/MilesBHuff",
-	"bugs": "https://github.com/MilesBHuff/Screeps/issues",
+    "bugs": "https://github.com/MilesBHuff/Screeps/issues",
     "repository": {
         "type": "git",
         "url": "https://github.com/MilesBHuff/Screeps"
     },
     "private": true,
-	"directories": {
-		"bin": "./bin",
-		"lib": "./src"
-	},
+    "directories": {
+        "bin": "./dist",
+        "lib": "./src"
+    },
     "type": "commonjs",
-	"main": "./bin/main.js",
+    "main": "./dist/main.js",
     "scripts": {
-      "postinstall": "npm rebuild && npm dedupe",
-      "build": "npx ng build",
-      "start": "npx ng serve"
+        "build": "tsc",
+        "postinstall": "npm rebuild && npm dedupe"
     },
     "engines": {
-      "npm": "^6"
-    },
-    "dependencies": {
-        "screeps": "latest"
+        "node": "^10",
+        "npm": "^6"
     },
     "devDependencies": {
+        "@types/lodash": "^3",
+        "@types/node": "^10",
+        "@types/screeps": "latest",
         "grunt": "latest",
         "grunt-cli": "latest",
         "grunt-screeps": "latest",
+        "typescript": "latest",
         "uglify-es": "latest"
     }
-  }
+}

@@ -3,6 +3,7 @@
 package-lock.json
 
 ## Dynamic/Unversionable
+dist/
 node_modules/
 *.bak
 *.old
@@ -18,9 +19,6 @@ node_modules/
 desktop.ini
 thumbs.db
 .fuse_hidden*
-
-# Minified/binary files
-bin/*
 
 # Keep .keep files
 !.keep
