@@ -6,56 +6,38 @@ module.exports.loop = class Main {
         private readonly moveLib = require(`libs/move.lib`),
     ) {
 
-        // Every 8 ticks
+        // Every 8 ticks (roughly)
         if(this.miscLib.gamble(1 / 8)) {
-            this.cleanMemories();
+            this.purgeOldMemories('creeps');
+            // this.purgeOldMemories('structures');
+            this.purgeOldMemories('rooms');
         }
 
         // Every tick
-        this.setAis();
+        this.controlRooms();
+        this.controlStructures();
+        this.controlCreeps();
 
         // Done
         return this;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    /** Delete the memories of dead entities */
-    private cleanMemories(): void {
-
-        // Creeps
-        for(const name in Memory.creeps) {
-            if(!Game.creeps[name]) {
-                delete Memory.creeps[name];
-            }
-        }
-
-        // // Structures
-        // for(const name in Memory.structures) {
-        //     if(!Game.structures[name]) {
-        //         delete Memory.structures[name];
-        //     }
-        // }
-
-        // Rooms
-        for(const name in Memory.rooms) {
-            if(!Game.rooms[name]) {
-                delete Memory.rooms[name];
+    /** Delete the memories of dead entities.
+     * @param entityType The type of entity the memories of which to purge
+    **/
+    private purgeOldMemories(entityType: 'creeps'|'rooms'): void {
+        for(const name of Object.keys(Memory[entityType])) {
+            if(!Game[entityType][name]) {
+                delete Memory[entityType][name];
             }
         }
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    private setAis(): void {
-        this.upliftRooms();
-        this.upliftStructures();
-        this.upliftCreeps();
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-    private upliftRooms(): void {
-        for(const name in Game.rooms) {
+    private controlRooms(): void {
+        for(const room of Object.values(Game.rooms)) {
             try {
-                const room = Game.rooms[name];
                 if(room.controller?.my) {
                     require(`role.room`).run(room);
                 }
@@ -66,10 +48,9 @@ module.exports.loop = class Main {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    private upliftStructures(): void {
-        for(const name in Game.structures) {
+    private controlStructures(): void {
+        for(const structure of Object.values(Game.structures)) {
             try {
-                const structure = Game.structures[name];
                 switch(structure.structureType) {
 
                     case STRUCTURE_SPAWN:
@@ -95,24 +76,23 @@ module.exports.loop = class Main {
     }
 
     ////////////////////////////////////////////////////////////////////////////////
-    private upliftCreeps(): void {
-        for(const name in Game.creeps) {
+    private controlCreeps(): void {
+        for(const creep of Object.values(Game.creeps)) {
             try {
+                if(creep.spawning) continue;
 
                 // Setup
-                const creep = Game.creeps[name];
-                if(!creep.memory) {
+                if(creep.memory === undefined) {
                     creep.memory = {
                         role: CreepRole.manual,
                     };
                 }
 
                 // Debug
-                // creep.memory.target = undefined; // Useful when you need to reset everyone's tasks.
-                // creep.memory.path   = undefined; // Useful when you need to reset everyone's paths.
+                // delete creep.memory.target; // Useful when you need to reset everyone's tasks.
+                // delete creep.memory.path;   // Useful when you need to reset everyone's paths.
 
                 // Load AIs
-                if(creep.spawning) continue;
                 switch(creep.memory.role) {
 
                     case CreepRole.worker:
