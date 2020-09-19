@@ -49,10 +49,10 @@ module.exports = class MiscLib implements Lib {
      * @param  badTargets The array whose IDs to filter out
      * @return targets without badTargets.
     **/
-   public static filterTargets(
+   public static readonly filterTargets = (
        newTargets: any[],
        badTargets: any[],
-    ): any[] {
+    ): any[] => {
         if(newTargets.length && badTargets.length) {
             for(let nt = 0; newTargets[nt]; nt++) {
                 for(let bt = 0; badTargets[bt]; bt++) {
@@ -77,11 +77,11 @@ module.exports = class MiscLib implements Lib {
      * @param  act   The performance
      * @return an exit code.
     **/
-    public static lookAndAct(
+    public static readonly lookAndAct = (
         creep: Creep,
         look: number,
         act: unknown,
-    ): void {
+    ): void => {
         //TODO
     }
 
@@ -90,7 +90,7 @@ module.exports = class MiscLib implements Lib {
      * @param  roomName The name of the room whose neighbours to find
      * @return the given room and its neighbours.
     **/
-    public static findRooms(roomName: string): Room[] {
+    public static readonly findRooms = (roomName: string): Room[] => {
 
         // Push the creep's current room.
         const rooms: string[] = [roomName];
@@ -121,7 +121,7 @@ module.exports = class MiscLib implements Lib {
      * @param  odds The odds of winning, out of 1
      * @return whether you won.
     **/
-    public static gamble(odds: number): boolean {
+    public static readonly gamble = (odds: number): boolean => {
         return !Math.floor(Math.random() * (1 / odds));
     }
 
@@ -130,10 +130,10 @@ module.exports = class MiscLib implements Lib {
     * @param creeps    The creeps to use
     * @param maxCreeps The number to cull to
     **/
-    public static killOff(
+    public static readonly killOff = (
         creeps: Creep[],
         maxCreeps: number,
-    ): void {
+    ): void => {
         for(let i = 0; creeps.length > maxCreeps; i++) {
             creeps[i].suicide();
         }
@@ -145,10 +145,10 @@ module.exports = class MiscLib implements Lib {
      * @param  object The thing that will display the text
      * @return an exit code.
     **/
-    public static say(
+    public static readonly say = (
         text: string,
         object: Structure,
-    ): OK|ERR_INVALID_ARGS {
+    ): OK|ERR_INVALID_ARGS => {
 
         if(!text
         || !object?.room
@@ -176,10 +176,10 @@ module.exports = class MiscLib implements Lib {
      * @param  rooms The array to sort
      * @return the sorted array.
     **/
-    public static sortRooms(
+    public static readonly sortRooms = (
         pos: RoomPosition,
         rooms: Room[],
-    ): Room[] {
+    ): Room[] => {
         const roomsSorted: Room[] = [];
         while(0 < rooms.length) {
 
