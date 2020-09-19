@@ -1,2 +1,30 @@
-*     text=auto
-* text eol=lf
+#NOTE: Run `git add : --renormalize` after editing this file.
+
+## Defaults
+## -----------------------------------------------------------------------------
+* text=auto eol=lf
+
+## Scripts
+## -----------------------------------------------------------------------------
+*.js text
+*.ts text
+
+## Serialization
+## -----------------------------------------------------------------------------
+*.json  text
+*.jsonc text
+*.xml   text diff=xml
+*.yml   text
+
+## Documentation
+## -----------------------------------------------------------------------------
+*.md  text
+*.rst text
+*.txt text
+
+## Other
+## -----------------------------------------------------------------------------
+
+#NOTE: Set to `text` if `format-package-lock` in `.npmrc` is `true`.
+package-lock.json   binary
+npm-shrinkwrap.json binary

@@ -1,20 +1,26 @@
-# Version control
+## Version control
 .git/
 package-lock.json
-npm-shrinkwrap.json
 
-# Files sourced from other projects
+## Dynamic/Unversionable
 node_modules/
-
-# Tempfiles
+*.bak
+*.old
 *.swp
-tmp/
+*.tmp
+
+## IDEs
+.vscode/
+
+## System files
+.directory
+.DS_Store
+desktop.ini
+thumbs.db
+.fuse_hidden*
 
 # Minified/binary files
 bin/*
-
-# Files with sensitive information
-#Gruntfile.js
 
 # Keep .keep files
 !.keep
