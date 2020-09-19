@@ -1,150 +1,143 @@
-// main.js
-// #############################################################################
-"use strict";
+module.exports.loop = class Main {
 
-// Variables
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const LIB_MISC = require("lib.misc");
+    ////////////////////////////////////////////////////////////////////////////////
+    constructor(
+        private readonly miscLib = require(`libs/misc.lib`),
+        private readonly moveLib = require(`libs/move.lib`),
+    ) {
 
-// Main loop
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-module.exports.loop = function() {
+        // Every 8 ticks
+        if(this.miscLib.gamble(1 / 8)) {
+            this.cleanMemories();
+        }
 
-    // Every 8 ticks
-    if(LIB_MISC.gamble(1 / 8)) {
-        cleanMemories();
-    } //fi
+        // Every tick
+        this.setAis();
 
-    // Every tick
-    setAis();
+        // Done
+        return this;
+    }
 
-    // Delete the memories of dead entities
-    // *****************************************************************************
-    function cleanMemories() {
+    ////////////////////////////////////////////////////////////////////////////////
+    /** Delete the memories of dead entities */
+    private cleanMemories(): void {
+
         // Creeps
-        for(let name in Memory.creeps) {
+        for(const name in Memory.creeps) {
             if(!Game.creeps[name]) {
                 delete Memory.creeps[name];
-            } //fi
-        } //done
+            }
+        }
 
-        // Structures
-        for(let name in Memory.structures) {
-            if(!Game.structures[name]) {
-                delete Memory.structures[name];
-            } //fi
-        } //done
+        // // Structures
+        // for(const name in Memory.structures) {
+        //     if(!Game.structures[name]) {
+        //         delete Memory.structures[name];
+        //     }
+        // }
 
         // Rooms
-        for(let name in Memory.rooms) {
+        for(const name in Memory.rooms) {
             if(!Game.rooms[name]) {
                 delete Memory.rooms[name];
-            } //fi
-        } //done
-    } //cleanMemories
+            }
+        }
+    }
 
-    // AIs
-    // *****************************************************************************
-    function setAis() {
-        upliftRooms();
-        upliftStructures();
-        upliftCreeps();
+    ////////////////////////////////////////////////////////////////////////////////
+    private setAis(): void {
+        this.upliftRooms();
+        this.upliftStructures();
+        this.upliftCreeps();
+    }
 
-        // Rooms
-        // =============================================================================
-        function upliftRooms() {
-            let name, room;
-            for(name in Game.rooms) {
-                try {
-                    room = Game.rooms[name];
-                    if(!room.controller) continue;
-                    switch(room.controller.my) {
-                        case true:
-                        require("role.room").run(room);
-                        break;
-                    } //esac
-                } catch(err) {
-                    console.log(err.stack);
-                } //finally
-            } //done
-        } //upliftRooms
+    ////////////////////////////////////////////////////////////////////////////////
+    private upliftRooms(): void {
+        for(const name in Game.rooms) {
+            try {
+                const room = Game.rooms[name];
+                if(room.controller?.my) {
+                    require(`role.room`).run(room);
+                }
+            } catch(error) {
+                console.log(error.stack);
+            }
+        }
+    }
 
-        // Structures
-        // =============================================================================
-        function upliftStructures() {
-            for(let name in Game.structures) {
-                try {
-                    let structure = Game.structures[name];
-                    switch(structure.structureType) {
+    ////////////////////////////////////////////////////////////////////////////////
+    private upliftStructures(): void {
+        for(const name in Game.structures) {
+            try {
+                const structure = Game.structures[name];
+                switch(structure.structureType) {
 
-                        case STRUCTURE_SPAWN:
-                        require("role.spawn").run(structure);
-                        break;
+                    case STRUCTURE_SPAWN:
+                    require(`roles/spawn.role`).run(structure);
+                    break;
 
-                        case STRUCTURE_TOWER:
-                        require("role.tower").run(structure);
-                        break;
+                    case STRUCTURE_TOWER:
+                    require(`roles/tower.role`).run(structure);
+                    break;
 
-                        case STRUCTURE_TERMINAL:
-                        require("role.terminal").run(structure);
-                        break;
+                    case STRUCTURE_TERMINAL:
+                    require(`roles/terminal.role`).run(structure);
+                    break;
 
-                        case STRUCTURE_LINK:
-                        require("role.link").run(structure);
-                        break;
-                    } //esac
-                } catch(err) {
-                    console.log(err.stack);
-                } //finally
-            } //done
-        } //upliftStructures
+                    case STRUCTURE_LINK:
+                    require(`roles/link.role`).run(structure);
+                    break;
+                }
+            } catch(error) {
+                console.log(error.stack);
+            }
+        }
+    }
 
-        // Creeps
-        // =====================================================================
-        function upliftCreeps() {
-            for(let name in Game.creeps) {
-                try {
+    ////////////////////////////////////////////////////////////////////////////////
+    private upliftCreeps(): void {
+        for(const name in Game.creeps) {
+            try {
 
-                    // Setup
-                    // ---------------------------------------------------------
-                    let creep = Game.creeps[name];
-                    if(!creep.memory) {
-                        creep.memory = {
-                            role: LIB_MISC.ROLES.MANUAL,
-                        };
-                    } //fi
+                // Setup
+                const creep = Game.creeps[name];
+                if(!creep.memory) {
+                    creep.memory = {
+                        role: CreepRole.manual,
+                    };
+                }
 
-                    // Debug
-                    // ---------------------------------------------------------
-                    //creep.memory.target = undefined; // Useful when you need to reset everyone's tasks.
-                    //creep.memory.path   = undefined; // Useful when you need to reset everyone's paths.
+                // Debug
+                // creep.memory.target = undefined; // Useful when you need to reset everyone's tasks.
+                // creep.memory.path   = undefined; // Useful when you need to reset everyone's paths.
 
-                    // Load AIs
-                    // ---------------------------------------------------------
-                    if(creep.spawning) continue;
-                    switch(creep.memory.role) {
+                // Load AIs
+                if(creep.spawning) continue;
+                switch(creep.memory.role) {
 
-                        case LIB_MISC.ROLES.WORKER:
-                        require("role.worker" ).run(creep);
-                        break;
+                    case CreepRole.worker:
+                    require(`roles/worker.role`).run(creep);
+                    break;
 
-                        case LIB_MISC.ROLES.FIGHTER:
-                        require("role.fighter").run(creep);
-                        break;
+                    case CreepRole.fighter:
+                    require(`roles/fighter.role`).run(creep);
+                    break;
 
-                        case LIB_MISC.ROLES.CLAIMER:
-                        require("role.claimer").run(creep);
-                        break;
+                    case CreepRole.claimer:
+                    require(`roles/claimer.role`)(this.moveLib).run(creep);
+                    break;
 
-                        //case LIB_MISC.ROLES.MANUAL:
-                        default:
-                        require("role.manual" ).run(creep);
-                        break;
-                    } //esac
-                } catch(err) {
-                    console.log(err.stack);
-                } //finally
-            } //done
-        } //upliftCreeps
-    } //setAis
-}; //function
+                    case CreepRole.manual:
+                    require(`roles/manual.role`)(this.moveLib).run(creep);
+                    break;
+
+                    default:
+                    throw new TypeError(`\`${creep.memory.role}\` not in \`CreepRole\` enumeration!`);
+                }
+
+            } catch(error) {
+                console.log(error.stack);
+            }
+        }
+    }
+};

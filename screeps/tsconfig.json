@@ -19,6 +19,9 @@
             "lodash",
             "screeps"
         ],
+        "typeRoots": [
+            "types"
+        ],
 
         // Linter rules (enable anything that causes a compilation/typing error;  leave everything else to a proper linting tool.)
         "allowJs": true,
@@ -51,8 +54,8 @@
     },
 
     "include": [
-        "./**/*.ts",
-        "./**/*.js",
+        "**/*.ts",
+        "**/*.js",
     ],
     "exclude": [
         "dist/**",

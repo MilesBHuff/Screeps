@@ -1,57 +1,42 @@
-// role.claimer.js
-// #############################################################################
 /** This script is designed to streamline claiming new controllers.    Target
  *    acquisition must still be done manually.
 **/
-"use strict";
+module.exports = class ClaimerRole implements Role {
 
-// Variables
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const LIB_MOVE = require("lib.move");
-let roleClaimer = {
+    ////////////////////////////////////////////////////////////////////////////////
+    constructor(
+        private readonly moveLib: any,
+    ) {
+        return this;
+    }
 
-    // Main
-    // *****************************************************************************
-    /** This function controls the provided creep.
-     * @param creep The creep to control
-    **/
-    run: function(creep) {
-        let target;
+    ////////////////////////////////////////////////////////////////////////////////
+    public run(creep: Creep): void {
+        let target: StructureController|null = null;
 
         // Check the creep's target
-        // =============================================================================
         if(creep.memory && creep.memory.target) {
-                target = Game.getObjectById(creep.memory.target);
-        } //fi
+            target = Game.getObjectById(creep.memory.target);
+        }
 
         // If the target is not a controller or if it belongs to us, remove it.
-        // =============================================================================
-        if(target && (target.structureType !== STRUCTURE_CONTROLLER || target.my)) {
-            target = null;
-            creep.memory.target = null;
-        } else {
+        if(target) {
+            if(target.structureType !== STRUCTURE_CONTROLLER || target.my) {
+                target = null;
+                creep.memory.target = undefined;
+            } else {
 
-            // Move to its target
-            // =============================================================================
-            LIB_MOVE.move(creep, COLOR_BLUE, false);
+                // Move to its target
+                this.moveLib.move(creep, COLOR_BLUE, false);
 
-            // Attempt to claim the target
-            // =============================================================================
-            creep.claimController(target);
+                // Attempt to claim the target
+                creep.claimController(target);
 
-            // Attempt to sign the target
-            // =============================================================================
-            creep.signController(target, "GitHub.com/MilesBHuff/Screeps");
-        } //fi
+                // Attempt to sign the target
+                creep.signController(target, "GitHub.com/MilesBHuff/Screeps");
+            }
 
         // If no target, wander
-        // =============================================================================
-        if(!target) {
-            LIB_MOVE.wander(creep);
-        }
-    }, //run
-}; //roleManual
-
-// Export this file for use in others.
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-module.exports = roleClaimer;
+        } else this.moveLib.wander(creep);
+    }
+};

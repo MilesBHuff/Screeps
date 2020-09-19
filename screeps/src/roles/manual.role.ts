@@ -1,29 +1,19 @@
-// role.manual.js
-// #############################################################################
-/** This script is designed to streamline manual control of creeps.
-**/
-"use strict";
+/** This script is designed to streamline manual control of creeps. */
+module.exports = class ManualRole implements Role {
 
-// Variables
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-const LIB_MOVE = require("lib.move");
-let roleManual = {
+    ////////////////////////////////////////////////////////////////////////////////
+    constructor(
+        private readonly moveLib: any,
+    ) {
+        return this;
+    }
 
-    // Main
-    // *****************************************************************************
-    /** This function controls the provided creep.
-     * @param creep The creep to control
-    **/
-    run: function(creep) {
+    ////////////////////////////////////////////////////////////////////////////////
+    public run(creep: Creep): void {
 
         // Move to the provided destination, if there is one.
-        // =============================================================================
-        if(creep.memory && creep.memory.target) {
-                LIB_MOVE.move(creep, COLOR_BLUE, false);
-        } //fi
-    }, //run
-}; //roleManual
-
-// Export this file for use in others.
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-module.exports = roleManual;
+        if(creep.memory?.target) {
+            this.moveLib.move(creep, COLOR_BLUE, false);
+        }
+    }
+};
