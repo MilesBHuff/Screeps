@@ -13,8 +13,8 @@ module.exports = function(grunt) {
 //              rename: (dest, src) => "",
             },
             options: {
-                email: "",
-                password: "",
+                email: "MilesBHuff@Linux.com",
+                password: "LigBryne0#skriips",
                 branch: "minified",
                 ptr: false,
             },
