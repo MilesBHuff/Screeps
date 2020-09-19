@@ -5,6 +5,7 @@ interface RoomMemory {
 
 ////////////////////////////////////////////////////////////////////////////////
 interface CreepMemory {
+    path?: string;
     role?: CreepRole;
     target?: string;
 }
