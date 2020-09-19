@@ -54,7 +54,8 @@
     },
 
     "files": [
-        "src/Main.ts"
+        "src/Main.ts",
+        "src/Commands.ts"
     ],
     "include": [
         "**/*.ts",
