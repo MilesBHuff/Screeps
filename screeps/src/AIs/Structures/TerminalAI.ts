@@ -1,5 +1,5 @@
 /** This script governs terminals. **/
-module.exports = class ManualRole implements AI {
+module.exports = class TerminalAI implements AI {
 
     ////////////////////////////////////////////////////////////////////////////////
     constructor(
