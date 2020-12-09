@@ -1,5 +1,5 @@
 /** This script is designed to streamline manual control of creeps. */
-module.exports = class ManualRole implements Role {
+module.exports = class ManualRole implements AI {
 
     ////////////////////////////////////////////////////////////////////////////////
     constructor(
