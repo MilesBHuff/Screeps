@@ -25,8 +25,8 @@
         "postinstall": "npm rebuild && npm dedupe"
     },
     "engines": {
-        "node": "^10",
-        "npm": "^6"
+        "node": ">=10",
+        "npm": "^7"
     },
     "devDependencies": {
         "@types/lodash": "^3",
