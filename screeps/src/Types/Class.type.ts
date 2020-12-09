@@ -3,10 +3,10 @@
 interface AI {
 
     //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //
-    /** This function controls the provided creep.
-     * @param creep The creep to control
+    /** This function controls the provided entity.
+     * @param entity The entity to control
     **/
-    run: (creep: Creep) => void;
+    run: (entity: any) => void;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
