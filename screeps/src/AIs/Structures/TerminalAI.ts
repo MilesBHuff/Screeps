@@ -1,22 +1,14 @@
-// role.terminal.js
-// #############################################################################
 /** This script governs terminals. **/
-"use strict";
+module.exports = class ManualRole implements AI {
 
-// Variables
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-let roleTerminal = {
+    ////////////////////////////////////////////////////////////////////////////////
+    constructor(
+    ) {
+        return this;
+    }
 
-    // Main
-    // *****************************************************************************
-    /** This function controls the provided terminal.
-     * @param terminal The terminal to control
-    **/
-    run: function(terminal) {
+    ////////////////////////////////////////////////////////////////////////////////
+    public run(terminal: StructureTerminal): void {
         //TODO
-    }, //run
-}; //roleTerminal
-
-// Export this file for use in others.
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-module.exports = roleTerminal;
+    }
+};
