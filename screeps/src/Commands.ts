@@ -6,9 +6,9 @@ module.exports.commands = class Commands {
 
     ////////////////////////////////////////////////////////////////////////////////
     constructor(
-        private readonly miscLib = require(`Libs/MiscLib`),
-        private readonly moveLib = require(`Libs/MoveLib`),
-        private readonly spawnAI = require(`AIs/Structures/SpawnAI`),
+        private readonly miscLib = require(`lib/misc.lib`),
+        private readonly moveLib = require(`lib/move.lib`),
+        private readonly spawnAI = require(`ai/structure/spawn.ai`),
     ) {
         return this;
     }

@@ -3,8 +3,8 @@ module.exports.loop = class Main {
 
     ////////////////////////////////////////////////////////////////////////////////
     constructor(
-        private readonly miscLib = require(`Libs/MiscLib`),
-        private readonly moveLib = require(`Libs/MoveLib`),
+        private readonly miscLib = require(`lib/misc.lib`),
+        private readonly moveLib = require(`lib/move.lib`),
     ) {
 
         // Every 8 ticks (roughly)
@@ -40,7 +40,7 @@ module.exports.loop = class Main {
         for(const room of Object.values(Game.rooms)) {
             try {
                 if(room.controller?.my) {
-                    require(`AIs/RoomAI`).run(room);
+                    require(`ai/room.ai`).run(room);
                 }
             } catch(error) {
                 console.log(error.stack);
@@ -55,19 +55,19 @@ module.exports.loop = class Main {
                 switch(structure.structureType) {
 
                     case STRUCTURE_SPAWN:
-                    require(`AIs/Structures/SpawnAI`).run(structure);
+                    require(`ai/structure/spawn.ai`).run(structure);
                     break;
 
                     case STRUCTURE_TOWER:
-                    require(`AIs/Structures/TowerAI`).run(structure);
+                    require(`ai/structure/tower.ai`).run(structure);
                     break;
 
                     case STRUCTURE_TERMINAL:
-                    require(`AIs/Structures/TerminalAI`).run(structure);
+                    require(`ai/structure/terminal.ai`).run(structure);
                     break;
 
                     case STRUCTURE_LINK:
-                    require(`AIs/Structures/LinkAI`).run(structure);
+                    require(`ai/structure/link.ai`).run(structure);
                     break;
                 }
             } catch(error) {
@@ -97,19 +97,19 @@ module.exports.loop = class Main {
                 switch(creep.memory.role) {
 
                     case CreepRole.worker:
-                    require(`AIs/Creeps/WorkerAI`).run(creep);
+                    require(`ai/creep/worker.ai`).run(creep);
                     break;
 
                     case CreepRole.fighter:
-                    require(`AIs/Creeps/FighterAI`).run(creep);
+                    require(`ai/creep/fighter.ai`).run(creep);
                     break;
 
                     case CreepRole.claimer:
-                    require(`AIs/Creeps/ClaimerAI`)(this.moveLib).run(creep);
+                    require(`ai/creep/claimer.ai`)(this.moveLib).run(creep);
                     break;
 
                     case CreepRole.manual:
-                    require(`AIs/Creeps/ManualAI`)(this.moveLib).run(creep);
+                    require(`ai/creep/manual.ai`)(this.moveLib).run(creep);
                     break;
 
                     default:
